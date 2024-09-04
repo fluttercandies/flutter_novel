@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/tools/logger_tools.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
+    LoggerTools.looger.d(_counter);
   }
 
   @override
