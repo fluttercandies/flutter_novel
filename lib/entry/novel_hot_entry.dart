@@ -2,6 +2,8 @@
 //
 //     final novelHot = novelHotFromJson(jsonString);
 
+// ignore_for_file: constant_identifier_names
+
 import 'dart:convert';
 
 NovelHot novelHotFromJson(String str) => NovelHot.fromJson(json.decode(str));
@@ -9,30 +11,21 @@ NovelHot novelHotFromJson(String str) => NovelHot.fromJson(json.decode(str));
 String novelHotToJson(NovelHot data) => json.encode(data.toJson());
 
 class NovelHot {
-  int? code;
   List<Datum>? data;
-  String? msg;
 
-  NovelHot({
-    this.code,
-    this.data,
-    this.msg,
-  });
+  NovelHot({this.data});
 
+  @override
   factory NovelHot.fromJson(Map<String, dynamic> json) => NovelHot(
-        code: json["code"],
         data: json["data"] == null
             ? []
             : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-        msg: json["msg"],
       );
 
   Map<String, dynamic> toJson() => {
-        "code": code,
         "data": data == null
             ? []
             : List<dynamic>.from(data!.map((x) => x.toJson())),
-        "msg": msg,
       };
 }
 

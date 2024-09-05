@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:async';
 import 'dart:io';
 
@@ -59,7 +61,7 @@ class NovelHttp {
   ///
   /// [path] 必传，请求路径
   /// [params] 非必传，请求入参
-  Future<ServiceResultData> _get<T>(
+  Future<ServiceResultData> _get(
     String path, {
     Map<String, dynamic>? params,
   }) async {
@@ -70,7 +72,7 @@ class NovelHttp {
     try {
       Response? response = await _dio?.get(path, queryParameters: params);
       var responseData = response?.data;
-      resultData = ServiceResultData<T>.fromJson(responseData);
+      resultData = ServiceResultData.fromJson(responseData);
       //_handleStatusCode(responseModel);
     } on DioException catch (dioError, _) {
       //_handleError(dioError, e);
@@ -91,7 +93,7 @@ class NovelHttp {
   ///
   /// [path] 必传，请求路径
   /// [params] 非必传，请求入参
-  Future<ServiceResultData> _post<T>(
+  Future<ServiceResultData> _post(
     String path, {
     Map<String, dynamic>? params,
   }) async {
@@ -101,7 +103,7 @@ class NovelHttp {
     try {
       Response? response = await _dio?.post(path, data: params);
       var responseData = response?.data;
-      responseModel = ServiceResultData<T>.fromJson(responseData);
+      responseModel = ServiceResultData.fromJson(responseData);
     } on DioException catch (dioError, _) {
       responseModel = ServiceResultData(
           data: null, code: dioError.response!.data['code'], msg: '网络异常');
@@ -116,16 +118,16 @@ class NovelHttp {
   /// [path] 请求链接
   /// [params] 请求参数
   /// [method] 请求方式
-  Future<ServiceResultData> request<T>(
+  Future<ServiceResultData> request(
     String path, {
     Map<String, dynamic>? params,
     String method = HttpConfig.post,
   }) async {
     params = params ?? {};
     if (method == HttpConfig.get) {
-      return await _get<T>(path, params: params);
+      return await _get(path, params: params);
     } else if (method == HttpConfig.post) {
-      return await _post<T>(path, params: params);
+      return await _post(path, params: params);
     } else {
       throw HttpException('request method $method is not support');
     }
