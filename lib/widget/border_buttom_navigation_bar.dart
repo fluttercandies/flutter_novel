@@ -40,11 +40,16 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
     return Container(
         height: widget.height,
         decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(widget.borderRadius),
+            topRight: Radius.circular(widget.borderRadius),
+          ),
           boxShadow: [
             BoxShadow(
-              offset: const Offset(0, -0),
-              blurRadius: 20,
-              color: Colors.red.withOpacity(0.1),
+              offset: const Offset(0, -2),
+              blurRadius: 10,
+              color: Colors.black.withOpacity(0.1),
             ),
           ],
         ),
@@ -54,7 +59,6 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             topRight: Radius.circular(widget.borderRadius),
           ),
           child: BottomAppBar(
-              elevation: 10,
               color: Colors.white,
               child: SizedBox(
                 child: ClipRRect(
@@ -69,7 +73,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                         Icon icon = value.value;
                         icon = Icon(
                           icon.icon,
-                          color: isSelected ? Colors.white : ThemeStyle.color,
+                          color: isSelected
+                              ? Colors.white
+                              : ThemeStyleProvider.color,
                         );
                         return GestureDetector(
                           onTap: () => widget.onTap(value.key),
@@ -80,7 +86,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   color: isSelected
-                                      ? ThemeStyle.color
+                                      ? ThemeStyleProvider.color
                                       : Colors.transparent),
                               duration: Durations.short4,
                               child: icon),

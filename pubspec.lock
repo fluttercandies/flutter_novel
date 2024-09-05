@@ -108,7 +108,7 @@ packages:
     source: hosted
     version: "4.0.0"
   logger:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: logger
       sha256: "697d067c60c20999686a0add96cf6aba723b3aa1f83ecf806a8097231529ec32"
@@ -139,6 +139,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.15.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -147,6 +155,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.9.0"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.1.2"
   sky_engine:
     dependency: transitive
     description: flutter
