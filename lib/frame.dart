@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/pages/home_page.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/widget/border_buttom_navigation_bar.dart';
@@ -19,10 +20,12 @@ class _FramePageState extends State<FramePage> {
   int i = 0;
   @override
   Widget build(BuildContext context) {
-    final MyColors myColors = Theme.of(context).extension<MyColors>()!;
+    final MyColorsTheme myColors =
+        Theme.of(context).extension<MyColorsTheme>()!;
     final themeData = context.read<ThemeStyleProvider>();
     return Scaffold(
       extendBody: true,
+      body: const HomePage(),
       floatingActionButton: FloatingActionButton(
           onPressed: themeData.switchTheme,
           child: Icon(

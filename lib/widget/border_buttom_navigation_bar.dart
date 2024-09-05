@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -37,6 +38,7 @@ class CustomBottomNavigationBar extends StatefulWidget {
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
+    final MyColorsTheme colors = Theme.of(context).extension<MyColorsTheme>()!;
     return Container(
         height: widget.height,
         decoration: BoxDecoration(
@@ -71,12 +73,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                       children: widget.items.asMap().entries.map((value) {
                         bool isSelected = value.key == widget.currentIndex;
                         Icon icon = value.value;
-                        icon = Icon(
-                          icon.icon,
-                          color: isSelected
-                              ? Colors.white
-                              : ThemeStyleProvider.color,
-                        );
+                        icon = Icon(icon.icon,
+                            color:
+                                isSelected ? Colors.white : colors.brandColor);
                         return GestureDetector(
                           onTap: () => widget.onTap(value.key),
                           child: AnimatedContainer(
@@ -86,7 +85,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   color: isSelected
-                                      ? ThemeStyleProvider.color
+                                      ? colors.brandColor
                                       : Colors.transparent),
                               duration: Durations.short4,
                               child: icon),

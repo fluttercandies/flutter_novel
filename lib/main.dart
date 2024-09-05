@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         routerConfig: _appRouter.config(),
         title: 'Novel Reader',
         theme: value.theme,
+        //darkTheme: GlobalThemData.darkThemeData,
         // home: const FramePage(),
       );
     });

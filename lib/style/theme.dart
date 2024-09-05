@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class MyColors extends ThemeExtension<MyColors> {
-  const MyColors({
+class MyColorsTheme extends ThemeExtension<MyColorsTheme> {
+  const MyColorsTheme({
     required this.brandColor,
     required this.danger,
   });
@@ -11,19 +11,19 @@ class MyColors extends ThemeExtension<MyColors> {
   final Color? danger;
 
   @override
-  MyColors copyWith({Color? brandColor, Color? danger}) {
-    return MyColors(
+  MyColorsTheme copyWith({Color? brandColor, Color? danger}) {
+    return MyColorsTheme(
       brandColor: brandColor ?? this.brandColor,
       danger: danger ?? this.danger,
     );
   }
 
   @override
-  MyColors lerp(MyColors? other, double t) {
-    if (other is! MyColors) {
+  MyColorsTheme lerp(MyColorsTheme? other, double t) {
+    if (other is! MyColorsTheme) {
       return this;
     }
-    return MyColors(
+    return MyColorsTheme(
       brandColor: Color.lerp(brandColor, other.brandColor, t),
       danger: Color.lerp(danger, other.danger, t),
     );
