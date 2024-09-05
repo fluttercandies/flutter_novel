@@ -1,10 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
-import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/widget/border_buttom_navigation_bar.dart';
 import 'package:provider/provider.dart';
 
+@RoutePage()
 class FramePage extends StatefulWidget {
   const FramePage({super.key});
 

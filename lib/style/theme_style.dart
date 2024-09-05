@@ -64,6 +64,7 @@ class ThemeStyleProvider extends ChangeNotifier {
       ],
     );
     _data = _lightTheme;
+    _setSystemUiOverlayStyle();
   }
 
   /// Toggles the current brightness between light and dark.
@@ -76,6 +77,7 @@ class ThemeStyleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// 设置状态栏样式
   void _setSystemUiOverlayStyle() {
     // 设置状态栏为透明
     if (Platform.isAndroid) {
