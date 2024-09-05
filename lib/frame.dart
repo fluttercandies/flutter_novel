@@ -9,21 +9,21 @@ class FramePage extends StatefulWidget {
 }
 
 class _FramePageState extends State<FramePage> {
+  /// 当前选中的索引
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: Container(
-        color: Colors.red,
-      ),
+      body: Container(),
       bottomNavigationBar: CustomBottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "首页"),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: "更多"),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: "我的")
-        ],
-        currentIndex: 0,
-        onTap: (int value) {},
+        items: const [Icon(Icons.home), Icon(Icons.star), Icon(Icons.people)],
+        currentIndex: _currentIndex,
+        onTap: (int value) {
+          _currentIndex = value;
+          setState(() {});
+        },
       ),
     );
   }

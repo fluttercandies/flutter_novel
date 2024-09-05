@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:novel_flutter_bit/frame.dart';
+import 'package:novel_flutter_bit/style/theme_style.dart';
 
 void main() {
   // 设置状态栏为透明
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Novel Reader',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: ThemeStyle.color),
         useMaterial3: true,
       ),
       home: const FramePage(),
