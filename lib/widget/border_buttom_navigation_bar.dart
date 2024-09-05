@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
-import 'package:novel_flutter_bit/style/theme_style.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   /// 当前选中的索引
