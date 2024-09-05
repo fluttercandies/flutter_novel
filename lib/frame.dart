@@ -25,6 +25,18 @@ class _FramePageState extends State<FramePage> {
           setState(() {});
         },
       ),
+      //     CustomBottomNavigationBar1(
+      //   currentIndex: _currentIndex,
+      //   items: const [
+      //     BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+      //     BottomNavigationBarItem(icon: Icon(Icons.star), label: ''),
+      //     BottomNavigationBarItem(icon: Icon(Icons.people), label: '')
+      //   ],
+      //   onTap: (int value) {
+      //     _currentIndex = value;
+      //     setState(() {});
+      //   },
+      // )
     );
   }
 }
