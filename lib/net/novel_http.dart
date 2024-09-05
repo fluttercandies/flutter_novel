@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:novel_flutter_bit/net/http_config.dart';
 import 'package:novel_flutter_bit/net/service_result.dart';
@@ -56,11 +59,13 @@ class NovelHttp {
   ///
   /// [path] 必传，请求路径
   /// [params] 非必传，请求入参
-  Future<ServiceResultData?> _get<T>(
+  Future<ServiceResultData> _get<T>(
     String path, {
     Map<String, dynamic>? params,
   }) async {
     params = params ?? {};
+    LoggerTools.looger.d('get请求URL：$path');
+    LoggerTools.looger.d('get请求Params：$params');
     ServiceResultData? resultData;
     try {
       Response? response = await _dio?.get(path, queryParameters: params);
@@ -72,21 +77,57 @@ class NovelHttp {
       LoggerTools.looger.e(dioError.message);
       if (dioError.requestOptions.cancelToken is CancelToken) {
         resultData = ServiceResultData(data: null, code: -1, msg: '取消请求');
+      } else {
+        resultData = ServiceResultData(data: null, code: 404, msg: '网络异常');
       }
-      // else {
-      //   if (dioError.response!.data is Map) {
-      //     responseModel = ResponseModel(
-      //         data: null,
-      //         code: dioError.response!.data['code'],
-      //         message: '网络异常');
-      //   } else {
-      //     responseModel = ResponseModel(data: null, code: 404, message: '网络异常');
-      //   }
-      // }
-      // if (dioError is TimeoutException) {
-      //   responseModel = ResponseModel(data: null, code: -100, message: '网络超时');
-      // }
+      if (dioError is TimeoutException) {
+        resultData = ServiceResultData(data: null, code: -100, msg: '网络超时');
+      }
     }
     return resultData;
+  }
+
+  /// post请求
+  ///
+  /// [path] 必传，请求路径
+  /// [params] 非必传，请求入参
+  Future<ServiceResultData> _post<T>(
+    String path, {
+    Map<String, dynamic>? params,
+  }) async {
+    ServiceResultData? responseModel;
+    LoggerTools.looger.d('post请求URL：$path');
+    LoggerTools.looger.d('post请求Params：$params');
+    try {
+      Response? response = await _dio?.post(path, data: params);
+      var responseData = response?.data;
+      responseModel = ServiceResultData<T>.fromJson(responseData);
+    } on DioException catch (dioError, _) {
+      responseModel = ServiceResultData(
+          data: null, code: dioError.response!.data['code'], msg: '网络异常');
+      if (dioError is TimeoutException) {
+        responseModel = ServiceResultData(data: null, code: -100, msg: '网络超时');
+      }
+    }
+    return responseModel;
+  }
+
+  /// 发起请求
+  /// [path] 请求链接
+  /// [params] 请求参数
+  /// [method] 请求方式
+  Future<ServiceResultData> request<T>(
+    String path, {
+    Map<String, dynamic>? params,
+    String method = HttpConfig.post,
+  }) async {
+    params = params ?? {};
+    if (method == HttpConfig.get) {
+      return await _get<T>(path, params: params);
+    } else if (method == HttpConfig.post) {
+      return await _post<T>(path, params: params);
+    } else {
+      throw HttpException('request method $method is not support');
+    }
   }
 }
