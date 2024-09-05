@@ -42,12 +42,17 @@ class ThemeStyleProvider extends ChangeNotifier {
   /// 深色主题
   late ThemeData _darkTheme;
 
+  /// 默认 appBar TextStyle
+  static const TextStyle _textStyle =
+      TextStyle(color: _colorLight, fontSize: 22, fontWeight: FontWeight.bold);
+
   /// 初始化
   ThemeStyleProvider() {
     _lightTheme = _data.copyWith(
       scaffoldBackgroundColor: const Color(0xfffafafa),
       brightness: Brightness.light,
-      appBarTheme: const AppBarTheme(color: Colors.white),
+      appBarTheme:
+          const AppBarTheme(color: Colors.white, titleTextStyle: _textStyle),
       textTheme: const TextTheme(
         //bodyLarge: TextStyle(color: Colors.red),
         bodyMedium: TextStyle(color: Colors.black),
@@ -66,7 +71,9 @@ class ThemeStyleProvider extends ChangeNotifier {
     _darkTheme = _data.copyWith(
       scaffoldBackgroundColor: Colors.black,
       brightness: Brightness.dark,
-      appBarTheme: const AppBarTheme(color: _colorDark),
+      appBarTheme: AppBarTheme(
+          color: _colorDark,
+          titleTextStyle: _textStyle.copyWith(color: Colors.white)),
       textTheme: const TextTheme(
         //bodyLarge: TextStyle(color: Colors.red),
         bodyMedium: TextStyle(color: Colors.white),
