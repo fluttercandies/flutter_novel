@@ -472,14 +472,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.3.0"
-  pull_to_refresh:
+  pull_to_refresh_notification:
     dependency: "direct main"
     description:
-      name: pull_to_refresh
-      sha256: bbadd5a931837b57739cf08736bea63167e284e71fb23b218c8c9a6e042aad12
+      name: pull_to_refresh_notification
+      sha256: "5a06c242a6c3264bac3a7facbe2c6d317a5f54fc10c20b556dbd34ceee32c9aa"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.0"
+    version: "3.1.0"
   shelf:
     dependency: transitive
     description:

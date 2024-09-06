@@ -39,7 +39,8 @@ dependencies:
   provider: ^6.1.2                # Provider 状态管理
   auto_route: ^9.2.2              # Routing 路由
   dio: ^5.7.0                     # Dio 网络请求
-  pull_to_refresh: ^2.0.0         # 刷新组件
+  #pull_to_refresh: ^2.0.0         # 刷新组件
+  pull_to_refresh_notification: ^3.1.0 # 刷新组件
 dev_dependencies:
   flutter_test:
     sdk: flutter
