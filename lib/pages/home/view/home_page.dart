@@ -16,18 +16,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getData();
-  }
-
-  void getData() async {
-    ServiceResultData resultData =
-        await NovelHttp().request('hot?category=全部', method: HttpConfig.get);
-    LoggerTools.looger.d(resultData.msg);
-    if (resultData.data case null) {
-      return;
-    }
-    NovelHot novelHot = NovelHot.fromJson(resultData.data);
-    LoggerTools.looger.d(novelHot);
   }
 
   @override
