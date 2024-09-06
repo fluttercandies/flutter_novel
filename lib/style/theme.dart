@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 class MyColorsTheme extends ThemeExtension<MyColorsTheme> {
   const MyColorsTheme({
     required this.brandColor,
-    required this.danger,
+    required this.containerColor,
+    required this.textColorHomePage,
   });
 
   final Color? brandColor;
-  final Color? danger;
-
+  final Color? containerColor;
+  final Color? textColorHomePage;
   @override
-  MyColorsTheme copyWith({Color? brandColor, Color? danger}) {
+  MyColorsTheme copyWith(
+      {Color? brandColor, Color? containerColor, Color? textColorHomePage}) {
     return MyColorsTheme(
       brandColor: brandColor ?? this.brandColor,
-      danger: danger ?? this.danger,
+      containerColor: containerColor ?? this.containerColor,
+      textColorHomePage: textColorHomePage ?? this.textColorHomePage,
     );
   }
 
@@ -25,11 +28,14 @@ class MyColorsTheme extends ThemeExtension<MyColorsTheme> {
     }
     return MyColorsTheme(
       brandColor: Color.lerp(brandColor, other.brandColor, t),
-      danger: Color.lerp(danger, other.danger, t),
+      containerColor: Color.lerp(containerColor, other.containerColor, t),
+      textColorHomePage:
+          Color.lerp(textColorHomePage, other.textColorHomePage, t),
     );
   }
 
   // Optional
   @override
-  String toString() => 'MyColors(brandColor: $brandColor, danger: $danger)';
+  String toString() =>
+      'MyColors(brandColor: $brandColor, danger: $containerColor)';
 }

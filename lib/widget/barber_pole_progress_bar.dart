@@ -10,7 +10,7 @@ class BarberPoleProgressBar extends StatefulWidget {
   final double height;
 
   /// 进度条颜色
-  final Color color;
+  final Color? color;
 
   /// 动画开关
   final bool animationEnabled;
@@ -36,8 +36,11 @@ class BarberPoleProgressBar extends StatefulWidget {
 }
 
 class _BarberPoleProgressBarState extends State<BarberPoleProgressBar>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
+  late AnimationController _progressController;
+  late Animation<double> _progressAnimation;
+  double _previousProgress = 0.0;
 
   @override
   void initState() {
@@ -46,14 +49,42 @@ class _BarberPoleProgressBarState extends State<BarberPoleProgressBar>
       vsync: this,
       duration: const Duration(seconds: 2),
     );
+    _progressController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..forward();
+
     if (widget.animationEnabled) {
       _controller.repeat(); // 无限循环动画
     }
+
+    _setupProgressAnimation();
+  }
+
+  @override
+  void didUpdateWidget(covariant BarberPoleProgressBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.progress != widget.progress) {
+      _previousProgress = oldWidget.progress;
+      _setupProgressAnimation();
+      _progressController.forward(from: 0.0); // 重启进度动画
+    }
+  }
+
+  void _setupProgressAnimation() {
+    _progressAnimation = Tween<double>(
+      begin: _previousProgress,
+      end: widget.progress,
+    ).animate(CurvedAnimation(
+      parent: _progressController,
+      curve: Curves.easeInOut,
+    ));
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _progressController.dispose();
     super.dispose();
   }
 
@@ -61,54 +92,60 @@ class _BarberPoleProgressBarState extends State<BarberPoleProgressBar>
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: widget.borderRadius ?? BorderRadius.circular(20.0), // 圆角
-      child: Stack(
-        children: [
-          // 整个背景条
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: widget.height,
-            color: Colors.grey.shade300, // 未填充部分的背景色
-          ),
-          // 已填充部分的背景颜色
-          LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              final width = constraints.biggest.width * widget.progress;
-              return Container(
-                width: width,
+      child: AnimatedBuilder(
+        animation: _progressAnimation,
+        builder: (context, child) {
+          return Stack(
+            children: [
+              // 整个背景条
+              Container(
+                width: MediaQuery.of(context).size.width,
                 height: widget.height,
-                color: widget.color, // 填充部分的背景色
-              );
-            },
-          ),
-          // 进度条 (限制斜条动画显示区域)
-          LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              late double width;
-              width = constraints.biggest.width * widget.progress;
-              if (widget.notArriveProgressAnimation) {
-                width = MediaQuery.of(context).size.width * widget.progress;
-              }
-              return ClipRect(
-                // 限制动画绘制区域
-                child: SizedBox(
-                  width: width, // 只绘制进度范围内的斜条
-                  height: widget.height,
-                  child: AnimatedBuilder(
-                    animation: _controller,
-                    builder: (context, child) {
-                      return CustomPaint(
-                        painter: BarberPolePainter(_controller.value,
-                            widget.notArriveProgressAnimation),
-                        child: SizedBox(
-                            width: double.infinity, height: widget.height),
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
+                color: Colors.grey.shade300, // 未填充部分的背景色
+              ),
+              // 已填充部分的背景颜色
+              LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  final width =
+                      constraints.biggest.width * _progressAnimation.value;
+                  return Container(
+                    width: width,
+                    height: widget.height,
+                    color: widget.color, // 填充部分的背景色
+                  );
+                },
+              ),
+              // 进度条 (限制斜条动画显示区域)
+              LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  late double width;
+                  width = constraints.biggest.width * _progressAnimation.value;
+                  if (widget.notArriveProgressAnimation) {
+                    width = MediaQuery.of(context).size.width * widget.progress;
+                  }
+                  return ClipRect(
+                    // 限制动画绘制区域
+                    child: SizedBox(
+                      width: width, // 只绘制进度范围内的斜条
+                      height: widget.height,
+                      child: AnimatedBuilder(
+                        animation: _controller,
+                        builder: (context, child) {
+                          return CustomPaint(
+                            painter: BarberPolePainter(_controller.value,
+                                widget.notArriveProgressAnimation),
+                            child: SizedBox(
+                                width: double.infinity, height: widget.height),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }

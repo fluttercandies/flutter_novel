@@ -21,18 +21,6 @@ class ThemeStyleProvider extends ChangeNotifier {
     iconButtonTheme: const IconButtonThemeData(
         style: ButtonStyle(
             overlayColor: WidgetStatePropertyAll(Colors.transparent))),
-    // appBarTheme: const AppBarTheme(
-    //   elevation: 0,
-    //   toolbarHeight: 80,
-    //   surfaceTintColor: Colors.transparent,
-    //   backgroundColor: Colors.transparent,
-    //    systemOverlayStyle: SystemUiOverlayStyle(
-    //    statusBarColor: Colors.transparent,
-    //     statusBarIconBrightness: Brightness.light,
-    //      systemNavigationBarColor: Colors.transparent,
-    //    ),
-    //   iconTheme: IconThemeData(color: Color(0xFF212529)),
-    // ),
     brightness: Brightness.light,
   );
 
@@ -64,7 +52,8 @@ class ThemeStyleProvider extends ChangeNotifier {
       extensions: <ThemeExtension<dynamic>>[
         const MyColorsTheme(
           brandColor: _colorLight,
-          danger: Color(0xFFE53935),
+          containerColor: Colors.white,
+          textColorHomePage: Colors.black,
         ),
       ],
     );
@@ -85,7 +74,8 @@ class ThemeStyleProvider extends ChangeNotifier {
       extensions: <ThemeExtension<dynamic>>[
         const MyColorsTheme(
           brandColor: _colorDark,
-          danger: Colors.white,
+          containerColor: Color(0xfffff9fe),
+          textColorHomePage: Colors.black,
         ),
       ],
     );

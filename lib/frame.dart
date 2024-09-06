@@ -32,7 +32,7 @@ class _FramePageState extends State<FramePage> {
               themeData.theme.brightness == Brightness.dark
                   ? Icons.nightlight
                   : Icons.wb_sunny,
-              color: myColors.danger)),
+              color: myColors.containerColor)),
       bottomNavigationBar: CustomBottomNavigationBar(
         borderRadius: 24,
         height: 70,

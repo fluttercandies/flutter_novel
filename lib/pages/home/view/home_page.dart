@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/view_model.dart';
+import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/barber_pole_progress_bar.dart';
@@ -52,6 +53,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  double progress = .5;
+
   /// 阅读列表
   _buildReadList(HomeViewModel value) {
     return SizedBox(
@@ -60,10 +63,15 @@ class _HomePageState extends State<HomePage> {
           scrollDirection: Axis.horizontal,
           itemCount: value.homeState.novelHot?.data?.length,
           itemBuilder: (context, index) {
-            return _buildReadItem(
-                url: value.homeState.novelHot?.data?[index].img ?? "",
-                bookName: value.homeState.novelHot?.data?[index].name ?? "",
-                progress: .5);
+            return GestureDetector(
+                onTap: () {
+                  progress += .1;
+                  setState(() {});
+                },
+                child: _buildReadItem(
+                    url: value.homeState.novelHot?.data?[index].img ?? "",
+                    bookName: value.homeState.novelHot?.data?[index].name ?? "",
+                    progress: progress.clamp(0, 1)));
           }),
     );
   }
@@ -73,11 +81,13 @@ class _HomePageState extends State<HomePage> {
       {required String url,
       required String bookName,
       required double progress}) {
+    final MyColorsTheme myColors =
+        Theme.of(context).extension<MyColorsTheme>()!;
     return Container(
       margin: const EdgeInsets.all(5.0),
       constraints: const BoxConstraints(maxWidth: 170, minWidth: 170),
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: myColors.containerColor,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -85,69 +95,75 @@ class _HomePageState extends State<HomePage> {
                 blurRadius: 8.0,
                 spreadRadius: 0.5)
           ]),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ExtendedImage.network(
-              url,
-              fit: BoxFit.cover,
-              cache: true,
-              loadStateChanged: (state) {
-                switch (state.extendedImageLoadState) {
-                  case LoadState.loading:
-                    return const CircularProgressIndicator();
-                  case LoadState.completed:
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(
-                            maxHeight: 240, minHeight: 240, minWidth: 160),
-                        child: ExtendedRawImage(
-                            image: state.extendedImageInfo?.image,
-                            fit: BoxFit.cover),
-                      ),
-                    );
-                  case LoadState.failed:
-                    return LayoutBuilder(builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      return Container(
-                        color: const Color.fromARGB(255, 36, 32, 32),
-                        height: constraints.biggest.width + 30,
-                        alignment: Alignment.center,
-                        child: const Text("加载失败"),
+      child: DefaultTextStyle(
+        style: TextStyle(color: myColors.textColorHomePage),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ExtendedImage.network(
+                url,
+                fit: BoxFit.cover,
+                cache: true,
+                loadStateChanged: (state) {
+                  switch (state.extendedImageLoadState) {
+                    case LoadState.loading:
+                      return const CircularProgressIndicator();
+                    case LoadState.completed:
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                              maxHeight: 240, minHeight: 240, minWidth: 160),
+                          child: ExtendedRawImage(
+                              image: state.extendedImageInfo?.image,
+                              fit: BoxFit.cover),
+                        ),
                       );
-                    });
-                }
-              },
-            ),
-            Flexible(
-              child: Padding(
-                padding: 10.horizontal,
-                child: Text(bookName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 15)),
+                    case LoadState.failed:
+                      return LayoutBuilder(builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                        return Container(
+                          color: const Color.fromARGB(255, 36, 32, 32),
+                          height: constraints.biggest.width + 30,
+                          alignment: Alignment.center,
+                          child: const Text("加载失败"),
+                        );
+                      });
+                  }
+                },
               ),
-            ),
-            Padding(
-              padding: 5.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                      child: BarberPoleProgressBar(
-                          progress: progress,
-                          animationEnabled: true,
-                          notArriveProgressAnimation: true)),
-                  5.horizontalSpace,
-                  Text('${(progress * 100).toStringAsFixed(0)}%')
-                ],
+              Flexible(
+                child: Padding(
+                  padding: 10.horizontal,
+                  child: Text(bookName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 15)),
+                ),
               ),
-            ),
-            0.verticalSpace
-          ]),
+              Padding(
+                padding: 5.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                        child: BarberPoleProgressBar(
+                            progress: progress,
+                            animationEnabled: true,
+                            color: myColors.brandColor,
+                            notArriveProgressAnimation: false)),
+                    5.horizontalSpace,
+                    SizedBox(
+                        width: 40,
+                        child: Text('${(progress * 100).toStringAsFixed(0)}%'))
+                  ],
+                ),
+              ),
+              0.verticalSpace
+            ]),
+      ),
     );
   }
 }
