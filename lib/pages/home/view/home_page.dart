@@ -5,6 +5,7 @@ import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/view_model.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
+import 'package:novel_flutter_bit/widget/barber_pole_progress_bar.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
 class HomePage extends StatefulWidget {
@@ -127,10 +128,11 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(
-                    child: SizedBox(
-                        child: LinearProgressIndicator(value: progress)),
-                  ),
+                  Flexible(child: BarberPoleProgressBar(progress: progress)
+                      // ClipRRect(
+                      //     borderRadius: BorderRadius.circular(8),
+                      //     child: LinearProgressIndicator(value: progress)),
+                      ),
                   5.horizontalSpace,
                   Text('${progress * 100.toInt()}%')
                 ],
