@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 
 class BarberPoleProgressBar extends StatefulWidget {
-  final double progress; // 进度
+  /// 进度
+  final double progress;
+
   /// 默认高度
   final double height;
 
@@ -12,12 +14,22 @@ class BarberPoleProgressBar extends StatefulWidget {
 
   /// 动画开关
   final bool animationEnabled;
-  const BarberPoleProgressBar(
-      {super.key,
-      required this.progress,
-      this.height = 15,
-      this.animationEnabled = true,
-      this.color = const Color(0xfff87038)});
+
+  /// 动画开关
+  final bool notArriveProgressAnimation;
+
+  /// 圆角
+  final BorderRadius? borderRadius;
+
+  const BarberPoleProgressBar({
+    super.key,
+    required this.progress,
+    this.borderRadius,
+    this.height = 15,
+    this.animationEnabled = false,
+    this.notArriveProgressAnimation = false,
+    this.color = const Color(0xfff87038),
+  });
 
   @override
   _BarberPoleProgressBarState createState() => _BarberPoleProgressBarState();
@@ -48,39 +60,53 @@ class _BarberPoleProgressBarState extends State<BarberPoleProgressBar>
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20.0), // 圆角
+      borderRadius: widget.borderRadius ?? BorderRadius.circular(20.0), // 圆角
       child: Stack(
         children: [
+          // 整个背景条
           Container(
             width: MediaQuery.of(context).size.width,
             height: widget.height,
-            color: Colors.grey.shade300,
+            color: Colors.grey.shade300, // 未填充部分的背景色
           ),
-          // 背景条 (未填充部分)
+          // 已填充部分的背景颜色
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               final width = constraints.biggest.width * widget.progress;
               return Container(
                 width: width,
                 height: widget.height,
-                color: widget.color,
+                color: widget.color, // 填充部分的背景色
               );
             },
           ),
-          // 进度条 (填充部分)
-          SizedBox(
-            width: MediaQuery.of(context).size.width * widget.progress,
-            height: widget.height,
-            child: AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return CustomPaint(
-                  painter: BarberPolePainter(_controller.value),
-                  child:
-                      SizedBox(width: double.infinity, height: widget.height),
-                );
-              },
-            ),
+          // 进度条 (限制斜条动画显示区域)
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              late double width;
+              width = constraints.biggest.width * widget.progress;
+              if (widget.notArriveProgressAnimation) {
+                width = MediaQuery.of(context).size.width * widget.progress;
+              }
+              return ClipRect(
+                // 限制动画绘制区域
+                child: SizedBox(
+                  width: width, // 只绘制进度范围内的斜条
+                  height: widget.height,
+                  child: AnimatedBuilder(
+                    animation: _controller,
+                    builder: (context, child) {
+                      return CustomPaint(
+                        painter: BarberPolePainter(_controller.value,
+                            widget.notArriveProgressAnimation),
+                        child: SizedBox(
+                            width: double.infinity, height: widget.height),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -90,8 +116,8 @@ class _BarberPoleProgressBarState extends State<BarberPoleProgressBar>
 
 class BarberPolePainter extends CustomPainter {
   final double animationValue;
-
-  BarberPolePainter(this.animationValue);
+  final bool notArriveProgressAnimation;
+  BarberPolePainter(this.animationValue, this.notArriveProgressAnimation);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -99,12 +125,15 @@ class BarberPolePainter extends CustomPainter {
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
-    const barWidth = 20.0; // 间距为30的白色斜条
+    const barWidth = 20.0; // 斜条宽度
 
     // 计算斜条的移动偏移
     final offsetX = animationValue * barWidth * 2;
-
-    for (double i = -barWidth; i < size.width; i += barWidth * 2) {
+    double width = size.width + barWidth;
+    if (notArriveProgressAnimation) {
+      width = size.width;
+    }
+    for (double i = -barWidth; i < width; i += barWidth * 2) {
       // 斜着绘制白色条纹
       final path = Path();
       path.moveTo(i + offsetX, 0);

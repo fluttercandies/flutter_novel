@@ -110,7 +110,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   case LoadState.failed:
-                    return const Text("加载失败");
+                    return LayoutBuilder(builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      return Container(
+                        color: const Color.fromARGB(255, 36, 32, 32),
+                        height: constraints.biggest.width + 30,
+                        alignment: Alignment.center,
+                        child: const Text("加载失败"),
+                      );
+                    });
                 }
               },
             ),
@@ -128,16 +136,17 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(child: BarberPoleProgressBar(progress: progress)
-                      // ClipRRect(
-                      //     borderRadius: BorderRadius.circular(8),
-                      //     child: LinearProgressIndicator(value: progress)),
-                      ),
+                  Flexible(
+                      child: BarberPoleProgressBar(
+                          progress: progress,
+                          animationEnabled: true,
+                          notArriveProgressAnimation: true)),
                   5.horizontalSpace,
-                  Text('${progress * 100.toInt()}%')
+                  Text('${(progress * 100).toStringAsFixed(0)}%')
                 ],
               ),
-            )
+            ),
+            0.verticalSpace
           ]),
     );
   }
