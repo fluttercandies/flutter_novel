@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:novel_flutter_bit/pages/home_page.dart';
+import 'package:novel_flutter_bit/pages/home/view/home_page.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/widget/border_buttom_navigation_bar.dart';

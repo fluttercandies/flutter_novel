@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:novel_flutter_bit/entry/novel_hot_entry.dart';
+import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
 import 'package:novel_flutter_bit/net/http_config.dart';
 import 'package:novel_flutter_bit/net/novel_http.dart';
 import 'package:novel_flutter_bit/net/service_result.dart';
