@@ -1,5 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/view_model.dart';
@@ -19,6 +20,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeViewModel _viewModel = HomeViewModel();
 
+  double progress = .5;
   @override
   void initState() {
     super.initState();
@@ -27,37 +29,65 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final MyColorsTheme myColors =
+        Theme.of(context).extension<MyColorsTheme>()!;
     return Scaffold(
       appBar: AppBar(title: const Text('每日推荐')),
       body: ProviderConsumer<HomeViewModel>(
         viewModel: _viewModel,
         builder: (BuildContext context, HomeViewModel value, Widget? child) {
           if (value.homeState.netState == NetState.loadingState) {
-            return const Center(child: CircularProgressIndicator());
+            return _buildLoading();
           }
-          return PullToRefreshNotification(
-              onRefresh: value.onRefresh,
-              child: CustomScrollView(
-                slivers: [
-                  SliverPadding(
-                      sliver: const SliverToBoxAdapter(
-                          child: Text('我的阅读', style: TextStyle(fontSize: 20))),
-                      padding: 10.padding),
-                  SliverToBoxAdapter(
-                    child: _buildReadList(value),
-                  )
-                ],
-              ));
+          return _buildSuccess(myColors: myColors, value: value);
         },
       ),
     );
   }
 
-  double progress = .5;
+  /// 成功状态构建
+  _buildSuccess(
+      {required MyColorsTheme myColors, required HomeViewModel value}) {
+    return DefaultTextStyle(
+      style: TextStyle(color: myColors.textColorHomePage),
+      child: PullToRefreshNotification(
+          onRefresh: value.onRefresh,
+          child: CustomScrollView(
+            slivers: [
+              SliverPadding(
+                  sliver: const SliverToBoxAdapter(
+                      child: Text('我的阅读', style: TextStyle(fontSize: 20))),
+                  padding: 10.padding),
+              SliverToBoxAdapter(
+                child: _buildReadList(value,
+                    progress: progress, myColors: myColors),
+              ),
+              SliverPadding(
+                  sliver: const SliverToBoxAdapter(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('全网最热', style: TextStyle(fontSize: 18)),
+                      Icon(Icons.chevron_right)
+                    ],
+                  )),
+                  padding: 10.padding),
+            ],
+          )),
+    );
+  }
+
+  /// 加载中
+  _buildLoading() {
+    return const Center(child: CircularProgressIndicator());
+  }
 
   /// 阅读列表
   _buildReadList(HomeViewModel value,
-      {double height = 260, double widthItem = 150}) {
+      {required double progress,
+      required MyColorsTheme myColors,
+      double height = 280,
+      double widthItem = 160}) {
     return SizedBox(
       height: height,
       child: ListView.builder(
@@ -68,7 +98,8 @@ class _HomePageState extends State<HomePage> {
                 width: widthItem,
                 url: value.homeState.novelHot?.data?[index].img ?? "",
                 bookName: value.homeState.novelHot?.data?[index].name ?? "",
-                progress: progress.clamp(0, 1));
+                progress: progress.clamp(0, 1),
+                myColors: myColors);
           }),
     );
   }
@@ -78,9 +109,8 @@ class _HomePageState extends State<HomePage> {
       {required String url,
       required String bookName,
       required double progress,
-      required double width}) {
-    final MyColorsTheme myColors =
-        Theme.of(context).extension<MyColorsTheme>()!;
+      required double width,
+      required MyColorsTheme myColors}) {
     return Container(
       margin: 5.padding,
       constraints: BoxConstraints(maxWidth: width, minWidth: width),

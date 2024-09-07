@@ -41,6 +41,7 @@ class ThemeStyleProvider extends ChangeNotifier {
       brightness: Brightness.light,
       appBarTheme:
           const AppBarTheme(color: Colors.white, titleTextStyle: _textStyle),
+      iconTheme: const IconThemeData(color: _colorLight),
       textTheme: const TextTheme(
         //bodyLarge: TextStyle(color: Colors.red),
         bodyMedium: TextStyle(color: Colors.black),
@@ -58,11 +59,12 @@ class ThemeStyleProvider extends ChangeNotifier {
       ],
     );
     _darkTheme = _data.copyWith(
-      scaffoldBackgroundColor: const Color.fromARGB(255, 184, 173, 203),
+      scaffoldBackgroundColor: const Color(0xfff5f5f5),
       brightness: Brightness.dark,
       appBarTheme: AppBarTheme(
           color: _colorDark,
           titleTextStyle: _textStyle.copyWith(color: Colors.white)),
+      iconTheme: const IconThemeData(color: _colorDark),
       textTheme: const TextTheme(
         //bodyLarge: TextStyle(color: Colors.red),
         bodyMedium: TextStyle(color: Colors.white),
@@ -75,7 +77,7 @@ class ThemeStyleProvider extends ChangeNotifier {
         const MyColorsTheme(
           brandColor: _colorDark,
           containerColor: Color(0xfffff9fe),
-          textColorHomePage: Colors.black,
+          textColorHomePage: _colorDark,
         ),
       ],
     );
