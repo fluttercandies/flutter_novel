@@ -1,8 +1,10 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
+import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/view_model.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
@@ -33,14 +35,16 @@ class _HomePageState extends State<HomePage> {
         Theme.of(context).extension<MyColorsTheme>()!;
     return Scaffold(
       appBar: AppBar(title: const Text('每日推荐')),
-      body: ProviderConsumer<HomeViewModel>(
-        viewModel: _viewModel,
-        builder: (BuildContext context, HomeViewModel value, Widget? child) {
-          if (value.homeState.netState == NetState.loadingState) {
-            return _buildLoading();
-          }
-          return _buildSuccess(myColors: myColors, value: value);
-        },
+      body: SafeArea(
+        child: ProviderConsumer<HomeViewModel>(
+          viewModel: _viewModel,
+          builder: (BuildContext context, HomeViewModel value, Widget? child) {
+            if (value.homeState.netState == NetState.loadingState) {
+              return _buildLoading();
+            }
+            return _buildSuccess(myColors: myColors, value: value);
+          },
+        ),
       ),
     );
   }
@@ -72,8 +76,69 @@ class _HomePageState extends State<HomePage> {
                     ],
                   )),
                   padding: 10.padding),
+              SliverList.builder(
+                  itemCount: value.homeState.novelHot?.data?.length,
+                  itemBuilder: (context, index) {
+                    return _buildHotItem(value.homeState.novelHot?.data?[index],
+                        myColors: myColors);
+                  })
             ],
           )),
+    );
+  }
+
+  /// 热门item
+  _buildHotItem(Datum? novelHot,
+      {required MyColorsTheme myColors, double height = 180}) {
+    return SizedBox(
+      height: height,
+      child: DefaultTextStyle(
+        style: TextStyle(color: myColors.textColorHomePage),
+        child: Padding(
+          padding: 10.padding,
+          child: Row(
+            children: [
+              Flexible(
+                  child: _buildImage(url: novelHot?.img ?? "", width: 120)),
+              10.horizontalSpace,
+              Expanded(
+                flex: 2,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(novelHot?.name ?? "",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.black)),
+                      5.verticalSpace,
+                      Text("${novelHot?.author}/${novelHot?.type}",
+                          style: const TextStyle(
+                              color: Colors.grey, fontSize: 15)),
+                      5.verticalSpace,
+                      Row(children: [
+                        SvgPicture.asset(
+                          'assets/svg/hot.svg',
+                          width: 24,
+                        ),
+                        5.horizontalSpace,
+                        Text(novelHot?.hot ?? "0",
+                            style: TextStyle(color: myColors.brandColor)),
+                      ]),
+                      5.verticalSpace,
+                      Expanded(
+                        child: Text(novelHot?.desc ?? "",
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 14, color: Colors.grey.shade600)),
+                      )
+                    ]),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -131,29 +196,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
-                child: ExtendedImage.network(
-                  url,
-                  cache: true,
-                  width: width,
-                  loadStateChanged: (state) {
-                    switch (state.extendedImageLoadState) {
-                      case LoadState.loading:
-                        return const Center(child: CircularProgressIndicator());
-                      case LoadState.completed:
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: ExtendedRawImage(
-                              image: state.extendedImageInfo?.image,
-                              fit: BoxFit.cover),
-                        );
-                      case LoadState.failed:
-                        return LayoutBuilder(builder:
-                            (BuildContext context, BoxConstraints constraints) {
-                          return const Center(child: Text("加载失败"));
-                        });
-                    }
-                  },
-                ),
+                child: _buildImage(url: url, width: width),
               ),
               1.verticalSpace,
               Padding(
@@ -185,6 +228,32 @@ class _HomePageState extends State<HomePage> {
               3.verticalSpace
             ]),
       ),
+    );
+  }
+
+  /// 图片
+  _buildImage({required String url, required double width}) {
+    return ExtendedImage.network(
+      url,
+      cache: true,
+      width: width,
+      loadStateChanged: (state) {
+        switch (state.extendedImageLoadState) {
+          case LoadState.loading:
+            return const Center(child: CircularProgressIndicator());
+          case LoadState.completed:
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: ExtendedRawImage(
+                  image: state.extendedImageInfo?.image, fit: BoxFit.cover),
+            );
+          case LoadState.failed:
+            return LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+              return const Center(child: Text("加载失败"));
+            });
+        }
+      },
     );
   }
 }

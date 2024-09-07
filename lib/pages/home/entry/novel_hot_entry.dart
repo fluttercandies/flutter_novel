@@ -34,7 +34,7 @@ class Datum {
   String? desc;
   String? hot;
   String? name;
-  Type? type;
+  String? type;
   String? author;
 
   Datum({
@@ -51,7 +51,7 @@ class Datum {
         desc: json["desc"],
         hot: json["hot"],
         name: json["name"],
-        type: typeValues.map[json["type"]]!,
+        type: json["type"],
         author: json["author"],
       );
 
@@ -60,31 +60,7 @@ class Datum {
         "desc": desc,
         "hot": hot,
         "name": name,
-        "type": typeValues.reverse[type],
+        "type": type,
         "author": author,
       };
-}
-
-enum Type { XH, LS, QH, KH, DS, JS, YX }
-
-final typeValues = EnumValues({
-  "玄幻": Type.XH,
-  "历史": Type.LS,
-  "奇幻": Type.QH,
-  "科幻": Type.KH,
-  "都市": Type.DS,
-  "军事": Type.JS,
-  "游戏": Type.YX
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }
