@@ -58,7 +58,7 @@ class ThemeStyleProvider extends ChangeNotifier {
       ],
     );
     _darkTheme = _data.copyWith(
-      scaffoldBackgroundColor: Colors.black,
+      scaffoldBackgroundColor: const Color.fromARGB(255, 184, 173, 203),
       brightness: Brightness.dark,
       appBarTheme: AppBarTheme(
           color: _colorDark,

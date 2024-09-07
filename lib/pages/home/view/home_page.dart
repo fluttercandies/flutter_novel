@@ -56,22 +56,19 @@ class _HomePageState extends State<HomePage> {
   double progress = .5;
 
   /// 阅读列表
-  _buildReadList(HomeViewModel value) {
+  _buildReadList(HomeViewModel value,
+      {double height = 260, double widthItem = 150}) {
     return SizedBox(
-      height: 300,
+      height: height,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: value.homeState.novelHot?.data?.length,
           itemBuilder: (context, index) {
-            return GestureDetector(
-                onTap: () {
-                  progress += .1;
-                  setState(() {});
-                },
-                child: _buildReadItem(
-                    url: value.homeState.novelHot?.data?[index].img ?? "",
-                    bookName: value.homeState.novelHot?.data?[index].name ?? "",
-                    progress: progress.clamp(0, 1)));
+            return _buildReadItem(
+                width: widthItem,
+                url: value.homeState.novelHot?.data?[index].img ?? "",
+                bookName: value.homeState.novelHot?.data?[index].name ?? "",
+                progress: progress.clamp(0, 1));
           }),
     );
   }
@@ -80,12 +77,13 @@ class _HomePageState extends State<HomePage> {
   _buildReadItem(
       {required String url,
       required String bookName,
-      required double progress}) {
+      required double progress,
+      required double width}) {
     final MyColorsTheme myColors =
         Theme.of(context).extension<MyColorsTheme>()!;
     return Container(
-      margin: const EdgeInsets.all(5.0),
-      constraints: const BoxConstraints(maxWidth: 170, minWidth: 170),
+      margin: 5.padding,
+      constraints: BoxConstraints(maxWidth: width, minWidth: width),
       decoration: BoxDecoration(
           color: myColors.containerColor,
           borderRadius: BorderRadius.circular(8.0),
@@ -102,47 +100,40 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
             children: [
-              ExtendedImage.network(
-                url,
-                fit: BoxFit.cover,
-                cache: true,
-                loadStateChanged: (state) {
-                  switch (state.extendedImageLoadState) {
-                    case LoadState.loading:
-                      return const CircularProgressIndicator();
-                    case LoadState.completed:
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(
-                              maxHeight: 240, minHeight: 240, minWidth: 160),
+              Expanded(
+                child: ExtendedImage.network(
+                  url,
+                  cache: true,
+                  width: width,
+                  loadStateChanged: (state) {
+                    switch (state.extendedImageLoadState) {
+                      case LoadState.loading:
+                        return const Center(child: CircularProgressIndicator());
+                      case LoadState.completed:
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
                           child: ExtendedRawImage(
                               image: state.extendedImageInfo?.image,
                               fit: BoxFit.cover),
-                        ),
-                      );
-                    case LoadState.failed:
-                      return LayoutBuilder(builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        return Container(
-                          color: const Color.fromARGB(255, 36, 32, 32),
-                          height: constraints.biggest.width + 30,
-                          alignment: Alignment.center,
-                          child: const Text("加载失败"),
                         );
-                      });
-                  }
-                },
-              ),
-              Flexible(
-                child: Padding(
-                  padding: 10.horizontal,
-                  child: Text(bookName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 15)),
+                      case LoadState.failed:
+                        return LayoutBuilder(builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          return const Center(child: Text("加载失败"));
+                        });
+                    }
+                  },
                 ),
               ),
+              1.verticalSpace,
+              Padding(
+                padding: 10.horizontal,
+                child: Text(bookName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 15)),
+              ),
+              1.verticalSpace,
               Padding(
                 padding: 5.horizontal,
                 child: Row(
@@ -161,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              0.verticalSpace
+              3.verticalSpace
             ]),
       ),
     );
