@@ -8,35 +8,38 @@ BookEntry bookEntryFromJson(String str) => BookEntry.fromJson(json.decode(str));
 
 String bookEntryToJson(BookEntry data) => json.encode(data.toJson());
 
-/// BookEntry
 class BookEntry {
-  List<BookDatum> data;
+  List<BookDatum>? data;
 
   BookEntry({
-    required this.data,
+    this.data,
   });
 
   factory BookEntry.fromJson(Map<String, dynamic> json) => BookEntry(
-        data: List<BookDatum>.from(
-            json["data"].map((x) => BookDatum.fromJson(x))),
+        data: json["data"] == null
+            ? []
+            : List<BookDatum>.from(
+                json["data"]!.map((x) => BookDatum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x.toJson())),
       };
 }
 
 class BookDatum {
-  String name;
-  String url;
-  String datumNew;
-  String newurl;
+  String? name;
+  String? url;
+  String? datumNew;
+  String? newurl;
 
   BookDatum({
-    required this.name,
-    required this.url,
-    required this.datumNew,
-    required this.newurl,
+    this.name,
+    this.url,
+    this.datumNew,
+    this.newurl,
   });
 
   factory BookDatum.fromJson(Map<String, dynamic> json) => BookDatum(

@@ -5,12 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
-import 'package:novel_flutter_bit/pages/home/view_model/view_model.dart';
+import 'package:novel_flutter_bit/pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/pages/home/widget/tab_bar_delegate.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/barber_pole_progress_bar.dart';
+import 'package:novel_flutter_bit/widget/pull_to_refresh.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
 class HomePage extends StatefulWidget {
@@ -55,9 +56,14 @@ class _HomePageState extends State<HomePage> {
     return DefaultTextStyle(
       style: TextStyle(color: myColors.textColorHomePage),
       child: PullToRefreshNotification(
+          reachToRefreshOffset: 80,
           onRefresh: value.onRefresh,
           child: CustomScrollView(
             slivers: [
+              PullToRefresh(
+                backgroundColor: myColors.brandColor ?? Colors.grey.shade400,
+                textColor: Colors.white,
+              ),
               SliverPadding(
                   sliver: const SliverToBoxAdapter(
                       child: Text('我的阅读', style: TextStyle(fontSize: 20))),

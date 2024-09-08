@@ -13,13 +13,17 @@ class HomeViewModel extends BaseViewModel {
   HomeState homeState = HomeState();
 
   @override
-  Future<bool> onRefresh() {
-    homeState.netState = NetState.loadingState;
+  Future<bool> onRefresh() async {
+    LoggerTools.looger.d("首页 onRefresh Vlaue : ${homeState.netState}");
     getData();
-    return Future.value(homeState.netState == NetState.dataSuccessState);
+    await Future.delayed(const Duration(seconds: 1));
+    LoggerTools.looger.d("首页 onRefresh Vlaue : ${homeState.netState}");
+    bool value = homeState.netState == NetState.dataSuccessState;
+    return value;
   }
 
   void getData() async {
+    homeState.netState = NetState.loadingState;
     ServiceResultData resultData = await NovelHttp()
         .request('hot', params: {'category': '全部'}, method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
@@ -39,6 +43,7 @@ class HomeViewModel extends BaseViewModel {
       /// 赋值
       homeState.novelHot = novelHot;
       LoggerTools.looger.d(homeState.novelHot);
+
       notifyListeners();
     }
   }
