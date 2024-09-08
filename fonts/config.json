@@ -1,0 +1,28 @@
+{
+  "name": "NovelIcon",
+  "css_prefix_text": "",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "glyphs": [
+    {
+      "uid": "f5eca4c36e1b5ea2faf3c33e06db275a",
+      "css": "heart",
+      "code": 61444,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "938c742dd234e23b526a28d439e5b609",
+      "css": "meteor",
+      "code": 63315,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "c900fd055d08348756f7376e274f100d",
+      "css": "cat",
+      "code": 63166,
+      "src": "fontawesome5"
+    }
+  ]
+}

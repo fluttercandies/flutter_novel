@@ -16,6 +16,7 @@ class ThemeStyleProvider extends ChangeNotifier {
 
   /// 主题
   late ThemeData _data = ThemeData(
+    fontFamily: 'NovelIcon',
     colorScheme: ColorScheme.fromSeed(seedColor: _colorLight),
     useMaterial3: true,
     iconButtonTheme: const IconButtonThemeData(

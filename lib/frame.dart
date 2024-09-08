@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/home/view/home_page.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
@@ -36,7 +37,11 @@ class _FramePageState extends State<FramePage> {
       bottomNavigationBar: CustomBottomNavigationBar(
         borderRadius: 24,
         height: 70,
-        items: const [Icon(Icons.home), Icon(Icons.star), Icon(Icons.people)],
+        items: const [
+          Icon(NovelIcon.meteor),
+          Icon(NovelIcon.cat),
+          Icon(NovelIcon.heart),
+        ],
         currentIndex: _currentIndex,
         onTap: (int value) {
           _currentIndex = value;
