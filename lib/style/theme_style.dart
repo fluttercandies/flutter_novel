@@ -39,8 +39,11 @@ class ThemeStyleProvider extends ChangeNotifier {
     _lightTheme = _data.copyWith(
       scaffoldBackgroundColor: const Color(0xfffafafa),
       brightness: Brightness.light,
-      appBarTheme:
-          const AppBarTheme(color: Colors.white, titleTextStyle: _textStyle),
+      appBarTheme: const AppBarTheme(
+        color: Colors.white,
+        titleTextStyle: _textStyle,
+        surfaceTintColor: Colors.transparent,
+      ),
       iconTheme: const IconThemeData(color: _colorLight),
       textTheme: const TextTheme(
         //bodyLarge: TextStyle(color: Colors.red),
@@ -63,6 +66,7 @@ class ThemeStyleProvider extends ChangeNotifier {
       brightness: Brightness.dark,
       appBarTheme: AppBarTheme(
           color: _colorDark,
+          surfaceTintColor: Colors.transparent,
           titleTextStyle: _textStyle.copyWith(color: Colors.white)),
       iconTheme: const IconThemeData(color: _colorDark),
       textTheme: const TextTheme(

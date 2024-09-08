@@ -6,6 +6,7 @@ import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/view_model.dart';
+import 'package:novel_flutter_bit/pages/home/widget/tab_bar_delegate.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
@@ -21,7 +22,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final HomeViewModel _viewModel = HomeViewModel();
-
   double progress = .5;
   @override
   void initState() {
