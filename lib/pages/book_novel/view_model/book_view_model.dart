@@ -8,7 +8,12 @@ import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/book_novel/state/book_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 
-class HomeViewModel extends BaseViewModel {
+class BookViewModel extends BaseViewModel {
+  BookViewModel(this.name) : super();
+
+  /// 书名
+  String name;
+
   /// 创建state
   BookState bookState = BookState();
 
@@ -21,7 +26,7 @@ class HomeViewModel extends BaseViewModel {
 
   void getData() async {
     ServiceResultData resultData = await NovelHttp()
-        .request('hot', params: {'category': '全部'}, method: HttpConfig.get);
+        .request('book', params: {'name': '全部'}, method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
     if (resultData.data case null) {
       /// 没有更多数据了
