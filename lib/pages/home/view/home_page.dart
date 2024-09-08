@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/pages/home/widget/tab_bar_delegate.dart';
+import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
@@ -28,6 +30,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _viewModel.getData();
+  }
+
+  /// 跳转小说 站源 列表 页面
+  _onToBookPage(String name) {
+    context.router.push(BookRoute(name: name));
   }
 
   @override
@@ -86,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                   itemCount: value.homeState.novelHot?.data?.length,
                   itemBuilder: (context, index) {
                     return _buildHotItem(value.homeState.novelHot?.data?[index],
-                        myColors: myColors);
+                        myColors: myColors, onTap: _onToBookPage);
                   })
             ],
           )),
@@ -95,53 +102,60 @@ class _HomePageState extends State<HomePage> {
 
   /// 热门item
   _buildHotItem(Datum? novelHot,
-      {required MyColorsTheme myColors, double height = 180}) {
-    return SizedBox(
-      height: height,
-      child: DefaultTextStyle(
-        style: TextStyle(color: myColors.textColorHomePage),
-        child: Padding(
-          padding: 10.padding,
-          child: Row(
-            children: [
-              Flexible(
-                  child: _buildImage(url: novelHot?.img ?? "", width: 120)),
-              10.horizontalSpace,
-              Expanded(
-                flex: 2,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(novelHot?.name ?? "",
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 20, color: Colors.black)),
-                      5.verticalSpace,
-                      Text("${novelHot?.author}/${novelHot?.type}",
-                          style: const TextStyle(
-                              color: Colors.grey, fontSize: 15)),
-                      5.verticalSpace,
-                      Row(children: [
-                        SvgPicture.asset(
-                          'assets/svg/hot.svg',
-                          width: 24,
-                        ),
-                        5.horizontalSpace,
-                        Text(novelHot?.hot ?? "0",
-                            style: TextStyle(color: myColors.brandColor)),
-                      ]),
-                      5.verticalSpace,
-                      Expanded(
-                        child: Text(novelHot?.desc ?? "",
-                            maxLines: 4,
+      {required MyColorsTheme myColors,
+      double height = 180,
+      required void Function(String str) onTap}) {
+    return GestureDetector(
+      onTap: () {
+        onTap.call(novelHot?.name ?? "");
+      },
+      child: SizedBox(
+        height: height,
+        child: DefaultTextStyle(
+          style: TextStyle(color: myColors.textColorHomePage),
+          child: Padding(
+            padding: 10.padding,
+            child: Row(
+              children: [
+                Flexible(
+                    child: _buildImage(url: novelHot?.img ?? "", width: 120)),
+                10.horizontalSpace,
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(novelHot?.name ?? "",
+                            maxLines: 3,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 14, color: Colors.grey.shade600)),
-                      )
-                    ]),
-              ),
-            ],
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.black)),
+                        5.verticalSpace,
+                        Text("${novelHot?.author}/${novelHot?.type}",
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 15)),
+                        5.verticalSpace,
+                        Row(children: [
+                          SvgPicture.asset(
+                            'assets/svg/hot.svg',
+                            width: 24,
+                          ),
+                          5.horizontalSpace,
+                          Text(novelHot?.hot ?? "0",
+                              style: TextStyle(color: myColors.brandColor)),
+                        ]),
+                        5.verticalSpace,
+                        Expanded(
+                          child: Text(novelHot?.desc ?? "",
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey.shade600)),
+                        )
+                      ]),
+                ),
+              ],
+            ),
           ),
         ),
       ),
