@@ -8,18 +8,22 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i3;
-import 'package:flutter/material.dart' as _i4;
-import 'package:novel_flutter_bit/frame.dart' as _i2;
+import 'package:auto_route/auto_route.dart' as _i4;
+import 'package:flutter/material.dart' as _i5;
+import 'package:novel_flutter_bit/frame.dart' as _i3;
+import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart'
+    as _i6;
 import 'package:novel_flutter_bit/pages/book_novel/view/book_page.dart' as _i1;
+import 'package:novel_flutter_bit/pages/detail_novel/view/detail_page.dart'
+    as _i2;
 
 /// generated route for
 /// [_i1.BookPage]
-class BookRoute extends _i3.PageRouteInfo<BookRouteArgs> {
+class BookRoute extends _i4.PageRouteInfo<BookRouteArgs> {
   BookRoute({
-    _i4.Key? key,
+    _i5.Key? key,
     required String name,
-    List<_i3.PageRouteInfo>? children,
+    List<_i4.PageRouteInfo>? children,
   }) : super(
           BookRoute.name,
           args: BookRouteArgs(
@@ -31,7 +35,7 @@ class BookRoute extends _i3.PageRouteInfo<BookRouteArgs> {
 
   static const String name = 'BookRoute';
 
-  static _i3.PageInfo page = _i3.PageInfo(
+  static _i4.PageInfo page = _i4.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<BookRouteArgs>();
@@ -49,7 +53,7 @@ class BookRouteArgs {
     required this.name,
   });
 
-  final _i4.Key? key;
+  final _i5.Key? key;
 
   final String name;
 
@@ -60,9 +64,55 @@ class BookRouteArgs {
 }
 
 /// generated route for
-/// [_i2.FramePage]
-class FrameRoute extends _i3.PageRouteInfo<void> {
-  const FrameRoute({List<_i3.PageRouteInfo>? children})
+/// [_i2.DetailPage]
+class DetailRoute extends _i4.PageRouteInfo<DetailRouteArgs> {
+  DetailRoute({
+    _i5.Key? key,
+    required _i6.BookDatum bookDatum,
+    List<_i4.PageRouteInfo>? children,
+  }) : super(
+          DetailRoute.name,
+          args: DetailRouteArgs(
+            key: key,
+            bookDatum: bookDatum,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailRoute';
+
+  static _i4.PageInfo page = _i4.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<DetailRouteArgs>();
+      return _i2.DetailPage(
+        key: args.key,
+        bookDatum: args.bookDatum,
+      );
+    },
+  );
+}
+
+class DetailRouteArgs {
+  const DetailRouteArgs({
+    this.key,
+    required this.bookDatum,
+  });
+
+  final _i5.Key? key;
+
+  final _i6.BookDatum bookDatum;
+
+  @override
+  String toString() {
+    return 'DetailRouteArgs{key: $key, bookDatum: $bookDatum}';
+  }
+}
+
+/// generated route for
+/// [_i3.FramePage]
+class FrameRoute extends _i4.PageRouteInfo<void> {
+  const FrameRoute({List<_i4.PageRouteInfo>? children})
       : super(
           FrameRoute.name,
           initialChildren: children,
@@ -70,10 +120,10 @@ class FrameRoute extends _i3.PageRouteInfo<void> {
 
   static const String name = 'FrameRoute';
 
-  static _i3.PageInfo page = _i3.PageInfo(
+  static _i4.PageInfo page = _i4.PageInfo(
     name,
     builder: (data) {
-      return const _i2.FramePage();
+      return const _i3.FramePage();
     },
   );
 }

@@ -13,7 +13,8 @@ class AppRouter extends RootStackRouter {
           page: FrameRoute.page,
           initial: true,
         ),
-        AutoRoute(page: BookRoute.page)
+        AutoRoute(page: BookRoute.page),
+        AutoRoute(page: DetailRoute.page)
       ];
 
   @override
