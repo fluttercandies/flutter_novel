@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
@@ -42,8 +43,19 @@ class _BookPageState extends State<BookPage> {
               if (value.bookState.netState == NetState.loadingState) {
                 return _buildLoading();
               }
+              return Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/svg/empty.svg',
+                    width: 240,
+                  ),
+                  const Text('暂无数据', style: TextStyle(fontSize: 16))
+                ],
+              ));
               if (value.bookState.netState == NetState.emptyDataState) {
-                return Center(child: Text(""));
+                return Center(child: SvgPicture.asset('assets/svg/empty.svg'));
               }
               return DefaultTextStyle(
                 style:
