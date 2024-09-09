@@ -11,6 +11,7 @@ import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/barber_pole_progress_bar.dart';
+import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/pull_to_refresh.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
@@ -46,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           viewModel: _viewModel,
           builder: (BuildContext context, HomeViewModel value, Widget? child) {
             if (value.homeState.netState == NetState.loadingState) {
-              return _buildLoading();
+              return const LoadingBuild();
             }
             return _buildSuccess(myColors: myColors, value: value);
           },
@@ -159,11 +160,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  /// 加载中
-  _buildLoading() {
-    return const Center(child: CircularProgressIndicator());
   }
 
   /// 阅读列表

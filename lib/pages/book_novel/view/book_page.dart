@@ -9,6 +9,8 @@ import 'package:novel_flutter_bit/pages/book_novel/view_model/book_view_model.da
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
+import 'package:novel_flutter_bit/widget/empty.dart';
+import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
 
 @RoutePage()
@@ -41,27 +43,29 @@ class _BookPageState extends State<BookPage> {
             builder:
                 (BuildContext context, BookViewModel value, Widget? child) {
               if (value.bookState.netState == NetState.loadingState) {
-                return _buildLoading();
+                return const LoadingBuild();
               }
 
               if (value.bookState.netState == NetState.emptyDataState) {
-                return Center(child: SvgPicture.asset('assets/svg/empty.svg'));
+                return const EmptyBuild();
               }
-              return DefaultTextStyle(
-                style:
-                    TextStyle(color: myColors.textColorHomePage, fontSize: 17),
-                child: Padding(
-                  padding: 20.padding,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("站源", style: TextStyle(fontSize: 20)),
-                        20.verticalSpace,
-                        _buildList(value, myColors: myColors)
-                      ]),
-                ),
-              );
+              return _buildSuccess(value, myColors: myColors);
             }));
+  }
+
+  /// 成功 构建器
+  _buildSuccess(BookViewModel value, {required MyColorsTheme myColors}) {
+    return DefaultTextStyle(
+      style: TextStyle(color: myColors.textColorHomePage, fontSize: 17),
+      child: Padding(
+        padding: 20.padding,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Text("站源", style: TextStyle(fontSize: 20)),
+          20.verticalSpace,
+          _buildList(value, myColors: myColors)
+        ]),
+      ),
+    );
   }
 
   /// list
@@ -97,11 +101,6 @@ class _BookPageState extends State<BookPage> {
         Text("最新章节： ${data?.datumNew}")
       ],
     );
-  }
-
-  /// 加载中
-  _buildLoading() {
-    return const Center(child: CircularProgressIndicator());
   }
 
   /// 富文本Demo
