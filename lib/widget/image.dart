@@ -9,7 +9,7 @@ class ExtendedImageBuild extends StatelessWidget {
       {super.key,
       required this.url,
       this.width = 120,
-      this.height,
+      this.height = 150,
       this.isJoinUrl = false});
   late String url;
   late bool isJoinUrl;

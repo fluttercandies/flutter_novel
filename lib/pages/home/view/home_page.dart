@@ -125,11 +125,12 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Flexible(
                     child: ExtendedImageBuild(
-                        url: novelHot?.img ?? "", width: 120)),
+                        url: novelHot?.img ?? "", width: 120, height: height)),
                 10.horizontalSpace,
                 Expanded(
                   flex: 2,
                   child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(novelHot?.name ?? "",
@@ -152,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(color: myColors.brandColor)),
                         ]),
                         5.verticalSpace,
-                        Expanded(
+                        Flexible(
                           child: Text(novelHot?.desc ?? "",
                               maxLines: 4,
                               overflow: TextOverflow.ellipsis,

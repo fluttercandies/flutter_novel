@@ -57,7 +57,8 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   /// 成功状态构建
-  _buildSuccess(DetailViewModel value, {required MyColorsTheme myColors}) {
+  _buildSuccess(DetailViewModel value,
+      {required MyColorsTheme myColors, double height = 160}) {
     return FadeIn(
         child: DefaultTextStyle(
       style: TextStyle(color: myColors.textColorHomePage, fontSize: 16),
@@ -79,31 +80,35 @@ class _DetailPageState extends State<DetailPage> {
                     child: ExtendedImageBuild(
                       width: 110,
                       isJoinUrl: true,
+                      height: height,
                       url: "${value.detailState.detailNovel?.data?.img}",
                     ),
                   ),
                   10.horizontalSpace,
                   Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("${value.detailState.detailNovel?.data?.name}",
-                            style: const TextStyle(fontSize: 18)),
-                        5.verticalSpace,
-                        Text("${value.detailState.detailNovel?.data?.type}",
-                            style: TextStyle(color: Colors.grey)),
-                        3.verticalSpace,
-                        Text(
-                            "作者： ${value.detailState.detailNovel?.data?.author}",
-                            style: TextStyle(color: Colors.grey)),
-                        3.verticalSpace,
-                        Text("来源： ${widget.bookDatum.name}",
-                            style: TextStyle(color: Colors.grey)),
-                        3.verticalSpace,
-                        Text("最新章节： ${widget.bookDatum.datumNew}",
-                            style: TextStyle(color: Colors.grey)),
-                      ],
+                    child: SizedBox(
+                      height: height,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${value.detailState.detailNovel?.data?.name}",
+                              style: const TextStyle(fontSize: 18)),
+                          5.verticalSpace,
+                          Text("${value.detailState.detailNovel?.data?.type}",
+                              style: TextStyle(color: Colors.grey)),
+                          3.verticalSpace,
+                          Text(
+                              "作者： ${value.detailState.detailNovel?.data?.author}",
+                              style: TextStyle(color: Colors.grey)),
+                          3.verticalSpace,
+                          Text("来源： ${widget.bookDatum.name}",
+                              style: TextStyle(color: Colors.grey)),
+                          3.verticalSpace,
+                          Text("最新章节： ${widget.bookDatum.datumNew}",
+                              style: TextStyle(color: Colors.grey)),
+                        ],
+                      ),
                     ),
                   )
                 ],
