@@ -11,7 +11,9 @@ import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
+import 'package:novel_flutter_bit/widget/pull_to_refresh.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
+import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
 @RoutePage()
 class BookPage extends StatefulWidget {
@@ -57,12 +59,22 @@ class _BookPageState extends State<BookPage> {
   _buildSuccess(BookViewModel value, {required MyColorsTheme myColors}) {
     return DefaultTextStyle(
       style: TextStyle(color: myColors.bookTitleColor, fontSize: 16),
-      child: Padding(
-        padding: 20.padding,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text("站源", style: TextStyle(fontSize: 20)),
-          30.verticalSpace,
-          _buildList(value, myColors: myColors)
+      child: PullToRefreshNotification(
+        onRefresh: value.onRefresh,
+        child: CustomScrollView(slivers: [
+          PullToRefresh(
+            backgroundColor: myColors.brandColor ?? Colors.grey.shade400,
+            textColor: Colors.white,
+          ),
+          SliverPadding(
+            padding: 20.padding,
+            sliver: const SliverToBoxAdapter(
+                child: Text("站源", style: TextStyle(fontSize: 20))),
+          ),
+          SliverPadding(
+            padding: 20.horizontal,
+            sliver: _buildList(value, myColors: myColors),
+          )
         ]),
       ),
     );
@@ -70,17 +82,15 @@ class _BookPageState extends State<BookPage> {
 
   /// list
   _buildList(BookViewModel value, {required MyColorsTheme myColors}) {
-    return Expanded(
-      child: ListView.separated(
-        itemCount: value.bookState.bookEntry?.data?.length ?? 0,
-        itemBuilder: (context, index) {
-          return _buildItem(value.bookState.bookEntry?.data?[index],
-              myColors: myColors);
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return 20.verticalSpace;
-        },
-      ),
+    return SliverList.separated(
+      itemCount: value.bookState.bookEntry?.data?.length ?? 0,
+      itemBuilder: (context, index) {
+        return _buildItem(value.bookState.bookEntry?.data?[index],
+            myColors: myColors);
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return 20.verticalSpace;
+      },
     );
   }
 

@@ -18,10 +18,13 @@ class BookViewModel extends BaseViewModel {
   BookState bookState = BookState();
 
   @override
-  Future<bool> onRefresh() {
-    bookState.netState = NetState.loadingState;
+  Future<bool> onRefresh() async {
+    LoggerTools.looger.d("book站源 onRefresh Vlaue : ${bookState.netState}");
     getData();
-    return Future.value(bookState.netState == NetState.dataSuccessState);
+    await Future.delayed(const Duration(seconds: 1));
+    LoggerTools.looger.d("book站源 onRefresh Vlaue : ${bookState.netState}");
+    bool value = bookState.netState == NetState.dataSuccessState;
+    return true;
   }
 
   void getData() async {
