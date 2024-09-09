@@ -8,9 +8,9 @@ import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 
-class HomeViewModel extends BaseViewModel {
+class DetailViewModel extends BaseViewModel {
   final String url;
-  HomeViewModel(this.url);
+  DetailViewModel(this.url);
 
   /// 创建state
   DetailState detailState = DetailState();

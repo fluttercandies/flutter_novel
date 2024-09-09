@@ -12,6 +12,7 @@ import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/barber_pole_progress_bar.dart';
+import 'package:novel_flutter_bit/widget/image.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/pull_to_refresh.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
       child: DefaultTextStyle(
         style: TextStyle(color: myColors.textColorHomePage),
         child: PullToRefreshNotification(
-            reachToRefreshOffset: 80,
+            reachToRefreshOffset: 100,
             onRefresh: value.onRefresh,
             child: CustomScrollView(
               slivers: [
@@ -123,7 +124,8 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               children: [
                 Flexible(
-                    child: _buildImage(url: novelHot?.img ?? "", width: 120)),
+                    child: ExtendedImageBuild(
+                        url: novelHot?.img ?? "", width: 120)),
                 10.horizontalSpace,
                 Expanded(
                   flex: 2,
@@ -216,7 +218,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
-                child: _buildImage(url: url, width: width),
+                child: ExtendedImageBuild(url: url, width: width),
               ),
               1.verticalSpace,
               Padding(
@@ -248,32 +250,6 @@ class _HomePageState extends State<HomePage> {
               3.verticalSpace
             ]),
       ),
-    );
-  }
-
-  /// 图片
-  _buildImage({required String url, required double width}) {
-    return ExtendedImage.network(
-      url,
-      cache: true,
-      width: width,
-      loadStateChanged: (state) {
-        switch (state.extendedImageLoadState) {
-          case LoadState.loading:
-            return const Center(child: CircularProgressIndicator());
-          case LoadState.completed:
-            return ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: ExtendedRawImage(
-                  image: state.extendedImageInfo?.image, fit: BoxFit.cover),
-            );
-          case LoadState.failed:
-            return LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-              return const Center(child: Text("加载失败"));
-            });
-        }
-      },
     );
   }
 }

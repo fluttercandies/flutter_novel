@@ -2,11 +2,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/book_novel/view_model/book_view_model.dart';
+import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
@@ -27,12 +27,16 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   /// 创建viewModel
   late BookViewModel _bookViewModel;
-  final NovleSpecialTextSpanBuilder _builder = NovleSpecialTextSpanBuilder();
   @override
   void initState() {
     super.initState();
     _bookViewModel = BookViewModel(widget.name);
     _bookViewModel.getData();
+  }
+
+  /// 跳转详情页
+  _onToDetailPage(BookDatum? data) {
+    context.router.push(DetailRoute(bookDatum: data ?? BookDatum()));
   }
 
   @override
@@ -63,6 +67,7 @@ class _BookPageState extends State<BookPage> {
         style: TextStyle(color: myColors.bookTitleColor, fontSize: 16),
         child: PullToRefreshNotification(
           onRefresh: value.onRefresh,
+          reachToRefreshOffset: 100,
           child: CustomScrollView(slivers: [
             PullToRefresh(
               backgroundColor: myColors.brandColor ?? Colors.grey.shade400,
@@ -89,7 +94,9 @@ class _BookPageState extends State<BookPage> {
       itemCount: value.bookState.bookEntry?.data?.length ?? 0,
       itemBuilder: (context, index) {
         return _buildItem(value.bookState.bookEntry?.data?[index],
-            myColors: myColors);
+            myColors: myColors,
+            onTap: () =>
+                _onToDetailPage(value.bookState.bookEntry?.data?[index]));
       },
       separatorBuilder: (BuildContext context, int index) {
         return 20.verticalSpace;
@@ -98,34 +105,41 @@ class _BookPageState extends State<BookPage> {
   }
 
   /// item
-  _buildItem(BookDatum? data, {required MyColorsTheme myColors}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text.rich(
-          TextSpan(children: [
-            const TextSpan(text: "来源"),
-            const TextSpan(text: "："),
-            TextSpan(
-                text: "${data?.name}",
-                style: TextStyle(color: myColors.bookBodyColor, fontSize: 17))
-          ]),
-        ),
-        Text.rich(
-          TextSpan(children: [
-            const TextSpan(text: "最新章节"),
-            const TextSpan(text: "："),
-            TextSpan(
-                text: "${data?.datumNew}",
-                style: TextStyle(color: myColors.bookTitleColor, fontSize: 17))
-          ]),
-        ),
-      ],
+  _buildItem(BookDatum? data,
+      {required MyColorsTheme myColors, required void Function()? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text.rich(
+            TextSpan(children: [
+              const TextSpan(text: "来源"),
+              const TextSpan(text: "："),
+              TextSpan(
+                  text: "${data?.name}",
+                  style: TextStyle(color: myColors.bookBodyColor, fontSize: 17))
+            ]),
+          ),
+          Text.rich(
+            TextSpan(children: [
+              const TextSpan(text: "最新章节"),
+              const TextSpan(text: "："),
+              TextSpan(
+                  text: "${data?.datumNew}",
+                  style:
+                      TextStyle(color: myColors.bookTitleColor, fontSize: 17))
+            ]),
+          ),
+        ],
+      ),
     );
   }
 
   /// 富文本Demo
   _buildDemoExtendedText({required String title, required String body}) {
+    final NovleSpecialTextSpanBuilder _builder = NovleSpecialTextSpanBuilder();
+
     return ExtendedText.rich(
       gradientConfig: GradientConfigClass.config,
       TextSpan(
