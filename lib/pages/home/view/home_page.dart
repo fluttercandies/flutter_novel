@@ -104,6 +104,7 @@ class _HomePageState extends State<HomePage> {
       double height = 180,
       required void Function(String str) onTap}) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         onTap.call(novelHot?.name ?? "");
       },
