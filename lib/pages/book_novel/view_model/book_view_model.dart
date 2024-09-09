@@ -26,7 +26,7 @@ class BookViewModel extends BaseViewModel {
 
   void getData() async {
     ServiceResultData resultData = await NovelHttp()
-        .request('book', params: {'name': '全部'}, method: HttpConfig.get);
+        .request('book', params: {'name': name}, method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
     if (resultData.data case null) {
       /// 没有更多数据了
