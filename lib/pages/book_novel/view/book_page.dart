@@ -56,12 +56,12 @@ class _BookPageState extends State<BookPage> {
   /// 成功 构建器
   _buildSuccess(BookViewModel value, {required MyColorsTheme myColors}) {
     return DefaultTextStyle(
-      style: TextStyle(color: myColors.textColorHomePage, fontSize: 17),
+      style: TextStyle(color: myColors.bookTitleColor, fontSize: 16),
       child: Padding(
         padding: 20.padding,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text("站源", style: TextStyle(fontSize: 20)),
-          20.verticalSpace,
+          30.verticalSpace,
           _buildList(value, myColors: myColors)
         ]),
       ),
@@ -78,7 +78,7 @@ class _BookPageState extends State<BookPage> {
               myColors: myColors);
         },
         separatorBuilder: (BuildContext context, int index) {
-          return 10.verticalSpace;
+          return 20.verticalSpace;
         },
       ),
     );
@@ -95,10 +95,18 @@ class _BookPageState extends State<BookPage> {
             const TextSpan(text: "："),
             TextSpan(
                 text: "${data?.name}",
-                style: TextStyle(color: myColors.brandColor, fontSize: 18))
+                style: TextStyle(color: myColors.bookBodyColor, fontSize: 17))
           ]),
         ),
-        Text("最新章节： ${data?.datumNew}")
+        Text.rich(
+          TextSpan(children: [
+            const TextSpan(text: "最新章节"),
+            const TextSpan(text: "："),
+            TextSpan(
+                text: "${data?.datumNew}",
+                style: TextStyle(color: myColors.bookTitleColor, fontSize: 17))
+          ]),
+        ),
       ],
     );
   }
