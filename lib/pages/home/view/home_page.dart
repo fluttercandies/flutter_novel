@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -59,43 +60,47 @@ class _HomePageState extends State<HomePage> {
   /// 成功状态构建
   _buildSuccess(
       {required MyColorsTheme myColors, required HomeViewModel value}) {
-    return DefaultTextStyle(
-      style: TextStyle(color: myColors.textColorHomePage),
-      child: PullToRefreshNotification(
-          reachToRefreshOffset: 80,
-          onRefresh: value.onRefresh,
-          child: CustomScrollView(
-            slivers: [
-              PullToRefresh(
-                backgroundColor: myColors.brandColor ?? Colors.grey.shade400,
-                textColor: Colors.white,
-              ),
-              SliverPadding(
-                  sliver: const SliverToBoxAdapter(
-                      child: Text('我的阅读', style: TextStyle(fontSize: 20))),
-                  padding: 10.padding),
-              SliverToBoxAdapter(
-                child: _buildReadList(value,
-                    progress: progress, myColors: myColors),
-              ),
-              SliverPadding(
-                  sliver: const SliverToBoxAdapter(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('全网最热', style: TextStyle(fontSize: 18)),
-                      Icon(Icons.chevron_right)
-                    ],
-                  )),
-                  padding: 10.padding),
-              SliverList.builder(
-                  itemCount: value.homeState.novelHot?.data?.length,
-                  itemBuilder: (context, index) {
-                    return _buildHotItem(value.homeState.novelHot?.data?[index],
-                        myColors: myColors, onTap: _onToBookPage);
-                  })
-            ],
-          )),
+    return FadeIn(
+      child: DefaultTextStyle(
+        style: TextStyle(color: myColors.textColorHomePage),
+        child: PullToRefreshNotification(
+            reachToRefreshOffset: 80,
+            onRefresh: value.onRefresh,
+            child: CustomScrollView(
+              slivers: [
+                PullToRefresh(
+                  backgroundColor: myColors.brandColor ?? Colors.grey.shade400,
+                  textColor: Colors.white,
+                ),
+                SliverPadding(
+                    sliver: const SliverToBoxAdapter(
+                        child: Text('我的阅读', style: TextStyle(fontSize: 20))),
+                    padding: 10.padding),
+                SliverToBoxAdapter(
+                  child: _buildReadList(value,
+                      progress: progress, myColors: myColors),
+                ),
+                SliverPadding(
+                    sliver: const SliverToBoxAdapter(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('全网最热', style: TextStyle(fontSize: 18)),
+                        Icon(Icons.chevron_right)
+                      ],
+                    )),
+                    padding: 10.padding),
+                SliverList.builder(
+                    itemCount: value.homeState.novelHot?.data?.length,
+                    itemBuilder: (context, index) {
+                      return _buildHotItem(
+                          value.homeState.novelHot?.data?[index],
+                          myColors: myColors,
+                          onTap: _onToBookPage);
+                    })
+              ],
+            )),
+      ),
     );
   }
 

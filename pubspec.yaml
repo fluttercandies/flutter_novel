@@ -43,6 +43,7 @@ dependencies:
   extended_image: ^8.2.1            # 图片组件
   flutter_svg: ^2.0.10+1            # svg
   extended_text: ^14.1.0            # 文本
+  animate_do: ^3.3.4                # 动画
 dev_dependencies:
   flutter_test:
     sdk: flutter

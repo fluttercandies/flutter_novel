@@ -22,6 +22,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.7.0"
+  animate_do:
+    dependency: "direct main"
+    description:
+      name: animate_do
+      sha256: "7a3162729f0ea042f9dd84da217c5bde5472ad9cef644079929d4304a5dc4ca0"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.3.4"
   args:
     dependency: transitive
     description:

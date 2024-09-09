@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
@@ -57,25 +58,27 @@ class _BookPageState extends State<BookPage> {
 
   /// 成功 构建器
   _buildSuccess(BookViewModel value, {required MyColorsTheme myColors}) {
-    return DefaultTextStyle(
-      style: TextStyle(color: myColors.bookTitleColor, fontSize: 16),
-      child: PullToRefreshNotification(
-        onRefresh: value.onRefresh,
-        child: CustomScrollView(slivers: [
-          PullToRefresh(
-            backgroundColor: myColors.brandColor ?? Colors.grey.shade400,
-            textColor: Colors.white,
-          ),
-          SliverPadding(
-            padding: 20.padding,
-            sliver: const SliverToBoxAdapter(
-                child: Text("站源", style: TextStyle(fontSize: 20))),
-          ),
-          SliverPadding(
-            padding: 20.horizontal,
-            sliver: _buildList(value, myColors: myColors),
-          )
-        ]),
+    return FadeIn(
+      child: DefaultTextStyle(
+        style: TextStyle(color: myColors.bookTitleColor, fontSize: 16),
+        child: PullToRefreshNotification(
+          onRefresh: value.onRefresh,
+          child: CustomScrollView(slivers: [
+            PullToRefresh(
+              backgroundColor: myColors.brandColor ?? Colors.grey.shade400,
+              textColor: Colors.white,
+            ),
+            SliverPadding(
+              padding: 20.padding,
+              sliver: const SliverToBoxAdapter(
+                  child: Text("站源", style: TextStyle(fontSize: 20))),
+            ),
+            SliverPadding(
+              padding: 20.horizontal,
+              sliver: _buildList(value, myColors: myColors),
+            )
+          ]),
+        ),
       ),
     );
   }
