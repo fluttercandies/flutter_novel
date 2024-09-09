@@ -43,17 +43,7 @@ class _BookPageState extends State<BookPage> {
               if (value.bookState.netState == NetState.loadingState) {
                 return _buildLoading();
               }
-              return Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/svg/empty.svg',
-                    width: 240,
-                  ),
-                  const Text('暂无数据', style: TextStyle(fontSize: 16))
-                ],
-              ));
+
               if (value.bookState.netState == NetState.emptyDataState) {
                 return Center(child: SvgPicture.asset('assets/svg/empty.svg'));
               }

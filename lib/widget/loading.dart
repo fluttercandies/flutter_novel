@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 /// 加载中
-class Loading extends StatelessWidget {
-  const Loading({super.key});
+class LoadingBuild extends StatelessWidget {
+  const LoadingBuild({super.key});
 
   @override
   Widget build(BuildContext context) {
