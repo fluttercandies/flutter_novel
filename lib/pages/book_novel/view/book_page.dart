@@ -108,6 +108,7 @@ class _BookPageState extends State<BookPage> {
   _buildItem(BookDatum? data,
       {required MyColorsTheme myColors, required void Function()? onTap}) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
