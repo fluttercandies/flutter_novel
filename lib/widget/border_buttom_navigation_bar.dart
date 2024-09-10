@@ -75,24 +75,27 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                         icon = Icon(icon.icon,
                             color:
                                 isSelected ? Colors.white : colors.brandColor);
-                        return GestureDetector(
-                          onTap: () => widget.onTap(value.key),
-                          child: AnimatedContainer(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 11),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: isSelected
-                                      ? colors.brandColor
-                                      : Colors.transparent),
-                              duration: Durations.short4,
-                              child: icon),
-                        );
+                        return _buildItem(value, isSelected, icon, colors);
                       }).toList()),
                 ),
               )),
         ));
+  }
+
+  /// 单个item
+  Widget _buildItem(MapEntry<int, Icon> value, bool isSelected, Icon icon,
+      MyColorsTheme colors) {
+    return GestureDetector(
+      onTap: () => widget.onTap(value.key),
+      child: AnimatedContainer(
+          padding: const EdgeInsets.symmetric(horizontal: 11),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: isSelected ? colors.brandColor : Colors.transparent),
+          duration: Durations.short4,
+          child: icon),
+    );
   }
 }
 

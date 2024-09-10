@@ -10,11 +10,13 @@ class ExtendedImageBuild extends StatelessWidget {
       required this.url,
       this.width = 120,
       this.height = 150,
+      this.fit = BoxFit.cover,
       this.isJoinUrl = false});
   late String url;
   late bool isJoinUrl;
   late double width;
   late double? height;
+  late BoxFit? fit;
   final _joinStr = "https://api.book.bbdaxia.com/";
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class ExtendedImageBuild extends StatelessWidget {
       url,
       cache: true,
       width: width,
+      fit: fit,
       height: height,
       loadStateChanged: (state) {
         switch (state.extendedImageLoadState) {
@@ -34,7 +37,7 @@ class ExtendedImageBuild extends StatelessWidget {
             return ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: ExtendedRawImage(
-                  image: state.extendedImageInfo?.image, fit: BoxFit.cover),
+                  image: state.extendedImageInfo?.image, fit: fit),
             );
           case LoadState.failed:
             return LayoutBuilder(

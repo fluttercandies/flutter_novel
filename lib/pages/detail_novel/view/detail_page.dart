@@ -65,25 +65,28 @@ class _DetailPageState extends State<DetailPage> {
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
+            child: Container(
+              width: 110,
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(.5),
+                    blurRadius: 8.0,
+                    spreadRadius: 1)
+              ]),
+              child: ExtendedImageBuild(
+                isJoinUrl: true,
+                width: 110,
+                height: height,
+                url: "${value.detailState.detailNovel?.data?.img}",
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
             child: Padding(
               padding: 20.padding,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.withOpacity(.5),
-                          blurRadius: 8.0,
-                          spreadRadius: 1)
-                    ]),
-                    child: ExtendedImageBuild(
-                      width: 110,
-                      isJoinUrl: true,
-                      height: height,
-                      url: "${value.detailState.detailNovel?.data?.img}",
-                    ),
-                  ),
                   10.horizontalSpace,
                   Expanded(
                     child: SizedBox(
