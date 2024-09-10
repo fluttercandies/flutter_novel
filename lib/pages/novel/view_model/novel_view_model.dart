@@ -15,6 +15,12 @@ class NovelViewModel extends BaseViewModel {
   /// url
   final String url;
   NovelViewModel(this.url);
+
+  @override
+  Future<bool> onRefresh() async {
+    return true;
+  }
+
   void getData() async {
     novelState.netState = NetState.loadingState;
     ServiceResultData resultData =

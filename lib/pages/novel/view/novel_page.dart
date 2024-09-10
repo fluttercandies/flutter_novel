@@ -44,8 +44,10 @@ class _NovelPageState extends State<NovelPage> {
           }
           return Padding(
             padding: 10.padding,
-            child: Text(
-              value.novelState.novelEntry.data?.text ?? '',
+            child: SingleChildScrollView(
+              child: Text(
+                value.novelState.novelEntry.data?.text ?? '',
+              ),
             ),
           );
         },

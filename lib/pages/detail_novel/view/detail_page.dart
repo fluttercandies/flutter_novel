@@ -5,7 +5,9 @@ import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
+import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
+import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
@@ -40,6 +42,12 @@ class _DetailPageState extends State<DetailPage> {
   void dispose() {
     if (mounted) _scrollController.dispose();
     super.dispose();
+  }
+
+  /// 跳转小说展示页
+  _onToNovelPage(ListElement? data) {
+    context.router
+        .push(NovelRoute(url: data?.url ?? "", name: data?.name ?? ""));
   }
 
   /// 滚动到顶部
@@ -245,27 +253,31 @@ class _DetailPageState extends State<DetailPage> {
   }) {
     return SliverGrid.builder(
       itemBuilder: (context, index) {
-        return Container(
-          alignment: Alignment.center,
-          height: 20,
-          margin: 8.padding,
-          padding: 5.padding,
-          decoration: BoxDecoration(
-            color: myColors.bottomAppBarColor,
-            borderRadius: BorderRadius.circular(6),
-            boxShadow: [
-              BoxShadow(
-                color: myColors.brandColor!.withOpacity(.5), // 阴影颜色
-                blurRadius: 3.0, // 模糊半径
-                // 阴影偏移，第一个值是水平方向，第二个值是垂直方向
-              ),
-            ],
-          ),
-          child: Text(
-            "${value.detailState.detailNovel?.data?.list?[index].name}",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 13),
+        return GestureDetector(
+          onTap: () =>
+              _onToNovelPage(value.detailState.detailNovel?.data?.list?[index]),
+          child: Container(
+            alignment: Alignment.center,
+            height: 20,
+            margin: 8.padding,
+            padding: 5.padding,
+            decoration: BoxDecoration(
+              color: myColors.bottomAppBarColor,
+              borderRadius: BorderRadius.circular(6),
+              boxShadow: [
+                BoxShadow(
+                  color: myColors.brandColor!.withOpacity(.5), // 阴影颜色
+                  blurRadius: 3.0, // 模糊半径
+                  // 阴影偏移，第一个值是水平方向，第二个值是垂直方向
+                ),
+              ],
+            ),
+            child: Text(
+              "${value.detailState.detailNovel?.data?.list?[index].name}",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 13),
+            ),
           ),
         );
       },
