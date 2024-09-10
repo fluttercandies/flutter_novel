@@ -17,6 +17,33 @@ class DetailDescText extends StatefulWidget {
 class _DetailDescTextState extends State<DetailDescText>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
+  bool _isOverflowing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkTextOverflow();
+    });
+  }
+
+  void _checkTextOverflow() {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(
+        text: widget.text,
+        style: const TextStyle(
+          fontSize: 16,
+          height: 1.5,
+        ),
+      ),
+      maxLines: widget.maxLines,
+      textDirection: TextDirection.ltr,
+    )..layout(maxWidth: context.size!.width);
+
+    setState(() {
+      _isOverflowing = textPainter.didExceedMaxLines;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +65,8 @@ class _DetailDescTextState extends State<DetailDescText>
             overflow: TextOverflow.fade,
           ),
         ),
-        GestureDetector(
+        if (_isOverflowing) // 仅当文本超出最大行数时才显示"阅读更多/收起"
+          GestureDetector(
             onTap: () {
               setState(() {
                 _isExpanded = !_isExpanded;
@@ -48,13 +76,14 @@ class _DetailDescTextState extends State<DetailDescText>
                 ? _buildMore(
                     "收起介绍", myColors.brandColor!, Icons.keyboard_arrow_up)
                 : _buildMore(
-                    "阅读更多", myColors.brandColor!, Icons.keyboard_arrow_down))
+                    "阅读更多", myColors.brandColor!, Icons.keyboard_arrow_down),
+          ),
       ],
     );
   }
 
   /// 构建更多介绍
-  _buildMore(String str, Color color, IconData icon) {
+  Widget _buildMore(String str, Color color, IconData icon) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Text(
         str,
