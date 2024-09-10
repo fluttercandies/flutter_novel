@@ -135,12 +135,14 @@ class NovelRoute extends _i5.PageRouteInfo<NovelRouteArgs> {
   NovelRoute({
     _i6.Key? key,
     required String url,
+    required String name,
     List<_i5.PageRouteInfo>? children,
   }) : super(
           NovelRoute.name,
           args: NovelRouteArgs(
             key: key,
             url: url,
+            name: name,
           ),
           initialChildren: children,
         );
@@ -154,6 +156,7 @@ class NovelRoute extends _i5.PageRouteInfo<NovelRouteArgs> {
       return _i4.NovelPage(
         key: args.key,
         url: args.url,
+        name: args.name,
       );
     },
   );
@@ -163,14 +166,17 @@ class NovelRouteArgs {
   const NovelRouteArgs({
     this.key,
     required this.url,
+    required this.name,
   });
 
   final _i6.Key? key;
 
   final String url;
 
+  final String name;
+
   @override
   String toString() {
-    return 'NovelRouteArgs{key: $key, url: $url}';
+    return 'NovelRouteArgs{key: $key, url: $url, name: $name}';
   }
 }
