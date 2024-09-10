@@ -37,73 +37,86 @@ class _DetailPageState extends State<DetailPage> {
     final MyColorsTheme myColors =
         Theme.of(context).extension<MyColorsTheme>()!;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("书籍详情"),
-          centerTitle: true,
-        ),
-        body: ProviderConsumer<DetailViewModel>(
-          viewModel: _detailViewModel,
-          builder:
-              (BuildContext context, DetailViewModel value, Widget? child) {
-            if (value.detailState.netState == NetState.loadingState) {
-              return const LoadingBuild();
-            }
+      appBar: AppBar(
+        title: const Text("书籍详情"),
+        centerTitle: true,
+      ),
+      body: ProviderConsumer<DetailViewModel>(
+        viewModel: _detailViewModel,
+        builder: (BuildContext context, DetailViewModel value, Widget? child) {
+          if (value.detailState.netState == NetState.loadingState) {
+            return const LoadingBuild();
+          }
 
-            if (value.detailState.netState == NetState.emptyDataState) {
-              return const EmptyBuild();
-            }
-            return _buildSuccess(value, myColors: myColors);
-          },
-        ));
+          if (value.detailState.netState == NetState.emptyDataState) {
+            return const EmptyBuild();
+          }
+          return _buildSuccess(value, myColors: myColors);
+        },
+      ),
+      bottomSheet: BottomAppBar(
+        color: myColors.bookBodyColor,
+        child: Container(
+          height: 100,
+          color: Colors.red,
+        ),
+      ),
+    );
   }
 
   /// 成功状态构建
   _buildSuccess(DetailViewModel value,
-      {required MyColorsTheme myColors, double height = 220}) {
+      {required MyColorsTheme myColors, double height = 160}) {
     return FadeIn(
         child: DefaultTextStyle(
       style: TextStyle(color: myColors.textColorHomePage, fontSize: 16),
       child: CustomScrollView(
         slivers: [
           SliverPadding(padding: 8.vertical),
-          SliverToBoxAdapter(
-            child: Center(
-              child: Container(
-                width: 160,
-                height: height,
-                decoration: BoxDecoration(boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(.6),
-                      blurRadius: 20.0,
-                      spreadRadius: 2)
-                ]),
-                child: ExtendedImageBuild(
-                  fit: BoxFit.cover,
-                  isJoinUrl: true,
-                  height: height,
-                  url: "${value.detailState.detailNovel?.data?.img}",
-                ),
-              ),
-            ),
-          ),
           SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               sliver: SliverToBoxAdapter(
                 child: SizedBox(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  height: height,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("${value.detailState.detailNovel?.data?.name}",
-                          style: const TextStyle(fontSize: 20)),
-                      Text("${value.detailState.detailNovel?.data?.type}",
-                          style: const TextStyle(color: Colors.grey)),
-                      Text("作者： ${value.detailState.detailNovel?.data?.author}",
-                          style: const TextStyle(color: Colors.grey)),
-                      Text("来源： ${widget.bookDatum.name}",
-                          style: const TextStyle(color: Colors.grey)),
-                      Text("最新章节： ${widget.bookDatum.datumNew}",
-                          style: const TextStyle(color: Colors.grey)),
+                      Container(
+                        width: 120,
+                        height: height,
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(.6),
+                              blurRadius: 10.0,
+                              spreadRadius: 2)
+                        ]),
+                        child: ExtendedImageBuild(
+                          fit: BoxFit.cover,
+                          isJoinUrl: true,
+                          height: height,
+                          url: "${value.detailState.detailNovel?.data?.img}",
+                        ),
+                      ),
+                      20.horizontalSpace,
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("${value.detailState.detailNovel?.data?.name}",
+                                style: const TextStyle(fontSize: 20)),
+                            Text("${value.detailState.detailNovel?.data?.type}",
+                                style: const TextStyle(color: Colors.grey)),
+                            Text(
+                                "作者： ${value.detailState.detailNovel?.data?.author}",
+                                style: const TextStyle(color: Colors.grey)),
+                            Text("来源： ${widget.bookDatum.name}",
+                                style: const TextStyle(color: Colors.grey)),
+                            Text("最新章节： ${widget.bookDatum.datumNew}",
+                                style: const TextStyle(color: Colors.grey)),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -111,12 +124,23 @@ class _DetailPageState extends State<DetailPage> {
           SliverToBoxAdapter(
             child: Padding(
               padding: 20.horizontal,
-              child: DetailDescText(
-                text: "简介： ${value.detailState.detailNovel?.data?.desc}",
-                maxLines: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("书籍简介", style: TextStyle(fontSize: 18)),
+                  DetailDescText(
+                    text: " ${value.detailState.detailNovel?.data?.desc}",
+                    maxLines: 3,
+                  ),
+                ],
               ),
             ),
-          )
+          ),
+          SliverFillRemaining(
+              child: Container(
+            color: Colors.amber,
+            child: const Text("SliverFillRemaining"),
+          ))
         ],
       ),
     ));
