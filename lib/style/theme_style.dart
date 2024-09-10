@@ -61,7 +61,7 @@ class ThemeStyleProvider extends ChangeNotifier {
           textColorHomePage: Colors.black,
           bookTitleColor: Colors.black87,
           bookBodyColor: _colorLight,
-          bottomAppBarColor: _colorLight,
+          bottomAppBarColor: Colors.white,
         ),
       ],
     );
@@ -88,7 +88,7 @@ class ThemeStyleProvider extends ChangeNotifier {
           textColorHomePage: _colorDark,
           bookTitleColor: Colors.black87,
           bookBodyColor: _colorDark,
-          bottomAppBarColor: _colorDark,
+          bottomAppBarColor: Color(0xfffff9fe),
         ),
       ],
     );
