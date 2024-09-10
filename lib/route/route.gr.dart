@@ -8,22 +8,23 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i4;
-import 'package:flutter/material.dart' as _i5;
+import 'package:auto_route/auto_route.dart' as _i5;
+import 'package:flutter/material.dart' as _i6;
 import 'package:novel_flutter_bit/frame.dart' as _i3;
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart'
-    as _i6;
+    as _i7;
 import 'package:novel_flutter_bit/pages/book_novel/view/book_page.dart' as _i1;
 import 'package:novel_flutter_bit/pages/detail_novel/view/detail_page.dart'
     as _i2;
+import 'package:novel_flutter_bit/pages/novel/view/novel_page.dart' as _i4;
 
 /// generated route for
 /// [_i1.BookPage]
-class BookRoute extends _i4.PageRouteInfo<BookRouteArgs> {
+class BookRoute extends _i5.PageRouteInfo<BookRouteArgs> {
   BookRoute({
-    _i5.Key? key,
+    _i6.Key? key,
     required String name,
-    List<_i4.PageRouteInfo>? children,
+    List<_i5.PageRouteInfo>? children,
   }) : super(
           BookRoute.name,
           args: BookRouteArgs(
@@ -35,7 +36,7 @@ class BookRoute extends _i4.PageRouteInfo<BookRouteArgs> {
 
   static const String name = 'BookRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i5.PageInfo page = _i5.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<BookRouteArgs>();
@@ -53,7 +54,7 @@ class BookRouteArgs {
     required this.name,
   });
 
-  final _i5.Key? key;
+  final _i6.Key? key;
 
   final String name;
 
@@ -65,11 +66,11 @@ class BookRouteArgs {
 
 /// generated route for
 /// [_i2.DetailPage]
-class DetailRoute extends _i4.PageRouteInfo<DetailRouteArgs> {
+class DetailRoute extends _i5.PageRouteInfo<DetailRouteArgs> {
   DetailRoute({
-    _i5.Key? key,
-    required _i6.BookDatum bookDatum,
-    List<_i4.PageRouteInfo>? children,
+    _i6.Key? key,
+    required _i7.BookDatum bookDatum,
+    List<_i5.PageRouteInfo>? children,
   }) : super(
           DetailRoute.name,
           args: DetailRouteArgs(
@@ -81,7 +82,7 @@ class DetailRoute extends _i4.PageRouteInfo<DetailRouteArgs> {
 
   static const String name = 'DetailRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i5.PageInfo page = _i5.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<DetailRouteArgs>();
@@ -99,9 +100,9 @@ class DetailRouteArgs {
     required this.bookDatum,
   });
 
-  final _i5.Key? key;
+  final _i6.Key? key;
 
-  final _i6.BookDatum bookDatum;
+  final _i7.BookDatum bookDatum;
 
   @override
   String toString() {
@@ -111,8 +112,8 @@ class DetailRouteArgs {
 
 /// generated route for
 /// [_i3.FramePage]
-class FrameRoute extends _i4.PageRouteInfo<void> {
-  const FrameRoute({List<_i4.PageRouteInfo>? children})
+class FrameRoute extends _i5.PageRouteInfo<void> {
+  const FrameRoute({List<_i5.PageRouteInfo>? children})
       : super(
           FrameRoute.name,
           initialChildren: children,
@@ -120,10 +121,56 @@ class FrameRoute extends _i4.PageRouteInfo<void> {
 
   static const String name = 'FrameRoute';
 
-  static _i4.PageInfo page = _i4.PageInfo(
+  static _i5.PageInfo page = _i5.PageInfo(
     name,
     builder: (data) {
       return const _i3.FramePage();
     },
   );
+}
+
+/// generated route for
+/// [_i4.NovelPage]
+class NovelRoute extends _i5.PageRouteInfo<NovelRouteArgs> {
+  NovelRoute({
+    _i6.Key? key,
+    required String url,
+    List<_i5.PageRouteInfo>? children,
+  }) : super(
+          NovelRoute.name,
+          args: NovelRouteArgs(
+            key: key,
+            url: url,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'NovelRoute';
+
+  static _i5.PageInfo page = _i5.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<NovelRouteArgs>();
+      return _i4.NovelPage(
+        key: args.key,
+        url: args.url,
+      );
+    },
+  );
+}
+
+class NovelRouteArgs {
+  const NovelRouteArgs({
+    this.key,
+    required this.url,
+  });
+
+  final _i6.Key? key;
+
+  final String url;
+
+  @override
+  String toString() {
+    return 'NovelRouteArgs{key: $key, url: $url}';
+  }
 }
