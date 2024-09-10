@@ -59,23 +59,29 @@ class _DetailDescTextState extends State<DetailDescText>
             widget.text,
             style:
                 const TextStyle(fontSize: 16, height: 1.5, color: Colors.grey),
-            maxLines: _isExpanded ? null : widget.maxLines,
+            maxLines: _isOverflowing
+                ? _isExpanded
+                    ? null
+                    : widget.maxLines
+                : null,
             overflow: TextOverflow.fade,
           ),
         ),
-        if (_isOverflowing) // 仅当文本超出最大行数时才显示"阅读更多/收起"
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _isExpanded = !_isExpanded;
-              });
-            },
-            child: _isExpanded
-                ? _buildMore(
-                    "收起介绍", myColors.brandColor!, Icons.keyboard_arrow_up)
-                : _buildMore(
-                    "阅读更多", myColors.brandColor!, Icons.keyboard_arrow_down),
-          ),
+        GestureDetector(
+          onTap: () {
+            // if (_isOverflowing) {
+            //   // 仅当文本超出最大行数时才显示"阅读更多/收起"
+            // }
+            setState(() {
+              _isExpanded = !_isExpanded;
+            });
+          },
+          child: _isExpanded
+              ? _buildMore(
+                  "收起介绍", myColors.brandColor!, Icons.keyboard_arrow_up)
+              : _buildMore(
+                  "阅读更多", myColors.brandColor!, Icons.keyboard_arrow_down),
+        ),
       ],
     );
   }

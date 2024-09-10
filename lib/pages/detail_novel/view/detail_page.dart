@@ -167,36 +167,8 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ),
             ),
-            SliverGrid.builder(
-              itemBuilder: (context, index) {
-                return Container(
-                  alignment: Alignment.center,
-                  height: 20,
-                  margin: 8.padding,
-                  padding: 5.padding,
-                  decoration: BoxDecoration(
-                    color: myColors.bottomAppBarColor,
-                    borderRadius: BorderRadius.circular(6),
-                    boxShadow: [
-                      BoxShadow(
-                        color: myColors.brandColor!.withOpacity(.5), // 阴影颜色
-                        blurRadius: 3.0, // 模糊半径
-                        // 阴影偏移，第一个值是水平方向，第二个值是垂直方向
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    "${value.detailState.detailNovel?.data?.list?[index].name}",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                );
-              },
-              itemCount: value.detailState.detailNovel?.data?.list?.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, mainAxisExtent: itemHheight),
-            )
+            SliverPadding(padding: 3.vertical),
+            _buildGridElement(myColors: myColors, value: value)
           ],
         ),
       )),
@@ -263,6 +235,43 @@ class _DetailPageState extends State<DetailPage> {
               )
             ],
           )),
+    );
+  }
+
+  /// 章节列表
+  SliverGrid _buildGridElement({
+    required MyColorsTheme myColors,
+    required DetailViewModel value,
+  }) {
+    return SliverGrid.builder(
+      itemBuilder: (context, index) {
+        return Container(
+          alignment: Alignment.center,
+          height: 20,
+          margin: 8.padding,
+          padding: 5.padding,
+          decoration: BoxDecoration(
+            color: myColors.bottomAppBarColor,
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: [
+              BoxShadow(
+                color: myColors.brandColor!.withOpacity(.5), // 阴影颜色
+                blurRadius: 3.0, // 模糊半径
+                // 阴影偏移，第一个值是水平方向，第二个值是垂直方向
+              ),
+            ],
+          ),
+          child: Text(
+            "${value.detailState.detailNovel?.data?.list?[index].name}",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 13),
+          ),
+        );
+      },
+      itemCount: value.detailState.detailNovel?.data?.list?.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, mainAxisExtent: itemHheight),
     );
   }
 }
