@@ -85,6 +85,9 @@ flutter:
     - family: NovelIcon
       fonts:
         - asset: fonts/NovelIcon.ttf
+    - family: MiSans
+      fonts:
+        - asset: fonts/MiSans-Light.ttf
        
   #   - family: Trajan Pro
   #     fonts:

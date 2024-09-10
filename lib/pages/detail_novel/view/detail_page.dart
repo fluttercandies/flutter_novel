@@ -9,6 +9,7 @@ import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_mode
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
+import 'package:novel_flutter_bit/widget/detail_desc_text.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
@@ -58,70 +59,62 @@ class _DetailPageState extends State<DetailPage> {
 
   /// 成功状态构建
   _buildSuccess(DetailViewModel value,
-      {required MyColorsTheme myColors, double height = 160}) {
+      {required MyColorsTheme myColors, double height = 220}) {
     return FadeIn(
         child: DefaultTextStyle(
       style: TextStyle(color: myColors.textColorHomePage, fontSize: 16),
       child: CustomScrollView(
         slivers: [
+          SliverPadding(padding: 8.vertical),
           SliverToBoxAdapter(
-            child: Container(
-              width: 110,
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(.5),
-                    blurRadius: 8.0,
-                    spreadRadius: 1)
-              ]),
-              child: ExtendedImageBuild(
-                isJoinUrl: true,
-                width: 110,
+            child: Center(
+              child: Container(
+                width: 160,
                 height: height,
-                url: "${value.detailState.detailNovel?.data?.img}",
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(.6),
+                      blurRadius: 20.0,
+                      spreadRadius: 2)
+                ]),
+                child: ExtendedImageBuild(
+                  fit: BoxFit.cover,
+                  isJoinUrl: true,
+                  height: height,
+                  url: "${value.detailState.detailNovel?.data?.img}",
+                ),
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: 20.padding,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  10.horizontalSpace,
-                  Expanded(
-                    child: SizedBox(
-                      height: height,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("${value.detailState.detailNovel?.data?.name}",
-                              style: const TextStyle(fontSize: 18)),
-                          5.verticalSpace,
-                          Text("${value.detailState.detailNovel?.data?.type}",
-                              style: TextStyle(color: Colors.grey)),
-                          3.verticalSpace,
-                          Text(
-                              "作者： ${value.detailState.detailNovel?.data?.author}",
-                              style: TextStyle(color: Colors.grey)),
-                          3.verticalSpace,
-                          Text("来源： ${widget.bookDatum.name}",
-                              style: TextStyle(color: Colors.grey)),
-                          3.verticalSpace,
-                          Text("最新章节： ${widget.bookDatum.datumNew}",
-                              style: TextStyle(color: Colors.grey)),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+          SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              sliver: SliverToBoxAdapter(
+                child: SizedBox(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("${value.detailState.detailNovel?.data?.name}",
+                          style: const TextStyle(fontSize: 20)),
+                      Text("${value.detailState.detailNovel?.data?.type}",
+                          style: const TextStyle(color: Colors.grey)),
+                      Text("作者： ${value.detailState.detailNovel?.data?.author}",
+                          style: const TextStyle(color: Colors.grey)),
+                      Text("来源： ${widget.bookDatum.name}",
+                          style: const TextStyle(color: Colors.grey)),
+                      Text("最新章节： ${widget.bookDatum.datumNew}",
+                          style: const TextStyle(color: Colors.grey)),
+                    ],
+                  ),
+                ),
+              )),
           SliverToBoxAdapter(
             child: Padding(
               padding: 20.horizontal,
-              child: Text("${value.detailState.detailNovel?.data?.desc}"),
+              child: DetailDescText(
+                text: "简介： ${value.detailState.detailNovel?.data?.desc}",
+                maxLines: 3,
+              ),
             ),
           )
         ],
