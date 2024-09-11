@@ -30,6 +30,8 @@ class _DetailPageState extends State<DetailPage> {
   late ScrollController _scrollController;
 
   final double itemHheight = 55.0;
+
+  late MyColorsTheme myColors;
   @override
   void initState() {
     super.initState();
@@ -46,6 +48,17 @@ class _DetailPageState extends State<DetailPage> {
 
   /// 跳转小说展示页
   _onToNovelPage(ListElement? data) {
+    _detailViewModel.setReadIndex(data ?? ListElement());
+    context.router
+        .push(NovelRoute(url: data?.url ?? "", name: data?.name ?? ""));
+  }
+
+  // 跳转阅读页
+  _onKeepReadNovelPage() {
+    int index = _detailViewModel.detailState.detailNovel?.data?.list
+            ?.indexOf(_detailViewModel.strUrl) ??
+        0;
+    var data = _detailViewModel.detailState.detailNovel?.data?.list?[index];
     context.router
         .push(NovelRoute(url: data?.url ?? "", name: data?.name ?? ""));
   }
@@ -70,8 +83,7 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final MyColorsTheme myColors =
-        Theme.of(context).extension<MyColorsTheme>()!;
+    myColors = Theme.of(context).extension<MyColorsTheme>()!;
     return Scaffold(
       appBar: AppBar(
         title: const Text("书籍详情"),
@@ -87,10 +99,10 @@ class _DetailPageState extends State<DetailPage> {
           if (value.detailState.netState == NetState.emptyDataState) {
             return const EmptyBuild();
           }
-          return _buildSuccess(value, myColors: myColors);
+          return _buildSuccess(value);
         },
       ),
-      bottomNavigationBar: _buildBottomAppbar(myColors: myColors),
+      bottomNavigationBar: _buildBottomAppbar(readOnTap: _onKeepReadNovelPage),
       floatingActionButton: FloatingActionButton(
           onPressed: _animationToUp,
           backgroundColor: myColors.brandColor,
@@ -99,8 +111,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   /// 成功状态构建
-  _buildSuccess(DetailViewModel value,
-      {required MyColorsTheme myColors, double height = 160}) {
+  _buildSuccess(DetailViewModel value, {double height = 160}) {
     return SafeArea(
       child: FadeIn(
           child: DefaultTextStyle(
@@ -113,14 +124,14 @@ class _DetailPageState extends State<DetailPage> {
           controller: _scrollController,
           slivers: [
             SliverPadding(padding: 8.vertical),
-            _buildTitle(height: height, value: value, myColors: myColors),
+            _buildTitle(height: height, value: value),
             SliverToBoxAdapter(
               child: Padding(
                 padding: 20.horizontal,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("书籍简介", style: TextStyle(fontSize: 20)),
+                    const Text("书籍简介", style: TextStyle(fontSize: 18)),
                     DetailDescText(
                       text: " ${value.detailState.detailNovel?.data?.desc}",
                       maxLines: 3,
@@ -133,8 +144,10 @@ class _DetailPageState extends State<DetailPage> {
             SliverPersistentHeader(
                 pinned: true,
                 delegate: BookTitleSliverPersistentHeaderDelegate(
-                    myColors: myColors)),
-            _buildGridElement(myColors: myColors, value: value)
+                    myColors: myColors,
+                    reverse: _detailViewModel.reverse,
+                    onPressed: _detailViewModel.onReverse)),
+            _buildGridElement(value: value)
           ],
         ),
       )),
@@ -145,7 +158,6 @@ class _DetailPageState extends State<DetailPage> {
   SliverPadding _buildTitle({
     required double height,
     required DetailViewModel value,
-    required MyColorsTheme myColors,
   }) {
     return SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -204,9 +216,7 @@ class _DetailPageState extends State<DetailPage> {
 
   /// 底部导航栏
   _buildBottomAppbar(
-      {required MyColorsTheme myColors,
-      void Function()? collectOnTap,
-      void Function()? readOnTap}) {
+      {void Function()? collectOnTap, void Function()? readOnTap}) {
     return Container(
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
@@ -267,46 +277,52 @@ class _DetailPageState extends State<DetailPage> {
 
   /// 章节列表
   SliverList _buildGridElement({
-    required MyColorsTheme myColors,
     required DetailViewModel value,
   }) {
     return SliverList.builder(
       itemBuilder: (context, index) {
+        bool readIndex = _detailViewModel.strUrl.name ==
+            value.detailState.detailNovel?.data?.list?[index].name;
         return GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: () =>
               _onToNovelPage(value.detailState.detailNovel?.data?.list?[index]),
-          child: Container(
-            margin: 8.padding,
-            padding: 5.padding,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "${value.detailState.detailNovel?.data?.list?[index].name}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 19,
-                      color: value.readIndex == index
-                          ? myColors.brandColor
-                          : Colors.black87,
-                      wordSpacing: 2,
-                      fontWeight: FontWeight.w300),
-                ),
-                value.readIndex == index
-                    ? Text(
-                        "阅读中",
-                        style: TextStyle(
-                            color: myColors.brandColor,
-                            fontWeight: FontWeight.w300),
-                      )
-                    : 0.verticalSpace
-              ],
-            ),
-          ),
+          child: _buildSliverItem(
+              "${value.detailState.detailNovel?.data?.list?[index].name}",
+              readIndex),
         );
       },
       itemCount: value.detailState.detailNovel?.data?.list?.length,
+    );
+  }
+
+  /// 构建item
+  _buildSliverItem(String name, bool readIndex) {
+    return Container(
+      margin: 8.padding,
+      padding: 5.padding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 19,
+                color: readIndex ? myColors.brandColor : Colors.black87,
+                wordSpacing: 2,
+                fontWeight: FontWeight.w300),
+          ),
+          readIndex
+              ? Text(
+                  "阅读中",
+                  style: TextStyle(
+                      color: myColors.brandColor, fontWeight: FontWeight.w300),
+                )
+              : 0.verticalSpace
+        ],
+      ),
     );
   }
 }
@@ -317,8 +333,16 @@ class BookTitleSliverPersistentHeaderDelegate
   double get minExtent => 50.0;
   @override
   double get maxExtent => 50.0;
+
+  /// 颜色
   final MyColorsTheme myColors;
-  BookTitleSliverPersistentHeaderDelegate({required this.myColors});
+
+  /// 排序
+  final bool reverse;
+
+  final void Function()? onPressed;
+  BookTitleSliverPersistentHeaderDelegate(
+      {required this.myColors, required this.reverse, this.onPressed});
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -345,9 +369,10 @@ class BookTitleSliverPersistentHeaderDelegate
             '章节目录',
             style: TextStyle(fontSize: 20, color: myColors.brandColor),
           ),
-          const Text(""),
+          const Spacer(),
+          Text(reverse ? "倒叙" : "正序"),
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.change_circle_sharp))
+              onPressed: onPressed, icon: const Icon(Icons.change_circle_sharp))
         ],
       ),
     );

@@ -14,7 +14,21 @@ class DetailViewModel extends BaseViewModel {
 
   /// 创建state
   DetailState detailState = DetailState();
-  late int readIndex = 0;
+
+  /// 阅读索引
+  late ListElement strUrl = ListElement();
+
+  /// 排序顺序
+  late bool reverse = false;
+
+  /// 排序
+  onReverse() {
+    reverse = !reverse;
+    var data = detailState.detailNovel?.data?.list?.reversed.toList();
+    detailState.detailNovel?.data?.list = data;
+    notifyListeners();
+  }
+
   @override
   Future<bool> onRefresh() async {
     LoggerTools.looger.d("首页 onRefresh Vlaue : ${detailState.netState}");
@@ -49,5 +63,11 @@ class DetailViewModel extends BaseViewModel {
 
       notifyListeners();
     }
+  }
+
+  /// 设置阅读索引
+  setReadIndex(ListElement data) {
+    strUrl = data;
+    notifyListeners();
   }
 }
