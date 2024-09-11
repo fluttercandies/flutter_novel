@@ -48,7 +48,7 @@ class ThemeStyleProvider extends ChangeNotifier {
       iconTheme: const IconThemeData(color: _colorLight),
       textTheme: const TextTheme(
         //bodyLarge: TextStyle(color: Colors.red),
-        bodyMedium: TextStyle(color: Colors.black),
+        bodyMedium: TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
         // bodySmall: TextStyle(color: Colors.orange),
         // headlineLarge: TextStyle(color: Colors.green),
         // headlineMedium: TextStyle(color: Colors.yellow),
@@ -75,7 +75,7 @@ class ThemeStyleProvider extends ChangeNotifier {
       iconTheme: const IconThemeData(color: _colorDark),
       textTheme: const TextTheme(
         //bodyLarge: TextStyle(color: Colors.red),
-        bodyMedium: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
         // bodySmall: TextStyle(color: Colors.orange),
         // headlineLarge: TextStyle(color: Colors.green),
         // headlineMedium: TextStyle(color: Colors.yellow),

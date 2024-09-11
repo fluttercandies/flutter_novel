@@ -64,7 +64,10 @@ class _BookPageState extends State<BookPage> {
   _buildSuccess(BookViewModel value, {required MyColorsTheme myColors}) {
     return FadeIn(
       child: DefaultTextStyle(
-        style: TextStyle(color: myColors.bookTitleColor, fontSize: 16),
+        style: TextStyle(
+            color: myColors.bookTitleColor,
+            fontSize: 18,
+            fontWeight: FontWeight.w300),
         child: PullToRefreshNotification(
           onRefresh: value.onRefresh,
           reachToRefreshOffset: 100,
@@ -76,7 +79,7 @@ class _BookPageState extends State<BookPage> {
             SliverPadding(
               padding: 20.padding,
               sliver: const SliverToBoxAdapter(
-                  child: Text("站源", style: TextStyle(fontSize: 20))),
+                  child: Text("站源", style: TextStyle(fontSize: 24))),
             ),
             SliverPadding(
               padding: 20.horizontal,
@@ -119,7 +122,7 @@ class _BookPageState extends State<BookPage> {
               const TextSpan(text: "："),
               TextSpan(
                   text: "${data?.name}",
-                  style: TextStyle(color: myColors.bookBodyColor, fontSize: 17))
+                  style: TextStyle(color: myColors.bookBodyColor))
             ]),
           ),
           Text.rich(
@@ -128,8 +131,7 @@ class _BookPageState extends State<BookPage> {
               const TextSpan(text: "："),
               TextSpan(
                   text: "${data?.datumNew}",
-                  style:
-                      TextStyle(color: myColors.bookTitleColor, fontSize: 17))
+                  style: TextStyle(color: myColors.bookTitleColor))
             ]),
           ),
         ],
