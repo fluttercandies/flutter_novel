@@ -18,7 +18,7 @@ class HomeViewModel extends BaseViewModel {
     getData();
     await Future.delayed(const Duration(seconds: 1));
     LoggerTools.looger.d("首页 onRefresh Vlaue : ${homeState.netState}");
-    bool value = homeState.netState == NetState.dataSuccessState;
+    // bool value = homeState.netState == NetState.dataSuccessState;
     return true;
   }
 

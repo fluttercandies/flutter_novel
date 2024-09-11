@@ -141,7 +141,7 @@ class _BookPageState extends State<BookPage> {
 
   /// 富文本Demo
   _buildDemoExtendedText({required String title, required String body}) {
-    final NovleSpecialTextSpanBuilder _builder = NovleSpecialTextSpanBuilder();
+    final NovleSpecialTextSpanBuilder builder = NovleSpecialTextSpanBuilder();
 
     return ExtendedText.rich(
       gradientConfig: GradientConfigClass.config,
@@ -150,7 +150,7 @@ class _BookPageState extends State<BookPage> {
           IgnoreGradientTextSpan(
             text: title,
           ),
-          _builder.build("123"),
+          builder.build("123"),
           IgnoreGradientTextSpan(
             text: body,
           ),

@@ -23,7 +23,7 @@ class BookViewModel extends BaseViewModel {
     getData();
     await Future.delayed(const Duration(seconds: 1));
     LoggerTools.looger.d("book站源 onRefresh Vlaue : ${bookState.netState}");
-    bool value = bookState.netState == NetState.dataSuccessState;
+    // bool value = bookState.netState == NetState.dataSuccessState;
     return true;
   }
 

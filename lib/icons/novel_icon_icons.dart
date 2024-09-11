@@ -17,6 +17,8 @@
 ///         License:   SIL (https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt)
 ///         Homepage:  http://fortawesome.github.com/Font-Awesome/
 ///
+library;
+
 import 'package:flutter/widgets.dart';
 
 class NovelIcon {

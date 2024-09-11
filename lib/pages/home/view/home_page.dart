@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';

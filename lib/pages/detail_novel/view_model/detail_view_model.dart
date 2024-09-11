@@ -58,7 +58,7 @@ class DetailViewModel extends BaseViewModel {
     getData();
     await Future.delayed(const Duration(seconds: 1));
     LoggerTools.looger.d("首页 onRefresh Vlaue : ${detailState.netState}");
-    bool value = detailState.netState == NetState.dataSuccessState;
+    // bool value = detailState.netState == NetState.dataSuccessState;
     return true;
   }
 

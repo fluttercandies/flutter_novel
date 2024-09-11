@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
-import 'package:novel_flutter_bit/pages/detail_novel/view/detail_page.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
