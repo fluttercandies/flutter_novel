@@ -23,9 +23,9 @@ class DetailViewModel extends BaseViewModel {
 
   /// 排序
   onReverse() {
-    reverse = !reverse;
     var data = detailState.detailNovel?.data?.list?.reversed.toList();
     detailState.detailNovel?.data?.list = data;
+    reverse = !reverse;
     notifyListeners();
   }
 

@@ -145,8 +145,10 @@ class _DetailPageState extends State<DetailPage> {
                 pinned: true,
                 delegate: BookTitleSliverPersistentHeaderDelegate(
                     myColors: myColors,
-                    reverse: _detailViewModel.reverse,
-                    onPressed: _detailViewModel.onReverse)),
+                    reverse: value.reverse,
+                    onPressed: value.onReverse,
+                    count: value.detailState.detailNovel?.data?.list?.length ??
+                        0)),
             _buildGridElement(value: value)
           ],
         ),
@@ -340,9 +342,13 @@ class BookTitleSliverPersistentHeaderDelegate
   /// 排序
   final bool reverse;
 
+  final int count;
   final void Function()? onPressed;
   BookTitleSliverPersistentHeaderDelegate(
-      {required this.myColors, required this.reverse, this.onPressed});
+      {required this.count,
+      required this.myColors,
+      required this.reverse,
+      this.onPressed});
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -369,8 +375,10 @@ class BookTitleSliverPersistentHeaderDelegate
             '章节目录',
             style: TextStyle(fontSize: 20, color: myColors.brandColor),
           ),
+          Text(" ($count) ",
+              style: TextStyle(fontSize: 14, color: myColors.brandColor)),
           const Spacer(),
-          Text(reverse ? "倒叙" : "正序"),
+          Text(reverse ? "正序" : "倒叙"),
           IconButton(
               onPressed: onPressed, icon: const Icon(Icons.change_circle_sharp))
         ],
@@ -380,6 +388,6 @@ class BookTitleSliverPersistentHeaderDelegate
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
+    return true;
   }
 }
