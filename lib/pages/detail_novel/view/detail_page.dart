@@ -104,69 +104,23 @@ class _DetailPageState extends State<DetailPage> {
     return SafeArea(
       child: FadeIn(
           child: DefaultTextStyle(
-        style: TextStyle(color: myColors.textColorHomePage, fontSize: 16),
+        style: TextStyle(
+          color: myColors.textColorHomePage,
+          fontSize: 18,
+          fontWeight: FontWeight.w300,
+        ),
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
             SliverPadding(padding: 8.vertical),
-            SliverPadding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                sliver: SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: height,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 120,
-                          height: height,
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey.withOpacity(.4),
-                                blurRadius: 5.0,
-                                spreadRadius: 1)
-                          ]),
-                          child: ExtendedImageBuild(
-                            fit: BoxFit.cover,
-                            isJoinUrl: true,
-                            height: height,
-                            url: "${value.detailState.detailNovel?.data?.img}",
-                          ),
-                        ),
-                        20.horizontalSpace,
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  "${value.detailState.detailNovel?.data?.name}",
-                                  style: const TextStyle(fontSize: 20)),
-                              Text(
-                                  "${value.detailState.detailNovel?.data?.type}",
-                                  style: const TextStyle(color: Colors.grey)),
-                              Text(
-                                  "作者： ${value.detailState.detailNovel?.data?.author}",
-                                  style: const TextStyle(color: Colors.grey)),
-                              Text("来源： ${widget.bookDatum.name}",
-                                  style: const TextStyle(color: Colors.grey)),
-                              Text("最新章节： ${widget.bookDatum.datumNew}",
-                                  style: const TextStyle(color: Colors.grey)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )),
+            _buildTitle(height: height, value: value, myColors: myColors),
             SliverToBoxAdapter(
               child: Padding(
                 padding: 20.horizontal,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("书籍简介", style: TextStyle(fontSize: 18)),
+                    const Text("书籍简介", style: TextStyle(fontSize: 20)),
                     DetailDescText(
                       text: " ${value.detailState.detailNovel?.data?.desc}",
                       maxLines: 3,
@@ -185,6 +139,67 @@ class _DetailPageState extends State<DetailPage> {
         ),
       )),
     );
+  }
+
+  /// 构建标题
+  SliverPadding _buildTitle({
+    required double height,
+    required DetailViewModel value,
+    required MyColorsTheme myColors,
+  }) {
+    return SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        sliver: SliverToBoxAdapter(
+          child: SizedBox(
+            height: height,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 120,
+                  height: height,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(.3),
+                        blurRadius: 4.0,
+                        spreadRadius: 1)
+                  ]),
+                  child: ExtendedImageBuild(
+                    fit: BoxFit.cover,
+                    isJoinUrl: true,
+                    height: height,
+                    url: "${value.detailState.detailNovel?.data?.img}",
+                  ),
+                ),
+                20.horizontalSpace,
+                Expanded(
+                  child: DefaultTextStyle(
+                    style: const TextStyle(
+                      color: Colors.black54,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("${value.detailState.detailNovel?.data?.name}",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: myColors.textColorHomePage)),
+                        Text("${value.detailState.detailNovel?.data?.type}"),
+                        Text(
+                            "作者： ${value.detailState.detailNovel?.data?.author}"),
+                        Text("来源： ${widget.bookDatum.name}"),
+                        Text("最新章节： ${widget.bookDatum.datumNew}"),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   /// 底部导航栏
@@ -328,12 +343,11 @@ class BookTitleSliverPersistentHeaderDelegate
         children: [
           Text(
             '章节目录',
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w300,
-                color: myColors.brandColor),
+            style: TextStyle(fontSize: 20, color: myColors.brandColor),
           ),
-          Icon(Icons.change_circle_outlined)
+          const Text(""),
+          IconButton(
+              onPressed: () {}, icon: const Icon(Icons.change_circle_sharp))
         ],
       ),
     );

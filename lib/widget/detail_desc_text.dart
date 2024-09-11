@@ -57,8 +57,8 @@ class _DetailDescTextState extends State<DetailDescText>
           curve: Curves.easeInOut,
           child: Text(
             widget.text,
-            style:
-                const TextStyle(fontSize: 16, height: 1.5, color: Colors.grey),
+            style: const TextStyle(
+                fontSize: 16, height: 1.5, color: Colors.black54),
             maxLines: _isOverflowing
                 ? _isExpanded
                     ? null
