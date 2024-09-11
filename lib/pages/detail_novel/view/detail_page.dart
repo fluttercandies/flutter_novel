@@ -123,9 +123,9 @@ class _DetailPageState extends State<DetailPage> {
                           height: height,
                           decoration: BoxDecoration(boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.withOpacity(.6),
-                                blurRadius: 10.0,
-                                spreadRadius: 2)
+                                color: Colors.grey.withOpacity(.4),
+                                blurRadius: 5.0,
+                                spreadRadius: 1)
                           ]),
                           child: ExtendedImageBuild(
                             fit: BoxFit.cover,
@@ -176,6 +176,10 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
             SliverPadding(padding: 3.vertical),
+            SliverPersistentHeader(
+                pinned: true,
+                delegate: BookTitleSliverPersistentHeaderDelegate(
+                    myColors: myColors)),
             _buildGridElement(myColors: myColors, value: value)
           ],
         ),
@@ -191,8 +195,8 @@ class _DetailPageState extends State<DetailPage> {
     return Container(
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
+            color: myColors.brandColor!.withOpacity(0.1),
+            blurRadius: 5,
             offset: const Offset(0, 0))
       ]),
       child: BottomAppBar(
@@ -247,43 +251,96 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   /// 章节列表
-  SliverGrid _buildGridElement({
+  SliverList _buildGridElement({
     required MyColorsTheme myColors,
     required DetailViewModel value,
   }) {
-    return SliverGrid.builder(
+    return SliverList.builder(
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () =>
               _onToNovelPage(value.detailState.detailNovel?.data?.list?[index]),
           child: Container(
-            alignment: Alignment.center,
-            height: 20,
             margin: 8.padding,
             padding: 5.padding,
-            decoration: BoxDecoration(
-              color: myColors.bottomAppBarColor,
-              borderRadius: BorderRadius.circular(6),
-              boxShadow: [
-                BoxShadow(
-                  color: myColors.brandColor!.withOpacity(.5), // 阴影颜色
-                  blurRadius: 3.0, // 模糊半径
-                  // 阴影偏移，第一个值是水平方向，第二个值是垂直方向
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "${value.detailState.detailNovel?.data?.list?[index].name}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 19,
+                      color: value.readIndex == index
+                          ? myColors.brandColor
+                          : Colors.black87,
+                      wordSpacing: 2,
+                      fontWeight: FontWeight.w300),
                 ),
+                value.readIndex == index
+                    ? Text(
+                        "阅读中",
+                        style: TextStyle(
+                            color: myColors.brandColor,
+                            fontWeight: FontWeight.w300),
+                      )
+                    : 0.verticalSpace
               ],
-            ),
-            child: Text(
-              "${value.detailState.detailNovel?.data?.list?[index].name}",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 13),
             ),
           ),
         );
       },
       itemCount: value.detailState.detailNovel?.data?.list?.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, mainAxisExtent: itemHheight),
     );
+  }
+}
+
+class BookTitleSliverPersistentHeaderDelegate
+    extends SliverPersistentHeaderDelegate {
+  @override
+  double get minExtent => 50.0;
+  @override
+  double get maxExtent => 50.0;
+  final MyColorsTheme myColors;
+  BookTitleSliverPersistentHeaderDelegate({required this.myColors});
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      padding: 10.horizontal,
+      // color: myColors.containerColor,
+      alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: const [
+            0.0,
+            0.5
+          ],
+              colors: [
+            myColors.containerColor!,
+            Theme.of(context).scaffoldBackgroundColor
+          ])),
+      height: maxExtent,
+      child: Row(
+        children: [
+          Text(
+            '章节目录',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w300,
+                color: myColors.brandColor),
+          ),
+          Icon(Icons.change_circle_outlined)
+        ],
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }

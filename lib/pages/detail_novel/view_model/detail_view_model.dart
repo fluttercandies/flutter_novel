@@ -14,7 +14,7 @@ class DetailViewModel extends BaseViewModel {
 
   /// 创建state
   DetailState detailState = DetailState();
-
+  late int readIndex = 0;
   @override
   Future<bool> onRefresh() async {
     LoggerTools.looger.d("首页 onRefresh Vlaue : ${detailState.netState}");
