@@ -55,9 +55,7 @@ class _DetailPageState extends State<DetailPage> {
 
   // 跳转阅读页
   _onKeepReadNovelPage() {
-    int index = _detailViewModel.detailState.detailNovel?.data?.list
-            ?.indexOf(_detailViewModel.strUrl) ??
-        0;
+    int index = _detailViewModel.getReadIndex();
     var data = _detailViewModel.detailState.detailNovel?.data?.list?[index];
     context.router
         .push(NovelRoute(url: data?.url ?? "", name: data?.name ?? ""));

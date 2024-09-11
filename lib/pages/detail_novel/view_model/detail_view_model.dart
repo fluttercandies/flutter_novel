@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/base/base_view_model.dart';
 import 'package:novel_flutter_bit/net/http_config.dart';
@@ -7,10 +9,10 @@ import 'package:novel_flutter_bit/net/service_result.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailViewModel extends BaseViewModel {
   final String url;
-  DetailViewModel(this.url);
 
   /// 创建state
   DetailState detailState = DetailState();
@@ -20,6 +22,27 @@ class DetailViewModel extends BaseViewModel {
 
   /// 排序顺序
   late bool reverse = false;
+
+  /// 存储实例
+  late Future<SharedPreferences> prefs;
+
+  DetailViewModel(this.url) {
+    LoggerTools.looger.d("HomeViewModel init $url");
+    // Obtain shared preferences.
+    prefs = SharedPreferences.getInstance();
+    prefs.then((value) {
+      _init(value);
+    });
+  }
+
+  /// 初始化 坐标
+  _init(SharedPreferences value) {
+    String? str = value.getString(url);
+    if (str case String st?) {
+      var data = json.decode(st);
+      strUrl = ListElement.fromJson(data);
+    }
+  }
 
   /// 排序
   onReverse() {
@@ -66,8 +89,24 @@ class DetailViewModel extends BaseViewModel {
   }
 
   /// 设置阅读索引
-  setReadIndex(ListElement data) {
+  setReadIndex(ListElement data) async {
     strUrl = data;
+    LoggerTools.looger.d("setReadIndex : ${data.toJson().toString()}");
+    await prefs.then((value) async {
+      await value.setString(url, json.encode(data)); //jsonEncode()
+    });
     notifyListeners();
+  }
+
+  int getReadIndex() {
+    for (var i = 0;
+        i < (detailState.detailNovel?.data?.list?.length ?? 0);
+        i++) {
+      var element = detailState.detailNovel?.data?.list?[i].name;
+      if (element == strUrl.name) {
+        return i;
+      }
+    }
+    return 0;
   }
 }
