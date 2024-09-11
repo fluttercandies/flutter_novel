@@ -63,7 +63,10 @@ class _HomePageState extends State<HomePage> {
       {required MyColorsTheme myColors, required HomeViewModel value}) {
     return FadeIn(
       child: DefaultTextStyle(
-        style: TextStyle(color: myColors.textColorHomePage),
+        style: TextStyle(
+            color: myColors.textColorHomePage,
+            fontSize: 16,
+            fontWeight: FontWeight.w300),
         child: PullToRefreshNotification(
             reachToRefreshOffset: 100,
             onRefresh: value.onRefresh,
@@ -75,7 +78,10 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SliverPadding(
                     sliver: const SliverToBoxAdapter(
-                        child: Text('我的阅读', style: TextStyle(fontSize: 20))),
+                        child: Text(
+                      '我的阅读',
+                      style: TextStyle(fontSize: 20),
+                    )),
                     padding: 10.padding),
                 SliverToBoxAdapter(
                   child: _buildReadList(value,
@@ -86,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('全网最热', style: TextStyle(fontSize: 18)),
+                        Text('全网最热', style: TextStyle(fontSize: 20)),
                         Icon(Icons.chevron_right)
                       ],
                     )),
@@ -117,53 +123,48 @@ class _HomePageState extends State<HomePage> {
       },
       child: SizedBox(
         height: height,
-        child: DefaultTextStyle(
-          style: TextStyle(color: myColors.textColorHomePage),
-          child: Padding(
-            padding: 10.padding,
-            child: Row(
-              children: [
-                Flexible(
-                    child: ExtendedImageBuild(
-                        url: novelHot?.img ?? "", width: 120, height: height)),
-                10.horizontalSpace,
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(novelHot?.name ?? "",
-                            maxLines: 3,
+        child: Padding(
+          padding: 10.padding,
+          child: Row(
+            children: [
+              Flexible(
+                  child: ExtendedImageBuild(
+                      url: novelHot?.img ?? "", width: 120, height: height)),
+              10.horizontalSpace,
+              Expanded(
+                flex: 2,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(novelHot?.name ?? "",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 20)),
+                      5.verticalSpace,
+                      Text("${novelHot?.author}/${novelHot?.type}",
+                          style: const TextStyle(color: Colors.black54)),
+                      5.verticalSpace,
+                      Row(children: [
+                        SvgPicture.asset(
+                          'assets/svg/hot.svg',
+                          width: 24,
+                        ),
+                        5.horizontalSpace,
+                        Text(novelHot?.hot ?? "0",
+                            style: TextStyle(color: myColors.brandColor)),
+                      ]),
+                      5.verticalSpace,
+                      Flexible(
+                        child: Text(novelHot?.desc ?? "",
+                            maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                                fontSize: 20, color: Colors.black)),
-                        5.verticalSpace,
-                        Text("${novelHot?.author}/${novelHot?.type}",
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 15)),
-                        5.verticalSpace,
-                        Row(children: [
-                          SvgPicture.asset(
-                            'assets/svg/hot.svg',
-                            width: 24,
-                          ),
-                          5.horizontalSpace,
-                          Text(novelHot?.hot ?? "0",
-                              style: TextStyle(color: myColors.brandColor)),
-                        ]),
-                        5.verticalSpace,
-                        Flexible(
-                          child: Text(novelHot?.desc ?? "",
-                              maxLines: 4,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 14, color: Colors.grey.shade600)),
-                        )
-                      ]),
-                ),
-              ],
-            ),
+                                fontSize: 14, color: Colors.black54)),
+                      )
+                    ]),
+              ),
+            ],
           ),
         ),
       ),
@@ -211,46 +212,41 @@ class _HomePageState extends State<HomePage> {
                 blurRadius: 8.0,
                 spreadRadius: 0.5)
           ]),
-      child: DefaultTextStyle(
-        style: TextStyle(color: myColors.textColorHomePage),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: ExtendedImageBuild(url: url, width: width),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: ExtendedImageBuild(url: url, width: width),
+            ),
+            1.verticalSpace,
+            Padding(
+              padding: 10.horizontal,
+              child:
+                  Text(bookName, maxLines: 1, overflow: TextOverflow.ellipsis),
+            ),
+            1.verticalSpace,
+            Padding(
+              padding: 5.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child: BarberPoleProgressBar(
+                          progress: progress,
+                          animationEnabled: true,
+                          color: myColors.brandColor,
+                          notArriveProgressAnimation: false)),
+                  5.horizontalSpace,
+                  SizedBox(
+                      width: 40,
+                      child: Text('${(progress * 100).toStringAsFixed(0)}%'))
+                ],
               ),
-              1.verticalSpace,
-              Padding(
-                padding: 10.horizontal,
-                child: Text(bookName,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 15)),
-              ),
-              1.verticalSpace,
-              Padding(
-                padding: 5.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                        child: BarberPoleProgressBar(
-                            progress: progress,
-                            animationEnabled: true,
-                            color: myColors.brandColor,
-                            notArriveProgressAnimation: false)),
-                    5.horizontalSpace,
-                    SizedBox(
-                        width: 40,
-                        child: Text('${(progress * 100).toStringAsFixed(0)}%'))
-                  ],
-                ),
-              ),
-              3.verticalSpace
-            ]),
-      ),
+            ),
+            3.verticalSpace
+          ]),
     );
   }
 }
