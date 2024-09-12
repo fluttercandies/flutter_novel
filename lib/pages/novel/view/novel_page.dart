@@ -57,11 +57,8 @@ class _NovelPageState extends State<NovelPage> {
   }
 
   String _getText({required String htmlContent}) {
-    // Replace &nbsp; with a regular space
     String plainText = htmlContent.replaceAll(RegExp(r'&nbsp;'), ' ');
     String plainText1 = plainText.replaceAll(RegExp(r'</p>'), ' ');
-    // Split the text into lines using the newline character
-    // List<String> lines = plainText1.split('<br />');
     String plainText2 = plainText1.replaceAll(RegExp(r'<br />'), '\n');
     return plainText2;
   }

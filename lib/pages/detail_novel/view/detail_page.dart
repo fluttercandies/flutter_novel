@@ -79,6 +79,25 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 
+  /// 滚动到当前选中的索引
+  _animationToLocal() async {
+    int index = _detailViewModel.getReadIndex();
+    double offsetHeight = index * (51.5);
+    // _scrollController.animateTo(0,
+    //     duration: Durations.long4, curve: Curves.easeInCirc);
+    if (index > 50) {
+      _scrollController.jumpTo(offsetHeight);
+      return;
+    }
+    final animationDuration =
+        Duration(milliseconds: ((index / 10) * 150).clamp(100, 5000).toInt());
+    _scrollController.animateTo(
+      offsetHeight,
+      duration: animationDuration,
+      curve: Curves.easeIn,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     myColors = Theme.of(context).extension<MyColorsTheme>()!;
@@ -101,10 +120,23 @@ class _DetailPageState extends State<DetailPage> {
         },
       ),
       bottomNavigationBar: _buildBottomAppbar(readOnTap: _onKeepReadNovelPage),
-      floatingActionButton: FloatingActionButton(
-          onPressed: _animationToUp,
-          backgroundColor: myColors.brandColor,
-          child: Icon(Icons.keyboard_arrow_up, color: myColors.containerColor)),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+              heroTag: "_animationToUp",
+              onPressed: _animationToUp,
+              backgroundColor: myColors.brandColor,
+              child: Icon(Icons.keyboard_arrow_up,
+                  color: myColors.containerColor)),
+          10.verticalSpace,
+          FloatingActionButton(
+              heroTag: "_animationToLocal",
+              onPressed: _animationToLocal,
+              backgroundColor: myColors.brandColor,
+              child: Icon(Icons.location_on, color: myColors.containerColor)),
+        ],
+      ),
     );
   }
 
