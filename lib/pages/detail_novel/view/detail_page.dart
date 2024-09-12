@@ -102,41 +102,47 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     myColors = Theme.of(context).extension<MyColorsTheme>()!;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("书籍详情"),
-        centerTitle: true,
-      ),
-      body: ProviderConsumer<DetailViewModel>(
-        viewModel: _detailViewModel,
-        builder: (BuildContext context, DetailViewModel value, Widget? child) {
-          if (value.detailState.netState == NetState.loadingState) {
-            return const LoadingBuild();
-          }
+        appBar: AppBar(
+          title: const Text("书籍详情"),
+          centerTitle: true,
+        ),
+        body: ProviderConsumer<DetailViewModel>(
+          viewModel: _detailViewModel,
+          builder:
+              (BuildContext context, DetailViewModel value, Widget? child) {
+            if (value.detailState.netState == NetState.loadingState) {
+              return const LoadingBuild();
+            }
 
-          if (value.detailState.netState == NetState.emptyDataState) {
-            return const EmptyBuild();
-          }
-          return _buildSuccess(value);
-        },
-      ),
-      bottomNavigationBar: _buildBottomAppbar(readOnTap: _onKeepReadNovelPage),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-              heroTag: "_animationToUp",
-              onPressed: _animationToUp,
-              backgroundColor: myColors.brandColor,
-              child: Icon(Icons.keyboard_arrow_up,
-                  color: myColors.containerColor)),
-          10.verticalSpace,
-          FloatingActionButton(
-              heroTag: "_animationToLocal",
-              onPressed: _animationToLocal,
-              backgroundColor: myColors.brandColor,
-              child: Icon(Icons.location_on, color: myColors.containerColor)),
-        ],
-      ),
+            if (value.detailState.netState == NetState.emptyDataState) {
+              return const EmptyBuild();
+            }
+            return _buildSuccess(value);
+          },
+        ),
+        bottomNavigationBar:
+            _buildBottomAppbar(readOnTap: _onKeepReadNovelPage),
+        floatingActionButton: _buildFloatingActionButton());
+  }
+
+  /// 浮动按钮
+  _buildFloatingActionButton() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        FloatingActionButton(
+            heroTag: "_animationToUp",
+            onPressed: _animationToUp,
+            backgroundColor: myColors.brandColor,
+            child:
+                Icon(Icons.keyboard_arrow_up, color: myColors.containerColor)),
+        10.verticalSpace,
+        FloatingActionButton(
+            heroTag: "_animationToLocal",
+            onPressed: _animationToLocal,
+            backgroundColor: myColors.brandColor,
+            child: Icon(Icons.location_on, color: myColors.containerColor)),
+      ],
     );
   }
 

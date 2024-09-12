@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 
 import 'theme.dart';
@@ -63,6 +64,10 @@ class ThemeStyleProvider extends ChangeNotifier {
           bookBodyColor: _colorLight,
           bottomAppBarColor: Colors.white,
         ),
+        const ThemeNovel(
+            selectedColor: _colorLight,
+            notSelectedColor: Colors.black,
+            backgroundColor: Colors.white)
       ],
     );
     _darkTheme = _data.copyWith(
@@ -90,6 +95,10 @@ class ThemeStyleProvider extends ChangeNotifier {
           bookBodyColor: _colorDark,
           bottomAppBarColor: Color(0xfffff9fe),
         ),
+        const ThemeNovel(
+            selectedColor: _colorDark,
+            notSelectedColor: Colors.black,
+            backgroundColor: Color(0xfffff9fe))
       ],
     );
     _data = _lightTheme;
