@@ -123,9 +123,19 @@ class _NovelPageState extends State<NovelPage> {
       child: AnimatedContainer(
         height: isBottomBarVisible ? height : minHeight,
         duration: duration,
+        decoration: BoxDecoration(
+          color: theme.bottomAppBarColor,
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, -2),
+              blurRadius: 10,
+              color: Colors.black.withOpacity(0.1),
+            ),
+          ],
+        ),
         child: BottomAppBar(
-          child: Container(
-            color: theme.backgroundColor,
+          color: theme.bottomAppBarColor,
+          child: SizedBox(
             height: height,
             child: const Center(child: Text('Bottom Navigation Bar')),
           ),

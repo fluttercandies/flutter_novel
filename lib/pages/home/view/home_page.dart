@@ -174,8 +174,8 @@ class _HomePageState extends State<HomePage> {
   _buildReadList(HomeViewModel value,
       {required double progress,
       required MyColorsTheme myColors,
-      double height = 280,
-      double widthItem = 160}) {
+      double height = 240,
+      double widthItem = 140}) {
     return SizedBox(
       height: height,
       child: ListView.builder(
