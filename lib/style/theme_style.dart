@@ -64,10 +64,11 @@ class ThemeStyleProvider extends ChangeNotifier {
           bookBodyColor: _colorLight,
           bottomAppBarColor: Colors.white,
         ),
-        const ThemeNovel(
+        const NovelTheme(
             selectedColor: _colorLight,
             notSelectedColor: Colors.black,
-            backgroundColor: Colors.white)
+            bottomAppBarColor: Colors.white,
+            backgroundColor: Color(0xfffafafa))
       ],
     );
     _darkTheme = _data.copyWith(
@@ -95,9 +96,10 @@ class ThemeStyleProvider extends ChangeNotifier {
           bookBodyColor: _colorDark,
           bottomAppBarColor: Color(0xfffff9fe),
         ),
-        const ThemeNovel(
+        const NovelTheme(
             selectedColor: _colorDark,
             notSelectedColor: Colors.black,
+            bottomAppBarColor: Colors.white,
             backgroundColor: Color(0xfffff9fe))
       ],
     );

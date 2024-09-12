@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ThemeNovel extends ThemeExtension<ThemeNovel> {
-  const ThemeNovel({
-    required this.selectedColor,
-    required this.notSelectedColor,
-    required this.backgroundColor,
+class NovelTheme extends ThemeExtension<NovelTheme> {
+  const NovelTheme({
+    this.bottomAppBarColor,
+    this.selectedColor,
+    this.notSelectedColor,
+    this.backgroundColor,
     this.fontSize = 18,
     this.fontWeight = FontWeight.w300,
   });
@@ -23,35 +24,41 @@ class ThemeNovel extends ThemeExtension<ThemeNovel> {
 
   /// 文字粗细
   final FontWeight? fontWeight;
+
+  ///
+  final Color? bottomAppBarColor;
   @override
-  ThemeExtension<ThemeNovel> copyWith({
+  ThemeExtension<NovelTheme> copyWith({
     Color? selectedColor,
     Color? notSelectedColor,
     Color? backgroundColor,
     double? fontSize,
     FontWeight? fontWeight,
+    Color? bottomAppBarColor,
   }) {
-    return ThemeNovel(
-      selectedColor: selectedColor ?? this.selectedColor,
-      notSelectedColor: notSelectedColor ?? this.notSelectedColor,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      fontSize: fontSize ?? this.fontSize,
-      fontWeight: fontWeight ?? this.fontWeight,
-    );
+    return NovelTheme(
+        selectedColor: selectedColor ?? this.selectedColor,
+        notSelectedColor: notSelectedColor ?? this.notSelectedColor,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        fontSize: fontSize ?? this.fontSize,
+        fontWeight: fontWeight ?? this.fontWeight,
+        bottomAppBarColor: bottomAppBarColor ?? this.bottomAppBarColor);
   }
 
   @override
-  ThemeExtension<ThemeNovel> lerp(
-      covariant ThemeExtension<ThemeNovel>? other, double t) {
-    if (other is! ThemeNovel) {
+  ThemeExtension<NovelTheme> lerp(
+      covariant ThemeExtension<NovelTheme>? other, double t) {
+    if (other is! NovelTheme) {
       return this;
     }
-    return ThemeNovel(
+    return NovelTheme(
       selectedColor: Color.lerp(selectedColor, other.selectedColor, t),
       notSelectedColor: Color.lerp(notSelectedColor, other.notSelectedColor, t),
       backgroundColor: Color.lerp(backgroundColor, other.backgroundColor, t),
       fontSize: fontSize,
       fontWeight: fontWeight,
+      bottomAppBarColor:
+          Color.lerp(bottomAppBarColor, other.bottomAppBarColor, t),
     );
   }
 }
