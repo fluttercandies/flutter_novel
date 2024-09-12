@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
@@ -7,6 +8,7 @@ import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
+import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
 
 @RoutePage()
 class NovelPage extends StatefulWidget {
@@ -19,7 +21,8 @@ class NovelPage extends StatefulWidget {
 
 class _NovelPageState extends State<NovelPage> {
   late NovelViewModel _novelViewModel;
-
+  final NovleSpecialTextSpanBuilder _specialTextSpanBuilder =
+      NovleSpecialTextSpanBuilder(color: Colors.black);
   @override
   void initState() {
     super.initState();
@@ -53,10 +56,21 @@ class _NovelPageState extends State<NovelPage> {
     return spans;
   }
 
+  String _getText({required String htmlContent}) {
+    // Replace &nbsp; with a regular space
+    String plainText = htmlContent.replaceAll(RegExp(r'&nbsp;'), ' ');
+    String plainText1 = plainText.replaceAll(RegExp(r'</p>'), ' ');
+    // Split the text into lines using the newline character
+    // List<String> lines = plainText1.split('<br />');
+    String plainText2 = plainText1.replaceAll(RegExp(r'<br />'), '\n');
+    return plainText2;
+  }
+
   @override
   Widget build(BuildContext context) {
     final MyColorsTheme myColors =
         Theme.of(context).extension<MyColorsTheme>()!;
+    _specialTextSpanBuilder.color = myColors.brandColor!;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.name),
@@ -80,12 +94,16 @@ class _NovelPageState extends State<NovelPage> {
   /// 构建成功
   _buildSuccess(NovelViewModel value, {required MyColorsTheme myColors}) {
     return SingleChildScrollView(
-      padding: 20.padding,
-      child: RichText(
-          text: TextSpan(
-              children: _getTextSpan(
-                  textColor: myColors.textColorHomePage!,
-                  htmlContent: value.novelState.novelEntry.data?.text ?? ''))),
-    );
+        padding: 20.padding,
+        child: ExtendedText.rich(TextSpan(children: [
+          // IgnoreGradientTextSpan(
+          //   text: _getText(
+          //       htmlContent: value.novelState.novelEntry.data?.text ?? ''),
+          // ),
+          _specialTextSpanBuilder.build(
+              _getText(
+                  htmlContent: value.novelState.novelEntry.data?.text ?? ''),
+              textStyle: const TextStyle(fontSize: 20))
+        ])));
   }
 }

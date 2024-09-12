@@ -141,21 +141,21 @@ class _BookPageState extends State<BookPage> {
 
   /// 富文本Demo
   _buildDemoExtendedText({required String title, required String body}) {
-    final NovleSpecialTextSpanBuilder builder = NovleSpecialTextSpanBuilder();
+    // final NovleSpecialTextSpanBuilder builder = NovleSpecialTextSpanBuilder();
 
-    return ExtendedText.rich(
-      gradientConfig: GradientConfigClass.config,
-      TextSpan(
-        children: [
-          IgnoreGradientTextSpan(
-            text: title,
-          ),
-          builder.build("123"),
-          IgnoreGradientTextSpan(
-            text: body,
-          ),
-        ],
-      ),
-    );
+    // return ExtendedText.rich(
+    //   gradientConfig: GradientConfigClass.config,
+    //   TextSpan(
+    //     children: [
+    //       IgnoreGradientTextSpan(
+    //         text: title,
+    //       ),
+    //       builder.build("123"),
+    //       IgnoreGradientTextSpan(
+    //         text: body,
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }
