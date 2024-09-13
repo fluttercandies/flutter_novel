@@ -28,7 +28,11 @@ class NovelIcon {
   static const String? _kFontPkg = null;
 
   static const IconData heart =
-      IconData(0xf004, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData backward =
+      IconData(0xf04a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData forward =
+      IconData(0xf04e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData cat =
       IconData(0xf6be, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData meteor =

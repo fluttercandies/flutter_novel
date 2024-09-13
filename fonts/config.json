@@ -7,21 +7,33 @@
   "ascent": 850,
   "glyphs": [
     {
-      "uid": "f5eca4c36e1b5ea2faf3c33e06db275a",
+      "uid": "a798b5b2e8d0f48d1a1fbe00b12f49c3",
+      "css": "forward",
+      "code": 61518,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "b0b8d6b277c11d88e8eeb7905016420d",
+      "css": "backward",
+      "code": 61514,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "2a3cd95de2621bd87479396f236fd2a4",
       "css": "heart",
-      "code": 61444,
+      "code": 59392,
+      "src": "websymbols"
+    },
+    {
+      "uid": "c900fd055d08348756f7376e274f100d",
+      "css": "cat",
+      "code": 63166,
       "src": "fontawesome5"
     },
     {
       "uid": "938c742dd234e23b526a28d439e5b609",
       "css": "meteor",
       "code": 63315,
-      "src": "fontawesome5"
-    },
-    {
-      "uid": "c900fd055d08348756f7376e274f100d",
-      "css": "cat",
-      "code": 63166,
       "src": "fontawesome5"
     }
   ]

@@ -3,6 +3,7 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
+import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
@@ -144,10 +145,8 @@ class _NovelPageState extends State<NovelPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildBottomAppBarItem(icon: Icons.folder, text: "目录"),
-                _buildBottomAppBarItem(
-                    icon: Icons.arrow_circle_left, text: "上一页"),
-                _buildBottomAppBarItem(
-                    icon: Icons.arrow_circle_right, text: "下一页"),
+                _buildBottomAppBarItem(icon: NovelIcon.backward, text: "上一页"),
+                _buildBottomAppBarItem(icon: NovelIcon.forward, text: "下一页"),
                 _buildBottomAppBarItem(
                     icon: themeData.theme.brightness != Brightness.dark
                         ? Icons.nightlight
