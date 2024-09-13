@@ -102,19 +102,6 @@ class _NovelPageState extends ConsumerState<NovelPage> {
         AsyncError() => const EmptyBuild(),
         _ => const LoadingBuild(),
       },
-      // ProviderConsumer<NovelViewModel>(
-      //   viewModel: _novelViewModel,
-      //   builder: (BuildContext context, NovelViewModel value, Widget? child) {
-      //     if (value.novelState.netState == NetState.loadingState) {
-      //       return const LoadingBuild();
-      //     }
-
-      //     if (value.novelState.netState == NetState.emptyDataState) {
-      //       return const EmptyBuild();
-      //     }
-      //     return _buildSuccess(value, novelTheme: _novelTheme);
-      //   },
-      // ),
       bottomNavigationBar: _buildBottmAppBar(
         height: 100,
         minHeight: 0,
@@ -133,14 +120,23 @@ class _NovelPageState extends ConsumerState<NovelPage> {
           child: Padding(
         padding: 10.padding,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
+          const Text(
             "目录",
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 22),
           ),
           Expanded(
               child: ListView.builder(
                   itemBuilder: (context, index) {
-                    return Text("${index}");
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                          "${_detailViewModel.detailState.detailNovel?.data?.list?[index].name}",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: _detailViewModel.getReadIndex() == index
+                                  ? _novelTheme.selectedColor
+                                  : _novelTheme.notSelectedColor)),
+                    );
                   },
                   itemCount: _detailViewModel
                       .detailState.detailNovel?.data?.list?.length))
