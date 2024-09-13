@@ -15,7 +15,7 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
   static const Color _colorLight = Color(0xfff87038);
   static const Color _colorDark = Color.fromARGB(255, 114, 74, 184);
   static get color => _colorLight;
-  get theme => _data;
+  ThemeData get theme => _data;
   bool isInit = false;
 
   /// 主题
@@ -118,8 +118,8 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
   void switchTheme() {
     var dataTheme =
         _data.brightness == Brightness.dark ? _lightTheme : _darkTheme;
-    _data = dataTheme!;
-    LoggerTools.looger.d('switchTheme: ${dataTheme.brightness} ');
+    _data = dataTheme;
+    LoggerTools.looger.d('_dataswitchTheme: ${_data.brightness} ');
     _setSystemUiOverlayStyle();
     state = AsyncData(_data);
   }
