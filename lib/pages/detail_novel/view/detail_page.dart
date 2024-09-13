@@ -280,7 +280,7 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ),
               Expanded(
-                child: InkWell(
+                child: GestureDetector(
                   onTap: readOnTap,
                   child: Container(
                     padding: 15.padding,
