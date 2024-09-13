@@ -32,7 +32,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
 
   final double itemHheight = 55.0;
 
-  late MyColorsTheme myColors;
+  late MyColorsTheme _myColors;
 
   /// 详情页viewModel
   late DetailViewModel _detailViewModel;
@@ -102,7 +102,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    myColors = Theme.of(context).extension<MyColorsTheme>()!;
+    _myColors = Theme.of(context).extension<MyColorsTheme>()!;
     final detailViewModel =
         ref.watch(detailViewModelProvider(urlBook: widget.bookDatum.url ?? ""));
     return Scaffold(
@@ -167,15 +167,15 @@ class _DetailPageState extends ConsumerState<DetailPage> {
         FloatingActionButton(
             heroTag: "_animationToUp",
             onPressed: _animationToUp,
-            backgroundColor: myColors.brandColor,
+            backgroundColor: _myColors.brandColor,
             child:
-                Icon(Icons.keyboard_arrow_up, color: myColors.containerColor)),
+                Icon(Icons.keyboard_arrow_up, color: _myColors.containerColor)),
         10.verticalSpace,
         FloatingActionButton(
             heroTag: "_animationToLocal",
             onPressed: _animationToLocal,
-            backgroundColor: myColors.brandColor,
-            child: Icon(Icons.location_on, color: myColors.containerColor)),
+            backgroundColor: _myColors.brandColor,
+            child: Icon(Icons.location_on, color: _myColors.containerColor)),
       ],
     );
   }
@@ -186,7 +186,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
       child: FadeIn(
           child: DefaultTextStyle(
         style: TextStyle(
-          color: myColors.textColorHomePage,
+          color: _myColors.textColorHomePage,
           fontSize: 18,
           fontWeight: FontWeight.w300,
         ),
@@ -214,7 +214,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
             SliverPersistentHeader(
                 pinned: true,
                 delegate: BookTitleSliverPersistentHeaderDelegate(
-                    myColors: myColors,
+                    myColors: _myColors,
                     reverse: _detailViewModel.reverse,
                     onPressed: () {
                       _detailViewModel.onReverse();
@@ -271,7 +271,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                         Text("${value.detailNovel?.data?.name}",
                             style: TextStyle(
                                 fontSize: 20,
-                                color: myColors.textColorHomePage)),
+                                color: _myColors.textColorHomePage)),
                         Text("${value.detailNovel?.data?.type}"),
                         Text("作者： ${value.detailNovel?.data?.author}"),
                         Text("来源： ${widget.bookDatum.name}"),
@@ -292,12 +292,12 @@ class _DetailPageState extends ConsumerState<DetailPage> {
     return Container(
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-            color: myColors.brandColor!.withOpacity(0.1),
+            color: _myColors.brandColor!.withOpacity(0.1),
             blurRadius: 5,
             offset: const Offset(0, 0))
       ]),
       child: BottomAppBar(
-          color: myColors.bottomAppBarColor,
+          color: _myColors.bottomAppBarColor,
           child: Row(
             children: [
               GestureDetector(
@@ -326,17 +326,17 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                             offset: Offset(0, 1), // 阴影偏移，第一个值是水平方向，第二个值是垂直方向
                           ),
                         ],
-                        color: myColors.brandColor,
+                        color: _myColors.brandColor,
                         borderRadius: BorderRadius.circular(30)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.bookmark_add,
-                            color: myColors.bottomAppBarColor),
+                            color: _myColors.bottomAppBarColor),
                         Text("阅读",
                             style: TextStyle(
                                 fontSize: 17,
-                                color: myColors.bottomAppBarColor)),
+                                color: _myColors.bottomAppBarColor)),
                       ],
                     ),
                   ),
@@ -380,7 +380,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: 19,
-                color: readIndex ? myColors.brandColor : Colors.black87,
+                color: readIndex ? _myColors.brandColor : Colors.black87,
                 wordSpacing: 2,
                 fontWeight: FontWeight.w300),
           ),
@@ -388,7 +388,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
               ? Text(
                   "阅读中",
                   style: TextStyle(
-                      color: myColors.brandColor, fontWeight: FontWeight.w300),
+                      color: _myColors.brandColor, fontWeight: FontWeight.w300),
                 )
               : 0.verticalSpace
         ],

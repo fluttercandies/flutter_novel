@@ -24,6 +24,7 @@ class BookPage extends ConsumerStatefulWidget {
 }
 
 class _BookPageState extends ConsumerState<BookPage> {
+  late MyColorsTheme _myColors;
   @override
   void initState() {
     super.initState();
@@ -43,8 +44,7 @@ class _BookPageState extends ConsumerState<BookPage> {
 
   @override
   Widget build(BuildContext context) {
-    final MyColorsTheme myColors =
-        Theme.of(context).extension<MyColorsTheme>()!;
+    _myColors = Theme.of(context).extension<MyColorsTheme>()!;
     final bookViewModel =
         ref.watch(bookViewModelProvider(nameBook: widget.name));
     return Scaffold(
@@ -55,7 +55,7 @@ class _BookPageState extends ConsumerState<BookPage> {
               if (value.netState == NetState.loadingState) {
                 return const LoadingBuild();
               }
-              return _buildSuccess(myColors: myColors, value: value);
+              return _buildSuccess(value: value);
             }),
           AsyncError() => const EmptyBuild(),
           _ => const LoadingBuild(),
@@ -63,11 +63,11 @@ class _BookPageState extends ConsumerState<BookPage> {
   }
 
   /// 成功 构建器
-  _buildSuccess({required BookState value, required MyColorsTheme myColors}) {
+  _buildSuccess({required BookState value}) {
     return FadeIn(
       child: DefaultTextStyle(
         style: TextStyle(
-            color: myColors.bookTitleColor,
+            color: _myColors.bookTitleColor,
             fontSize: 18,
             fontWeight: FontWeight.w300),
         child: PullToRefreshNotification(
@@ -75,7 +75,7 @@ class _BookPageState extends ConsumerState<BookPage> {
           reachToRefreshOffset: 100,
           child: CustomScrollView(slivers: [
             PullToRefresh(
-              backgroundColor: myColors.brandColor ?? Colors.grey.shade400,
+              backgroundColor: _myColors.brandColor ?? Colors.grey.shade400,
               textColor: Colors.white,
             ),
             SliverPadding(
@@ -85,7 +85,7 @@ class _BookPageState extends ConsumerState<BookPage> {
             ),
             SliverPadding(
               padding: 20.horizontal,
-              sliver: _buildList(value: value, myColors: myColors),
+              sliver: _buildList(value: value),
             )
           ]),
         ),
@@ -94,12 +94,11 @@ class _BookPageState extends ConsumerState<BookPage> {
   }
 
   /// list
-  _buildList({required BookState value, required MyColorsTheme myColors}) {
+  _buildList({required BookState value}) {
     return SliverList.separated(
       itemCount: value.bookEntry?.data?.length ?? 0,
       itemBuilder: (context, index) {
         return _buildItem(value.bookEntry?.data?[index],
-            myColors: myColors,
             onTap: () => _onToDetailPage(value.bookEntry?.data?[index]));
       },
       separatorBuilder: (BuildContext context, int index) {
@@ -109,8 +108,7 @@ class _BookPageState extends ConsumerState<BookPage> {
   }
 
   /// item
-  _buildItem(BookDatum? data,
-      {required MyColorsTheme myColors, required void Function()? onTap}) {
+  _buildItem(BookDatum? data, {required void Function()? onTap}) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -123,7 +121,7 @@ class _BookPageState extends ConsumerState<BookPage> {
               const TextSpan(text: "："),
               TextSpan(
                   text: "${data?.name}",
-                  style: TextStyle(color: myColors.bookBodyColor))
+                  style: TextStyle(color: _myColors.bookBodyColor))
             ]),
           ),
           Text.rich(
@@ -132,7 +130,7 @@ class _BookPageState extends ConsumerState<BookPage> {
               const TextSpan(text: "："),
               TextSpan(
                   text: "${data?.datumNew}",
-                  style: TextStyle(color: myColors.bookTitleColor))
+                  style: TextStyle(color: _myColors.bookTitleColor))
             ]),
           ),
         ],

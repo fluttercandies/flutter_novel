@@ -28,6 +28,7 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   double progress = .5;
+  late MyColorsTheme _myColors;
   @override
   void initState() {
     super.initState();
@@ -40,8 +41,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final MyColorsTheme myColors =
-        Theme.of(context).extension<MyColorsTheme>()!;
+    _myColors = Theme.of(context).extension<MyColorsTheme>()!;
     final homeViewModel = ref.watch(homeViewModelProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('每日推荐')),
@@ -52,7 +52,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             if (value.netState == NetState.loadingState) {
               return const LoadingBuild();
             }
-            return _buildSuccess(myColors: myColors, value: value);
+            return _buildSuccess(value: value);
           }),
         AsyncError() => const EmptyBuild(),
         _ => const LoadingBuild(),
@@ -61,11 +61,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   /// 成功状态构建
-  _buildSuccess({required MyColorsTheme myColors, required HomeState value}) {
+  _buildSuccess({required HomeState value}) {
     return FadeIn(
       child: DefaultTextStyle(
         style: TextStyle(
-            color: myColors.textColorHomePage,
+            color: _myColors.textColorHomePage,
             fontSize: 16,
             fontWeight: FontWeight.w300),
         child: PullToRefreshNotification(
@@ -74,7 +74,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: CustomScrollView(
               slivers: [
                 PullToRefresh(
-                  backgroundColor: myColors.brandColor ?? Colors.grey.shade400,
+                  backgroundColor: _myColors.brandColor ?? Colors.grey.shade400,
                   textColor: Colors.white,
                 ),
                 SliverPadding(
@@ -85,8 +85,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     )),
                     padding: 10.padding),
                 SliverToBoxAdapter(
-                  child: _buildReadList(value,
-                      progress: progress, myColors: myColors),
+                  child: _buildReadList(value, progress: progress),
                 ),
                 SliverPadding(
                     sliver: const SliverToBoxAdapter(
@@ -102,7 +101,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     itemCount: value.novelHot?.data?.length,
                     itemBuilder: (context, index) {
                       return _buildHotItem(value.novelHot?.data?[index],
-                          myColors: myColors, onTap: _onToBookPage);
+                          onTap: _onToBookPage);
                     })
               ],
             )),
@@ -112,9 +111,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   /// 热门item
   _buildHotItem(Datum? novelHot,
-      {required MyColorsTheme myColors,
-      double height = 180,
-      required void Function(String str) onTap}) {
+      {double height = 180, required void Function(String str) onTap}) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -151,7 +148,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                         5.horizontalSpace,
                         Text(novelHot?.hot ?? "0",
-                            style: TextStyle(color: myColors.brandColor)),
+                            style: TextStyle(color: _myColors.brandColor)),
                       ]),
                       5.verticalSpace,
                       Flexible(
@@ -172,10 +169,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   /// 阅读列表
   _buildReadList(HomeState value,
-      {required double progress,
-      required MyColorsTheme myColors,
-      double height = 240,
-      double widthItem = 140}) {
+      {required double progress, double height = 240, double widthItem = 140}) {
     return SizedBox(
       height: height,
       child: ListView.builder(
@@ -186,24 +180,23 @@ class _HomePageState extends ConsumerState<HomePage> {
                 width: widthItem,
                 url: value.novelHot?.data?[index].img ?? "",
                 bookName: value.novelHot?.data?[index].name ?? "",
-                progress: progress.clamp(0, 1),
-                myColors: myColors);
+                progress: progress.clamp(0, 1));
           }),
     );
   }
 
   /// 阅读列表item
-  _buildReadItem(
-      {required String url,
-      required String bookName,
-      required double progress,
-      required double width,
-      required MyColorsTheme myColors}) {
+  _buildReadItem({
+    required String url,
+    required String bookName,
+    required double progress,
+    required double width,
+  }) {
     return Container(
       margin: 5.padding,
       constraints: BoxConstraints(maxWidth: width, minWidth: width),
       decoration: BoxDecoration(
-          color: myColors.containerColor,
+          color: _myColors.containerColor,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -235,7 +228,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       child: BarberPoleProgressBar(
                           progress: progress,
                           animationEnabled: true,
-                          color: myColors.brandColor,
+                          color: _myColors.brandColor,
                           notArriveProgressAnimation: false)),
                   5.horizontalSpace,
                   SizedBox(
