@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/route/route.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
+import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      //LoggerTools.looger.i('theme: ${value.theme.brightness}');
+      LoggerTools.looger.d("MyApp Page build");
       final theme = ref.watch(themeStyleProviderProvider);
       return Center(
         child: switch (theme) {
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
     });
   }
 
+  /// build
   _buildSuccess(ThemeData theme) {
     return MaterialApp.router(
       title: 'Novel',
@@ -49,18 +51,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-// siwtch(theme){
-//         AsyncData(:final value)=>
-// MaterialApp.router(
-//         //routerConfig: _appRouter.config(),
-//         title: 'Novel',
-//         theme: theme.value,
-//         routerDelegate: _appRouter.delegate(
-//           navigatorObservers: () => [FlutterSmartDialog.observer],
-//         ),
-//         builder: FlutterSmartDialog.init(),
-//         routeInformationParser: _appRouter.defaultRouteParser(),
-//       ),
-//       AsyncError()=>const Text('error'),
-//       _=>CircularProgressIndicator
-//       }

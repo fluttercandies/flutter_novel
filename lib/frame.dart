@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/home/view/home_page.dart';
@@ -9,14 +10,14 @@ import 'package:novel_flutter_bit/widget/border_buttom_navigation_bar.dart';
 import 'package:provider/provider.dart';
 
 @RoutePage()
-class FramePage extends StatefulWidget {
+class FramePage extends ConsumerStatefulWidget {
   const FramePage({super.key});
 
   @override
-  State<FramePage> createState() => _FramePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _FramePageState();
 }
 
-class _FramePageState extends State<FramePage> {
+class _FramePageState extends ConsumerState<FramePage> {
   /// 当前选中的索引
   int _currentIndex = 0;
   int i = 0;

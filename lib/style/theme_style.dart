@@ -15,8 +15,8 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
   static const Color _colorLight = Color(0xfff87038);
   static const Color _colorDark = Color.fromARGB(255, 114, 74, 184);
   static get color => _colorLight;
-
   get theme => _data;
+  bool isInit = false;
 
   /// 主题
   late ThemeData _data = ThemeData(
@@ -30,10 +30,10 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
   );
 
   /// 浅色主题
-  late ThemeData? _lightTheme;
+  late ThemeData _lightTheme;
 
   /// 深色主题
-  late ThemeData? _darkTheme;
+  late ThemeData _darkTheme;
 
   /// 默认 appBar TextStyle
   static const TextStyle _textStyle =
@@ -42,71 +42,76 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
   /// 初始化
   @override
   Future<ThemeData> build() async {
-    LoggerTools.looger.d('init ThemeStyleProvider');
-    _lightTheme = _data.copyWith(
-      scaffoldBackgroundColor: const Color(0xfffafafa),
-      brightness: Brightness.light,
-      appBarTheme: const AppBarTheme(
-        color: Colors.white,
-        titleTextStyle: _textStyle,
-        surfaceTintColor: Colors.transparent,
-      ),
-      iconTheme: const IconThemeData(color: _colorLight),
-      textTheme: const TextTheme(
-        bodyMedium: TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
-      ),
-      extensions: <ThemeExtension<dynamic>>[
-        const MyColorsTheme(
-          brandColor: _colorLight,
-          containerColor: Colors.white,
-          textColorHomePage: Colors.black,
-          bookTitleColor: Colors.black87,
-          bookBodyColor: _colorLight,
-          bottomAppBarColor: Colors.white,
-        ),
-        const NovelTheme(
-            selectedColor: _colorLight,
-            notSelectedColor: Colors.black,
-            bottomAppBarColor: Colors.white,
-            backgroundColor: Color(0xfffafafa))
-      ],
-    );
-    _darkTheme = _data.copyWith(
-      scaffoldBackgroundColor: const Color(0xfff5f5f5),
-      brightness: Brightness.dark,
-      appBarTheme: AppBarTheme(
-          color: _colorDark,
-          surfaceTintColor: Colors.transparent,
-          titleTextStyle: _textStyle.copyWith(color: Colors.white)),
-      iconTheme: const IconThemeData(color: _colorDark),
-      textTheme: const TextTheme(
-        bodyMedium: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
-      ),
-      extensions: <ThemeExtension<dynamic>>[
-        const MyColorsTheme(
-          brandColor: _colorDark,
-          containerColor: Color(0xfffff9fe),
-          textColorHomePage: _colorDark,
-          bookTitleColor: Colors.black87,
-          bookBodyColor: _colorDark,
-          bottomAppBarColor: Color(0xfffff9fe),
-        ),
-        const NovelTheme(
-            selectedColor: _colorDark,
-            notSelectedColor: Colors.black,
-            bottomAppBarColor: Color.fromARGB(255, 251, 248, 255),
-            backgroundColor: Color(0xfffff9fe))
-      ],
-    );
-    _data = _lightTheme!;
-    _setSystemUiOverlayStyle();
-    state = AsyncData(_data);
+    _initTheme();
     return _data;
   }
 
   /// 初始化主题
   void _initTheme() {
-    if (_lightTheme == null || _darkTheme == null) {}
+    if (!isInit) {
+      LoggerTools.looger.f('init ThemeStyleProvider');
+      _lightTheme = _data.copyWith(
+        scaffoldBackgroundColor: const Color(0xfffafafa),
+        brightness: Brightness.light,
+        appBarTheme: const AppBarTheme(
+          color: Colors.white,
+          titleTextStyle: _textStyle,
+          surfaceTintColor: Colors.transparent,
+        ),
+        iconTheme: const IconThemeData(color: _colorLight),
+        textTheme: const TextTheme(
+          bodyMedium:
+              TextStyle(color: Colors.black, fontWeight: FontWeight.w300),
+        ),
+        extensions: <ThemeExtension<dynamic>>[
+          const MyColorsTheme(
+            brandColor: _colorLight,
+            containerColor: Colors.white,
+            textColorHomePage: Colors.black,
+            bookTitleColor: Colors.black87,
+            bookBodyColor: _colorLight,
+            bottomAppBarColor: Colors.white,
+          ),
+          const NovelTheme(
+              selectedColor: _colorLight,
+              notSelectedColor: Colors.black,
+              bottomAppBarColor: Colors.white,
+              backgroundColor: Color(0xfffafafa))
+        ],
+      );
+      _darkTheme = _data.copyWith(
+        scaffoldBackgroundColor: const Color(0xfff5f5f5),
+        brightness: Brightness.dark,
+        appBarTheme: AppBarTheme(
+            color: _colorDark,
+            surfaceTintColor: Colors.transparent,
+            titleTextStyle: _textStyle.copyWith(color: Colors.white)),
+        iconTheme: const IconThemeData(color: _colorDark),
+        textTheme: const TextTheme(
+          bodyMedium:
+              TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+        ),
+        extensions: <ThemeExtension<dynamic>>[
+          const MyColorsTheme(
+            brandColor: _colorDark,
+            containerColor: Color(0xfffff9fe),
+            textColorHomePage: _colorDark,
+            bookTitleColor: Colors.black87,
+            bookBodyColor: _colorDark,
+            bottomAppBarColor: Color(0xfffff9fe),
+          ),
+          const NovelTheme(
+              selectedColor: _colorDark,
+              notSelectedColor: Colors.black,
+              bottomAppBarColor: Color.fromARGB(255, 251, 248, 255),
+              backgroundColor: Color(0xfffff9fe))
+        ],
+      );
+      _setSystemUiOverlayStyle();
+      _data = _lightTheme;
+      state = AsyncData(_data);
+      isInit = true;
+    }
   }
 
   /// Toggles the current brightness between light and dark.
