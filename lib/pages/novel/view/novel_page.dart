@@ -37,7 +37,7 @@ class _NovelPageState extends State<NovelPage> {
   late NovelTheme _novelTheme;
 
   /// 主题
-  late ThemeStyleProvider themeData;
+  late ThemeStyleProvider _themeData;
 
   /// 显示隐藏
   _isShow() {
@@ -88,12 +88,15 @@ class _NovelPageState extends State<NovelPage> {
     return plainText2;
   }
 
+  /// 构建 scaffold
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     _novelTheme = Theme.of(context).extension<NovelTheme>()!;
-    themeData = context.read<ThemeStyleProvider>();
+    _themeData = context.read<ThemeStyleProvider>();
     _specialTextSpanBuilder.color = _novelTheme.selectedColor!;
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: _novelTheme.backgroundColor,
       appBar: _buildAppBar(
           height: 65,
@@ -119,6 +122,7 @@ class _NovelPageState extends State<NovelPage> {
         duration: _duration,
         isBottomBarVisible: _isBottomBarVisible,
       ),
+      drawer: const Drawer(),
     );
   }
 
@@ -150,17 +154,21 @@ class _NovelPageState extends State<NovelPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildBottomAppBarItem(icon: Icons.folder, text: "目录"),
+                _buildBottomAppBarItem(
+                    icon: Icons.folder,
+                    text: "目录",
+                    onPressed: // 使用 scaffoldKey 当前 scaffold 打开抽屉
+                        scaffoldKey.currentState?.openDrawer),
                 _buildBottomAppBarItem(icon: NovelIcon.backward, text: "上一页"),
                 _buildBottomAppBarItem(icon: NovelIcon.forward, text: "下一页"),
                 _buildBottomAppBarItem(
-                    icon: themeData.theme.brightness != Brightness.dark
+                    icon: _themeData.theme.brightness != Brightness.dark
                         ? Icons.nightlight
                         : Icons.wb_sunny,
-                    text: themeData.theme.brightness != Brightness.dark
+                    text: _themeData.theme.brightness != Brightness.dark
                         ? "夜间"
                         : "白天",
-                    onPressed: themeData.switchTheme),
+                    onPressed: _themeData.switchTheme),
                 _buildBottomAppBarItem(icon: Icons.settings, text: "设置")
               ],
             ),
@@ -203,8 +211,11 @@ class _NovelPageState extends State<NovelPage> {
         child: AnimatedOpacity(
           opacity: _isAppBarVisible ? 1.0 : 0.0,
           duration: duration,
-          child: AppBar(
-            title: Text(widget.name),
+          child: SingleChildScrollView(
+            child: AppBar(
+              leading: const BackButton(),
+              title: Text(widget.name),
+            ),
           ),
         ),
       ),
