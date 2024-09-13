@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
+import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
@@ -90,10 +91,14 @@ class _NovelPageState extends State<NovelPage> {
 
   /// 构建 scaffold
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  late DetailViewModel? _detailViewModel;
   @override
   Widget build(BuildContext context) {
     _novelTheme = Theme.of(context).extension<NovelTheme>()!;
     _themeData = context.read<ThemeStyleProvider>();
+    _detailViewModel = context.watch<DetailViewModel?>();
+    //_detailViewModel = Provider.of<DetailViewModel>(context);
     _specialTextSpanBuilder.color = _novelTheme.selectedColor!;
     return Scaffold(
       key: scaffoldKey,
@@ -122,7 +127,31 @@ class _NovelPageState extends State<NovelPage> {
         duration: _duration,
         isBottomBarVisible: _isBottomBarVisible,
       ),
-      drawer: const Drawer(),
+      drawer: _buildDrawer(),
+    );
+  }
+
+  /// 侧边栏构建抽屉
+  _buildDrawer() {
+    return Drawer(
+      backgroundColor: _novelTheme.backgroundColor,
+      child: SafeArea(
+          child: Padding(
+        padding: 10.padding,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            "目录",
+            style: TextStyle(fontSize: 20),
+          ),
+          Expanded(
+              child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return Text("${index}");
+                  },
+                  itemCount: _detailViewModel
+                      ?.detailState.detailNovel?.data?.list?.length))
+        ]),
+      )),
     );
   }
 

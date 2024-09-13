@@ -15,6 +15,7 @@ import 'package:novel_flutter_bit/widget/detail_desc_text.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class DetailPage extends StatefulWidget {
@@ -106,7 +107,24 @@ class _DetailPageState extends State<DetailPage> {
           title: const Text("书籍详情"),
           centerTitle: true,
         ),
-        body: ProviderConsumer<DetailViewModel>(
+        body:
+            //  ChangeNotifierProvider<DetailViewModel>(
+            //   create: (_) => _detailViewModel,
+            //   child: Consumer<DetailViewModel>(
+            //     builder: (context, value, child) {
+            //       if (value.detailState.netState == NetState.loadingState) {
+            //         return const LoadingBuild();
+            //       }
+
+            //       if (value.detailState.netState == NetState.emptyDataState) {
+            //         return const EmptyBuild();
+            //       }
+            //       return _buildSuccess(value);
+            //     },
+            //   ),
+            // ),
+
+            ProviderConsumer<DetailViewModel>(
           viewModel: _detailViewModel,
           builder:
               (BuildContext context, DetailViewModel value, Widget? child) {
