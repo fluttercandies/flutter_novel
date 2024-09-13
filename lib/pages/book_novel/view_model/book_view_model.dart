@@ -7,12 +7,15 @@ import 'package:novel_flutter_bit/net/service_result.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/book_novel/state/book_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+part 'book_view_model.g.dart';
 
-class BookViewModel extends BaseViewModel {
-  BookViewModel(this.name) : super();
+@riverpod
+class BookViewModel extends _$BookViewModel implements BaseViewModelImplements {
+  // BookViewModel(this.name) : super();
 
   /// 书名
-  String name;
+  late String name;
 
   /// 创建state
   BookState bookState = BookState();
@@ -27,6 +30,14 @@ class BookViewModel extends BaseViewModel {
     return true;
   }
 
+  @override
+  Future<BookState> build({required String nameBook}) async {
+    LoggerTools.looger.d("book站源 build Vlaue : name = $nameBook");
+    name = nameBook;
+    getData();
+    return bookState;
+  }
+
   void getData() async {
     ServiceResultData resultData = await NovelHttp()
         .request('book', params: {'name': name}, method: HttpConfig.get);
@@ -34,7 +45,6 @@ class BookViewModel extends BaseViewModel {
     if (resultData.data case null) {
       /// 没有更多数据了
       bookState.netState = NetState.emptyDataState;
-      notifyListeners();
       return;
     }
     bookState.netState = NetStateTools.handle(resultData);
@@ -46,8 +56,8 @@ class BookViewModel extends BaseViewModel {
 
       /// 赋值
       bookState.bookEntry = bookEntry;
-      LoggerTools.looger.d(bookState.bookEntry);
-      notifyListeners();
+      LoggerTools.looger.i(bookState.bookEntry);
+      state = AsyncData(bookState);
     }
   }
 }

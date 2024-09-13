@@ -31,6 +31,7 @@ class HomeViewModel extends _$HomeViewModel implements BaseViewModelImplements {
 
   @override
   Future<HomeState> build() async {
+    LoggerTools.looger.d("HomeViewModel init build");
     if (!_isInit) {
       _initData();
       _isInit = true;

@@ -31,7 +31,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
-    //_viewModel.initData();
   }
 
   /// 跳转小说 站源 列表 页面
@@ -57,17 +56,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           }),
         AsyncError() => const EmptyBuild(),
         _ => const LoadingBuild(),
-      }
-          //  ProviderConsumer<HomeViewModel>(
-          //   viewModel: _viewModel,
-          //   builder: (BuildContext context, HomeViewModel value, Widget? child) {
-          //     if (value.homeState.netState == NetState.loadingState) {
-          //       return const LoadingBuild();
-          //     }
-          //     return _buildSuccess(myColors: myColors, value: value);
-          //   },
-          // ),
-          ),
+      }),
     );
   }
 
