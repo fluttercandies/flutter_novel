@@ -99,7 +99,7 @@ class ThemeStyleProvider extends ChangeNotifier {
         const NovelTheme(
             selectedColor: _colorDark,
             notSelectedColor: Colors.black,
-            bottomAppBarColor: Color.fromARGB(255, 244, 240, 251),
+            bottomAppBarColor: Color.fromARGB(255, 251, 248, 255),
             backgroundColor: Color(0xfffff9fe))
       ],
     );

@@ -5,10 +5,12 @@ import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
+import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class NovelPage extends StatefulWidget {
@@ -27,8 +29,8 @@ class _NovelPageState extends State<NovelPage> {
   /// 动画时长
   final Duration _duration = const Duration(milliseconds: 300);
   // 控制AppBar和BottomNavigationBar的可见性
-  bool _isAppBarVisible = true;
-  bool _isBottomBarVisible = true;
+  bool _isAppBarVisible = false;
+  bool _isBottomBarVisible = false;
   @override
   void initState() {
     super.initState();
@@ -69,12 +71,15 @@ class _NovelPageState extends State<NovelPage> {
     return plainText2;
   }
 
+  late NovelTheme _novelTheme;
+  late ThemeStyleProvider themeData;
   @override
   Widget build(BuildContext context) {
-    final NovelTheme novelTheme = Theme.of(context).extension<NovelTheme>()!;
-    _specialTextSpanBuilder.color = novelTheme.selectedColor!;
+    _novelTheme = Theme.of(context).extension<NovelTheme>()!;
+    themeData = context.read<ThemeStyleProvider>();
+    _specialTextSpanBuilder.color = _novelTheme.selectedColor!;
     return Scaffold(
-      backgroundColor: novelTheme.backgroundColor,
+      backgroundColor: _novelTheme.backgroundColor,
       appBar: _buildAppBar(
           height: 65,
           minHeight: 40,
@@ -97,7 +102,7 @@ class _NovelPageState extends State<NovelPage> {
             if (value.novelState.netState == NetState.emptyDataState) {
               return const EmptyBuild();
             }
-            return _buildSuccess(value, novelTheme: novelTheme);
+            return _buildSuccess(value, novelTheme: _novelTheme);
           },
         ),
       ),
@@ -106,41 +111,76 @@ class _NovelPageState extends State<NovelPage> {
         minHeight: 0,
         duration: _duration,
         isBottomBarVisible: _isBottomBarVisible,
-        theme: novelTheme,
       ),
     );
   }
 
+  /// 底部导航栏构建
   _buildBottmAppBar(
       {required double height,
       required double minHeight,
       required Duration duration,
-      required bool isBottomBarVisible,
-      required NovelTheme theme}) {
-    return AnimatedOpacity(
-      opacity: isBottomBarVisible ? 1 : 0,
+      required bool isBottomBarVisible}) {
+    return AnimatedContainer(
+      height: isBottomBarVisible ? height : minHeight,
       duration: duration,
-      child: AnimatedContainer(
-        height: isBottomBarVisible ? height : minHeight,
+      decoration: BoxDecoration(
+        color: _novelTheme.bottomAppBarColor,
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(0, -1),
+            blurRadius: 10,
+            color: Colors.grey.withOpacity(0.1),
+          ),
+        ],
+      ),
+      child: AnimatedOpacity(
+        opacity: isBottomBarVisible ? 1 : 0,
         duration: duration,
-        decoration: BoxDecoration(
-          color: theme.bottomAppBarColor,
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(0, -2),
-              blurRadius: 10,
-              color: Colors.black.withOpacity(0.1),
-            ),
-          ],
-        ),
         child: BottomAppBar(
-          color: theme.bottomAppBarColor,
-          child: SizedBox(
-            height: height,
-            child: const Center(child: Text('Bottom Navigation Bar')),
+          color: _novelTheme.bottomAppBarColor,
+          child: SingleChildScrollView(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildBottomAppBarItem(icon: Icons.folder, text: "目录"),
+                _buildBottomAppBarItem(
+                    icon: Icons.arrow_circle_left, text: "上一页"),
+                _buildBottomAppBarItem(
+                    icon: Icons.arrow_circle_right, text: "下一页"),
+                _buildBottomAppBarItem(
+                    icon: themeData.theme.brightness != Brightness.dark
+                        ? Icons.nightlight
+                        : Icons.wb_sunny,
+                    text: themeData.theme.brightness != Brightness.dark
+                        ? "夜间"
+                        : "白天",
+                    onPressed: themeData.switchTheme),
+                _buildBottomAppBarItem(icon: Icons.settings, text: "设置")
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  /// 底部导航栏子项构建
+  _buildBottomAppBarItem({
+    void Function()? onPressed,
+    required IconData icon,
+    required String text,
+  }) {
+    return Column(
+      children: [
+        IconButton(
+            onPressed: onPressed,
+            icon: Icon(
+              icon,
+              color: _novelTheme.selectedColor,
+            )),
+        Text(text, style: const TextStyle(fontSize: 16, color: Colors.black))
+      ],
     );
   }
 
@@ -153,7 +193,7 @@ class _NovelPageState extends State<NovelPage> {
     return PreferredSize(
       preferredSize: Size.fromHeight(height),
       child: AnimatedContainer(
-        height: _isAppBarVisible ? height * 2 : minHeight,
+        height: _isAppBarVisible ? height * 1.5 : minHeight,
         duration: duration,
         child: AnimatedOpacity(
           opacity: _isAppBarVisible ? 1.0 : 0.0,
