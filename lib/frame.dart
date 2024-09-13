@@ -22,19 +22,21 @@ class _FramePageState extends State<FramePage> {
   int i = 0;
   @override
   Widget build(BuildContext context) {
-    final MyColorsTheme myColors =
-        Theme.of(context).extension<MyColorsTheme>()!;
-    final themeData = context.read<ThemeStyleProvider>();
+    // final MyColorsTheme myColors =
+    //     Theme.of(context).extension<MyColorsTheme>()!;
+    // final themeData = context.read<ThemeStyleProvider>();
     return Scaffold(
       extendBody: true,
       body: const HomePage(),
       floatingActionButton: FloatingActionButton(
-          onPressed: themeData.switchTheme,
+          onPressed: () {}, //themeData.switchTheme,
           child: Icon(
-              themeData.theme.brightness == Brightness.dark
-                  ? Icons.nightlight
-                  : Icons.wb_sunny,
-              color: myColors.containerColor)),
+              // themeData.theme.brightness == Brightness.dark
+              //     ? Icons.nightlight
+              //     :
+              Icons.wb_sunny,
+              color: Colors.amberAccent //myColors.containerColor
+              )),
       bottomNavigationBar: CustomBottomNavigationBar(
         borderRadius: 24,
         height: 70,

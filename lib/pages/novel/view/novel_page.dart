@@ -191,12 +191,17 @@ class _NovelPageState extends State<NovelPage> {
                 _buildBottomAppBarItem(icon: NovelIcon.backward, text: "上一页"),
                 _buildBottomAppBarItem(icon: NovelIcon.forward, text: "下一页"),
                 _buildBottomAppBarItem(
-                    icon: _themeData.theme.brightness != Brightness.dark
-                        ? Icons.nightlight
-                        : Icons.wb_sunny,
-                    text: _themeData.theme.brightness != Brightness.dark
-                        ? "夜间"
-                        : "白天",
+                    icon:
+                        // _themeData.theme.brightness != Brightness.dark
+                        //     ?
+                        //  Icons.nightlight
+                        // :
+                        Icons.wb_sunny,
+                    text:
+                        // _themeData.theme.brightness != Brightness.dark
+                        //     ? "夜间"
+                        //     :
+                        "白天",
                     onPressed: _themeData.switchTheme),
                 _buildBottomAppBarItem(icon: Icons.settings, text: "设置")
               ],

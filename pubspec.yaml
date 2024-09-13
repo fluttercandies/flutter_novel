@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.3.2        # 本地存储
   flutter_smart_dialog: ^4.9.8+1    # 弹窗
   flutter_riverpod: ^2.5.1 #riverpod: ^2.5.1                  # 状态管理
+  riverpod_annotation: ^2.3.5        #riverpod_generator: ^2.3.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -59,6 +60,9 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
   auto_route_generator: ^9.0.0
+  riverpod_generator: ^2.4.3
+  build_runner: ^2.4.12
+  custom_lint: ^0.6.7
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
