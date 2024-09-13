@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/route/route.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:provider/provider.dart';
@@ -19,11 +21,14 @@ class MyApp extends StatelessWidget {
         (BuildContext context, ThemeStyleProvider value, Widget? child) {
       //LoggerTools.looger.i('theme: ${value.theme.brightness}');
       return MaterialApp.router(
-        routerConfig: _appRouter.config(),
-        title: 'Novel Reader',
+        //routerConfig: _appRouter.config(),
+        title: 'Novel',
         theme: value.theme,
-        //darkTheme: GlobalThemData.darkThemeData,
-        // home: const FramePage(),
+        routerDelegate: _appRouter.delegate(
+          navigatorObservers: () => [FlutterSmartDialog.observer],
+        ),
+        builder: FlutterSmartDialog.init(),
+        routeInformationParser: _appRouter.defaultRouteParser(),
       );
     });
   }

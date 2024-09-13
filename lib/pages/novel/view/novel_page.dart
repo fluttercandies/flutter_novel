@@ -32,6 +32,21 @@ class _NovelPageState extends State<NovelPage> {
   // 控制AppBar和BottomNavigationBar的可见性
   bool _isAppBarVisible = false;
   bool _isBottomBarVisible = false;
+
+  /// 主题
+  late NovelTheme _novelTheme;
+
+  /// 主题
+  late ThemeStyleProvider themeData;
+
+  /// 显示隐藏
+  _isShow() {
+    setState(() {
+      _isAppBarVisible = !_isAppBarVisible;
+      _isBottomBarVisible = !_isBottomBarVisible;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +80,7 @@ class _NovelPageState extends State<NovelPage> {
     return spans;
   }
 
+  /// 获取文本
   String _getText({required String htmlContent}) {
     String plainText = htmlContent.replaceAll(RegExp(r'&nbsp;'), ' ');
     String plainText1 = plainText.replaceAll(RegExp(r'</p>'), ' ');
@@ -72,8 +88,6 @@ class _NovelPageState extends State<NovelPage> {
     return plainText2;
   }
 
-  late NovelTheme _novelTheme;
-  late ThemeStyleProvider themeData;
   @override
   Widget build(BuildContext context) {
     _novelTheme = Theme.of(context).extension<NovelTheme>()!;
@@ -86,26 +100,18 @@ class _NovelPageState extends State<NovelPage> {
           minHeight: 40,
           duration: _duration,
           isAppBarVisible: _isAppBarVisible),
-      body: GestureDetector(
-        onTap: () {
-          setState(() {
-            _isAppBarVisible = !_isAppBarVisible;
-            _isBottomBarVisible = !_isBottomBarVisible;
-          });
-        },
-        child: ProviderConsumer<NovelViewModel>(
-          viewModel: _novelViewModel,
-          builder: (BuildContext context, NovelViewModel value, Widget? child) {
-            if (value.novelState.netState == NetState.loadingState) {
-              return const LoadingBuild();
-            }
+      body: ProviderConsumer<NovelViewModel>(
+        viewModel: _novelViewModel,
+        builder: (BuildContext context, NovelViewModel value, Widget? child) {
+          if (value.novelState.netState == NetState.loadingState) {
+            return const LoadingBuild();
+          }
 
-            if (value.novelState.netState == NetState.emptyDataState) {
-              return const EmptyBuild();
-            }
-            return _buildSuccess(value, novelTheme: _novelTheme);
-          },
-        ),
+          if (value.novelState.netState == NetState.emptyDataState) {
+            return const EmptyBuild();
+          }
+          return _buildSuccess(value, novelTheme: _novelTheme);
+        },
       ),
       bottomNavigationBar: _buildBottmAppBar(
         height: 100,
@@ -211,17 +217,20 @@ class _NovelPageState extends State<NovelPage> {
         fontSize: novelTheme.fontSize,
         fontWeight: novelTheme.fontWeight,
         color: novelTheme.notSelectedColor);
-    return SingleChildScrollView(
-        padding: 20.padding,
-        child: ExtendedText.rich(TextSpan(children: [
-          // IgnoreGradientTextSpan(
-          //   text: _getText(
-          //       htmlContent: value.novelState.novelEntry.data?.text ?? ''),
-          // ),
-          _specialTextSpanBuilder.build(
-              _getText(
-                  htmlContent: value.novelState.novelEntry.data?.text ?? ''),
-              textStyle: style)
-        ])));
+    return GestureDetector(
+      onTap: _isShow,
+      child: SingleChildScrollView(
+          padding: 20.padding,
+          child: ExtendedText.rich(TextSpan(children: [
+            // IgnoreGradientTextSpan(
+            //   text: _getText(
+            //       htmlContent: value.novelState.novelEntry.data?.text ?? ''),
+            // ),
+            _specialTextSpanBuilder.build(
+                _getText(
+                    htmlContent: value.novelState.novelEntry.data?.text ?? ''),
+                textStyle: style)
+          ]))),
+    );
   }
 }

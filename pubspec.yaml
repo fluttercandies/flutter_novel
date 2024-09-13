@@ -46,6 +46,7 @@ dependencies:
   animate_do: ^3.3.4                # 动画
   flutter_staggered_grid_view: ^0.7.0   # 瀑布流
   shared_preferences: ^2.3.2        # 本地存储
+  flutter_smart_dialog: ^4.9.8+1    # 弹窗
 dev_dependencies:
   flutter_test:
     sdk: flutter
