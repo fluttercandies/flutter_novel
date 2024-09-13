@@ -1,35 +1,37 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
+import 'package:novel_flutter_bit/pages/home/state/home_state.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
+import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/barber_pole_progress_bar.dart';
+import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/pull_to_refresh.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final HomeViewModel _viewModel = HomeViewModel();
+class _HomePageState extends ConsumerState<HomePage> {
   double progress = .5;
   @override
   void initState() {
     super.initState();
-    _viewModel.getData();
+    //_viewModel.initData();
   }
 
   /// 跳转小说 站源 列表 页面
@@ -41,25 +43,36 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final MyColorsTheme myColors =
         Theme.of(context).extension<MyColorsTheme>()!;
+    final homeViewModel = ref.watch(homeViewModelProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('每日推荐')),
       body: SafeArea(
-        child: ProviderConsumer<HomeViewModel>(
-          viewModel: _viewModel,
-          builder: (BuildContext context, HomeViewModel value, Widget? child) {
-            if (value.homeState.netState == NetState.loadingState) {
+          child: switch (homeViewModel) {
+        AsyncData(:final value) => Builder(builder: (BuildContext context) {
+            //LoggerTools.looger.e(value.netState);
+            if (value.netState == NetState.loadingState) {
               return const LoadingBuild();
             }
             return _buildSuccess(myColors: myColors, value: value);
-          },
-        ),
-      ),
+          }),
+        AsyncError() => const EmptyBuild(),
+        _ => const LoadingBuild(),
+      }
+          //  ProviderConsumer<HomeViewModel>(
+          //   viewModel: _viewModel,
+          //   builder: (BuildContext context, HomeViewModel value, Widget? child) {
+          //     if (value.homeState.netState == NetState.loadingState) {
+          //       return const LoadingBuild();
+          //     }
+          //     return _buildSuccess(myColors: myColors, value: value);
+          //   },
+          // ),
+          ),
     );
   }
 
   /// 成功状态构建
-  _buildSuccess(
-      {required MyColorsTheme myColors, required HomeViewModel value}) {
+  _buildSuccess({required MyColorsTheme myColors, required HomeState value}) {
     return FadeIn(
       child: DefaultTextStyle(
         style: TextStyle(
@@ -68,7 +81,7 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.w300),
         child: PullToRefreshNotification(
             reachToRefreshOffset: 100,
-            onRefresh: value.onRefresh,
+            onRefresh: ref.read(homeViewModelProvider.notifier).onRefresh,
             child: CustomScrollView(
               slivers: [
                 PullToRefresh(
@@ -97,12 +110,10 @@ class _HomePageState extends State<HomePage> {
                     )),
                     padding: 10.padding),
                 SliverList.builder(
-                    itemCount: value.homeState.novelHot?.data?.length,
+                    itemCount: value.novelHot?.data?.length,
                     itemBuilder: (context, index) {
-                      return _buildHotItem(
-                          value.homeState.novelHot?.data?[index],
-                          myColors: myColors,
-                          onTap: _onToBookPage);
+                      return _buildHotItem(value.novelHot?.data?[index],
+                          myColors: myColors, onTap: _onToBookPage);
                     })
               ],
             )),
@@ -171,7 +182,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// 阅读列表
-  _buildReadList(HomeViewModel value,
+  _buildReadList(HomeState value,
       {required double progress,
       required MyColorsTheme myColors,
       double height = 240,
@@ -180,12 +191,12 @@ class _HomePageState extends State<HomePage> {
       height: height,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: value.homeState.novelHot?.data?.length,
+          itemCount: value.novelHot?.data?.length,
           itemBuilder: (context, index) {
             return _buildReadItem(
                 width: widthItem,
-                url: value.homeState.novelHot?.data?[index].img ?? "",
-                bookName: value.homeState.novelHot?.data?[index].name ?? "",
+                url: value.novelHot?.data?[index].img ?? "",
+                bookName: value.novelHot?.data?[index].name ?? "",
                 progress: progress.clamp(0, 1),
                 myColors: myColors);
           }),
