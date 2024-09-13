@@ -1,11 +1,13 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/base/base_provider.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
+import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
@@ -15,29 +17,28 @@ import 'package:novel_flutter_bit/widget/detail_desc_text.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
-import 'package:provider/provider.dart';
 
 @RoutePage()
-class DetailPage extends StatefulWidget {
+class DetailPage extends ConsumerStatefulWidget {
   const DetailPage({super.key, required this.bookDatum});
   final BookDatum bookDatum;
   @override
-  State<DetailPage> createState() => _DetailPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _DetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _DetailPageState extends ConsumerState<DetailPage> {
   /// 创建viewModel
-  late DetailViewModel _detailViewModel;
   late ScrollController _scrollController;
 
   final double itemHheight = 55.0;
 
   late MyColorsTheme myColors;
+
+  /// 详情页viewModel
+  late DetailViewModel _detailViewModel;
   @override
   void initState() {
     super.initState();
-    _detailViewModel = DetailViewModel(widget.bookDatum.url!);
-    _detailViewModel.getData();
     _scrollController = ScrollController();
   }
 
@@ -102,42 +103,57 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     myColors = Theme.of(context).extension<MyColorsTheme>()!;
+    final detailViewModel =
+        ref.watch(detailViewModelProvider(urlBook: widget.bookDatum.url ?? ""));
     return Scaffold(
         appBar: AppBar(
           title: const Text("书籍详情"),
           centerTitle: true,
         ),
-        body:
-            //  ChangeNotifierProvider<DetailViewModel>(
-            //   create: (_) => _detailViewModel,
-            //   child: Consumer<DetailViewModel>(
-            //     builder: (context, value, child) {
-            //       if (value.detailState.netState == NetState.loadingState) {
-            //         return const LoadingBuild();
-            //       }
+        body: switch (detailViewModel) {
+          AsyncData(:final value) => Builder(builder: (BuildContext context) {
+              //LoggerTools.looger.e(value.netState);
+              _detailViewModel = ref.read(
+                  detailViewModelProvider(urlBook: widget.bookDatum.url ?? "")
+                      .notifier);
+              if (value.netState == NetState.loadingState) {
+                return const LoadingBuild();
+              }
+              return _buildSuccess(value: value);
+            }),
+          AsyncError() => const EmptyBuild(),
+          _ => const LoadingBuild(),
+        },
+        //  ChangeNotifierProvider<DetailViewModel>(
+        //   create: (_) => _detailViewModel,
+        //   child: Consumer<DetailViewModel>(
+        //     builder: (context, value, child) {
+        //       if (value.detailState.netState == NetState.loadingState) {
+        //         return const LoadingBuild();
+        //       }
 
-            //       if (value.detailState.netState == NetState.emptyDataState) {
-            //         return const EmptyBuild();
-            //       }
-            //       return _buildSuccess(value);
-            //     },
-            //   ),
-            // ),
+        //       if (value.detailState.netState == NetState.emptyDataState) {
+        //         return const EmptyBuild();
+        //       }
+        //       return _buildSuccess(value);
+        //     },
+        //   ),
+        // ),
 
-            ProviderConsumer<DetailViewModel>(
-          viewModel: _detailViewModel,
-          builder:
-              (BuildContext context, DetailViewModel value, Widget? child) {
-            if (value.detailState.netState == NetState.loadingState) {
-              return const LoadingBuild();
-            }
+        //     ProviderConsumer<DetailViewModel>(
+        //   viewModel: _detailViewModel,
+        //   builder:
+        //       (BuildContext context, DetailViewModel value, Widget? child) {
+        //     if (value.detailState.netState == NetState.loadingState) {
+        //       return const LoadingBuild();
+        //     }
 
-            if (value.detailState.netState == NetState.emptyDataState) {
-              return const EmptyBuild();
-            }
-            return _buildSuccess(value);
-          },
-        ),
+        //     if (value.detailState.netState == NetState.emptyDataState) {
+        //       return const EmptyBuild();
+        //     }
+        //     return _buildSuccess(value);
+        //   },
+        // ),
         bottomNavigationBar:
             _buildBottomAppbar(readOnTap: _onKeepReadNovelPage),
         floatingActionButton: _buildFloatingActionButton());
@@ -165,7 +181,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   /// 成功状态构建
-  _buildSuccess(DetailViewModel value, {double height = 160}) {
+  _buildSuccess({required DetailState value, double height = 160}) {
     return SafeArea(
       child: FadeIn(
           child: DefaultTextStyle(
@@ -187,7 +203,7 @@ class _DetailPageState extends State<DetailPage> {
                   children: [
                     const Text("书籍简介", style: TextStyle(fontSize: 18)),
                     DetailDescText(
-                      text: " ${value.detailState.detailNovel?.data?.desc}",
+                      text: " ${value.detailNovel?.data?.desc}",
                       maxLines: 3,
                     ),
                   ],
@@ -199,10 +215,11 @@ class _DetailPageState extends State<DetailPage> {
                 pinned: true,
                 delegate: BookTitleSliverPersistentHeaderDelegate(
                     myColors: myColors,
-                    reverse: value.reverse,
-                    onPressed: value.onReverse,
-                    count: value.detailState.detailNovel?.data?.list?.length ??
-                        0)),
+                    reverse: _detailViewModel.reverse,
+                    onPressed: () {
+                      _detailViewModel.onReverse();
+                    },
+                    count: value.detailNovel?.data?.list?.length ?? 0)),
             _buildGridElement(value: value)
           ],
         ),
@@ -213,7 +230,7 @@ class _DetailPageState extends State<DetailPage> {
   /// 构建标题
   SliverPadding _buildTitle({
     required double height,
-    required DetailViewModel value,
+    required DetailState value,
   }) {
     return SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -236,7 +253,7 @@ class _DetailPageState extends State<DetailPage> {
                     fit: BoxFit.cover,
                     isJoinUrl: true,
                     height: height,
-                    url: "${value.detailState.detailNovel?.data?.img}",
+                    url: "${value.detailNovel?.data?.img}",
                   ),
                 ),
                 20.horizontalSpace,
@@ -251,13 +268,12 @@ class _DetailPageState extends State<DetailPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("${value.detailState.detailNovel?.data?.name}",
+                        Text("${value.detailNovel?.data?.name}",
                             style: TextStyle(
                                 fontSize: 20,
                                 color: myColors.textColorHomePage)),
-                        Text("${value.detailState.detailNovel?.data?.type}"),
-                        Text(
-                            "作者： ${value.detailState.detailNovel?.data?.author}"),
+                        Text("${value.detailNovel?.data?.type}"),
+                        Text("作者： ${value.detailNovel?.data?.author}"),
                         Text("来源： ${widget.bookDatum.name}"),
                         Text("最新章节： ${widget.bookDatum.datumNew}"),
                       ],
@@ -333,22 +349,20 @@ class _DetailPageState extends State<DetailPage> {
 
   /// 章节列表
   SliverList _buildGridElement({
-    required DetailViewModel value,
+    required DetailState value,
   }) {
     return SliverList.builder(
       itemBuilder: (context, index) {
         bool readIndex = _detailViewModel.strUrl.name ==
-            value.detailState.detailNovel?.data?.list?[index].name;
+            value.detailNovel?.data?.list?[index].name;
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () =>
-              _onToNovelPage(value.detailState.detailNovel?.data?.list?[index]),
+          onTap: () => _onToNovelPage(value.detailNovel?.data?.list?[index]),
           child: _buildSliverItem(
-              "${value.detailState.detailNovel?.data?.list?[index].name}",
-              readIndex),
+              "${value.detailNovel?.data?.list?[index].name}", readIndex),
         );
       },
-      itemCount: value.detailState.detailNovel?.data?.list?.length,
+      itemCount: value.detailNovel?.data?.list?.length,
     );
   }
 

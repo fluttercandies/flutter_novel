@@ -47,6 +47,7 @@ class HomeViewModel extends _$HomeViewModel implements BaseViewModelImplements {
     if (resultData.data case null) {
       /// 没有更多数据了
       homeState.netState = NetState.emptyDataState;
+      state = AsyncData(homeState);
       return;
     }
     homeState.netState = NetStateTools.handle(resultData);

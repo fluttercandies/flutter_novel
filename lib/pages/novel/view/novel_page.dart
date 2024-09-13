@@ -38,7 +38,7 @@ class _NovelPageState extends State<NovelPage> {
   late NovelTheme _novelTheme;
 
   /// 主题
-  late ThemeStyleProvider _themeData;
+  //late ThemeStyleProvider _themeData;
 
   /// 显示隐藏
   _isShow() {
@@ -96,8 +96,8 @@ class _NovelPageState extends State<NovelPage> {
   @override
   Widget build(BuildContext context) {
     _novelTheme = Theme.of(context).extension<NovelTheme>()!;
-    _themeData = context.read<ThemeStyleProvider>();
-    _detailViewModel = context.watch<DetailViewModel?>();
+    // _themeData = context.read<ThemeStyleProvider>();
+    // _detailViewModel = context.watch<DetailViewModel?>();
     //_detailViewModel = Provider.of<DetailViewModel>(context);
     _specialTextSpanBuilder.color = _novelTheme.selectedColor!;
     return Scaffold(
@@ -202,7 +202,8 @@ class _NovelPageState extends State<NovelPage> {
                         //     ? "夜间"
                         //     :
                         "白天",
-                    onPressed: _themeData.switchTheme),
+                    onPressed: null //_themeData.switchTheme
+                    ),
                 _buildBottomAppBarItem(icon: Icons.settings, text: "设置")
               ],
             ),

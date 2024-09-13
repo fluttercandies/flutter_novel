@@ -59,21 +59,7 @@ class _BookPageState extends ConsumerState<BookPage> {
             }),
           AsyncError() => const EmptyBuild(),
           _ => const LoadingBuild(),
-        }
-        // ProviderConsumer<BookViewModel>(
-        //     viewModel: _bookViewModel,
-        //     builder:
-        //         (BuildContext context, BookViewModel value, Widget? child) {
-        //       if (value.bookState.netState == NetState.loadingState) {
-        //         return const LoadingBuild();
-        //       }
-
-        //       if (value.bookState.netState == NetState.emptyDataState) {
-        //         return const EmptyBuild();
-        //       }
-        //       return _buildSuccess(value, myColors: myColors);
-        //     })
-        );
+        });
   }
 
   /// 成功 构建器

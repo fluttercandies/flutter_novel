@@ -45,6 +45,7 @@ class BookViewModel extends _$BookViewModel implements BaseViewModelImplements {
     if (resultData.data case null) {
       /// 没有更多数据了
       bookState.netState = NetState.emptyDataState;
+      state = AsyncData(bookState);
       return;
     }
     bookState.netState = NetStateTools.handle(resultData);

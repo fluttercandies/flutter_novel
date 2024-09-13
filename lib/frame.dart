@@ -18,6 +18,14 @@ class _FramePageState extends ConsumerState<FramePage> {
   /// 当前选中的索引
   int _currentIndex = 0;
   int i = 0;
+
+  late ThemeStyleProvider _themeStyleProvider;
+  @override
+  void initState() {
+    super.initState();
+    _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,12 +33,11 @@ class _FramePageState extends ConsumerState<FramePage> {
       body: const HomePage(),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            ref.read(themeStyleProviderProvider.notifier).switchTheme();
+            _themeStyleProvider.switchTheme();
             setState(() {});
           }, //themeData.switchTheme,
           child: Icon(
-              ref.read(themeStyleProviderProvider.notifier).theme.brightness ==
-                      Brightness.dark
+              _themeStyleProvider.theme.brightness == Brightness.dark
                   ? Icons.nightlight
                   : Icons.wb_sunny,
               color: Colors.amberAccent //myColors.containerColor

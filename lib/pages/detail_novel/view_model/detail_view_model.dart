@@ -9,10 +9,13 @@ import 'package:novel_flutter_bit/net/service_result.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+part 'detail_view_model.g.dart';
 
-class DetailViewModel extends BaseViewModel {
-  final String url;
+@riverpod
+class DetailViewModel extends _$DetailViewModel {
+  late String url;
 
   /// 创建state
   DetailState detailState = DetailState();
@@ -26,13 +29,29 @@ class DetailViewModel extends BaseViewModel {
   /// 存储实例
   late Future<SharedPreferences> prefs;
 
-  DetailViewModel(this.url) {
-    LoggerTools.looger.d("HomeViewModel init $url");
-    // Obtain shared preferences.
-    prefs = SharedPreferences.getInstance();
-    prefs.then((value) {
-      _init(value);
-    });
+  late bool isInit = false;
+
+  // DetailViewModel(this.url) {
+  //   LoggerTools.looger.d("HomeViewModel init $url");
+  //   // Obtain shared preferences.
+  //   prefs = SharedPreferences.getInstance();
+  //   prefs.then((value) {
+  //     _init(value);
+  //   });
+  // }
+
+  @override
+  Future<DetailState> build({required String urlBook}) async {
+    LoggerTools.looger.d("DetailViewModel build Vlaue : $urlBook");
+    url = urlBook;
+    if (!isInit) {
+      prefs = SharedPreferences.getInstance();
+      prefs.then((value) {
+        _init(value);
+      });
+    }
+    getData();
+    return detailState;
   }
 
   /// 初始化 坐标
@@ -49,17 +68,7 @@ class DetailViewModel extends BaseViewModel {
     var data = detailState.detailNovel?.data?.list?.reversed.toList();
     detailState.detailNovel?.data?.list = data;
     reverse = !reverse;
-    notifyListeners();
-  }
-
-  @override
-  Future<bool> onRefresh() async {
-    LoggerTools.looger.d("首页 onRefresh Vlaue : ${detailState.netState}");
-    getData();
-    await Future.delayed(const Duration(seconds: 1));
-    LoggerTools.looger.d("首页 onRefresh Vlaue : ${detailState.netState}");
-    // bool value = detailState.netState == NetState.dataSuccessState;
-    return true;
+    state = AsyncData(detailState);
   }
 
   void getData() async {
@@ -70,7 +79,7 @@ class DetailViewModel extends BaseViewModel {
     if (resultData.data case null) {
       /// 没有更多数据了
       detailState.netState = NetState.emptyDataState;
-      notifyListeners();
+      state = AsyncData(detailState);
       return;
     }
     detailState.netState = NetStateTools.handle(resultData);
@@ -82,9 +91,8 @@ class DetailViewModel extends BaseViewModel {
 
       /// 赋值
       detailState.detailNovel = novelHot;
-      LoggerTools.looger.d(detailState.detailNovel);
-
-      notifyListeners();
+      LoggerTools.looger.i(detailState.detailNovel);
+      state = AsyncData(detailState);
     }
   }
 
@@ -95,7 +103,7 @@ class DetailViewModel extends BaseViewModel {
     await prefs.then((value) async {
       await value.setString(url, json.encode(data)); //jsonEncode()
     });
-    notifyListeners();
+    state = AsyncData(detailState);
   }
 
   int getReadIndex() {
