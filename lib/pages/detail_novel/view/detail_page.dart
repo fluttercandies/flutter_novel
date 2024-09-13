@@ -51,16 +51,20 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   /// 跳转小说展示页
   _onToNovelPage(ListElement? data) {
     _detailViewModel.setReadIndex(data ?? ListElement());
-    context.router
-        .push(NovelRoute(url: data?.url ?? "", name: data?.name ?? ""));
+    context.router.push(NovelRoute(
+        url: data?.url ?? "",
+        name: data?.name ?? "",
+        novelUrl: widget.bookDatum.url ?? ""));
   }
 
   // 跳转阅读页
   _onKeepReadNovelPage() {
     int index = _detailViewModel.getReadIndex();
     var data = _detailViewModel.detailState.detailNovel?.data?.list?[index];
-    context.router
-        .push(NovelRoute(url: data?.url ?? "", name: data?.name ?? ""));
+    context.router.push(NovelRoute(
+        url: data?.url ?? "",
+        name: data?.name ?? "",
+        novelUrl: widget.bookDatum.url ?? ""));
   }
 
   /// 滚动到顶部

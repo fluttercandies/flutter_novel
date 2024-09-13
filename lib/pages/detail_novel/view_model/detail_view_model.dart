@@ -106,6 +106,7 @@ class DetailViewModel extends _$DetailViewModel {
     state = AsyncData(detailState);
   }
 
+  /// 获取阅读索引
   int getReadIndex() {
     for (var i = 0;
         i < (detailState.detailNovel?.data?.list?.length ?? 0);

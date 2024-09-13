@@ -136,6 +136,7 @@ class NovelRoute extends _i5.PageRouteInfo<NovelRouteArgs> {
     _i6.Key? key,
     required String url,
     required String name,
+    required String novelUrl,
     List<_i5.PageRouteInfo>? children,
   }) : super(
           NovelRoute.name,
@@ -143,6 +144,7 @@ class NovelRoute extends _i5.PageRouteInfo<NovelRouteArgs> {
             key: key,
             url: url,
             name: name,
+            novelUrl: novelUrl,
           ),
           initialChildren: children,
         );
@@ -157,6 +159,7 @@ class NovelRoute extends _i5.PageRouteInfo<NovelRouteArgs> {
         key: args.key,
         url: args.url,
         name: args.name,
+        novelUrl: args.novelUrl,
       );
     },
   );
@@ -167,6 +170,7 @@ class NovelRouteArgs {
     this.key,
     required this.url,
     required this.name,
+    required this.novelUrl,
   });
 
   final _i6.Key? key;
@@ -175,8 +179,10 @@ class NovelRouteArgs {
 
   final String name;
 
+  final String novelUrl;
+
   @override
   String toString() {
-    return 'NovelRouteArgs{key: $key, url: $url, name: $name}';
+    return 'NovelRouteArgs{key: $key, url: $url, name: $name, novelUrl: $novelUrl}';
   }
 }
