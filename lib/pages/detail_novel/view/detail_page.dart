@@ -60,6 +60,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   _onKeepReadNovelPage() {
     int index = _detailViewModel.getReadIndex();
     var data = _detailViewModel.detailState.detailNovel?.data?.list?[index];
+    _detailViewModel.setReadIndex(data ?? ListElement());
     context.router.push(NovelRoute(
         url: data?.url ?? "",
         name: data?.name ?? "",

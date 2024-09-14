@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
@@ -18,6 +15,7 @@ import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
+import 'package:novel_flutter_bit/widget/slider.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
 
 @RoutePage()
@@ -129,6 +127,34 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     });
   }
 
+  /// 打开设置
+  _openSetting() {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SizedBox(
+            height: 300,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Text("设置"),
+                  CustomSlider(
+                    minValue: 0,
+                    maxValue: 15,
+                    height: 20,
+                    progressBarColor: _novelTheme.selectedColor!,
+                    progressBarBackgroundColor: Colors.grey.shade300,
+                    onChanged: (double value) {},
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -191,9 +217,9 @@ class _NovelPageState extends ConsumerState<NovelPage> {
           child: Padding(
         padding: 10.padding,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text(
+          Text(
             "目录",
-            style: TextStyle(fontSize: 22),
+            style: TextStyle(fontSize: 22, color: _novelTheme.notSelectedColor),
           ),
           Expanded(
               child: ListView.builder(
@@ -270,7 +296,8 @@ class _NovelPageState extends ConsumerState<NovelPage> {
                     icon: isDark ? Icons.nightlight : Icons.wb_sunny,
                     text: isDark ? "夜间" : "白天",
                     onPressed: _themeStyleProvider.switchTheme),
-                _buildBottomAppBarItem(icon: Icons.settings, text: "设置")
+                _buildBottomAppBarItem(
+                    icon: Icons.settings, text: "设置", onPressed: _openSetting)
               ],
             ),
           ),
@@ -315,7 +342,10 @@ class _NovelPageState extends ConsumerState<NovelPage> {
           child: SingleChildScrollView(
             child: AppBar(
               leading: const BackButton(),
-              title: Text(widget.name),
+              title: Text(
+                widget.name,
+                style: const TextStyle(fontSize: 20),
+              ),
             ),
           ),
         ),
@@ -330,14 +360,20 @@ class _NovelPageState extends ConsumerState<NovelPage> {
         fontWeight: _novelTheme.fontWeight,
         color: _novelTheme.notSelectedColor);
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: _isShow,
-      child: SingleChildScrollView(
-          padding: 20.padding,
-          child: ExtendedText.rich(TextSpan(children: [
-            _specialTextSpanBuilder.build(
-                _getText(htmlContent: value.novelEntry.data?.text ?? ''),
-                textStyle: style)
-          ]))),
+      child: Center(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: SingleChildScrollView(
+              padding: 20.padding,
+              child: ExtendedText.rich(TextSpan(children: [
+                _specialTextSpanBuilder.build(
+                    _getText(htmlContent: value.novelEntry.data?.text ?? ''),
+                    textStyle: style)
+              ]))),
+        ),
+      ),
     );
   }
 }
