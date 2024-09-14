@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/base/base_view_model.dart';
 import 'package:novel_flutter_bit/net/http_config.dart';

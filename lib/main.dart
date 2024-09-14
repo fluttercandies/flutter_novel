@@ -6,7 +6,6 @@ import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 void main() {
   runApp(
