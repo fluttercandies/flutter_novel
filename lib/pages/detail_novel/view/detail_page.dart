@@ -127,36 +127,6 @@ class _DetailPageState extends ConsumerState<DetailPage> {
           AsyncError() => const EmptyBuild(),
           _ => const LoadingBuild(),
         },
-        //  ChangeNotifierProvider<DetailViewModel>(
-        //   create: (_) => _detailViewModel,
-        //   child: Consumer<DetailViewModel>(
-        //     builder: (context, value, child) {
-        //       if (value.detailState.netState == NetState.loadingState) {
-        //         return const LoadingBuild();
-        //       }
-
-        //       if (value.detailState.netState == NetState.emptyDataState) {
-        //         return const EmptyBuild();
-        //       }
-        //       return _buildSuccess(value);
-        //     },
-        //   ),
-        // ),
-
-        //     ProviderConsumer<DetailViewModel>(
-        //   viewModel: _detailViewModel,
-        //   builder:
-        //       (BuildContext context, DetailViewModel value, Widget? child) {
-        //     if (value.detailState.netState == NetState.loadingState) {
-        //       return const LoadingBuild();
-        //     }
-
-        //     if (value.detailState.netState == NetState.emptyDataState) {
-        //       return const EmptyBuild();
-        //     }
-        //     return _buildSuccess(value);
-        //   },
-        // ),
         bottomNavigationBar:
             _buildBottomAppbar(readOnTap: _onKeepReadNovelPage),
         floatingActionButton: _buildFloatingActionButton());
@@ -223,7 +193,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                       _detailViewModel.onReverse();
                     },
                     count: value.detailNovel?.data?.list?.length ?? 0)),
-            _buildGridElement(value: value)
+            _buildListElement(value: value)
           ],
         ),
       )),
@@ -351,7 +321,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   }
 
   /// 章节列表
-  SliverList _buildGridElement({
+  SliverList _buildListElement({
     required DetailState value,
   }) {
     return SliverList.builder(
@@ -377,15 +347,17 @@ class _DetailPageState extends ConsumerState<DetailPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                fontSize: 19,
-                color: readIndex ? _myColors.brandColor : Colors.black87,
-                wordSpacing: 2,
-                fontWeight: FontWeight.w300),
+          Expanded(
+            child: Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: 19,
+                  color: readIndex ? _myColors.brandColor : Colors.black87,
+                  wordSpacing: 2,
+                  fontWeight: FontWeight.w300),
+            ),
           ),
           readIndex
               ? Text(

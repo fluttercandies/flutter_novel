@@ -9,6 +9,7 @@ import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
+import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
@@ -46,7 +47,11 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   /// 主题
   late NovelTheme _novelTheme;
 
+  /// 主题样式
   late ThemeStyleProvider _themeStyleProvider;
+
+  ///
+  final ScrollController _controller = ScrollController();
 
   /// 构建 scaffold
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -59,6 +64,21 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     setState(() {
       _isAppBarVisible = !_isAppBarVisible;
       _isBottomBarVisible = !_isBottomBarVisible;
+    });
+  }
+
+  /// 打开抽屉
+  _openDrawer({Duration duration = const Duration(milliseconds: 300)}) {
+    scaffoldKey.currentState?.openDrawer();
+    final index = _detailViewModel.getReadIndex();
+    final height = ((context.size?.height ?? 0) / 2.5);
+    Future.delayed(duration, () {
+      if (index > 100) {
+        _controller.jumpTo(index.toDouble() * 50 - height);
+        return;
+      }
+      _controller.animateTo(index.toDouble() * 50 - height,
+          duration: duration, curve: Curves.easeIn);
     });
   }
 
@@ -130,10 +150,13 @@ class _NovelPageState extends ConsumerState<NovelPage> {
           ),
           Expanded(
               child: ListView.builder(
+                  controller: _controller,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    return SizedBox(
+                      height: 50,
                       child: Text(
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           "${_detailViewModel.detailState.detailNovel?.data?.list?[index].name}",
                           style: TextStyle(
                               fontSize: 18,
@@ -182,7 +205,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
                     icon: Icons.folder,
                     text: "目录",
                     onPressed: // 使用 scaffoldKey 当前 scaffold 打开抽屉
-                        scaffoldKey.currentState?.openDrawer),
+                        _openDrawer),
                 _buildBottomAppBarItem(icon: NovelIcon.backward, text: "上一页"),
                 _buildBottomAppBarItem(icon: NovelIcon.forward, text: "下一页"),
                 _buildBottomAppBarItem(
