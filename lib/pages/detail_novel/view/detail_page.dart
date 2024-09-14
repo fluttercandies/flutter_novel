@@ -109,27 +109,29 @@ class _DetailPageState extends ConsumerState<DetailPage> {
     final detailViewModel =
         ref.watch(detailViewModelProvider(urlBook: widget.bookDatum.url ?? ""));
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("书籍详情"),
-          centerTitle: true,
-        ),
-        body: switch (detailViewModel) {
-          AsyncData(:final value) => Builder(builder: (BuildContext context) {
-              //LoggerTools.looger.e(value.netState);
-              _detailViewModel = ref.read(
-                  detailViewModelProvider(urlBook: widget.bookDatum.url ?? "")
-                      .notifier);
-              if (value.netState == NetState.loadingState) {
-                return const LoadingBuild();
-              }
-              return _buildSuccess(value: value);
-            }),
-          AsyncError() => const EmptyBuild(),
-          _ => const LoadingBuild(),
-        },
-        bottomNavigationBar:
-            _buildBottomAppbar(readOnTap: _onKeepReadNovelPage),
-        floatingActionButton: _buildFloatingActionButton());
+      body: switch (detailViewModel) {
+        AsyncData(:final value) => Builder(builder: (BuildContext context) {
+            //LoggerTools.looger.e(value.netState);
+            _detailViewModel = ref.read(
+                detailViewModelProvider(urlBook: widget.bookDatum.url ?? "")
+                    .notifier);
+            if (value.netState == NetState.loadingState) {
+              return const LoadingBuild();
+            }
+            return Scaffold(
+                appBar: AppBar(
+                  title: const Text("书籍详情"),
+                  centerTitle: true,
+                ),
+                body: _buildSuccess(value: value),
+                bottomNavigationBar:
+                    _buildBottomAppbar(readOnTap: _onKeepReadNovelPage),
+                floatingActionButton: _buildFloatingActionButton());
+          }),
+        AsyncError() => const EmptyBuild(),
+        _ => const LoadingBuild(),
+      },
+    );
   }
 
   /// 浮动按钮
@@ -306,7 +308,10 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                       children: [
                         Icon(Icons.bookmark_add,
                             color: _myColors.bottomAppBarColor),
-                        Text("阅读",
+                        Text(
+                            _detailViewModel.getReadIndex() > 0
+                                ? "继续阅读"
+                                : "开始阅读",
                             style: TextStyle(
                                 fontSize: 17,
                                 color: _myColors.bottomAppBarColor)),
