@@ -8,6 +8,7 @@ import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_mode
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
+import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
@@ -45,6 +46,8 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   /// 主题
   late NovelTheme _novelTheme;
 
+  late ThemeStyleProvider _themeStyleProvider;
+
   /// 构建 scaffold
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -64,6 +67,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     super.initState();
     _detailViewModel =
         ref.read(detailViewModelProvider(urlBook: widget.novelUrl).notifier);
+    _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
   }
 
   /// 获取文本
@@ -151,6 +155,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
       required double minHeight,
       required Duration duration,
       required bool isBottomBarVisible}) {
+    bool isDark = _themeStyleProvider.theme.brightness != Brightness.dark;
     return AnimatedContainer(
       height: isBottomBarVisible ? height : minHeight,
       duration: duration,
@@ -181,19 +186,9 @@ class _NovelPageState extends ConsumerState<NovelPage> {
                 _buildBottomAppBarItem(icon: NovelIcon.backward, text: "上一页"),
                 _buildBottomAppBarItem(icon: NovelIcon.forward, text: "下一页"),
                 _buildBottomAppBarItem(
-                    icon:
-                        // _themeData.theme.brightness != Brightness.dark
-                        //     ?
-                        //  Icons.nightlight
-                        // :
-                        Icons.wb_sunny,
-                    text:
-                        // _themeData.theme.brightness != Brightness.dark
-                        //     ? "夜间"
-                        //     :
-                        "白天",
-                    onPressed: null //_themeData.switchTheme
-                    ),
+                    icon: isDark ? Icons.nightlight : Icons.wb_sunny,
+                    text: isDark ? "夜间" : "白天",
+                    onPressed: _themeStyleProvider.switchTheme),
                 _buildBottomAppBarItem(icon: Icons.settings, text: "设置")
               ],
             ),
