@@ -38,6 +38,9 @@ class DetailViewModel extends _$DetailViewModel {
   //     _init(value);
   //   });
   // }
+  changeNovelDta(ListElement data) {
+    setReadIndex(data);
+  }
 
   @override
   Future<DetailState> build({required String urlBook}) async {

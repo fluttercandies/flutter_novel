@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
+import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
+import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
-import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
@@ -65,6 +66,13 @@ class _NovelPageState extends ConsumerState<NovelPage> {
       _isAppBarVisible = !_isAppBarVisible;
       _isBottomBarVisible = !_isBottomBarVisible;
     });
+  }
+
+  /// 小说页面切换
+  _changeNovelData({required ListElement data}) {
+    _detailViewModel.changeNovelDta(data);
+    context.router.replace(NovelRoute(
+        url: data.url ?? "", name: data.name ?? "", novelUrl: widget.novelUrl));
   }
 
   /// 打开抽屉
@@ -152,17 +160,22 @@ class _NovelPageState extends ConsumerState<NovelPage> {
               child: ListView.builder(
                   controller: _controller,
                   itemBuilder: (context, index) {
-                    return SizedBox(
-                      height: 50,
-                      child: Text(
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          "${_detailViewModel.detailState.detailNovel?.data?.list?[index].name}",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: _detailViewModel.getReadIndex() == index
-                                  ? _novelTheme.selectedColor
-                                  : _novelTheme.notSelectedColor)),
+                    return GestureDetector(
+                      onTap: () => _changeNovelData(
+                          data: _detailViewModel
+                              .detailState.detailNovel!.data!.list![index]),
+                      child: SizedBox(
+                        height: 50,
+                        child: Text(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            "${_detailViewModel.detailState.detailNovel?.data?.list?[index].name}",
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: _detailViewModel.getReadIndex() == index
+                                    ? _novelTheme.selectedColor
+                                    : _novelTheme.notSelectedColor)),
+                      ),
                     );
                   },
                   itemCount: _detailViewModel
