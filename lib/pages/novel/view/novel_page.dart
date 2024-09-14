@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
@@ -73,6 +77,41 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     _detailViewModel.changeNovelDta(data);
     context.router.replace(NovelRoute(
         url: data.url ?? "", name: data.name ?? "", novelUrl: widget.novelUrl));
+  }
+
+  /// 小说页面切换 下一页
+  _changeNovelToNext() {
+    final index = _detailViewModel.getReadIndex();
+    if ((_detailViewModel.detailState.detailNovel?.data?.list?.length ?? 0) <
+        index + 1) {
+      SmartDialog.showToast("已经是最后一章咯");
+      return;
+    }
+    final data =
+        _detailViewModel.detailState.detailNovel?.data?.list?[index + 1];
+    _detailViewModel.changeNovelDta(
+        data ?? ListElement(name: widget.name, url: widget.url));
+    context.router.replace(NovelRoute(
+        url: data?.url ?? widget.name,
+        name: data?.name ?? widget.url,
+        novelUrl: widget.novelUrl));
+  }
+
+  /// 小说页面切换 下一页
+  _changeNovelToBack() {
+    final index = _detailViewModel.getReadIndex();
+    if (index == 0) {
+      SmartDialog.showToast("已经是第一章咯");
+      return;
+    }
+    final data =
+        _detailViewModel.detailState.detailNovel?.data?.list?[index - 1];
+    _detailViewModel.changeNovelDta(
+        data ?? ListElement(name: widget.name, url: widget.url));
+    context.router.replace(NovelRoute(
+        url: data?.url ?? widget.name,
+        name: data?.name ?? widget.url,
+        novelUrl: widget.novelUrl));
   }
 
   /// 打开抽屉
@@ -219,8 +258,14 @@ class _NovelPageState extends ConsumerState<NovelPage> {
                     text: "目录",
                     onPressed: // 使用 scaffoldKey 当前 scaffold 打开抽屉
                         _openDrawer),
-                _buildBottomAppBarItem(icon: NovelIcon.backward, text: "上一页"),
-                _buildBottomAppBarItem(icon: NovelIcon.forward, text: "下一页"),
+                _buildBottomAppBarItem(
+                    icon: NovelIcon.backward,
+                    text: "上一页",
+                    onPressed: _changeNovelToBack),
+                _buildBottomAppBarItem(
+                    icon: NovelIcon.forward,
+                    text: "下一页",
+                    onPressed: _changeNovelToNext),
                 _buildBottomAppBarItem(
                     icon: isDark ? Icons.nightlight : Icons.wb_sunny,
                     text: isDark ? "夜间" : "白天",
