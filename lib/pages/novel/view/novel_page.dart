@@ -13,6 +13,7 @@ import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
+import 'package:novel_flutter_bit/tools/shared_preferences_novle.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/show_slider_sheet.dart';
@@ -178,6 +179,8 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     if (!_isInit) {
       _isInit = true;
       NovelSize.size = _novelTheme.fontSize!;
+      NovelSize.size =
+          SharedPreferencesNovle.prefs.getDouble("fontSize") ?? NovelSize.size;
     }
 
     final novelViewModel =

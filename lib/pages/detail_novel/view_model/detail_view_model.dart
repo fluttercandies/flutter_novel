@@ -8,6 +8,7 @@ import 'package:novel_flutter_bit/net/service_result.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
+import 'package:novel_flutter_bit/tools/shared_preferences_novle.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 part 'detail_view_model.g.dart';
@@ -24,9 +25,6 @@ class DetailViewModel extends _$DetailViewModel {
 
   /// 排序顺序
   late bool reverse = false;
-
-  /// 存储实例
-  late Future<SharedPreferences> prefs;
 
   late bool isInit = false;
 
@@ -47,18 +45,15 @@ class DetailViewModel extends _$DetailViewModel {
     LoggerTools.looger.d("DetailViewModel build Vlaue : $urlBook");
     url = urlBook;
     if (!isInit) {
-      prefs = SharedPreferences.getInstance();
-      prefs.then((value) {
-        _init(value);
-      });
+      _init();
     }
     getData();
     return detailState;
   }
 
   /// 初始化 坐标
-  _init(SharedPreferences value) {
-    String? str = value.getString(url);
+  _init() {
+    String? str = SharedPreferencesNovle.prefs.getString(url);
     if (str case String st?) {
       var data = json.decode(st);
       strUrl = ListElement.fromJson(data);
@@ -102,9 +97,8 @@ class DetailViewModel extends _$DetailViewModel {
   setReadIndex(ListElement data) async {
     strUrl = data;
     LoggerTools.looger.d("setReadIndex : ${data.toJson().toString()}");
-    await prefs.then((value) async {
-      await value.setString(url, json.encode(data)); //jsonEncode()
-    });
+    await SharedPreferencesNovle.prefs
+        .setString(url, json.encode(data)); //jsonEncode()
     state = AsyncData(detailState);
   }
 

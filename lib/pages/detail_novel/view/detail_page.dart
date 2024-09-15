@@ -13,6 +13,7 @@ import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
+import 'package:novel_flutter_bit/tools/shared_preferences_novle.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/detail_desc_text.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
@@ -61,6 +62,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
         name: data?.name ?? "",
         novelUrl: widget.bookDatum.url ?? ""));
     _themeStyleProvider.initTheme(size: NovelSize.size);
+    SharedPreferencesNovle.prefs.setDouble("fontSize", NovelSize.size);
   }
 
   // 跳转阅读页
@@ -73,6 +75,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
         name: data?.name ?? "",
         novelUrl: widget.bookDatum.url ?? ""));
     _themeStyleProvider.initTheme(size: NovelSize.size);
+    SharedPreferencesNovle.prefs.setDouble("fontSize", NovelSize.size);
   }
 
   /// 滚动到顶部
