@@ -13,8 +13,10 @@ import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
+import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
+import 'package:novel_flutter_bit/widget/show_slider_sheet.dart';
 import 'package:novel_flutter_bit/widget/slider_novel.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
@@ -59,6 +61,16 @@ class _NovelPageState extends ConsumerState<NovelPage> {
 
   /// 构建 scaffold
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  /// 字体大小
+  late double _value;
+  @override
+  void initState() {
+    super.initState();
+    _detailViewModel =
+        ref.read(detailViewModelProvider(urlBook: widget.novelUrl).notifier);
+    _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
+  }
 
   /// 主题
   //late ThemeStyleProvider _themeData;
@@ -128,41 +140,18 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     });
   }
 
-  late double _value = 20;
-
   /// 打开设置
   _openSetting() {
     showModalBottomSheet(
         backgroundColor: Colors.white,
         context: context,
         builder: (BuildContext context) {
-          return SizedBox(
-            height: 500,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Text("设置"),
-                  SliderNovel(
-                    value: _value,
-                    onChanged: (p0) {
-                      _value = p0;
-                    },
-                  )
-                ],
-              ),
-            ),
+          return ShowSliderSheet(
+            novelTheme: _novelTheme,
+            value: _value,
+            onPressed: (size) => _themeStyleProvider.initTheme(size: size),
           );
         });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _detailViewModel =
-        ref.read(detailViewModelProvider(urlBook: widget.novelUrl).notifier);
-    _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
   }
 
   /// 获取文本
@@ -180,6 +169,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     // _detailViewModel = context.watch<DetailViewModel?>();
     //_detailViewModel = Provider.of<DetailViewModel>(context);
     _specialTextSpanBuilder.color = _novelTheme.selectedColor!;
+    _value = _novelTheme.fontSize!;
     final novelViewModel =
         ref.watch(novelViewModelProvider(urlNovel: widget.url));
     return Scaffold(

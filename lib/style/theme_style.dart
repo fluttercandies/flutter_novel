@@ -43,12 +43,15 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
   /// 初始化
   @override
   Future<ThemeData> build() async {
-    _initTheme();
+    initTheme();
     return _data;
   }
 
   /// 初始化主题
-  void _initTheme() {
+  void initTheme({double? size}) {
+    if (size != null) {
+      isInit = false;
+    }
     if (!isInit) {
       LoggerTools.looger.f('init ThemeStyleProvider');
       _lightTheme = _data.copyWith(
@@ -73,11 +76,12 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
             bookBodyColor: _colorLight,
             bottomAppBarColor: Colors.white,
           ),
-          const NovelTheme(
+          NovelTheme(
+              fontSize: size ?? 18,
               selectedColor: _colorLight,
               notSelectedColor: Colors.black,
               bottomAppBarColor: Colors.white,
-              backgroundColor: Color(0xfffafafa))
+              backgroundColor: const Color(0xfffafafa))
         ],
       );
       _darkTheme = _data.copyWith(
@@ -101,11 +105,12 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
             bookBodyColor: _colorDark,
             bottomAppBarColor: Color(0xfffff9fe),
           ),
-          const NovelTheme(
+          NovelTheme(
+              fontSize: size ?? 18,
               selectedColor: _colorDark,
               notSelectedColor: Colors.black,
-              bottomAppBarColor: Color.fromARGB(255, 251, 248, 255),
-              backgroundColor: Color(0xfffff9fe))
+              bottomAppBarColor: const Color.fromARGB(255, 251, 248, 255),
+              backgroundColor: const Color(0xfffff9fe))
         ],
       );
       _setSystemUiOverlayStyle();

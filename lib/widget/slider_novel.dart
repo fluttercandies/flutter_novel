@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -7,10 +9,12 @@ class SliderNovel extends StatefulWidget {
       this.min = 10.0,
       this.max = 30.0,
       required this.value,
-      required this.onChanged});
+      required this.onChanged,
+      required this.color});
   late double min;
   late double max;
   late double value;
+  late Color color;
   late Function(dynamic)? onChanged;
   @override
   State<SliderNovel> createState() => _SliderNovelState();
@@ -22,8 +26,7 @@ class _SliderNovelState extends State<SliderNovel> {
     return Theme(
       data: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-              primary: Colors.red,
-              seedColor: const Color.fromARGB(255, 0, 140, 255))),
+              primary: widget.color, seedColor: widget.color)),
       child: SfSlider(
         min: widget.min,
         max: widget.max,
@@ -33,7 +36,7 @@ class _SliderNovelState extends State<SliderNovel> {
         showTicks: true,
         showLabels: true,
         enableTooltip: true,
-        activeColor: Colors.red,
+        activeColor: widget.color,
         inactiveColor: Colors.grey.shade300,
         minorTicksPerInterval: 5,
         onChanged: (dynamic value) {
