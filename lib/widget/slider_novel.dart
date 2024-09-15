@@ -7,7 +7,7 @@ class SliderNovel extends StatefulWidget {
   SliderNovel(
       {super.key,
       this.min = 10.0,
-      this.max = 30.0,
+      this.max = 40.0,
       required this.value,
       required this.onChanged,
       required this.color});

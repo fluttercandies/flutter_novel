@@ -8,11 +8,11 @@ class ShowSliderSheet extends StatefulWidget {
     super.key,
     required this.novelTheme,
     required this.value,
-    required this.onPressed,
+    required this.onChanged,
   });
   final NovelTheme novelTheme;
   late double value;
-  final void Function(double size) onPressed;
+  final dynamic Function(dynamic)? onChanged;
   @override
   State<ShowSliderSheet> createState() => _ShowSliderSheetState();
 }
@@ -34,17 +34,11 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
               onChanged: (p0) {
                 widget.value = p0;
                 setState(() {});
+                if (widget.onChanged != null) {
+                  widget.onChanged!(widget.value);
+                }
               },
             ),
-            const Spacer(),
-            widget.value != widget.novelTheme.fontSize
-                ? ElevatedButton(
-                    onPressed: () {
-                      widget.onPressed(widget.value);
-                      Navigator.pop(context);
-                    },
-                    child: const Text("保存设置"))
-                : 0.verticalSpace,
           ],
         ),
       ),

@@ -64,6 +64,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
 
   /// 字体大小
   late double _value;
+  late bool _isInit = false;
   @override
   void initState() {
     super.initState();
@@ -149,7 +150,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
           return ShowSliderSheet(
             novelTheme: _novelTheme,
             value: _value,
-            onPressed: (size) => _themeStyleProvider.initTheme(size: size),
+            onChanged: (size) => setState(() => _value = size),
           );
         });
   }
@@ -165,11 +166,12 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   @override
   Widget build(BuildContext context) {
     _novelTheme = Theme.of(context).extension<NovelTheme>()!;
-    // _themeData = context.read<ThemeStyleProvider>();
-    // _detailViewModel = context.watch<DetailViewModel?>();
-    //_detailViewModel = Provider.of<DetailViewModel>(context);
     _specialTextSpanBuilder.color = _novelTheme.selectedColor!;
-    _value = _novelTheme.fontSize!;
+    if (!_isInit) {
+      _isInit = true;
+      _value = _novelTheme.fontSize!;
+    }
+
     final novelViewModel =
         ref.watch(novelViewModelProvider(urlNovel: widget.url));
     return Scaffold(
@@ -348,7 +350,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   /// 构建成功
   _buildSuccess({required NovelState value}) {
     TextStyle style = TextStyle(
-        fontSize: _novelTheme.fontSize,
+        fontSize: _value,
         fontWeight: _novelTheme.fontWeight,
         color: _novelTheme.notSelectedColor);
     return GestureDetector(
