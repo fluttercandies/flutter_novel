@@ -49,6 +49,7 @@ dependencies:
   flutter_smart_dialog: ^4.9.8+1    # 弹窗
   flutter_riverpod: ^2.5.1 #riverpod: ^2.5.1                  # 状态管理
   riverpod_annotation: ^2.3.5        #riverpod_generator: ^2.3.5
+  syncfusion_flutter_sliders: ^26.2.14  # 滑动选择器
 dev_dependencies:
   flutter_test:
     sdk: flutter

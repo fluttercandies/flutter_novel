@@ -15,8 +15,9 @@ import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
-import 'package:novel_flutter_bit/widget/slider.dart';
+import 'package:novel_flutter_bit/widget/slider_novel.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 @RoutePage()
 class NovelPage extends ConsumerStatefulWidget {
@@ -127,26 +128,27 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     });
   }
 
+  late double _value = 20;
+
   /// 打开设置
   _openSetting() {
     showModalBottomSheet(
+        backgroundColor: Colors.white,
         context: context,
         builder: (BuildContext context) {
           return SizedBox(
-            height: 300,
+            height: 500,
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
                   Text("设置"),
-                  CustomSlider(
-                    minValue: 0,
-                    maxValue: 15,
-                    height: 20,
-                    progressBarColor: _novelTheme.selectedColor!,
-                    progressBarBackgroundColor: Colors.grey.shade300,
-                    onChanged: (double value) {},
+                  SliderNovel(
+                    value: _value,
+                    onChanged: (p0) {
+                      _value = p0;
+                    },
                   )
                 ],
               ),

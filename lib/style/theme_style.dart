@@ -21,7 +21,8 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
   /// 主题
   late ThemeData _data = ThemeData(
     fontFamily: 'MiSans',
-    colorScheme: ColorScheme.fromSeed(seedColor: _colorLight),
+    colorScheme:
+        ColorScheme.fromSeed(seedColor: _colorLight, primary: _colorLight),
     useMaterial3: true,
     iconButtonTheme: const IconButtonThemeData(
         style: ButtonStyle(
