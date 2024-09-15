@@ -8,8 +8,10 @@ import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
+import 'package:novel_flutter_bit/pages/novel/view/novel_page.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
+import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/detail_desc_text.dart';
@@ -35,10 +37,14 @@ class _DetailPageState extends ConsumerState<DetailPage> {
 
   /// 详情页viewModel
   late DetailViewModel _detailViewModel;
+
+  /// 主题样式
+  late ThemeStyleProvider _themeStyleProvider;
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
   }
 
   @override
@@ -48,23 +54,25 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   }
 
   /// 跳转小说展示页
-  _onToNovelPage(ListElement? data) {
+  _onToNovelPage(ListElement? data) async {
     _detailViewModel.setReadIndex(data ?? ListElement());
-    context.router.push(NovelRoute(
+    await context.router.push(NovelRoute(
         url: data?.url ?? "",
         name: data?.name ?? "",
         novelUrl: widget.bookDatum.url ?? ""));
+    _themeStyleProvider.initTheme(size: NovelSize.size);
   }
 
   // 跳转阅读页
-  _onKeepReadNovelPage() {
+  _onKeepReadNovelPage() async {
     int index = _detailViewModel.getReadIndex();
     var data = _detailViewModel.detailState.detailNovel?.data?.list?[index];
     _detailViewModel.setReadIndex(data ?? ListElement());
-    context.router.push(NovelRoute(
+    await context.router.push(NovelRoute(
         url: data?.url ?? "",
         name: data?.name ?? "",
         novelUrl: widget.bookDatum.url ?? ""));
+    _themeStyleProvider.initTheme(size: NovelSize.size);
   }
 
   /// 滚动到顶部

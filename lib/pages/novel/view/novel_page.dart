@@ -13,13 +13,14 @@ import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
-import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/show_slider_sheet.dart';
-import 'package:novel_flutter_bit/widget/slider_novel.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
+
+class NovelSize {
+  static double size = 18;
+}
 
 @RoutePage()
 class NovelPage extends ConsumerStatefulWidget {
@@ -63,8 +64,15 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   /// 字体大小
-  late double _value;
   late bool _isInit = false;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    //_themeStyleProvider.initTheme(size: _value);
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -149,8 +157,8 @@ class _NovelPageState extends ConsumerState<NovelPage> {
         builder: (BuildContext context) {
           return ShowSliderSheet(
             novelTheme: _novelTheme,
-            value: _value,
-            onChanged: (size) => setState(() => _value = size),
+            value: NovelSize.size,
+            onChanged: (size) => setState(() => NovelSize.size = size),
           );
         });
   }
@@ -169,7 +177,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     _specialTextSpanBuilder.color = _novelTheme.selectedColor!;
     if (!_isInit) {
       _isInit = true;
-      _value = _novelTheme.fontSize!;
+      NovelSize.size = _novelTheme.fontSize!;
     }
 
     final novelViewModel =
@@ -335,7 +343,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
           duration: duration,
           child: SingleChildScrollView(
             child: AppBar(
-              leading: const BackButton(),
+              leading: const AutoLeadingButton(),
               title: Text(
                 widget.name,
                 style: const TextStyle(fontSize: 20),
@@ -350,7 +358,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   /// 构建成功
   _buildSuccess({required NovelState value}) {
     TextStyle style = TextStyle(
-        fontSize: _value,
+        fontSize: NovelSize.size,
         fontWeight: _novelTheme.fontWeight,
         color: _novelTheme.notSelectedColor);
     return GestureDetector(
