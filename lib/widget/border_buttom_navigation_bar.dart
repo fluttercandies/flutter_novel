@@ -37,7 +37,7 @@ class CustomBottomNavigationBar extends StatefulWidget {
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
-    final MyColorsTheme colors = Theme.of(context).extension<MyColorsTheme>()!;
+    // final MyColorsTheme colors = Theme.of(context).extension<MyColorsTheme>()!;
     return Container(
         height: widget.height,
         decoration: BoxDecoration(
@@ -73,9 +73,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                         bool isSelected = value.key == widget.currentIndex;
                         Icon icon = value.value;
                         icon = Icon(icon.icon,
-                            color:
-                                isSelected ? Colors.white : colors.brandColor);
-                        return _buildItem(value, isSelected, icon, colors);
+                            color: isSelected
+                                ? Colors.white
+                                : Theme.of(context).primaryColor);
+                        return _buildItem(value, isSelected, icon);
                       }).toList()),
                 ),
               )),
@@ -83,8 +84,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   }
 
   /// 单个item
-  Widget _buildItem(MapEntry<int, Icon> value, bool isSelected, Icon icon,
-      MyColorsTheme colors) {
+  Widget _buildItem(MapEntry<int, Icon> value, bool isSelected, Icon icon) {
     return GestureDetector(
       onTap: () => widget.onTap(value.key),
       child: AnimatedContainer(
@@ -92,7 +92,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: isSelected ? colors.brandColor : Colors.transparent),
+              color: isSelected
+                  ? Theme.of(context).primaryColor
+                  : Colors.transparent),
           duration: Durations.short4,
           child: icon),
     );

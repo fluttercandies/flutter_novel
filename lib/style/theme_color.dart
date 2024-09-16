@@ -23,3 +23,10 @@ abstract class LocalThemeStyle {
   double get fontSize;
   Color get appbarColor;
 }
+
+abstract class ThemeStyle {
+  static late  Color primaryColor;
+  static late Color backgroundColor;
+  static late Color appbarColor;
+  static late Color textColor;
+}

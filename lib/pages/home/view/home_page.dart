@@ -27,7 +27,7 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   double progress = .5;
-  late MyColorsTheme _myColors;
+  //late MyColorsTheme _myColors;
   @override
   void initState() {
     super.initState();
@@ -40,7 +40,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _myColors = Theme.of(context).extension<MyColorsTheme>()!;
+    //_myColors = Theme.of(context).extension<MyColorsTheme>()!;
     final homeViewModel = ref.watch(homeViewModelProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('每日推荐')),
@@ -63,17 +63,18 @@ class _HomePageState extends ConsumerState<HomePage> {
   _buildSuccess({required HomeState value}) {
     return FadeIn(
       child: DefaultTextStyle(
-        style: TextStyle(
-            color: _myColors.textColorHomePage,
-            fontSize: 16,
-            fontWeight: FontWeight.w300),
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(fontSize: 17, fontWeight: FontWeight.w300),
         child: PullToRefreshNotification(
             reachToRefreshOffset: 100,
             onRefresh: ref.read(homeViewModelProvider.notifier).onRefresh,
             child: CustomScrollView(
               slivers: [
                 PullToRefresh(
-                  backgroundColor: _myColors.brandColor ?? Colors.grey.shade400,
+                  backgroundColor: Theme.of(context).primaryColor,
+                  //_myColors.brandColor ?? Colors.grey.shade400,
                   textColor: Colors.white,
                 ),
                 SliverPadding(
@@ -147,7 +148,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                         5.horizontalSpace,
                         Text(novelHot?.hot ?? "0",
-                            style: TextStyle(color: _myColors.brandColor)),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor)),
                       ]),
                       5.verticalSpace,
                       Flexible(
@@ -168,7 +170,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   /// 阅读列表
   _buildReadList(HomeState value,
-      {required double progress, double height = 240, double widthItem = 140}) {
+      {required double progress, double height = 250, double widthItem = 135}) {
     return SizedBox(
       height: height,
       child: ListView.builder(
@@ -195,7 +197,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       margin: 5.padding,
       constraints: BoxConstraints(maxWidth: width, minWidth: width),
       decoration: BoxDecoration(
-          color: _myColors.containerColor,
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -224,11 +226,21 @@ class _HomePageState extends ConsumerState<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Flexible(
-                      child: BarberPoleProgressBar(
-                          progress: progress,
-                          animationEnabled: true,
-                          color: _myColors.brandColor,
-                          notArriveProgressAnimation: false)),
+                      child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      color: Theme.of(context).primaryColor,
+                      backgroundColor:
+                          Theme.of(context).primaryColor.withOpacity(.2),
+                    ),
+                  )
+                      // BarberPoleProgressBar(
+                      //     progress: progress,
+                      //     animationEnabled: true,
+                      //     color: Theme.of(context).primaryColor,
+                      //     notArriveProgressAnimation: false)
+                      ),
                   5.horizontalSpace,
                   SizedBox(
                       width: 40,
