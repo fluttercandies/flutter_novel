@@ -21,4 +21,5 @@ abstract class LocalThemeStyle {
   Color get bottomAppBarColor;
   Color get backgroundColor;
   double get fontSize;
+  Color get appbarColor;
 }

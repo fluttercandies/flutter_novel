@@ -4,7 +4,7 @@ import 'package:novel_flutter_bit/style/theme_color.dart';
 /// 公用颜色部分提取
 abstract class CommonThemeColors implements LocalThemeStyle {
   @override
-  Color get iconFontColor => const Color(0xff868d9a);
+  Color get iconFontColor => const Color(0xfff87038);
   @override
   Color get iconFontHighlightColor => const Color(0xfffefefe);
   @override
@@ -14,50 +14,57 @@ abstract class CommonThemeColors implements LocalThemeStyle {
   @override
   Color get brandColor => const Color(0xff29D697);
   @override
-  Color get successColor => const Color(0xff05D69C);
+  Color get successColor => const Color.fromARGB(255, 26, 214, 5);
   @override
   Color get errorColor => const Color(0xffec1f5a);
 
   @override
-  Color get backgroundColor => throw UnimplementedError();
+  Color get backgroundColor => const Color(0xfffafafa);
 
   @override
-  Color get bottomAppBarColor => throw UnimplementedError();
+  Color get bottomAppBarColor => Colors.white;
 
   @override
-  double get fontSize => throw UnimplementedError();
+  double get fontSize => 18;
+
+  @override
+  Color get appbarColor => Colors.white;
 }
 
 /// 亮色主题配置
 class LocalThemeLight extends CommonThemeColors {
   @override
-  Color get iconFontDarkLightColor => const Color(0xfffefefe);
+  Color get iconFontDarkLightColor => const Color(0xfff87038);
+  @override
+  Color get appbarColor => const Color(0xfff87038);
   @override
   Color get auxiliaryColor => const Color(0xffe1e1e1);
   @override
   Color get warningColor => const Color(0xffe2d21a);
 
   @override
-  Color get titleColor => const Color(0xff222832);
+  Color get titleColor => const Color(0xfff87038);
   @override
   Color get textColor => const Color(0xff282d37);
   @override
   Color get auxiliaryTextColor => const Color(0xff868d9a);
 
   @override
-  Color get backgroundColor => throw UnimplementedError();
+  Color get backgroundColor => const Color(0xfffafafa);
 
   @override
-  Color get bottomAppBarColor => throw UnimplementedError();
+  Color get bottomAppBarColor => Colors.white;
 
   @override
-  double get fontSize => throw UnimplementedError();
+  double get fontSize => 18;
 }
 
 /// 暗色主题配置
 class LocalThemeDark extends CommonThemeColors {
   @override
-  Color get iconFontDarkLightColor => const Color(0xfffefefe);
+  Color get iconFontDarkLightColor => const Color.fromARGB(255, 114, 74, 184);
+  @override
+  Color get appbarColor => const Color.fromARGB(255, 114, 74, 184);
   @override
   Color get auxiliaryColor => const Color(0xffD6E3FF);
   @override
@@ -71,11 +78,11 @@ class LocalThemeDark extends CommonThemeColors {
   Color get auxiliaryTextColor => const Color(0xffeaeaea);
 
   @override
-  Color get backgroundColor => throw UnimplementedError();
+  Color get backgroundColor => const Color(0xfff5f5f5);
 
   @override
-  Color get bottomAppBarColor => throw UnimplementedError();
+  Color get bottomAppBarColor => const Color(0xfffff9fe);
 
   @override
-  double get fontSize => throw UnimplementedError();
+  double get fontSize => 18;
 }
