@@ -24,7 +24,7 @@ class BookPage extends ConsumerStatefulWidget {
 }
 
 class _BookPageState extends ConsumerState<BookPage> {
-  late MyColorsTheme _myColors;
+  //late MyColorsTheme _myColors;
   @override
   void initState() {
     super.initState();
@@ -44,7 +44,7 @@ class _BookPageState extends ConsumerState<BookPage> {
 
   @override
   Widget build(BuildContext context) {
-    _myColors = Theme.of(context).extension<MyColorsTheme>()!;
+    //_myColors = Theme.of(context).extension<MyColorsTheme>()!;
     final bookViewModel =
         ref.watch(bookViewModelProvider(nameBook: widget.name));
     return Scaffold(
@@ -67,7 +67,7 @@ class _BookPageState extends ConsumerState<BookPage> {
     return FadeIn(
       child: DefaultTextStyle(
         style: TextStyle(
-            color: _myColors.bookTitleColor,
+            color: Theme.of(context).textTheme.bodyLarge?.color,
             fontSize: 18,
             fontWeight: FontWeight.w300),
         child: PullToRefreshNotification(
@@ -75,7 +75,7 @@ class _BookPageState extends ConsumerState<BookPage> {
           reachToRefreshOffset: 100,
           child: CustomScrollView(slivers: [
             PullToRefresh(
-              backgroundColor: _myColors.brandColor ?? Colors.grey.shade400,
+              backgroundColor: Theme.of(context).primaryColor,
               textColor: Colors.white,
             ),
             SliverPadding(
@@ -121,16 +121,14 @@ class _BookPageState extends ConsumerState<BookPage> {
               const TextSpan(text: "："),
               TextSpan(
                   text: "${data?.name}",
-                  style: TextStyle(color: _myColors.bookBodyColor))
+                  style: TextStyle(color: Theme.of(context).primaryColor))
             ]),
           ),
           Text.rich(
             TextSpan(children: [
               const TextSpan(text: "最新章节"),
               const TextSpan(text: "："),
-              TextSpan(
-                  text: "${data?.datumNew}",
-                  style: TextStyle(color: _myColors.bookTitleColor))
+              TextSpan(text: "${data?.datumNew}")
             ]),
           ),
         ],
