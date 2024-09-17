@@ -5,12 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
+import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
@@ -20,6 +22,7 @@ import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
 
 class NovelSize {
   static double size = 18;
+  static bool isChange = false;
 }
 
 @RoutePage()
@@ -76,9 +79,18 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   @override
   void initState() {
     super.initState();
+    _initFontSize();
     _detailViewModel =
         ref.read(detailViewModelProvider(urlBook: widget.novelUrl).notifier);
+
     // _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
+  }
+
+  /// 初始化字体大小
+  _initFontSize() async {
+    double size = await PreferencesDB.instance.getNovelFontSize();
+    NovelSize.size = size;
+    LoggerTools.looger.d("初始化字体大小====》${NovelSize.size}");
   }
 
   /// 主题
@@ -150,17 +162,24 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   }
 
   /// 打开设置
-  _openSetting() {
-    showModalBottomSheet(
+  _openSetting() async {
+    await showModalBottomSheet(
         backgroundColor: Colors.white,
         context: context,
         builder: (BuildContext context) {
           return ShowSliderSheet(
             color: _themeData.primaryColor,
             value: NovelSize.size,
-            onChanged: (size) => setState(() => NovelSize.size = size),
+            onChanged: (size) => setState(() {
+              NovelSize.size = size;
+              NovelSize.isChange = true;
+            }),
           );
         });
+    if (NovelSize.isChange) {
+      await PreferencesDB.instance.setNovelFontSize(NovelSize.size);
+      NovelSize.isChange = false;
+    }
   }
 
   /// 获取文本

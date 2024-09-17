@@ -145,23 +145,23 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
     state = AsyncData(_data);
   }
 
-  /// 设置状态栏样式
-  void _setSystemUiOverlayStyle() {
-    // 设置状态栏为透明
-    if (Platform.isAndroid) {
-      if (_data.brightness == Brightness.light) {
-        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark, // 状态栏图标颜色
-          statusBarBrightness: Brightness.light, // 状态栏文字颜色
-        ));
-      } else {
-        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark, // 状态栏图标颜色
-          statusBarBrightness: Brightness.light, // 状态栏文字颜色
-        ));
-      }
-    }
-  }
+  // /// 设置状态栏样式
+  // void _setSystemUiOverlayStyle() {
+  //   // 设置状态栏为透明
+  //   if (Platform.isAndroid) {
+  //     if (_data.brightness == Brightness.light) {
+  //       SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //         statusBarColor: Colors.transparent,
+  //         statusBarIconBrightness: Brightness.dark, // 状态栏图标颜色
+  //         statusBarBrightness: Brightness.light, // 状态栏文字颜色
+  //       ));
+  //     } else {
+  //       SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  //         statusBarColor: Colors.transparent,
+  //         statusBarIconBrightness: Brightness.dark, // 状态栏图标颜色
+  //         statusBarBrightness: Brightness.light, // 状态栏文字颜色
+  //       ));
+  //     }
+  //   }
+  // }
 }

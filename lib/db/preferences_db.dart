@@ -25,7 +25,10 @@ class PreferencesDB {
   /// default(默认)
   static const appMultipleThemesMode = 'appMultipleThemesMode';
 
-  /*** shared_preferences ***/
+  /// 字体大小
+  ///
+  ///
+  static const fontSize = 'fontSize';
 
   /// 设置-主题外观模式
   Future<void> setAppThemeDarkMode(ThemeMode themeMode) async {
@@ -47,5 +50,16 @@ class PreferencesDB {
   /// 获取-多主题模式
   Future<String> getMultipleThemesMode() async {
     return await sps.getString(appMultipleThemesMode) ?? 'default';
+  }
+
+  /// 获取-fontsize 大小 默认18
+  Future<double> getNovelFontSize() async {
+    final data = await sps.getKeys();
+    return await sps.getDouble(fontSize) ?? 18;
+  }
+
+  /// 设置 -fontsize 大小
+  Future<void> setNovelFontSize(double size) async {
+    await sps.setDouble(fontSize, size);
   }
 }
