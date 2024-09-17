@@ -1,17 +1,16 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/widget/slider_novel.dart';
 
 class ShowSliderSheet extends StatefulWidget {
   ShowSliderSheet({
     super.key,
-    required this.novelTheme,
+    required this.color,
     required this.value,
     required this.onChanged,
   });
-  final NovelTheme novelTheme;
+  final Color color;
   late double value;
   final dynamic Function(dynamic)? onChanged;
   @override
@@ -30,7 +29,7 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
           children: [
             const Text("设置", style: TextStyle(fontSize: 20)),
             SliderNovel(
-              color: widget.novelTheme.selectedColor!,
+              color: widget.color,
               value: widget.value,
               onChanged: (p0) {
                 widget.value = p0;

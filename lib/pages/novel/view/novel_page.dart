@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
@@ -10,10 +11,8 @@ import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_mode
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
-import 'package:novel_flutter_bit/style/theme_novel.dart';
-import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
-import 'package:novel_flutter_bit/tools/shared_preferences_novle.dart';
+import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/show_slider_sheet.dart';
@@ -53,10 +52,11 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   late DetailViewModel _detailViewModel;
 
   /// 主题
-  late NovelTheme _novelTheme;
+  // late NovelTheme _novelTheme;
+  late ThemeData _themeData;
 
   /// 主题样式
-  late ThemeStyleProvider _themeStyleProvider;
+  //late ThemeStyleProvider _themeStyleProvider;
 
   ///
   final ScrollController _controller = ScrollController();
@@ -65,7 +65,6 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   /// 字体大小
-  late bool _isInit = false;
 
   @override
   void dispose() {
@@ -79,7 +78,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     super.initState();
     _detailViewModel =
         ref.read(detailViewModelProvider(urlBook: widget.novelUrl).notifier);
-    _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
+    // _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
   }
 
   /// 主题
@@ -157,7 +156,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
         context: context,
         builder: (BuildContext context) {
           return ShowSliderSheet(
-            novelTheme: _novelTheme,
+            color: _themeData.primaryColor,
             value: NovelSize.size,
             onChanged: (size) => setState(() => NovelSize.size = size),
           );
@@ -174,21 +173,13 @@ class _NovelPageState extends ConsumerState<NovelPage> {
 
   @override
   Widget build(BuildContext context) {
-    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    _novelTheme = Theme.of(context).extension<NovelTheme>()!;
-    _specialTextSpanBuilder.color = _novelTheme.selectedColor!;
-    if (!_isInit) {
-      _isInit = true;
-      NovelSize.size = _novelTheme.fontSize!;
-      NovelSize.size =
-          SharedPreferencesNovle.prefs.getDouble("fontSize") ?? NovelSize.size;
-    }
-
+    _themeData = Theme.of(context);
+    _specialTextSpanBuilder.color = _themeData.primaryColor;
     final novelViewModel =
         ref.watch(novelViewModelProvider(urlNovel: widget.url));
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: _novelTheme.backgroundColor,
+      backgroundColor: _themeData.scaffoldBackgroundColor,
       appBar: _buildAppBar(
           height: 65,
           minHeight: 40,
@@ -218,41 +209,60 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   /// 侧边栏构建抽屉
   _buildDrawer() {
     return Drawer(
-      backgroundColor: _novelTheme.backgroundColor,
-      child: SafeArea(
-          child: Padding(
-        padding: 10.padding,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            "目录",
-            style: TextStyle(fontSize: 22, color: _novelTheme.notSelectedColor),
+      backgroundColor: _themeData.scaffoldBackgroundColor,
+      child: DefaultTextStyle(
+        style: const TextStyle(fontWeight: FontWeight.w300),
+        child: Container(
+          padding:
+              const EdgeInsets.only(top: 40, left: 10, bottom: 10, right: 10),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                _themeData.primaryColor,
+                _themeData.scaffoldBackgroundColor
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: const [0.0, .05],
+            ),
           ),
-          Expanded(
-              child: ListView.builder(
-                  controller: _controller,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () => _changeNovelData(
-                          data: _detailViewModel
-                              .detailState.detailNovel!.data!.list![index]),
-                      child: SizedBox(
-                        height: 50,
-                        child: Text(
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            "${_detailViewModel.detailState.detailNovel?.data?.list?[index].name}",
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: _detailViewModel.getReadIndex() == index
-                                    ? _novelTheme.selectedColor
-                                    : _novelTheme.notSelectedColor)),
-                      ),
-                    );
-                  },
-                  itemCount: _detailViewModel
-                      .detailState.detailNovel?.data?.list?.length))
-        ]),
-      )),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              "目录",
+              style: TextStyle(
+                  fontSize: 24, color: _themeData.textTheme.bodyLarge?.color),
+            ),
+            10.verticalSpace,
+            Expanded(
+                child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    controller: _controller,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () => _changeNovelData(
+                            data: _detailViewModel
+                                .detailState.detailNovel!.data!.list![index]),
+                        child: SizedBox(
+                          height: 50,
+                          child: Text(
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              "${_detailViewModel.detailState.detailNovel?.data?.list?[index].name}",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color:
+                                      _detailViewModel.getReadIndex() == index
+                                          ? _themeData.primaryColor
+                                          : Colors.black87)),
+                        ),
+                      );
+                    },
+                    itemCount: _detailViewModel
+                        .detailState.detailNovel?.data?.list?.length))
+          ]),
+        ),
+      ),
     );
   }
 
@@ -262,12 +272,12 @@ class _NovelPageState extends ConsumerState<NovelPage> {
       required double minHeight,
       required Duration duration,
       required bool isBottomBarVisible}) {
-    bool isDark = _themeStyleProvider.theme.brightness != Brightness.dark;
+    //bool isDark = _themeStyleProvider.theme.brightness != Brightness.dark;
     return AnimatedContainer(
       height: isBottomBarVisible ? height : minHeight,
       duration: duration,
       decoration: BoxDecoration(
-        color: _novelTheme.bottomAppBarColor,
+        color: _themeData.bottomAppBarTheme.color,
         boxShadow: [
           BoxShadow(
             offset: const Offset(0, -1),
@@ -280,7 +290,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
         opacity: isBottomBarVisible ? 1 : 0,
         duration: duration,
         child: BottomAppBar(
-          color: _novelTheme.bottomAppBarColor,
+          color: _themeData.bottomAppBarTheme.color,
           child: SingleChildScrollView(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -298,10 +308,10 @@ class _NovelPageState extends ConsumerState<NovelPage> {
                     icon: NovelIcon.forward,
                     text: "下一页",
                     onPressed: _changeNovelToNext),
-                _buildBottomAppBarItem(
-                    icon: isDark ? Icons.nightlight : Icons.wb_sunny,
-                    text: isDark ? "夜间" : "白天",
-                    onPressed: _themeStyleProvider.switchTheme),
+                // _buildBottomAppBarItem(
+                //     icon: isDark ? Icons.nightlight : Icons.wb_sunny,
+                //     text: isDark ? "夜间" : "白天",
+                //     onPressed: _themeStyleProvider.switchTheme),
                 _buildBottomAppBarItem(
                     icon: Icons.settings, text: "设置", onPressed: _openSetting)
               ],
@@ -324,9 +334,11 @@ class _NovelPageState extends ConsumerState<NovelPage> {
             onPressed: onPressed,
             icon: Icon(
               icon,
-              color: _novelTheme.selectedColor,
+              color: _themeData.primaryColor,
             )),
-        Text(text, style: const TextStyle(fontSize: 16, color: Colors.black))
+        Text(text,
+            style: const TextStyle(
+                fontSize: 16, color: Colors.black, fontWeight: FontWeight.w300))
       ],
     );
   }
@@ -363,8 +375,8 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   _buildSuccess({required NovelState value}) {
     TextStyle style = TextStyle(
         fontSize: NovelSize.size,
-        fontWeight: _novelTheme.fontWeight,
-        color: _novelTheme.notSelectedColor);
+        fontWeight: FontWeight.w300,
+        color: _themeData.textTheme.bodyMedium?.color);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: _isShow,

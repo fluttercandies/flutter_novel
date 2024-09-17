@@ -70,10 +70,14 @@ abstract class ThemeStyle {
         bottomSheetTheme:
             const BottomSheetThemeData(modalBackgroundColor: Color(0xFFF6F8FA)),
         // Radio
-
+        bottomAppBarTheme: const BottomAppBarTheme(color: Colors.white),
         appBarTheme: AppBarTheme(
             color: appbarColor,
             titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
-            surfaceTintColor: Colors.transparent));
+            surfaceTintColor: Colors.transparent,
+            iconTheme: const IconThemeData(color: Colors.white)),
+        iconButtonTheme: const IconButtonThemeData(
+            style: ButtonStyle(
+                overlayColor: WidgetStatePropertyAll(Colors.transparent))));
   }
 }
