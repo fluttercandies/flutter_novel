@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/style/theme.dart';
 
 class DetailDescText extends StatefulWidget {
-  const DetailDescText({super.key, required this.text, required this.maxLines});
+  const DetailDescText({
+    super.key,
+    required this.text,
+    required this.maxLines,
+    required this.brandColor,
+  });
 
   /// 文本
   final String text;
 
   /// 最大行数
   final int maxLines;
+
+  final Color brandColor;
 
   @override
   State<DetailDescText> createState() => _DetailDescTextState();
@@ -47,9 +54,6 @@ class _DetailDescTextState extends State<DetailDescText>
 
   @override
   Widget build(BuildContext context) {
-    final MyColorsTheme myColors =
-        Theme.of(context).extension<MyColorsTheme>()!;
-
     return Column(
       children: [
         AnimatedSize(
@@ -77,10 +81,9 @@ class _DetailDescTextState extends State<DetailDescText>
             });
           },
           child: _isExpanded
-              ? _buildMore(
-                  "收起介绍", myColors.brandColor!, Icons.keyboard_arrow_up)
+              ? _buildMore("收起介绍", widget.brandColor, Icons.keyboard_arrow_up)
               : _buildMore(
-                  "阅读更多", myColors.brandColor!, Icons.keyboard_arrow_down),
+                  "阅读更多", widget.brandColor, Icons.keyboard_arrow_down),
         ),
       ],
     );
