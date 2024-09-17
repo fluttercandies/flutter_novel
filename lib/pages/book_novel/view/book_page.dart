@@ -7,7 +7,6 @@ import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/book_novel/state/book_state.dart';
 import 'package:novel_flutter_bit/pages/book_novel/view_model/book_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
-import 'package:novel_flutter_bit/style/theme.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
