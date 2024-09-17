@@ -10,7 +10,6 @@ import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/shared_preferences_novle.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 part 'detail_view_model.g.dart';
 
 @riverpod

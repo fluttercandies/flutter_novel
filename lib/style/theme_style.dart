@@ -4,48 +4,25 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
-import 'package:novel_flutter_bit/style/theme_novel.dart';
 import 'package:novel_flutter_bit/theme/theme_default.dart';
 import 'package:novel_flutter_bit/theme/theme_green.dart';
 import 'package:novel_flutter_bit/theme/theme_orange.dart';
 import 'package:novel_flutter_bit/theme/theme_red.dart';
 import 'package:novel_flutter_bit/theme/theme_yellow.dart';
-import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'theme.dart';
 part 'theme_style.g.dart';
 
 /// 主题颜色
 @riverpod
 class ThemeStyleProvider extends _$ThemeStyleProvider {
   static const Color _colorLight = Color(0xfff87038);
-  static const Color _colorDark = Color.fromARGB(255, 114, 74, 184);
   static get color => _colorLight;
   ThemeData get theme => _data;
   bool isInit = false;
 
   /// 主题
-  late ThemeData _data = ThemeData(
-    fontFamily: 'MiSans',
-    colorScheme:
-        ColorScheme.fromSeed(seedColor: _colorLight, primary: _colorLight),
-    useMaterial3: true,
-    iconButtonTheme: const IconButtonThemeData(
-        style: ButtonStyle(
-            overlayColor: WidgetStatePropertyAll(Colors.transparent))),
-    brightness: Brightness.light,
-  );
-
-  /// 浅色主题
-  late ThemeData _lightTheme;
-
-  /// 深色主题
-  late ThemeData _darkTheme;
-
-  /// 默认 appBar TextStyle
-  static const TextStyle _textStyle =
-      TextStyle(color: _colorLight, fontSize: 22, fontWeight: FontWeight.bold);
+  late ThemeData _data = ThemeData(fontFamily: 'MiSans');
 
   /// 初始化
   @override

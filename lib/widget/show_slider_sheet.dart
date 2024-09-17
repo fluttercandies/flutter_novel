@@ -1,6 +1,7 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/style/theme_novel.dart';
-import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/slider_novel.dart';
 
 class ShowSliderSheet extends StatefulWidget {

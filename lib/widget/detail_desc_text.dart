@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:novel_flutter_bit/style/theme.dart';
 
 class DetailDescText extends StatefulWidget {
   const DetailDescText({
