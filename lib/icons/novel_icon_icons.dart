@@ -33,6 +33,8 @@ class NovelIcon {
       IconData(0xf04a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData forward =
       IconData(0xf04e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData skull =
+      IconData(0xf54c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData cat =
       IconData(0xf6be, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData meteor =

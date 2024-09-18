@@ -54,7 +54,6 @@ class PreferencesDB {
 
   /// 获取-fontsize 大小 默认18
   Future<double> getNovelFontSize() async {
-    final data = await sps.getKeys();
     return await sps.getDouble(fontSize) ?? 18;
   }
 

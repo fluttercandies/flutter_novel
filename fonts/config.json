@@ -35,6 +35,12 @@
       "css": "meteor",
       "code": 63315,
       "src": "fontawesome5"
+    },
+    {
+      "uid": "42941d03774cff4f146f6be9396497b2",
+      "css": "skull",
+      "code": 62796,
+      "src": "fontawesome5"
     }
   ]
 }

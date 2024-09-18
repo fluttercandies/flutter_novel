@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,13 +12,15 @@ import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 
 void main() {
-  runApp(
-      // ChangeNotifierProvider(
-      //   create: (_) => ThemeStyleProvider(),
-      //   child:
-      ProviderScope(child: MyApp())
-      //)
-      );
+  if (Platform.isAndroid) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark, // 状态栏图标颜色
+      statusBarBrightness: Brightness.light, // 状态栏文字颜色
+    ));
+  }
+  runApp(ProviderScope(child: MyApp()));
+
   SharedPreferencesNovle.init();
 
   /// 强制竖屏

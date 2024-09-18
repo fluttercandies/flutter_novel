@@ -37,6 +37,8 @@ abstract class ThemeStyle {
     Color? textColor,
   }) {
     return ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: primaryColor ?? Colors.black, primary: primaryColor),
         useMaterial3: true,
         brightness: Brightness.light,
         // 字体

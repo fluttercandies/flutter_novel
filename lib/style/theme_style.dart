@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/theme/theme_default.dart';
 import 'package:novel_flutter_bit/theme/theme_green.dart';
@@ -42,8 +40,8 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
   }
 
   /// 初始化主题
-  void initTheme({double? size}) async {
-    String mode = await PreferencesDB.instance.getMultipleThemesMode();
+  void initTheme({String? data}) async {
+    String mode = data ?? await PreferencesDB.instance.getMultipleThemesMode();
     switch (mode) {
       case 'red':
         _data = AppThemeRed.lightTheme;
@@ -130,6 +128,11 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
     //   state = AsyncData(_data);
     //   isInit = true;
     // }
+  }
+
+  void setTheme(ThemeData data) {
+    _data = data;
+    state = AsyncData(_data);
   }
 
   /// Toggles the current brightness between light and dark.

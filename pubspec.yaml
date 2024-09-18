@@ -51,6 +51,9 @@ dependencies:
   riverpod_annotation: ^2.3.5        #riverpod_generator: ^2.3.5
   syncfusion_flutter_sliders: ^26.2.14  # 滑动选择器
   path: ^1.9.0
+  # ff_annotation_route: ^10.1.0      # 路由
+  # ff_annotation_route_library: ^3.1.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,13 +64,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
-  auto_route_generator: ^9.0.0
-  riverpod_generator: ^2.4.3
   build_runner: ^2.4.12
   custom_lint: ^0.6.7
+  auto_route_generator: ^9.0.0
+  riverpod_generator: ^2.4.3
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
+dependency_overrides:
+  # analyzer: ^5.0.0
+  
 # The following section is specific to Flutter packages.
 flutter:
 

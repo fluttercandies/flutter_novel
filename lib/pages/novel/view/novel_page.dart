@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
@@ -12,6 +11,7 @@ import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_mode
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
+import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
@@ -59,7 +59,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   late ThemeData _themeData;
 
   /// 主题样式
-  //late ThemeStyleProvider _themeStyleProvider;
+  late ThemeStyleProvider _themeStyleProvider;
 
   ///
   final ScrollController _controller = ScrollController();
@@ -82,8 +82,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     _initFontSize();
     _detailViewModel =
         ref.read(detailViewModelProvider(urlBook: widget.novelUrl).notifier);
-
-    // _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
+    _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
   }
 
   /// 初始化字体大小
@@ -168,13 +167,13 @@ class _NovelPageState extends ConsumerState<NovelPage> {
         context: context,
         builder: (BuildContext context) {
           return ShowSliderSheet(
-            color: _themeData.primaryColor,
-            value: NovelSize.size,
-            onChanged: (size) => setState(() {
-              NovelSize.size = size;
-              NovelSize.isChange = true;
-            }),
-          );
+              color: _themeData.primaryColor,
+              value: NovelSize.size,
+              onChanged: (size) => setState(() {
+                    NovelSize.size = size;
+                    NovelSize.isChange = true;
+                  }),
+              themeStyleProvider: _themeStyleProvider);
         });
     if (NovelSize.isChange) {
       await PreferencesDB.instance.setNovelFontSize(NovelSize.size);
