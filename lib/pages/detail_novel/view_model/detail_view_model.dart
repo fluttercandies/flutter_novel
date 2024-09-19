@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:novel_flutter_bit/base/base_state.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/net/http_config.dart';
 import 'package:novel_flutter_bit/net/net_state.dart';
 import 'package:novel_flutter_bit/net/novel_http.dart';
@@ -8,7 +9,7 @@ import 'package:novel_flutter_bit/net/service_result.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
-import 'package:novel_flutter_bit/tools/shared_preferences_novle.dart';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'detail_view_model.g.dart';
 
@@ -51,8 +52,8 @@ class DetailViewModel extends _$DetailViewModel {
   }
 
   /// 初始化 坐标
-  _init() {
-    String? str = SharedPreferencesNovle.prefs.getString(url);
+  _init() async {
+    String? str = await PreferencesDB.instance.sps.getString(url);
     if (str case String st?) {
       var data = json.decode(st);
       strUrl = ListElement.fromJson(data);
@@ -96,7 +97,7 @@ class DetailViewModel extends _$DetailViewModel {
   setReadIndex(ListElement data) async {
     strUrl = data;
     LoggerTools.looger.d("setReadIndex : ${data.toJson().toString()}");
-    await SharedPreferencesNovle.prefs
+    await PreferencesDB.instance.sps
         .setString(url, json.encode(data)); //jsonEncode()
     state = AsyncData(detailState);
   }

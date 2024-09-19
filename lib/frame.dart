@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/home/view/home_page.dart';
-import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/widget/border_buttom_navigation_bar.dart';
 
 @RoutePage()
@@ -19,11 +18,9 @@ class _FramePageState extends ConsumerState<FramePage> {
   int _currentIndex = 0;
   int i = 0;
 
-  late ThemeStyleProvider _themeStyleProvider;
   @override
   void initState() {
     super.initState();
-    _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
   }
 
   @override
@@ -31,17 +28,6 @@ class _FramePageState extends ConsumerState<FramePage> {
     return Scaffold(
       extendBody: true,
       body: const HomePage(),
-      // floatingActionButton: FloatingActionButton(
-      //     onPressed: () {
-      //       _themeStyleProvider.switchTheme();
-      //       setState(() {});
-      //     }, //themeData.switchTheme,
-      //     child: Icon(
-      //         _themeStyleProvider.theme.brightness == Brightness.dark
-      //             ? Icons.nightlight
-      //             : Icons.wb_sunny,
-      //         color: Colors.amberAccent //myColors.containerColor
-      //         )),
       bottomNavigationBar: CustomBottomNavigationBar(
         borderRadius: 24,
         height: 70,

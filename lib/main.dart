@@ -7,7 +7,6 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/route/route.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
-import 'package:novel_flutter_bit/tools/shared_preferences_novle.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 
@@ -20,8 +19,6 @@ void main() {
     ));
   }
   runApp(ProviderScope(child: MyApp()));
-
-  SharedPreferencesNovle.init();
 
   /// 强制竖屏
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[

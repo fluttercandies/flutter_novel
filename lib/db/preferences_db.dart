@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
 import 'package:novel_flutter_bit/theme/app_theme.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,9 +12,6 @@ class PreferencesDB {
   SharedPreferencesAsync get sps => _instance ??= SharedPreferencesAsync();
 
   /*** APP相关 ***/
-
-  /// 打开APP次数
-  static const openAPPCount = 'openAPPCount';
 
   /// 主题外观模式
   ///
@@ -29,6 +27,9 @@ class PreferencesDB {
   ///
   ///
   static const fontSize = 'fontSize';
+
+  /// 字体粗细
+  static const fontWeight = 'fontWeight';
 
   /// 设置-主题外观模式
   Future<void> setAppThemeDarkMode(ThemeMode themeMode) async {
@@ -60,5 +61,15 @@ class PreferencesDB {
   /// 设置 -fontsize 大小
   Future<void> setNovelFontSize(double size) async {
     await sps.setDouble(fontSize, size);
+  }
+
+  /// 设置-多主题模式
+  Future<void> setNovleFontWeight(NovelReadFontWeightEnum value) async {
+    await sps.setString(fontWeight, value.id);
+  }
+
+  /// 获取-多主题模式
+  Future<String> getNovleFontWeight() async {
+    return await sps.getString(fontWeight) ?? 'w300';
   }
 }
