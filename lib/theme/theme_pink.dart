@@ -8,11 +8,11 @@ class AppThemePink extends ThemeStyle {
   static Color appbarColor = Colors.pinkAccent;
   static Color backgroundColor = const Color(0xfffafafa);
   static Color textColor = Colors.black87;
-
+  static Color textMinorColor = Colors.pinkAccent;
   static final ThemeData lightTheme = ThemeStyle.getThemeData(
-    primaryColor: primaryColor,
-    appbarColor: appbarColor,
-    backgroundColor: backgroundColor,
-    textColor: textColor,
-  );
+      primaryColor: primaryColor,
+      appbarColor: appbarColor,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      textMinorColor: textMinorColor);
 }

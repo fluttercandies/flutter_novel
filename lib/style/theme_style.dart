@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/style/theme_enum.dart';
@@ -12,7 +10,6 @@ import 'package:novel_flutter_bit/theme/theme_orange.dart';
 import 'package:novel_flutter_bit/theme/theme_pink.dart';
 import 'package:novel_flutter_bit/theme/theme_purple.dart';
 import 'package:novel_flutter_bit/theme/theme_red.dart';
-import 'package:novel_flutter_bit/theme/theme_white.dart';
 import 'package:novel_flutter_bit/theme/theme_yellow.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -47,7 +44,7 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
       ThemeEnum.orange: AppThemeOrange.lightTheme,
       ThemeEnum.yellow: AppThemeYellow.lightTheme,
       ThemeEnum.black: AppThemeBlack.lightTheme,
-      ThemeEnum.white: AppThemeWhite.lightTheme,
+      //ThemeEnum.white: AppThemeWhite.lightTheme,
     };
   }
 
@@ -82,9 +79,9 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
       case 'black':
         _data = AppThemeBlack.lightTheme;
         break;
-      case 'white':
-        _data = AppThemeWhite.lightTheme;
-        break;
+      // case 'white':
+      //   _data = AppThemeWhite.lightTheme;
+      //   break;
       default:
         _data = AppThemeDefault.lightTheme;
     }
@@ -103,7 +100,7 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
       ThemeEnum.pink => AppThemePink.lightTheme,
       ThemeEnum.purple => AppThemePurple.lightTheme,
       ThemeEnum.black => AppThemeBlack.lightTheme,
-      ThemeEnum.white => AppThemeWhite.lightTheme,
+      //ThemeEnum.white => AppThemeWhite.lightTheme,
     };
     PreferencesDB.instance.setMultipleThemesMode(enumData.name);
     _data = data;

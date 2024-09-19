@@ -8,11 +8,11 @@ class AppThemeBlue extends ThemeStyle {
   static Color appbarColor = const Color(0xff3f85ff);
   static Color backgroundColor = const Color(0xfff5f5f5);
   static Color textColor = Colors.black87;
-
+  static Color textMinorColor = const Color(0xff3f85ff);
   static final ThemeData lightTheme = ThemeStyle.getThemeData(
-    primaryColor: primaryColor,
-    appbarColor: appbarColor,
-    backgroundColor: backgroundColor,
-    textColor: textColor,
-  );
+      primaryColor: primaryColor,
+      appbarColor: appbarColor,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      textMinorColor: textMinorColor);
 }

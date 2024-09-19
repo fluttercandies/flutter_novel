@@ -8,6 +8,6 @@ enum ThemeEnum {
   orange,
   yellow,
   black,
-  white,
+  //white,
   defaultTheme,
 }

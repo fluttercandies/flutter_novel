@@ -5,13 +5,14 @@ abstract class ThemeStyle {
   static late Color backgroundColor;
   static late Color appbarColor;
   static late Color textColor;
-
-  static ThemeData getThemeData({
-    Color? primaryColor,
-    Color? backgroundColor,
-    Color? appbarColor,
-    Color? textColor,
-  }) {
+  static late Color textMinorColor;
+  static ThemeData getThemeData(
+      {Color? primaryColor,
+      Color? backgroundColor,
+      Color? appbarColor,
+      Color? textColor,
+      Color? textMinorColor,
+      bool backButtonColorBlack = false}) {
     return ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: primaryColor ?? Colors.black, primary: primaryColor),
@@ -25,7 +26,7 @@ abstract class ThemeStyle {
           displayMedium: TextStyle(color: textColor),
           displaySmall: TextStyle(color: textColor),
           bodyLarge: TextStyle(color: textColor),
-          bodyMedium: TextStyle(color: textColor),
+          bodyMedium: TextStyle(color: textMinorColor),
           bodySmall: TextStyle(color: textColor),
         ),
         // 主颜色
@@ -51,9 +52,12 @@ abstract class ThemeStyle {
         bottomAppBarTheme: const BottomAppBarTheme(color: Colors.white),
         appBarTheme: AppBarTheme(
             color: appbarColor,
-            titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+            titleTextStyle: TextStyle(
+                color: backButtonColorBlack ? Colors.black : Colors.white,
+                fontSize: 20),
             surfaceTintColor: Colors.transparent,
-            iconTheme: const IconThemeData(color: Colors.white)),
+            iconTheme: IconThemeData(
+                color: backButtonColorBlack ? Colors.black : Colors.white)),
         iconButtonTheme: const IconButtonThemeData(
             style: ButtonStyle(
                 overlayColor: WidgetStatePropertyAll(Colors.transparent))));

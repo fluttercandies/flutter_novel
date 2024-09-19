@@ -3,7 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
 import 'package:novel_flutter_bit/pages/home/state/home_state.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/home_view_model.dart';

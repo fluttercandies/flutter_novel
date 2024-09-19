@@ -8,12 +8,13 @@ class AppThemeDefault extends ThemeStyle {
   static Color appbarColor = const Color(0xfff87038);
   static Color backgroundColor = const Color(0xfffafafa);
   static Color textColor = Colors.black87;
+  static Color textMinorColor = const Color(0xfff87038);
 
   /// 浅色主题
   static final ThemeData lightTheme = ThemeStyle.getThemeData(
-    primaryColor: primaryColor,
-    appbarColor: appbarColor,
-    backgroundColor: backgroundColor,
-    textColor: textColor,
-  );
+      primaryColor: primaryColor,
+      appbarColor: appbarColor,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      textMinorColor: textMinorColor);
 }
