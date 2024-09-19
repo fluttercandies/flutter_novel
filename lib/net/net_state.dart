@@ -9,6 +9,8 @@ class NetStateTools {
       return NetState.dataSuccessState;
     } else if (responseModel.code == 404) {
       return NetState.error404State;
+    } else if (responseModel.code == 403) {
+      return NetState.error403State;
     } else if (responseModel.code == -100) {
       return NetState.timeOutState;
     } else if (responseModel.code == 500) {
