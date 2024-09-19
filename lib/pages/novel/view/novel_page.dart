@@ -7,6 +7,7 @@ import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
+import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
@@ -84,12 +85,13 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   /// 初始化字体大小
   _initFontSize() async {
     double size = await PreferencesDB.instance.getNovelFontSize();
-    NovelReadState.size = size;
-    LoggerTools.looger.d("初始化字体大小====》${NovelReadState.size}");
-  }
+    String fontWeight = await PreferencesDB.instance.getNovleFontWeight();
 
-  /// 主题
-  //late ThemeStyleProvider _themeData;
+    NovelReadState.size = size;
+    NovelReadState.initFontWeight(fontWeight);
+    LoggerTools.looger.d("初始化字体大小====》${NovelReadState.size}");
+    LoggerTools.looger.d("初始化字体粗细====》${NovelReadState.weight.name}");
+  }
 
   /// 显示隐藏
   _isShow() {

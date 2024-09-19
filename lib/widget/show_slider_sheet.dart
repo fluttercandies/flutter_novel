@@ -1,12 +1,15 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
+import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view/novel_page.dart';
 import 'package:novel_flutter_bit/style/theme_enum.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
+import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/slider_novel.dart';
 
@@ -44,7 +47,7 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
           color: theme.textTheme.bodyLarge?.color,
           fontSize: 18),
       child: SizedBox(
-        height: 500,
+        height: 400,
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -86,14 +89,13 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
                       runSpacing: 10,
                       children: _getThemeListWidget(),
                     ),
-                    10.verticalSpace,
+                    20.verticalSpace,
                     const Text("字体粗细"),
                     5.verticalSpace,
                     Wrap(
-                      spacing: 8,
-                      runSpacing: 10,
-                      children: [],
-                    ),
+                        spacing: 8,
+                        runSpacing: 10,
+                        children: _getFontWeightList()),
                   ],
                 ),
               )
@@ -132,5 +134,44 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
       list.add(child);
     }
     return list;
+  }
+
+  /// 获取字体大小 列表
+  List<Widget> _getFontWeightList() {
+    return NovelReadFontWeightEnum.values.map((value) {
+      final isSelect = value == NovelReadState.weight;
+      final colorTheme = widget.themeStyleProvider.theme;
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            NovelReadState.weight = value;
+            NovelReadState.isChange = true;
+          });
+          PreferencesDB.instance.setNovleFontWeight(value);
+          if (widget.onChanged != null) {
+            widget.onChanged!(widget.value);
+          }
+        },
+        child: AnimatedContainer(
+            width: 50,
+            padding: 5.padding,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black12, width: .2),
+                borderRadius: BorderRadius.circular(5),
+                color: isSelect
+                    ? colorTheme.primaryColor
+                    : colorTheme.primaryColor.withOpacity(.4)),
+            duration: Durations.medium4,
+            child: Text(value.name,
+                style: TextStyle(shadows: [
+                  Shadow(
+                    color: Colors.black.withOpacity(0.4),
+                    offset: const Offset(1, 1),
+                    blurRadius: 5,
+                  ),
+                ], fontSize: 16, color: Colors.white))),
+      );
+    }).toList();
   }
 }

@@ -11,4 +11,20 @@ class NovelReadState {
     NovelReadFontWeightEnum.w500,
     NovelReadFontWeightEnum.w600,
   ];
+
+  static void initFontWeight(String fontWeight) {
+    if (fontWeight == NovelReadFontWeightEnum.w200.id) {
+      weight = NovelReadFontWeightEnum.w200;
+    } else if (fontWeight == NovelReadFontWeightEnum.w300.id) {
+      weight = NovelReadFontWeightEnum.w300;
+    } else if (fontWeight == NovelReadFontWeightEnum.w400.id) {
+      weight = NovelReadFontWeightEnum.w400;
+    } else if (fontWeight == NovelReadFontWeightEnum.w500.id) {
+      weight = NovelReadFontWeightEnum.w500;
+    } else if (fontWeight == NovelReadFontWeightEnum.w600.id) {
+      weight = NovelReadFontWeightEnum.w600;
+    } else {
+      weight = NovelReadFontWeightEnum.w300;
+    }
+  }
 }
