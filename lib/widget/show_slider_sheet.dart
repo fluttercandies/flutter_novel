@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/novel/view/novel_page.dart';
+import 'package:novel_flutter_bit/style/theme_enum.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
@@ -25,7 +26,7 @@ class ShowSliderSheet extends StatefulWidget {
 }
 
 class _ShowSliderSheetState extends State<ShowSliderSheet> {
-  late List<ThemeData> themes;
+  late Map<ThemeEnum, ThemeData> themes;
   @override
   void initState() {
     super.initState();
@@ -88,17 +89,17 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 5),
                     itemBuilder: (context, index) {
+                      final key = themes.keys.elementAt(index);
+                      final value = themes[key];
                       final isSelected =
                           widget.themeStyleProvider.theme.primaryColor ==
-                              themes[index].primaryColor;
+                              value!.primaryColor;
                       return InkWell(
-                          onTap: () {
-                            widget.themeStyleProvider.setTheme(themes[index]);
-                          },
+                          onTap: () => widget.themeStyleProvider.setTheme(key),
                           child: Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: themes[index].primaryColor,
+                                color: value.primaryColor,
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Icon(

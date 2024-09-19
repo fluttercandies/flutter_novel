@@ -2,10 +2,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
+import 'package:novel_flutter_bit/style/theme_enum.dart';
+import 'package:novel_flutter_bit/theme/theme_black.dart';
+import 'package:novel_flutter_bit/theme/theme_blue.dart';
+import 'package:novel_flutter_bit/theme/theme_cyan.dart';
 import 'package:novel_flutter_bit/theme/theme_default.dart';
 import 'package:novel_flutter_bit/theme/theme_green.dart';
 import 'package:novel_flutter_bit/theme/theme_orange.dart';
+import 'package:novel_flutter_bit/theme/theme_pink.dart';
+import 'package:novel_flutter_bit/theme/theme_purple.dart';
 import 'package:novel_flutter_bit/theme/theme_red.dart';
+import 'package:novel_flutter_bit/theme/theme_white.dart';
 import 'package:novel_flutter_bit/theme/theme_yellow.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -29,14 +36,33 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
     return _data;
   }
 
-  List<ThemeData> getThemeList() {
-    return [
-      AppThemeDefault.lightTheme,
-      AppThemeRed.lightTheme,
-      AppThemeGreen.lightTheme,
-      AppThemeYellow.lightTheme,
-      AppThemeOrange.lightTheme,
-    ];
+  Map<ThemeEnum, ThemeData> getThemeList() {
+    return {
+      ThemeEnum.defaultTheme: AppThemeDefault.lightTheme,
+      ThemeEnum.red: AppThemeRed.lightTheme,
+      ThemeEnum.blue: AppThemeBlue.lightTheme,
+      ThemeEnum.cyan: AppThemeCyan.lightTheme,
+      ThemeEnum.pink: AppThemePink.lightTheme,
+      ThemeEnum.purple: AppThemePurple.lightTheme,
+      ThemeEnum.orange: AppThemeOrange.lightTheme,
+      ThemeEnum.yellow: AppThemeYellow.lightTheme,
+      ThemeEnum.black: AppThemeBlack.lightTheme,
+      ThemeEnum.white: AppThemeWhite.lightTheme,
+    };
+    // {},
+    // {}
+    // AppThemeDefault.lightTheme,
+    // AppThemeRed.lightTheme,
+    // AppThemeGreen.lightTheme,
+    // AppThemeBlue.lightTheme,
+    // AppThemeCyan.lightTheme,
+    // AppThemePink.lightTheme,
+    // AppThemePurple.lightTheme,
+    // AppThemeOrange.lightTheme,
+    // AppThemeYellow.lightTheme,
+    // AppThemeBlack.lightTheme,
+    // AppThemeWhite.lightTheme
+    //];
   }
 
   /// 初始化主题
@@ -49,11 +75,29 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
       case 'green':
         _data = AppThemeGreen.lightTheme;
         break;
-      case 'yellow':
-        _data = AppThemeYellow.lightTheme;
+      case 'blue':
+        _data = AppThemeBlue.lightTheme;
+        break;
+      case 'cyan':
+        _data = AppThemeCyan.lightTheme;
+        break;
+      case 'pink':
+        _data = AppThemePink.lightTheme;
+        break;
+      case 'purple':
+        _data = AppThemePurple.lightTheme;
         break;
       case 'orange':
         _data = AppThemeOrange.lightTheme;
+        break;
+      case 'yellow':
+        _data = AppThemeYellow.lightTheme;
+        break;
+      case 'black':
+        _data = AppThemeBlack.lightTheme;
+        break;
+      case 'white':
+        _data = AppThemeWhite.lightTheme;
         break;
       default:
         _data = AppThemeDefault.lightTheme;
@@ -130,23 +174,37 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
     // }
   }
 
-  void setTheme(ThemeData data) {
+  void setTheme(ThemeEnum enumData) {
+    ThemeData data = switch (enumData) {
+      ThemeEnum.red => AppThemeRed.lightTheme,
+      ThemeEnum.green => AppThemeGreen.lightTheme,
+      ThemeEnum.yellow => AppThemeYellow.lightTheme,
+      ThemeEnum.orange => AppThemeOrange.lightTheme,
+      ThemeEnum.defaultTheme => AppThemeDefault.lightTheme,
+      ThemeEnum.blue => AppThemeBlue.lightTheme,
+      ThemeEnum.cyan => AppThemeCyan.lightTheme,
+      ThemeEnum.pink => AppThemePink.lightTheme,
+      ThemeEnum.purple => AppThemePurple.lightTheme,
+      ThemeEnum.black => AppThemeBlack.lightTheme,
+      ThemeEnum.white => AppThemeWhite.lightTheme,
+    };
+    PreferencesDB.instance.setMultipleThemesMode(enumData.name);
     _data = data;
     state = AsyncData(_data);
   }
 
   /// Toggles the current brightness between light and dark.
-  void switchTheme() {
-    // var dataTheme =
-    //     _data.brightness == Brightness.dark ? _lightTheme : _darkTheme;
-    // _data = dataTheme;
-    // LoggerTools.looger.d('_dataswitchTheme: ${_data.brightness} ');
-    //_setSystemUiOverlayStyle();
-    List data = getThemeList();
-    var randomInt = Random().nextInt(data.length);
-    _data = data[randomInt];
-    state = AsyncData(_data);
-  }
+  // void switchTheme() {
+  //   // var dataTheme =
+  //   //     _data.brightness == Brightness.dark ? _lightTheme : _darkTheme;
+  //   // _data = dataTheme;
+  //   // LoggerTools.looger.d('_dataswitchTheme: ${_data.brightness} ');
+  //   //_setSystemUiOverlayStyle();
+  //   List data = getThemeList();
+  //   var randomInt = Random().nextInt(data.length);
+  //   _data = data[randomInt];
+  //   state = AsyncData(_data);
+  // }
 
   // /// 设置状态栏样式
   // void _setSystemUiOverlayStyle() {

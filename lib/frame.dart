@@ -31,17 +31,17 @@ class _FramePageState extends ConsumerState<FramePage> {
     return Scaffold(
       extendBody: true,
       body: const HomePage(),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _themeStyleProvider.switchTheme();
-            setState(() {});
-          }, //themeData.switchTheme,
-          child: Icon(
-              _themeStyleProvider.theme.brightness == Brightness.dark
-                  ? Icons.nightlight
-                  : Icons.wb_sunny,
-              color: Colors.amberAccent //myColors.containerColor
-              )),
+      // floatingActionButton: FloatingActionButton(
+      //     onPressed: () {
+      //       _themeStyleProvider.switchTheme();
+      //       setState(() {});
+      //     }, //themeData.switchTheme,
+      //     child: Icon(
+      //         _themeStyleProvider.theme.brightness == Brightness.dark
+      //             ? Icons.nightlight
+      //             : Icons.wb_sunny,
+      //         color: Colors.amberAccent //myColors.containerColor
+      //         )),
       bottomNavigationBar: CustomBottomNavigationBar(
         borderRadius: 24,
         height: 70,
