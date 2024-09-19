@@ -7,6 +7,7 @@ import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/book_novel/state/book_state.dart';
 import 'package:novel_flutter_bit/pages/book_novel/view_model/book_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
+import 'package:novel_flutter_bit/tools/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
@@ -51,8 +52,9 @@ class _BookPageState extends ConsumerState<BookPage> {
         body: switch (bookViewModel) {
           AsyncData(:final value) => Builder(builder: (BuildContext context) {
               //LoggerTools.looger.e(value.netState);
-              if (value.netState == NetState.loadingState) {
-                return const LoadingBuild();
+              Widget? child = NetStateTools.getWidget(value.netState);
+              if (child != null) {
+                return child;
               }
               return _buildSuccess(value: value);
             }),
