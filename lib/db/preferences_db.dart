@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/pages/home/entry/novle_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
 import 'package:novel_flutter_bit/theme/app_theme.dart';
 
@@ -30,6 +33,9 @@ class PreferencesDB {
 
   /// 字体粗细
   static const fontWeight = 'fontWeight';
+
+  /// 阅读记录
+  static const novleHistory = "novleHistory";
 
   /// 设置-主题外观模式
   Future<void> setAppThemeDarkMode(ThemeMode themeMode) async {
@@ -71,5 +77,24 @@ class PreferencesDB {
   /// 获取-多主题模式
   Future<String> getNovleFontWeight() async {
     return await sps.getString(fontWeight) ?? 'w300';
+  }
+
+  Future<List<NovleHistoryEntry>> getNovleHistoryList() async {
+    List<NovleHistoryEntry> list = [];
+    List<String> str = await sps.getStringList(novleHistory) ?? [];
+    for (var element in str) {
+      list.add(NovleHistoryEntry.fromJson(json.decode(element)));
+    }
+    return list;
+  }
+
+  Future<void> setNovleHistoryList(NovleHistoryEntry novleHistoryEntry) async {
+    List<String> str = [];
+    final data = await getNovleHistoryList();
+    data.add(novleHistoryEntry);
+    for (var element in data) {
+      str.add(json.encode(element.toJson()));
+    }
+    await sps.setStringList(novleHistory, str);
   }
 }
