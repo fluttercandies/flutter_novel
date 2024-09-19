@@ -43,7 +43,7 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
           color: theme.textTheme.bodyLarge?.color,
           fontSize: 18),
       child: SizedBox(
-        height: 400,
+        height: 500,
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -54,9 +54,9 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
               const Align(
                   child: Text(
                 "设置",
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
               )),
-              10.verticalSpace,
+              20.verticalSpace,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text("字体大小：${NovelSize.size.toInt()}"),
@@ -72,20 +72,30 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
                   }
                 },
               ),
-              20.verticalSpace,
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Text("主题选择"),
-              ),
-              5.verticalSpace,
+              10.verticalSpace,
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 10,
-                  children: _getThemeListWidget(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("主题选择"),
+                    5.verticalSpace,
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 10,
+                      children: _getThemeListWidget(),
+                    ),
+                    10.verticalSpace,
+                    const Text("字体粗细"),
+                    5.verticalSpace,
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 10,
+                      children: _getThemeListWidget(),
+                    ),
+                  ],
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -101,18 +111,23 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
       final value = themes[key];
       final isSelected =
           widget.themeStyleProvider.theme.primaryColor == value!.primaryColor;
-      Widget child = InkWell(
+      Widget child = GestureDetector(
           onTap: () => widget.themeStyleProvider.setTheme(key),
           child: Container(
-              padding: const EdgeInsets.all(8),
+              width: 37,
+              height: 37,
               decoration: BoxDecoration(
+                border: Border.all(color: Colors.black12),
                 color: value.primaryColor,
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Icon(
-                NovelIcon.meteor,
-                color: isSelected ? Colors.white : Colors.transparent,
-              )));
+              child: isSelected
+                  ? const Icon(
+                      NovelIcon.meteor,
+                      color: Colors.white,
+                      size: 20,
+                    )
+                  : 0.verticalSpace));
       list.add(child);
     }
     return list;

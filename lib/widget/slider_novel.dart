@@ -34,11 +34,11 @@ class _SliderNovelState extends State<SliderNovel> {
         interval: 20,
         stepSize: 1,
         showTicks: true,
-        showLabels: true,
+        showLabels: false, //shouldAlwaysShowTooltip: true,
         enableTooltip: true,
         activeColor: widget.color,
         inactiveColor: Colors.grey.shade300,
-        minorTicksPerInterval: 5,
+        minorTicksPerInterval: 0,
         onChanged: (dynamic value) {
           if (widget.onChanged != null) {
             widget.onChanged!(value);

@@ -13,6 +13,7 @@ import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
+import 'package:novel_flutter_bit/tools/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
@@ -195,6 +196,10 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     _specialTextSpanBuilder.color = _themeData.primaryColor;
     final novelViewModel =
         ref.watch(novelViewModelProvider(urlNovel: widget.url));
+    TextStyle style = TextStyle(
+        fontSize: NovelSize.size,
+        fontWeight: FontWeight.w300,
+        color: _themeData.textTheme.bodyMedium?.color);
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: _themeData.scaffoldBackgroundColor,
@@ -205,11 +210,11 @@ class _NovelPageState extends ConsumerState<NovelPage> {
           isAppBarVisible: _isAppBarVisible),
       body: switch (novelViewModel) {
         AsyncData(:final value) => Builder(builder: (BuildContext context) {
-            //LoggerTools.looger.e(value.netState);
-            if (value.netState == NetState.loadingState) {
-              return const LoadingBuild();
+            Widget? child = NetStateTools.getWidget(value.netState);
+            if (child != null) {
+              return child;
             }
-            return _buildSuccess(value: value);
+            return _buildSuccess(value: value, style: style);
           }),
         AsyncError() => const EmptyBuild(),
         _ => const LoadingBuild(),
@@ -390,11 +395,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   }
 
   /// 构建成功
-  _buildSuccess({required NovelState value}) {
-    TextStyle style = TextStyle(
-        fontSize: NovelSize.size,
-        fontWeight: FontWeight.w300,
-        color: _themeData.textTheme.bodyMedium?.color);
+  _buildSuccess({required NovelState value, required TextStyle style}) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: _isShow,

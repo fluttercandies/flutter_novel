@@ -2,7 +2,6 @@ import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/book_novel/state/book_state.dart';
 import 'package:novel_flutter_bit/pages/book_novel/view_model/book_view_model.dart';
