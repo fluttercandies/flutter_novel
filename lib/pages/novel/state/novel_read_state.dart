@@ -5,13 +5,6 @@ class NovelReadState {
   static NovelReadFontWeightEnum weight = NovelReadFontWeightEnum.w300;
   static bool isChange = false;
 
-  List<NovelReadFontWeightEnum> fontWeightList = [
-    NovelReadFontWeightEnum.w300,
-    NovelReadFontWeightEnum.w400,
-    NovelReadFontWeightEnum.w500,
-    NovelReadFontWeightEnum.w600,
-  ];
-
   static void initFontWeight(String fontWeight) {
     if (fontWeight == NovelReadFontWeightEnum.w200.id) {
       weight = NovelReadFontWeightEnum.w200;

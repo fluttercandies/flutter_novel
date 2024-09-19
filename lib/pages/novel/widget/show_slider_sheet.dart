@@ -144,7 +144,6 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
         onTap: () {
           setState(() {
             NovelReadState.weight = value;
-            NovelReadState.isChange = true;
           });
           PreferencesDB.instance.setNovleFontWeight(value);
           if (widget.onChanged != null) {

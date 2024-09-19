@@ -10,6 +10,7 @@ import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_mode
 import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
+import 'package:novel_flutter_bit/pages/novel/widget/show_slider_sheet.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
@@ -18,7 +19,6 @@ import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
-import 'package:novel_flutter_bit/widget/show_slider_sheet.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
 
 @RoutePage()
@@ -63,7 +63,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   /// 构建 scaffold
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  /// 字体大小
+  late TextStyle _style;
 
   @override
   void dispose() {
@@ -186,18 +186,23 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     return plainText2;
   }
 
-  @override
-  Widget build(BuildContext context) {
+  /// 构建初始数据
+  void buildInitData() {
     _themeData = Theme.of(context);
     _specialTextSpanBuilder.color = _themeData.primaryColor;
-    final novelViewModel =
-        ref.watch(novelViewModelProvider(urlNovel: widget.url));
-    TextStyle style = TextStyle(
+    _style = TextStyle(
         fontSize: NovelReadState.size,
         fontWeight: NovelReadState.weight.fontWeight,
         color: _themeData.textTheme.bodyLarge?.color);
     _specialTextSpanBuilder.color =
         _themeData.textTheme.bodyMedium?.color ?? Colors.black;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    buildInitData();
+    final novelViewModel =
+        ref.watch(novelViewModelProvider(urlNovel: widget.url));
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: _themeData.scaffoldBackgroundColor,
@@ -212,7 +217,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
             if (child != null) {
               return child;
             }
-            return _buildSuccess(value: value, style: style);
+            return _buildSuccess(value: value, style: _style);
           }),
         AsyncError() => const EmptyBuild(),
         _ => const LoadingBuild(),
