@@ -8,6 +8,7 @@ import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
 import 'package:novel_flutter_bit/pages/home/state/home_state.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
+import 'package:novel_flutter_bit/tools/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
@@ -46,10 +47,8 @@ class _HomePageState extends ConsumerState<HomePage> {
           child: switch (homeViewModel) {
         AsyncData(:final value) => Builder(builder: (BuildContext context) {
             //LoggerTools.looger.e(value.netState);
-            if (value.netState == NetState.loadingState) {
-              return const LoadingBuild();
-            }
-            return _buildSuccess(value: value);
+            return NetStateTools.getWidget(value.netState) ??
+                _buildSuccess(value: value);
           }),
         AsyncError() => const EmptyBuild(),
         _ => const LoadingBuild(),
