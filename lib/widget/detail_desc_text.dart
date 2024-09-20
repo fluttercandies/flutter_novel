@@ -4,15 +4,15 @@ class DetailDescText extends StatefulWidget {
   const DetailDescText({
     super.key,
     required this.text,
-    required this.maxLines,
+    this.minLines = 3,
     required this.brandColor,
   });
 
   /// 文本
   final String text;
 
-  /// 最大行数
-  final int maxLines;
+  /// 最小行数
+  final int minLines;
 
   final Color brandColor;
 
@@ -20,82 +20,101 @@ class DetailDescText extends StatefulWidget {
   State<DetailDescText> createState() => _DetailDescTextState();
 }
 
-class _DetailDescTextState extends State<DetailDescText>
-    with SingleTickerProviderStateMixin {
+class _DetailDescTextState extends State<DetailDescText> {
   bool _isExpanded = false;
-  bool _isOverflowing = false;
+  double _collapsedHeight = 0.0;
+  double _fullHeight = 0.0;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkTextOverflow();
+      _calculateHeights();
     });
   }
 
-  void _checkTextOverflow() {
+  // 计算文本的高度
+  void _calculateHeights() {
+    setState(() {
+      _collapsedHeight = _getHeightForMaxLines(widget.minLines);
+      _fullHeight = _getHeightForMax();
+    });
+  }
+
+  // 根据最大行数计算折叠状态下的高度
+  double _getHeightForMaxLines(int maxLines) {
     final TextPainter textPainter = TextPainter(
       text: TextSpan(
         text: widget.text,
         style: const TextStyle(
           fontSize: 16,
           height: 1.5,
+          color: Colors.black54,
         ),
       ),
-      maxLines: widget.maxLines,
+      maxLines: maxLines,
       textDirection: TextDirection.ltr,
-    )..layout(maxWidth: context.size!.width);
+    )..layout(maxWidth: context.size?.width ?? double.infinity);
+    return textPainter.size.height;
+  }
 
-    setState(() {
-      _isOverflowing = textPainter.didExceedMaxLines;
-    });
+  double _getHeightForMax() {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(
+        text: widget.text,
+        style: const TextStyle(
+          fontSize: 16,
+          height: 1.5,
+          color: Colors.black54,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout(maxWidth: context.size?.width ?? double.infinity);
+    return textPainter.size.height;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AnimatedSize(
+        AnimatedContainer(
           duration: const Duration(milliseconds: 300),
+          height: _isExpanded ? _fullHeight : _collapsedHeight,
           curve: Curves.easeInOut,
           child: Text(
             widget.text,
             style: const TextStyle(
                 fontSize: 16, height: 1.5, color: Colors.black54),
-            maxLines: _isOverflowing
-                ? _isExpanded
-                    ? null
-                    : widget.maxLines
-                : null,
             overflow: TextOverflow.fade,
           ),
         ),
         GestureDetector(
           onTap: () {
-            // if (_isOverflowing) {
-            //   // 仅当文本超出最大行数时才显示"阅读更多/收起"
-            // }
             setState(() {
               _isExpanded = !_isExpanded;
             });
           },
-          child: _isExpanded
-              ? _buildMore("收起介绍", widget.brandColor, Icons.keyboard_arrow_up)
-              : _buildMore(
-                  "阅读更多", widget.brandColor, Icons.keyboard_arrow_down),
+          child: _buildMore(
+            _isExpanded ? "收起介绍" : "阅读更多",
+            widget.brandColor,
+            _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+          ),
         ),
       ],
     );
   }
 
-  /// 构建更多介绍
+  /// 构建"阅读更多"或"收起介绍"按钮
   Widget _buildMore(String str, Color color, IconData icon) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Text(
-        str,
-        style: TextStyle(color: color),
-      ),
-      Icon(icon, color: color)
-    ]);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          str,
+          style: TextStyle(color: color),
+        ),
+        Icon(icon, color: color)
+      ],
+    );
   }
 }

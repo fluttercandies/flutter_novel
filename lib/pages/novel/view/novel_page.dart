@@ -41,7 +41,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
       NovleSpecialTextSpanBuilder(color: Colors.black);
 
   /// 动画时长
-  final Duration _duration = const Duration(milliseconds: 300);
+  final Duration _duration = const Duration(milliseconds: 400);
 
   /// 控制AppBar和BottomNavigationBar的可见性
   bool _isAppBarVisible = false;
@@ -302,6 +302,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     return AnimatedContainer(
       height: isBottomBarVisible ? height : minHeight,
       duration: duration,
+      curve: Curves.easeInOut,
       decoration: BoxDecoration(
         color: _themeData.bottomAppBarTheme.color,
         boxShadow: [
@@ -378,6 +379,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     return PreferredSize(
       preferredSize: Size.fromHeight(height),
       child: AnimatedContainer(
+        curve: Curves.easeInOut,
         height: _isAppBarVisible ? height * 1.5 : minHeight,
         duration: duration,
         child: AnimatedOpacity(

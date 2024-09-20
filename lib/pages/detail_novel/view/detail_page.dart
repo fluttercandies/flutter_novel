@@ -189,7 +189,6 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                     const Text("书籍简介", style: TextStyle(fontSize: 18)),
                     DetailDescText(
                       text: " ${value.detailNovel?.data?.desc}",
-                      maxLines: 3,
                       brandColor: _themeData.primaryColor,
                     ),
                   ],
