@@ -1,5 +1,6 @@
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/base/base_view_model.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/net/http_config.dart';
 import 'package:novel_flutter_bit/net/net_state.dart';
 import 'package:novel_flutter_bit/net/novel_http.dart';
@@ -27,12 +28,23 @@ class HomeViewModel extends _$HomeViewModel implements BaseViewModelImplements {
     return true;
   }
 
+  void initHistory() async {
+    final data = await PreferencesDB.instance.getNovleHistoryList();
+    LoggerTools.looger.i(data);
+    homeState.dataHistory = data;
+    if (_isInit) {
+      state = AsyncData(homeState);
+    }
+  }
+
   @override
   Future<HomeState> build() async {
     LoggerTools.looger.d("HomeViewModel init build");
     if (!_isInit) {
       _initData();
+      initHistory();
       _isInit = true;
+      state = AsyncData(homeState);
     }
     return homeState;
   }
@@ -58,7 +70,6 @@ class HomeViewModel extends _$HomeViewModel implements BaseViewModelImplements {
       /// 赋值
       homeState.novelHot = novelHot;
       LoggerTools.looger.i(homeState.netState);
-      state = AsyncData(homeState);
     }
   }
 }

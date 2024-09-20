@@ -24,11 +24,12 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  double progress = .5;
   //late MyColorsTheme _myColors;
   @override
   void initState() {
     super.initState();
+
+    //final data = await PreferencesDB.instance.getNovleHistoryList();
   }
 
   /// 跳转小说 站源 列表 页面
@@ -81,7 +82,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     )),
                     padding: 10.padding),
                 SliverToBoxAdapter(
-                  child: _buildReadList(value, progress: progress),
+                  child: _buildReadList(value: value),
                 ),
                 SliverPadding(
                     sliver: const SliverToBoxAdapter(
@@ -165,30 +166,32 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   /// 阅读列表
-  _buildReadList(HomeState value,
-      {required double progress, double height = 250, double widthItem = 135}) {
+  _buildReadList(
+      {required HomeState value, double height = 240, double widthItem = 130}) {
     return SizedBox(
-      height: height,
+      height: (value.dataHistory?.isEmpty ?? false) ? height : 0,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: value.novelHot?.data?.length,
+          itemCount: (value.dataHistory?.isEmpty ?? false)
+              ? value.dataHistory?.length
+              : 0,
           itemBuilder: (context, index) {
             return _buildReadItem(
-                width: widthItem,
-                url: value.novelHot?.data?[index].img ?? "",
-                bookName: value.novelHot?.data?[index].name ?? "",
-                progress: progress.clamp(0, 1));
+              width: widthItem,
+              url: value.dataHistory?[index].imageUrl ?? "",
+              bookName: value.dataHistory?[index].name ?? "",
+              readChapter: value.dataHistory?[index].readChapter ?? "",
+            );
           }),
     );
   }
 
   /// 阅读列表item
-  _buildReadItem({
-    required String url,
-    required String bookName,
-    required double progress,
-    required double width,
-  }) {
+  _buildReadItem(
+      {required String url,
+      required String bookName,
+      required double width,
+      required String readChapter}) {
     return Container(
       margin: 5.padding,
       constraints: BoxConstraints(maxWidth: width, minWidth: width),
@@ -207,44 +210,56 @@ class _HomePageState extends ConsumerState<HomePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              child: ExtendedImageBuild(url: url, width: width),
+              child:
+                  ExtendedImageBuild(url: url, width: width, isJoinUrl: true),
             ),
-            1.verticalSpace,
+            3.verticalSpace,
             Padding(
               padding: 10.horizontal,
               child:
                   Text(bookName, maxLines: 1, overflow: TextOverflow.ellipsis),
             ),
-            1.verticalSpace,
             Padding(
-              padding: 5.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                      child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      color: Theme.of(context).primaryColor,
-                      backgroundColor:
-                          Theme.of(context).primaryColor.withOpacity(.2),
-                    ),
-                  )
-                      // BarberPoleProgressBar(
-                      //     progress: progress,
-                      //     animationEnabled: true,
-                      //     color: Theme.of(context).primaryColor,
-                      //     notArriveProgressAnimation: false)
-                      ),
-                  5.horizontalSpace,
-                  SizedBox(
-                      width: 40,
-                      child: Text('${(progress * 100).toStringAsFixed(0)}%'))
-                ],
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Text(
+                "阅读至:$readChapter",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 14),
               ),
             ),
-            3.verticalSpace
+            3.verticalSpace,
+            // Padding(
+            //   padding: 5.horizontal,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       // Flexible(
+            //       //     child: ClipRRect(
+            //       //   borderRadius: BorderRadius.circular(5),
+            //       //   child: LinearProgressIndicator(
+            //       //     value: progress,
+            //       //     color: Theme.of(context).primaryColor,
+            //       //     backgroundColor:
+            //       //         Theme.of(context).primaryColor.withOpacity(.2),
+            //       //   ),
+            //       // )
+            //       // ),
+            //       // BarberPoleProgressBar(
+            //       //     progress: progress,
+            //       //     animationEnabled: true,
+            //       //     color: Theme.of(context).primaryColor,
+            //       //     notArriveProgressAnimation: false)
+
+            //       5.horizontalSpace,
+            //       SizedBox(
+            //           width: 40,
+            //           child: Text('${(progress * 100).toStringAsFixed(0)}%'))
+            //     ],
+            //   ),
+            // ),
+
+            // 3.verticalSpace
           ]),
     );
   }
