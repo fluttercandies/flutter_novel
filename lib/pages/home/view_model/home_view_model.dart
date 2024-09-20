@@ -44,7 +44,6 @@ class HomeViewModel extends _$HomeViewModel implements BaseViewModelImplements {
       _initData();
       initHistory();
       _isInit = true;
-      state = AsyncData(homeState);
     }
     return homeState;
   }
@@ -70,6 +69,7 @@ class HomeViewModel extends _$HomeViewModel implements BaseViewModelImplements {
       /// 赋值
       homeState.novelHot = novelHot;
       LoggerTools.looger.i(homeState.netState);
+      state = AsyncData(homeState);
     }
   }
 }

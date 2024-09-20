@@ -226,10 +226,6 @@ class _NovelPageState extends ConsumerState<NovelPage> {
         urlNovel: widget.url, novleHistory: dataHistory));
     return Scaffold(
       key: scaffoldKey,
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        final data = await PreferencesDB.instance.getNovleHistoryList();
-        LoggerTools.looger.d(data);
-      }),
       backgroundColor: _themeData.scaffoldBackgroundColor,
       appBar: _buildAppBar(
           height: 65,
