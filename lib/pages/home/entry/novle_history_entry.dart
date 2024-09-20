@@ -2,6 +2,8 @@
 //
 //     final novleHistoryEntry = novleHistoryEntryFromJson(jsonString);
 
+// ignore_for_file: non_nullable_equals_parameter
+
 import 'dart:convert';
 
 List<NovleHistoryEntry> novleHistoryEntryFromJson(String str) =>
@@ -16,12 +18,13 @@ class NovleHistoryEntry {
   String? imageUrl;
   String? readUrl;
   String? readChapter;
-
+  String? datumNew;
   NovleHistoryEntry({
     this.name,
     this.imageUrl,
     this.readUrl,
     this.readChapter,
+    this.datumNew,
   });
 
   factory NovleHistoryEntry.fromJson(Map<String, dynamic> json) =>
@@ -30,6 +33,7 @@ class NovleHistoryEntry {
         imageUrl: json["imageUrl"],
         readUrl: json["readUrl"],
         readChapter: json["readChapter"],
+        datumNew: json["datumNew"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,5 +41,17 @@ class NovleHistoryEntry {
         "imageUrl": imageUrl,
         "readUrl": readUrl,
         "readChapter": readChapter,
+        "datumNew": datumNew,
       };
+
+  @override
+  bool operator ==(dynamic other) {
+    if (other is NovleHistoryEntry) {
+      return readUrl == other.readUrl;
+    }
+    return false;
+  }
+
+  @override
+  int get hashCode => readUrl.hashCode;
 }

@@ -6,7 +6,7 @@ part of 'novel_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$novelViewModelHash() => r'fb951469bef8e1ec8ce115d265fba7da35ca9e6d';
+String _$novelViewModelHash() => r'6c45951446e5037a1f01bc5d7c5e34dd44b80ea0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,9 +32,11 @@ class _SystemHash {
 abstract class _$NovelViewModel
     extends BuildlessAutoDisposeAsyncNotifier<NovelState> {
   late final String urlNovel;
+  late final NovleHistoryEntry novleHistory;
 
   FutureOr<NovelState> build({
     required String urlNovel,
+    required NovleHistoryEntry novleHistory,
   });
 }
 
@@ -50,9 +52,11 @@ class NovelViewModelFamily extends Family<AsyncValue<NovelState>> {
   /// See also [NovelViewModel].
   NovelViewModelProvider call({
     required String urlNovel,
+    required NovleHistoryEntry novleHistory,
   }) {
     return NovelViewModelProvider(
       urlNovel: urlNovel,
+      novleHistory: novleHistory,
     );
   }
 
@@ -62,6 +66,7 @@ class NovelViewModelFamily extends Family<AsyncValue<NovelState>> {
   ) {
     return call(
       urlNovel: provider.urlNovel,
+      novleHistory: provider.novleHistory,
     );
   }
 
@@ -86,8 +91,11 @@ class NovelViewModelProvider
   /// See also [NovelViewModel].
   NovelViewModelProvider({
     required String urlNovel,
+    required NovleHistoryEntry novleHistory,
   }) : this._internal(
-          () => NovelViewModel()..urlNovel = urlNovel,
+          () => NovelViewModel()
+            ..urlNovel = urlNovel
+            ..novleHistory = novleHistory,
           from: novelViewModelProvider,
           name: r'novelViewModelProvider',
           debugGetCreateSourceHash:
@@ -98,6 +106,7 @@ class NovelViewModelProvider
           allTransitiveDependencies:
               NovelViewModelFamily._allTransitiveDependencies,
           urlNovel: urlNovel,
+          novleHistory: novleHistory,
         );
 
   NovelViewModelProvider._internal(
@@ -108,9 +117,11 @@ class NovelViewModelProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.urlNovel,
+    required this.novleHistory,
   }) : super.internal();
 
   final String urlNovel;
+  final NovleHistoryEntry novleHistory;
 
   @override
   FutureOr<NovelState> runNotifierBuild(
@@ -118,6 +129,7 @@ class NovelViewModelProvider
   ) {
     return notifier.build(
       urlNovel: urlNovel,
+      novleHistory: novleHistory,
     );
   }
 
@@ -126,13 +138,16 @@ class NovelViewModelProvider
     return ProviderOverride(
       origin: this,
       override: NovelViewModelProvider._internal(
-        () => create()..urlNovel = urlNovel,
+        () => create()
+          ..urlNovel = urlNovel
+          ..novleHistory = novleHistory,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         urlNovel: urlNovel,
+        novleHistory: novleHistory,
       ),
     );
   }
@@ -145,13 +160,16 @@ class NovelViewModelProvider
 
   @override
   bool operator ==(Object other) {
-    return other is NovelViewModelProvider && other.urlNovel == urlNovel;
+    return other is NovelViewModelProvider &&
+        other.urlNovel == urlNovel &&
+        other.novleHistory == novleHistory;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, urlNovel.hashCode);
+    hash = _SystemHash.combine(hash, novleHistory.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -160,6 +178,9 @@ class NovelViewModelProvider
 mixin NovelViewModelRef on AutoDisposeAsyncNotifierProviderRef<NovelState> {
   /// The parameter `urlNovel` of this provider.
   String get urlNovel;
+
+  /// The parameter `novleHistory` of this provider.
+  NovleHistoryEntry get novleHistory;
 }
 
 class _NovelViewModelProviderElement
@@ -169,6 +190,9 @@ class _NovelViewModelProviderElement
 
   @override
   String get urlNovel => (origin as NovelViewModelProvider).urlNovel;
+  @override
+  NovleHistoryEntry get novleHistory =>
+      (origin as NovelViewModelProvider).novleHistory;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

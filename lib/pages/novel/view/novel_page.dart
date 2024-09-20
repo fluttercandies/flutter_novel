@@ -5,8 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
+import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
+import 'package:novel_flutter_bit/pages/home/entry/novle_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
@@ -27,11 +29,11 @@ class NovelPage extends ConsumerStatefulWidget {
     super.key,
     required this.url,
     required this.name,
-    required this.novelUrl,
+    required this.bookDatum,
   });
   final String url;
   final String name;
-  final String novelUrl;
+  final BookDatum bookDatum;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _NovelPageState();
 }
@@ -76,8 +78,8 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   void initState() {
     super.initState();
     _initFontSize();
-    _detailViewModel =
-        ref.read(detailViewModelProvider(urlBook: widget.novelUrl).notifier);
+    _detailViewModel = ref.read(
+        detailViewModelProvider(urlBook: widget.bookDatum.url ?? "").notifier);
     _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
   }
 
@@ -104,7 +106,9 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   _changeNovelData({required ListElement data}) {
     _detailViewModel.changeNovelDta(data);
     context.router.replace(NovelRoute(
-        url: data.url ?? "", name: data.name ?? "", novelUrl: widget.novelUrl));
+        url: data.url ?? "",
+        name: data.name ?? "",
+        bookDatum: widget.bookDatum));
   }
 
   /// 小说页面切换 下一页
@@ -122,7 +126,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     context.router.replace(NovelRoute(
         url: data?.url ?? widget.name,
         name: data?.name ?? widget.url,
-        novelUrl: widget.novelUrl));
+        bookDatum: widget.bookDatum));
   }
 
   /// 小说页面切换 下一页
@@ -139,7 +143,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
     context.router.replace(NovelRoute(
         url: data?.url ?? widget.name,
         name: data?.name ?? widget.url,
-        novelUrl: widget.novelUrl));
+        bookDatum: widget.bookDatum));
   }
 
   /// 打开抽屉
@@ -198,11 +202,31 @@ class _NovelPageState extends ConsumerState<NovelPage> {
         _themeData.textTheme.bodyMedium?.color ?? Colors.black;
   }
 
+  /// 初始化历史记录
+  NovleHistoryEntry _initNovleHistoryEntry() {
+    String image = ref
+            .read(detailViewModelProvider(urlBook: widget.bookDatum.url ?? "")
+                .notifier)
+            .detailState
+            .detailNovel
+            ?.data
+            ?.img ??
+        "";
+    LoggerTools.looger.d("buildInitData : $image");
+    return NovleHistoryEntry(
+        name: widget.bookDatum.name,
+        imageUrl: image,
+        readUrl: widget.bookDatum.url,
+        readChapter: widget.name,
+        datumNew: widget.bookDatum.datumNew);
+  }
+
   @override
   Widget build(BuildContext context) {
     buildInitData();
-    final novelViewModel =
-        ref.watch(novelViewModelProvider(urlNovel: widget.url));
+    final dataHistory = _initNovleHistoryEntry();
+    final novelViewModel = ref.watch(novelViewModelProvider(
+        urlNovel: widget.url, novleHistory: dataHistory));
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: _themeData.scaffoldBackgroundColor,

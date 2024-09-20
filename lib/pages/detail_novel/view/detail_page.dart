@@ -56,9 +56,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
     await context.router.push(NovelRoute(
         url: data?.url ?? "",
         name: data?.name ?? "",
-        novelUrl: widget.bookDatum.url ?? ""));
-    // _themeStyleProvider.initTheme(size: NovelSize.size);
-    // SharedPreferencesNovle.prefs.setDouble("fontSize", NovelSize.size);
+        bookDatum: widget.bookDatum));
   }
 
   // 跳转阅读页
@@ -66,19 +64,16 @@ class _DetailPageState extends ConsumerState<DetailPage> {
     int index = _detailViewModel.getReadIndex();
     var data = _detailViewModel.detailState.detailNovel?.data?.list?[index];
     _detailViewModel.setReadIndex(data ?? ListElement());
+
     await context.router.push(NovelRoute(
         url: data?.url ?? "",
         name: data?.name ?? "",
-        novelUrl: widget.bookDatum.url ?? ""));
-    //_themeStyleProvider.initTheme(size: NovelSize.size);
-    //SharedPreferencesNovle.prefs.setDouble("fontSize", NovelSize.size);
+        bookDatum: widget.bookDatum));
   }
 
   /// 滚动到顶部
   _animationToUp() async {
     int currentItemIndex = (_scrollController.offset / (itemHheight)).round();
-    // _scrollController.animateTo(0,
-    //     duration: Durations.long4, curve: Curves.easeInCirc);
     if (currentItemIndex > 50) {
       _scrollController.jumpTo(0.0);
       return;
@@ -96,8 +91,6 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   _animationToLocal() async {
     int index = _detailViewModel.getReadIndex();
     double offsetHeight = index * (51.5);
-    // _scrollController.animateTo(0,
-    //     duration: Durations.long4, curve: Curves.easeInCirc);
     if (index > 50) {
       _scrollController.jumpTo(offsetHeight);
       return;
@@ -119,7 +112,6 @@ class _DetailPageState extends ConsumerState<DetailPage> {
     return Scaffold(
       body: switch (detailViewModel) {
         AsyncData(:final value) => Builder(builder: (BuildContext context) {
-            //LoggerTools.looger.e(value.netState);
             _detailViewModel = ref.read(
                 detailViewModelProvider(urlBook: widget.bookDatum.url ?? "")
                     .notifier);

@@ -3,6 +3,7 @@ import 'package:novel_flutter_bit/net/http_config.dart';
 import 'package:novel_flutter_bit/net/net_state.dart';
 import 'package:novel_flutter_bit/net/novel_http.dart';
 import 'package:novel_flutter_bit/net/service_result.dart';
+import 'package:novel_flutter_bit/pages/home/entry/novle_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/entry/novel.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
@@ -18,7 +19,9 @@ class NovelViewModel extends _$NovelViewModel {
   late String url;
 
   @override
-  Future<NovelState> build({required String urlNovel}) async {
+  Future<NovelState> build(
+      {required String urlNovel,
+      required NovleHistoryEntry novleHistory}) async {
     LoggerTools.looger.d("novel阅读 build Vlaue : $urlNovel");
     url = urlNovel;
     getData();
