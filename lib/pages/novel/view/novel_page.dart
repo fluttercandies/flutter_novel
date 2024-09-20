@@ -204,18 +204,15 @@ class _NovelPageState extends ConsumerState<NovelPage> {
 
   /// 初始化历史记录
   NovleHistoryEntry _initNovleHistoryEntry() {
-    String image = ref
-            .read(detailViewModelProvider(urlBook: widget.bookDatum.url ?? "")
-                .notifier)
-            .detailState
-            .detailNovel
-            ?.data
-            ?.img ??
-        "";
-    LoggerTools.looger.d("buildInitData : $image");
+    final detailNovel = ref
+        .read(detailViewModelProvider(urlBook: widget.bookDatum.url ?? "")
+            .notifier)
+        .detailState
+        .detailNovel;
+    LoggerTools.looger.d("buildInitData : ${detailNovel?.data?.name}");
     return NovleHistoryEntry(
-        name: widget.bookDatum.name,
-        imageUrl: image,
+        name: detailNovel?.data?.name,
+        imageUrl: detailNovel?.data?.img,
         readUrl: widget.bookDatum.url,
         readChapter: widget.name,
         datumNew: widget.bookDatum.datumNew);
@@ -229,6 +226,10 @@ class _NovelPageState extends ConsumerState<NovelPage> {
         urlNovel: widget.url, novleHistory: dataHistory));
     return Scaffold(
       key: scaffoldKey,
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+        final data = await PreferencesDB.instance.getNovleHistoryList();
+        LoggerTools.looger.d(data);
+      }),
       backgroundColor: _themeData.scaffoldBackgroundColor,
       appBar: _buildAppBar(
           height: 65,

@@ -1,4 +1,5 @@
 import 'package:novel_flutter_bit/base/base_state.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/net/http_config.dart';
 import 'package:novel_flutter_bit/net/net_state.dart';
 import 'package:novel_flutter_bit/net/novel_http.dart';
@@ -25,6 +26,7 @@ class NovelViewModel extends _$NovelViewModel {
     LoggerTools.looger.d("novel阅读 build Vlaue : $urlNovel");
     url = urlNovel;
     getData();
+    PreferencesDB.instance.setNovleHistory(novleHistory);
     return novelState;
   }
 

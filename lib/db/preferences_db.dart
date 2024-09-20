@@ -88,7 +88,7 @@ class PreferencesDB {
     return list;
   }
 
-  Future<void> setNovleHistoryList(NovleHistoryEntry novleHistoryEntry) async {
+  Future<void> setNovleHistory(NovleHistoryEntry novleHistoryEntry) async {
     List<String> str = [];
     final data = await getNovleHistoryList();
     final exists =
@@ -96,8 +96,8 @@ class PreferencesDB {
     if (exists) {
       // 如果用户存在，移除该用户
       data.removeWhere((user) => user.readUrl == novleHistoryEntry.readUrl);
-      data.insert(0, novleHistoryEntry);
     }
+    data.insert(0, novleHistoryEntry);
     for (var element in data) {
       str.add(json.encode(element.toJson()));
     }
