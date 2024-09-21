@@ -55,15 +55,14 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
               AsyncData(:final value) =>
                 Builder(builder: (BuildContext context) {
                   //LoggerTools.looger.e(value.netState);
-                  final data = NetStateTools.getWidget(value.$1.netState);
+                  final data = NetStateTools.getWidget(value.netState);
                   if (data != null) {
                     return SliverToBoxAdapter(child: data);
                   }
-                  _currentIndex = value.$2;
-                  return _buildSuccess(value: value.$1);
+                  return _buildSuccess(value: value);
                 }),
-              AsyncError() => const EmptyBuild(),
-              _ => const LoadingBuild(),
+              AsyncError() => const SliverToBoxAdapter(child: EmptyBuild()),
+              _ => const SliverToBoxAdapter(child: LoadingBuild()),
             }
           ]),
         ),
@@ -110,9 +109,11 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
+                _currentIndex = index;
                 ref
                     .read(categoryViewModelProvider.notifier)
                     .setCurrentIndex(index);
+                setState(() {});
               },
               child: _buildCateGoryItem(_categoryList[index]),
             );

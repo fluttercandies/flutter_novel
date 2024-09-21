@@ -32,11 +32,11 @@ class CategoryViewModel extends _$CategoryViewModel
   }
 
   @override
-  Future<(CategoryState, int)> build() async {
+  Future<CategoryState> build() async {
     LoggerTools.looger.d("CategoryViewModel init build");
     _initData();
     //initIndex(categoryEnum: categoryEnum);
-    return (categoryState, currentIndex);
+    return categoryState;
   }
 
   void _initData() async {
@@ -48,7 +48,7 @@ class CategoryViewModel extends _$CategoryViewModel
     if (resultData.data case null) {
       /// 没有更多数据了
       categoryState.netState = NetState.emptyDataState;
-      state = AsyncData((categoryState, currentIndex));
+      state = AsyncData(categoryState);
       return;
     }
     categoryState.netState = NetStateTools.handle(resultData);
@@ -61,11 +61,13 @@ class CategoryViewModel extends _$CategoryViewModel
       /// 赋值
       categoryState.novelHot = novelHot;
       LoggerTools.looger.i(categoryState.netState);
-      state = AsyncData((categoryState, currentIndex));
+      state = AsyncData(categoryState);
     }
   }
 
   void setCurrentIndex(int index) {
     currentIndex = index;
+    _initData();
+    state = AsyncData(categoryState);
   }
 }
