@@ -17,8 +17,11 @@ class CategoryViewModel extends _$CategoryViewModel
   /// 创建state
   CategoryState categoryState = CategoryState();
 
-  late CategoryEnum _categoryEnum;
+  /// 分类列表
+  final List<CategoryEnum> categoryList = CategoryEnum.values;
 
+  /// 当前选中的索引
+  int currentIndex = 0;
   @override
   Future<bool> onRefresh() async {
     LoggerTools.looger.d("分类页面刷新 onRefresh Vlaue : ${categoryState.netState}");
@@ -29,23 +32,23 @@ class CategoryViewModel extends _$CategoryViewModel
   }
 
   @override
-  Future<CategoryState> build({required CategoryEnum categoryEnum}) async {
+  Future<(CategoryState, int)> build() async {
     LoggerTools.looger.d("CategoryViewModel init build");
-    _categoryEnum = categoryEnum;
     _initData();
     //initIndex(categoryEnum: categoryEnum);
-    return categoryState;
+    return (categoryState, currentIndex);
   }
 
   void _initData() async {
     categoryState.netState = NetState.loadingState;
     ServiceResultData resultData = await NovelHttp().request('hot',
-        params: {'category': _categoryEnum.name}, method: HttpConfig.get);
+        params: {'category': categoryList[currentIndex].name},
+        method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
     if (resultData.data case null) {
       /// 没有更多数据了
       categoryState.netState = NetState.emptyDataState;
-      state = AsyncData(categoryState);
+      state = AsyncData((categoryState, currentIndex));
       return;
     }
     categoryState.netState = NetStateTools.handle(resultData);
@@ -58,12 +61,11 @@ class CategoryViewModel extends _$CategoryViewModel
       /// 赋值
       categoryState.novelHot = novelHot;
       LoggerTools.looger.i(categoryState.netState);
-      state = AsyncData(categoryState);
+      state = AsyncData((categoryState, currentIndex));
     }
   }
 
-  /// 初始化索引
-  // int initIndex({required CategoryEnum categoryEnum}) {
-  //   return CategoryEnum.values.indexOf(categoryEnum);
-  // }
+  void setCurrentIndex(int index) {
+    currentIndex = index;
+  }
 }

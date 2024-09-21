@@ -23,13 +23,13 @@ class CategoryPage extends ConsumerStatefulWidget {
 }
 
 class _CategoryPageState extends ConsumerState<CategoryPage> {
+  late ThemeData _theme;
+  // late CategoryViewModel _categoryViewModel;
+
   /// 分类列表
   final List<CategoryEnum> _categoryList = CategoryEnum.values;
 
-  /// 当前选中的索引
-  int _currentIndex = 0;
-
-  late ThemeData _theme;
+  late int _currentIndex = 0;
 
   /// 跳转小说 站源 列表 页面
   _onToBookPage(String name) {
@@ -38,8 +38,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    final categoryViewModel = ref.watch(
-        categoryViewModelProvider(categoryEnum: _categoryList[_currentIndex]));
+    final categoryViewModel = ref.watch(categoryViewModelProvider);
     _theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(title: const Text('分类列表')),
@@ -56,11 +55,12 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
               AsyncData(:final value) =>
                 Builder(builder: (BuildContext context) {
                   //LoggerTools.looger.e(value.netState);
-                  final data = NetStateTools.getWidget(value.netState);
+                  final data = NetStateTools.getWidget(value.$1.netState);
                   if (data != null) {
                     return SliverToBoxAdapter(child: data);
                   }
-                  return _buildSuccess(value: value);
+                  _currentIndex = value.$2;
+                  return _buildSuccess(value: value.$1);
                 }),
               AsyncError() => const EmptyBuild(),
               _ => const LoadingBuild(),
@@ -110,9 +110,9 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                setState(() {
-                  _currentIndex = index;
-                });
+                ref
+                    .read(categoryViewModelProvider.notifier)
+                    .setCurrentIndex(index);
               },
               child: _buildCateGoryItem(_categoryList[index]),
             );
