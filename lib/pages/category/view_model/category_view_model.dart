@@ -33,6 +33,7 @@ class CategoryViewModel extends _$CategoryViewModel
     LoggerTools.looger.d("CategoryViewModel init build");
     _categoryEnum = categoryEnum;
     _initData();
+    //initIndex(categoryEnum: categoryEnum);
     return categoryState;
   }
 
@@ -60,4 +61,9 @@ class CategoryViewModel extends _$CategoryViewModel
       state = AsyncData(categoryState);
     }
   }
+
+  /// 初始化索引
+  // int initIndex({required CategoryEnum categoryEnum}) {
+  //   return CategoryEnum.values.indexOf(categoryEnum);
+  // }
 }
