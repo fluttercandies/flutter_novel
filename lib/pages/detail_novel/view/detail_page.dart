@@ -158,7 +158,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   }
 
   /// 成功状态构建
-  _buildSuccess({required DetailState value, double height = 160}) {
+  _buildSuccess({required DetailState value, double height = 170}) {
     return SafeArea(
       child: FadeIn(
           child: DefaultTextStyle(
@@ -252,7 +252,12 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                         Text("${value.detailNovel?.data?.type}"),
                         Text("作者： ${value.detailNovel?.data?.author}"),
                         Text("来源： ${widget.bookDatum.name}"),
-                        Text("最新章节： ${widget.bookDatum.datumNew}"),
+                        Expanded(
+                            child: Text(
+                          "最新章节： ${widget.bookDatum.datumNew}",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                        )),
                       ],
                     ),
                   ),
