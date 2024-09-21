@@ -62,6 +62,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
               return true;
             },
             child: CustomScrollView(slivers: [
+              SliverToBoxAdapter(child: 10.verticalSpace),
               _buildCateGoryList(),
               _buildTitle(),
               PullToRefresh(
@@ -74,7 +75,12 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                     //LoggerTools.looger.e(value.netState);
                     final data = NetStateTools.getWidget(value.netState);
                     if (data != null) {
-                      return SliverToBoxAdapter(child: data);
+                      return SliverToBoxAdapter(
+                          child: Padding(
+                        padding: EdgeInsets.only(
+                            top: (MediaQuery.of(context).size.height / 4)),
+                        child: data,
+                      ));
                     }
                     final function =
                         ref.read(categoryViewModelProvider.notifier).onRefresh;
