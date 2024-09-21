@@ -26,7 +26,7 @@ class CategoryViewModel extends _$CategoryViewModel
   Future<bool> onRefresh() async {
     LoggerTools.looger.d("分类页面刷新 onRefresh Vlaue : ${categoryState.netState}");
     _initData();
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
     LoggerTools.looger.d("分类页面刷新 onRefresh Vlaue : ${categoryState.netState}");
     return true;
   }

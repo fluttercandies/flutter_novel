@@ -77,7 +77,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               slivers: [
                 PullToRefresh(
                   backgroundColor: Theme.of(context).primaryColor,
-                  //_myColors.brandColor ?? Colors.grey.shade400,
                   textColor: Colors.white,
                 ),
                 SliverPadding(

@@ -14,6 +14,8 @@ import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:novel_flutter_bit/widget/pull_to_refresh.dart';
+import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
 class CategoryPage extends ConsumerStatefulWidget {
   const CategoryPage({super.key});
@@ -31,6 +33,8 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
 
   late int _currentIndex = 0;
 
+  late Future<bool>? Function()? onRefresh;
+
   /// 跳转小说 站源 列表 页面
   _onToBookPage(String name) {
     context.router.push(BookRoute(name: name));
@@ -40,38 +44,55 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
   Widget build(BuildContext context) {
     final categoryViewModel = ref.watch(categoryViewModelProvider);
     _theme = Theme.of(context);
+    TextStyle style = Theme.of(context)
+        .textTheme
+        .bodyLarge!
+        .copyWith(fontSize: 17, fontWeight: FontWeight.w300);
     return Scaffold(
       appBar: AppBar(title: const Text('分类列表')),
       body: SafeArea(
         child: DefaultTextStyle(
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontSize: 17, fontWeight: FontWeight.w300),
-          child: CustomScrollView(slivers: [
-            _buildCateGoryList(),
-            _buildTitle(),
-            switch (categoryViewModel) {
-              AsyncData(:final value) =>
-                Builder(builder: (BuildContext context) {
-                  //LoggerTools.looger.e(value.netState);
-                  final data = NetStateTools.getWidget(value.netState);
-                  if (data != null) {
-                    return SliverToBoxAdapter(child: data);
-                  }
-                  return _buildSuccess(value: value);
-                }),
-              AsyncError() => const SliverToBoxAdapter(child: EmptyBuild()),
-              _ => const SliverToBoxAdapter(child: LoadingBuild()),
-            }
-          ]),
+          style: style,
+          child: PullToRefreshNotification(
+            reachToRefreshOffset: 100,
+            onRefresh: () async {
+              if (onRefresh != null) {
+                return await onRefresh!.call() ?? true;
+              }
+              return true;
+            },
+            child: CustomScrollView(slivers: [
+              _buildCateGoryList(),
+              _buildTitle(),
+              PullToRefresh(
+                backgroundColor: Theme.of(context).primaryColor,
+                textColor: Colors.white,
+              ),
+              switch (categoryViewModel) {
+                AsyncData(:final value) =>
+                  Builder(builder: (BuildContext context) {
+                    //LoggerTools.looger.e(value.netState);
+                    final data = NetStateTools.getWidget(value.netState);
+                    if (data != null) {
+                      return SliverToBoxAdapter(child: data);
+                    }
+                    final function =
+                        ref.read(categoryViewModelProvider.notifier).onRefresh;
+                    onRefresh = function;
+                    return _buildSuccess(value: value);
+                  }),
+                AsyncError() => const SliverToBoxAdapter(child: EmptyBuild()),
+                _ => const SliverToBoxAdapter(child: LoadingBuild()),
+              }
+            ]),
+          ),
         ),
       ),
     );
   }
 
   /// 构建成功
-  SliverList _buildSuccess({required CategoryState value}) {
+  _buildSuccess({required CategoryState value}) {
     return SliverList.builder(
         itemCount: value.novelHot?.data?.length,
         itemBuilder: (context, index) {
