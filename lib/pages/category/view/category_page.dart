@@ -50,7 +50,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
         .bodyLarge!
         .copyWith(fontSize: 17, fontWeight: FontWeight.w300);
     return Scaffold(
-      appBar: AppBar(title: const Text('分类列表')),
+      appBar: _buildAppbar(),
       body: FadeIn(
         child: SafeArea(
           child: DefaultTextStyle(
@@ -78,6 +78,16 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
         ),
       ),
     );
+  }
+
+  /// 构建appbar
+  _buildAppbar() {
+    return AppBar(title: const Text('分类列表'), actions: [
+      IconButton(
+          onPressed: () {},
+          icon: const Hero(tag: "Icons.search", child: Icon(Icons.search))),
+      10.horizontalSpace
+    ]);
   }
 
   ///  构建分类列表内容
