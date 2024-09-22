@@ -41,6 +41,11 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
     context.router.push(BookRoute(name: name));
   }
 
+  /// 跳转详情页
+  _onToSearchPage() {
+    context.router.push(const SearchRoute());
+  }
+
   @override
   Widget build(BuildContext context) {
     final categoryViewModel = ref.watch(categoryViewModelProvider);
@@ -84,8 +89,10 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
   _buildAppbar() {
     return AppBar(title: const Text('分类列表'), actions: [
       IconButton(
-          onPressed: () {},
-          icon: const Hero(tag: "Icons.search", child: Icon(Icons.search))),
+          onPressed: _onToSearchPage,
+          icon: const Hero(
+              tag: "Icons.search",
+              child: Icon(Icons.search, color: Colors.white))),
       10.horizontalSpace
     ]);
   }
