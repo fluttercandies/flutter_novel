@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,50 +51,55 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
         .copyWith(fontSize: 17, fontWeight: FontWeight.w300);
     return Scaffold(
       appBar: AppBar(title: const Text('分类列表')),
-      body: SafeArea(
-        child: DefaultTextStyle(
-          style: style,
-          child: PullToRefreshNotification(
-            reachToRefreshOffset: 100,
-            onRefresh: () async {
-              if (onRefresh != null) {
-                return await onRefresh!.call() ?? true;
-              }
-              return true;
-            },
-            child: CustomScrollView(slivers: [
-              SliverToBoxAdapter(child: 10.verticalSpace),
-              _buildCateGoryList(),
-              _buildTitle(),
-              PullToRefresh(
-                backgroundColor: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-              ),
-              switch (categoryViewModel) {
-                AsyncData(:final value) =>
-                  Builder(builder: (BuildContext context) {
-                    //LoggerTools.looger.e(value.netState);
-                    final data =
-                        NetStateTools.getWidget(value.netState, msg: value.msg);
-                    if (data != null) {
-                      return SliverToBoxAdapter(
-                          child: Padding(
-                              padding: const EdgeInsets.only(top: 100),
-                              child: data));
-                    }
-                    final function =
-                        ref.read(categoryViewModelProvider.notifier).onRefresh;
-                    onRefresh = function;
-                    return _buildSuccess(value: value);
-                  }),
-                AsyncError() => const SliverToBoxAdapter(child: EmptyBuild()),
-                _ => const SliverToBoxAdapter(child: LoadingBuild()),
-              }
-            ]),
+      body: FadeIn(
+        child: SafeArea(
+          child: DefaultTextStyle(
+            style: style,
+            child: PullToRefreshNotification(
+              reachToRefreshOffset: 100,
+              onRefresh: () async {
+                if (onRefresh != null) {
+                  return await onRefresh!.call() ?? true;
+                }
+                return true;
+              },
+              child: CustomScrollView(slivers: [
+                SliverToBoxAdapter(child: 10.verticalSpace),
+                _buildCateGoryList(),
+                _buildTitle(),
+                PullToRefresh(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                ),
+                _buildCategoryBody(categoryViewModel)
+              ]),
+            ),
           ),
         ),
       ),
     );
+  }
+
+  ///  构建分类列表内容
+  _buildCategoryBody(AsyncValue<CategoryState> categoryViewModel) {
+    return switch (categoryViewModel) {
+      AsyncData(:final value) => Builder(builder: (BuildContext context) {
+          //LoggerTools.looger.e(value.netState);
+          final data = NetStateTools.getWidget(value.netState, msg: value.msg);
+          if (data != null) {
+            return SliverToBoxAdapter(
+                child: Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: FadeIn(child: data)));
+          }
+          final function =
+              ref.read(categoryViewModelProvider.notifier).onRefresh;
+          onRefresh = function;
+          return _buildSuccess(value: value);
+        }),
+      AsyncError() => const SliverToBoxAdapter(child: EmptyBuild()),
+      _ => const SliverToBoxAdapter(child: LoadingBuild()),
+    };
   }
 
   /// 构建成功
@@ -173,56 +179,56 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
   /// 热门item
   _buildHotItem(Datum? novelHot,
       {double height = 180, required void Function(String str) onTap}) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        onTap.call(novelHot?.name ?? "");
-      },
-      child: SizedBox(
-        height: height,
-        child: Padding(
-          padding: 10.padding,
-          child: Row(
-            children: [
-              Flexible(
-                  child: ExtendedImageBuild(
-                      url: novelHot?.img ?? "", width: 120, height: height)),
-              10.horizontalSpace,
-              Expanded(
-                flex: 2,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(novelHot?.name ?? "",
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 20)),
-                      5.verticalSpace,
-                      Text("${novelHot?.author}/${novelHot?.type}",
-                          style: const TextStyle(color: Colors.black54)),
-                      5.verticalSpace,
-                      Row(children: [
-                        SvgPicture.asset(
-                          'assets/svg/hot.svg',
-                          width: 24,
-                        ),
-                        5.horizontalSpace,
-                        Text(novelHot?.hot ?? "0",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor)),
-                      ]),
-                      5.verticalSpace,
-                      Flexible(
-                        child: Text(novelHot?.desc ?? "",
-                            maxLines: 4,
+    return FadeIn(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => onTap.call(novelHot?.name ?? ""),
+        child: SizedBox(
+          height: height,
+          child: Padding(
+            padding: 10.padding,
+            child: Row(
+              children: [
+                Flexible(
+                    child: ExtendedImageBuild(
+                        url: novelHot?.img ?? "", width: 120, height: height)),
+                10.horizontalSpace,
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(novelHot?.name ?? "",
+                            maxLines: 3,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                fontSize: 14, color: Colors.black54)),
-                      )
-                    ]),
-              ),
-            ],
+                            style: const TextStyle(fontSize: 20)),
+                        5.verticalSpace,
+                        Text("${novelHot?.author}/${novelHot?.type}",
+                            style: const TextStyle(color: Colors.black54)),
+                        5.verticalSpace,
+                        Row(children: [
+                          SvgPicture.asset(
+                            'assets/svg/hot.svg',
+                            width: 24,
+                          ),
+                          5.horizontalSpace,
+                          Text(novelHot?.hot ?? "0",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor)),
+                        ]),
+                        5.verticalSpace,
+                        Flexible(
+                          child: Text(novelHot?.desc ?? "",
+                              maxLines: 4,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.black54)),
+                        )
+                      ]),
+                ),
+              ],
+            ),
           ),
         ),
       ),
