@@ -6,22 +6,22 @@ import 'package:novel_flutter_bit/widget/loading.dart';
 
 ///  网络状态工具
 class NetStateTools {
-  static Widget? getWidget(NetState netState) {
+  static Widget? getWidget(NetState netState, {String? msg}) {
     switch (netState) {
       case NetState.loadingState:
         return const LoadingBuild();
       case NetState.error404State:
-        return const EmptyBuild();
+        return EmptyBuild(text: msg);
       case NetState.error403State:
         return const Build403();
       case NetState.errorShowRefresh:
-        return const EmptyBuild();
+        return EmptyBuild(text: msg);
       case NetState.emptyDataState:
-        return const EmptyBuild();
+        return EmptyBuild(text: msg);
       case NetState.timeOutState:
-        return const EmptyBuild();
+        return EmptyBuild(text: msg);
       case NetState.unknown:
-        return const EmptyBuild();
+        return EmptyBuild(text: msg);
       default:
         return null;
     }

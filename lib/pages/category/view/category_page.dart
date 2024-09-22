@@ -73,7 +73,8 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                 AsyncData(:final value) =>
                   Builder(builder: (BuildContext context) {
                     //LoggerTools.looger.e(value.netState);
-                    final data = NetStateTools.getWidget(value.netState);
+                    final data =
+                        NetStateTools.getWidget(value.netState, msg: value.msg);
                     if (data != null) {
                       return SliverToBoxAdapter(
                           child: Padding(

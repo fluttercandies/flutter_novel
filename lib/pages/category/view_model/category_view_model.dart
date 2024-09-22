@@ -64,6 +64,7 @@ class CategoryViewModel extends _$CategoryViewModel
       LoggerTools.looger.i(categoryState.netState);
       state = AsyncData(categoryState);
     } else {
+      categoryState.msg = resultData.msg;
       state = AsyncData(categoryState);
       SmartDialog.showToast(resultData.msg);
     }

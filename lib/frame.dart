@@ -3,9 +3,11 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/category/view/category_page.dart';
 import 'package:novel_flutter_bit/pages/home/view/home_page.dart';
+import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/widget/border_buttom_navigation_bar.dart';
 
 @RoutePage()
@@ -24,7 +26,15 @@ class _FramePageState extends ConsumerState<FramePage>
   @override
   void initState() {
     super.initState();
+    //// 配置toast
+    SmartDialog.config.toast =
+        SmartConfigToast(alignment: const Alignment(0, -.2), debounce: true);
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   bool ishidden = false;

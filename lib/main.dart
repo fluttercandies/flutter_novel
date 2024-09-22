@@ -55,7 +55,19 @@ class MyApp extends StatelessWidget {
       routerDelegate: _appRouter.delegate(
         navigatorObservers: () => [FlutterSmartDialog.observer],
       ),
-      builder: FlutterSmartDialog.init(),
+      builder: FlutterSmartDialog.init(
+          // toastBuilder: (msg) => Container(
+          //     alignment: Alignment.center,
+          //     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          //     decoration: BoxDecoration(
+          //       color: theme.primaryColor,
+          //       borderRadius: BorderRadius.circular(6),
+          //     ),
+          //     child: Text(
+          //       msg,
+          //       style: const TextStyle(color: Colors.white),
+          //     )),
+          ),
       routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
