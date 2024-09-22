@@ -1,3 +1,4 @@
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/base/base_view_model.dart';
 import 'package:novel_flutter_bit/net/http_config.dart';
@@ -42,7 +43,7 @@ class CategoryViewModel extends _$CategoryViewModel
   void _initData() async {
     categoryState.netState = NetState.loadingState;
     ServiceResultData resultData = await NovelHttp().request('hot',
-        params: {'category': categoryList[currentIndex].name},
+        params: {'category': categoryList[currentIndex].value},
         method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
     if (resultData.data case null) {
@@ -62,6 +63,9 @@ class CategoryViewModel extends _$CategoryViewModel
       categoryState.novelHot = novelHot;
       LoggerTools.looger.i(categoryState.netState);
       state = AsyncData(categoryState);
+    } else {
+      state = AsyncData(categoryState);
+      SmartDialog.showToast(resultData.msg);
     }
   }
 

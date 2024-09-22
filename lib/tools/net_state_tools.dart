@@ -19,6 +19,9 @@ class NetStateTools {
       case NetState.emptyDataState:
         return const EmptyBuild();
       case NetState.timeOutState:
+        return const EmptyBuild();
+      case NetState.unknown:
+        return const EmptyBuild();
       default:
         return null;
     }

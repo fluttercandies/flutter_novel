@@ -77,10 +77,8 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                     if (data != null) {
                       return SliverToBoxAdapter(
                           child: Padding(
-                        padding: EdgeInsets.only(
-                            top: (MediaQuery.of(context).size.height / 4)),
-                        child: data,
-                      ));
+                              padding: const EdgeInsets.only(top: 100),
+                              child: data));
                     }
                     final function =
                         ref.read(categoryViewModelProvider.notifier).onRefresh;
