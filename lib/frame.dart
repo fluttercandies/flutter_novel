@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,13 +16,25 @@ class FramePage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _FramePageState();
 }
 
-class _FramePageState extends ConsumerState<FramePage> {
+class _FramePageState extends ConsumerState<FramePage>
+    with WidgetsBindingObserver {
   /// 当前选中的索引
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  bool ishidden = false;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    ishidden = state != AppLifecycleState.resumed;
+    setState(() {
+      debugPrint("state=$state");
+    });
   }
 
   List<Widget> pages = [
