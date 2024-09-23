@@ -41,6 +41,12 @@
       "css": "skull",
       "code": 62796,
       "src": "fontawesome5"
+    },
+    {
+      "uid": "ef073452b32bee5775a97808dddd1cfd",
+      "css": "crossed_bones",
+      "code": 59770,
+      "src": "rpgawesome"
     }
   ]
 }

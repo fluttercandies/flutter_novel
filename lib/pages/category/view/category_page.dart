@@ -36,6 +36,13 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
 
   late Future<bool>? Function()? onRefresh;
 
+  /// 分类列表点击 事件
+  _onChangeCategoryIndex(int index) {
+    _currentIndex = index;
+    ref.read(categoryViewModelProvider.notifier).setCurrentIndex(index);
+    setState(() {});
+  }
+
   /// 跳转小说 站源 列表 页面
   _onToBookPage(String name) {
     context.router.push(BookRoute(name: name));
@@ -157,13 +164,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
           crossAxisSpacing: 8,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () {
-                _currentIndex = index;
-                ref
-                    .read(categoryViewModelProvider.notifier)
-                    .setCurrentIndex(index);
-                setState(() {});
-              },
+              onTap: () => _onChangeCategoryIndex(index),
               child: _buildCateGoryItem(_categoryList[index]),
             );
           },

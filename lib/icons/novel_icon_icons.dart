@@ -29,6 +29,8 @@ class NovelIcon {
 
   static const IconData heart =
       IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData crossed_bones =
+      IconData(0xe97a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData backward =
       IconData(0xf04a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData forward =
