@@ -103,4 +103,14 @@ class PreferencesDB {
     }
     await sps.setStringList(novleHistory, str);
   }
+
+  ///  获取-是否喜欢
+  Future<bool> getSenseLikeNovel(String key) async {
+    return await sps.getBool(key) ?? false;
+  }
+
+  /// 设置-是否喜欢
+  Future<void> setSenseLikeNovel(String key, bool value) async {
+    await sps.setBool(key, value);
+  }
 }
