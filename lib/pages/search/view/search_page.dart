@@ -13,7 +13,6 @@ import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/debouncer.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/net_state_tools.dart';
-import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';
@@ -62,7 +61,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
     _debouncer.debounce(() {
       LoggerTools.looger.i("执行搜索：$str");
       setState(() {});
-    }, const Duration(milliseconds: 1500));
+    }, const Duration(milliseconds: 1000));
   }
 
   @override
