@@ -83,8 +83,8 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                 AsyncData(:final value) =>
                   Builder(builder: (BuildContext context) {
                     //LoggerTools.looger.e(value.netState);
-                    final data = NetStateTools.getWidget(value.netState,
-                        msg: "输入书本名称，我们将全网搜索");
+                    final data =
+                        NetStateTools.getWidget(value.netState, msg: value.msg);
                     if (data != null) {
                       return SliverToBoxAdapter(
                           child: Padding(

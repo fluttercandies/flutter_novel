@@ -26,14 +26,17 @@ class SearchViewModel extends _$SearchViewModel {
     ServiceResultData resultData = await NovelHttp()
         .request('search', params: {'keyword': name}, method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
+
     if (resultData.data == null ||
         resultData.data['data'] == null ||
-        resultData.data['data'].length <= 0) {
+        resultData.data['data'].isEmpty) {
       /// 没有更多数据了
       homeState.netState = NetState.emptyDataState;
+      homeState.msg = "输入书本名称，我们将全网搜索";
       state = AsyncData(homeState);
       return;
     }
+
     homeState.netState = NetStateTools.handle(resultData);
     if (homeState.netState == NetState.dataSuccessState) {
       SearchEntry searchEntry = SearchEntry.fromJson(resultData.data);
