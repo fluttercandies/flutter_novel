@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novle_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
 import 'package:novel_flutter_bit/theme/app_theme.dart';
+import 'package:novel_flutter_bit/tools/logger_tools.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -106,11 +108,13 @@ class PreferencesDB {
 
   ///  获取-是否喜欢
   Future<bool> getSenseLikeNovel(String key) async {
-    return await sps.getBool(key) ?? false;
+    LoggerTools.looger.d("获取是否收藏  getSenseLikeNovel key:$key");
+    return await sps.getBool("${key}_SenseLike") ?? false;
   }
 
   /// 设置-是否喜欢
   Future<void> setSenseLikeNovel(String key, bool value) async {
-    await sps.setBool(key, value);
+    LoggerTools.looger.d("设置是否收藏 setSenseLikeNovel  key:$key  value:$value");
+    await sps.setBool("${key}_SenseLike", value);
   }
 }

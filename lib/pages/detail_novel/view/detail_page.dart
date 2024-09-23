@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
@@ -37,10 +38,13 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   /// 主题样式
   //late ThemeStyleProvider _themeStyleProvider;
   late ThemeData _themeData;
+
+  late bool _isLikeNovel = false;
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    _initLikeNovel();
     // _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
   }
 
@@ -48,6 +52,20 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   void dispose() {
     if (mounted) _scrollController.dispose();
     super.dispose();
+  }
+
+  /// 初始化是否收藏
+  void _initLikeNovel() async {
+    _isLikeNovel = await PreferencesDB.instance
+        .getSenseLikeNovel(widget.bookDatum.url ?? "");
+  }
+
+  /// 设置是否收藏
+  void _setLikeNovel() async {
+    _isLikeNovel = !_isLikeNovel;
+    await PreferencesDB.instance
+        .setSenseLikeNovel(widget.bookDatum.url ?? "", _isLikeNovel);
+    setState(() {});
   }
 
   /// 跳转小说展示页
@@ -125,8 +143,9 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                   centerTitle: true,
                 ),
                 body: _buildSuccess(value: value),
-                bottomNavigationBar:
-                    _buildBottomAppbar(readOnTap: _onKeepReadNovelPage),
+                bottomNavigationBar: _buildBottomAppbar(
+                    readOnTap: _onKeepReadNovelPage,
+                    collectOnTap: _setLikeNovel),
                 floatingActionButton: _buildFloatingActionButton());
           }),
         AsyncError() => const EmptyBuild(),
@@ -291,11 +310,13 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                     children: [
                       Icon(
                         NovelIcon.heart,
-                        color: _themeData.primaryColor,
+                        color: _isLikeNovel
+                            ? _themeData.primaryColor
+                            : Colors.grey.shade300,
                       ),
-                      const Text(
-                        "收藏",
-                        style: TextStyle(color: Colors.black87),
+                      Text(
+                        _isLikeNovel ? "已收藏" : "收藏",
+                        style: const TextStyle(color: Colors.black54),
                       ),
                     ],
                   ),
