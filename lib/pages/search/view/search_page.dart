@@ -55,29 +55,27 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             fontSize: 18, fontWeight: FontWeight.w300, color: Colors.black87),
         child: GestureDetector(
           onTap: FocusScope.of(context).unfocus,
-          child: FadeIn(
-            child: CustomScrollView(
-              slivers: [
-                _buildAppbar(),
-                switch (searchViewModel) {
-                  AsyncData(:final value) =>
-                    Builder(builder: (BuildContext context) {
-                      //LoggerTools.looger.e(value.netState);
-                      final data = NetStateTools.getWidget(value.netState,
-                          msg: "输入书本名称，我们将全网搜索");
-                      if (data != null) {
-                        return SliverToBoxAdapter(
-                            child: Padding(
-                                padding: const EdgeInsets.only(top: 100),
-                                child: FadeIn(child: data)));
-                      }
-                      return _buildSuccess(value: value);
-                    }),
-                  AsyncError() => const SliverToBoxAdapter(child: EmptyBuild()),
-                  _ => const SliverToBoxAdapter(child: LoadingBuild()),
-                }
-              ],
-            ),
+          child: CustomScrollView(
+            slivers: [
+              _buildAppbar(),
+              switch (searchViewModel) {
+                AsyncData(:final value) =>
+                  Builder(builder: (BuildContext context) {
+                    //LoggerTools.looger.e(value.netState);
+                    final data = NetStateTools.getWidget(value.netState,
+                        msg: "输入书本名称，我们将全网搜索");
+                    if (data != null) {
+                      return SliverToBoxAdapter(
+                          child: Padding(
+                              padding: const EdgeInsets.only(top: 100),
+                              child: FadeIn(child: data)));
+                    }
+                    return _buildSuccess(value: value);
+                  }),
+                AsyncError() => const SliverToBoxAdapter(child: EmptyBuild()),
+                _ => const SliverToBoxAdapter(child: LoadingBuild()),
+              }
+            ],
           ),
         ),
       ),
@@ -155,7 +153,8 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   /// 构建搜索item
   _buildSearchItem(SearchEntryDatum entry, {double imageheight = 150}) {
     const style = TextStyle(
-        color: Colors.black45, fontSize: 16, overflow: TextOverflow.ellipsis);
+        color: Colors.black54, fontSize: 16, overflow: TextOverflow.ellipsis);
+
     return FadeIn(
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
@@ -186,7 +185,38 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   ))
                 ],
               ),
+              10.verticalSpace,
+              _buildSourceList(entry)
             ],
+          )),
+    );
+  }
+
+  /// 构建源列表
+  _buildSourceList(SearchEntryDatum entry) {
+    return Column(
+      children: [
+        for (int i = 0; i < (entry.book?.length ?? 0); i++) ...{
+          _buildSourceItem(entry.book![i])
+        }
+      ],
+    );
+  }
+
+  /// 构建书源
+  _buildSourceItem(Book book) {
+    const style1 = TextStyle(color: Colors.black87, fontSize: 16);
+    return DefaultTextStyle(
+      style: style1.copyWith(fontSize: 16, fontWeight: FontWeight.w300),
+      child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: _theme.primaryColor)),
+          margin: const EdgeInsets.symmetric(vertical: 5),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: Column(
+            children: [Text("来源：${book.name}"), Text("最新章节：${book.bookNew}")],
           )),
     );
   }
