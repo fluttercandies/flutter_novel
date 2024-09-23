@@ -36,6 +36,39 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
 
   late Future<bool>? Function()? onRefresh;
 
+  final ScrollController _scrollController = ScrollController();
+
+  bool _isShowFloatingActionButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.offset >= 200 && !_isShowFloatingActionButton) {
+        // 当滚动到200的位置或超过200的位置时，且按钮尚未显示
+        _isShowFloatingActionButton = true;
+        setState(() {});
+      } else if (_scrollController.offset < 200 &&
+          _isShowFloatingActionButton) {
+        // 当滚动位置小于200，但按钮已经显示
+        _isShowFloatingActionButton = false;
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  /// 滚动到顶部
+  _onAnimateToTop() {
+    _scrollController.animateTo(0,
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+  }
+
   /// 分类列表点击 事件
   _onChangeCategoryIndex(int index) {
     _currentIndex = index;
@@ -53,6 +86,14 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
     context.router.push(const SearchRoute());
   }
 
+  /// 刷新
+  _onRefresh() async {
+    if (onRefresh != null) {
+      return await onRefresh!.call() ?? true;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final categoryViewModel = ref.watch(categoryViewModelProvider);
@@ -63,19 +104,15 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
         .copyWith(fontSize: 17, fontWeight: FontWeight.w300);
     return Scaffold(
       appBar: _buildAppbar(),
+      floatingActionButton: _buildFloatingActionButton(),
       body: FadeIn(
         child: SafeArea(
           child: DefaultTextStyle(
             style: style,
             child: PullToRefreshNotification(
               reachToRefreshOffset: 100,
-              onRefresh: () async {
-                if (onRefresh != null) {
-                  return await onRefresh!.call() ?? true;
-                }
-                return true;
-              },
-              child: CustomScrollView(slivers: [
+              onRefresh: () async => _onRefresh(),
+              child: CustomScrollView(controller: _scrollController, slivers: [
                 SliverToBoxAdapter(child: 10.verticalSpace),
                 _buildCateGoryList(),
                 _buildTitle(),
@@ -90,6 +127,23 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
         ),
       ),
     );
+  }
+
+  _buildFloatingActionButton() {
+    return _isShowFloatingActionButton
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                  heroTag: "_animationToUp",
+                  onPressed: _onAnimateToTop,
+                  backgroundColor: _theme.primaryColor,
+                  child: Icon(Icons.keyboard_arrow_up,
+                      color: _theme.scaffoldBackgroundColor)),
+              80.verticalSpace
+            ],
+          )
+        : null;
   }
 
   /// 构建appbar
