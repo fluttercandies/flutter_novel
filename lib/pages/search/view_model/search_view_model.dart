@@ -26,7 +26,9 @@ class SearchViewModel extends _$SearchViewModel {
     ServiceResultData resultData = await NovelHttp()
         .request('search', params: {'keyword': name}, method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
-    if (resultData.data == null || resultData.data['data'] == null) {
+    if (resultData.data == null ||
+        resultData.data['data'] == null ||
+        resultData.data['data'].length <= 0) {
       /// 没有更多数据了
       homeState.netState = NetState.emptyDataState;
       state = AsyncData(homeState);

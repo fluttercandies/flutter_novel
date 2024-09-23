@@ -5,9 +5,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
+import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/pages/search/state/search_state.dart';
 import 'package:novel_flutter_bit/pages/search/view_model/search_view_model.dart';
+import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/debouncer.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/net_state_tools.dart';
@@ -27,8 +29,33 @@ class SearchPage extends ConsumerStatefulWidget {
 
 class _SearchPageState extends ConsumerState<SearchPage> {
   late ThemeData _theme;
+
+  /// 搜索框控制器
   final TextEditingController _controller = TextEditingController();
+
+  /// 搜索框防抖
   final _debouncer = Debouncer();
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  /// 跳转详情页
+  _onToDetailPage(Book data) async {
+    final book = BookDatum(
+        name: data.name,
+        url: data.url,
+        newurl: data.newurl,
+        datumNew: data.bookNew);
+    await context.router.push(DetailRoute(bookDatum: book));
+    if (mounted) FocusScope.of(context).requestFocus(FocusNode());
+  }
 
   /// 搜索 文本输入框改变
   _onChangeText(String str) {
@@ -36,12 +63,6 @@ class _SearchPageState extends ConsumerState<SearchPage> {
       LoggerTools.looger.i("执行搜索：$str");
       setState(() {});
     }, const Duration(milliseconds: 1500));
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -208,16 +229,19 @@ class _SearchPageState extends ConsumerState<SearchPage> {
     const style1 = TextStyle(color: Colors.black87, fontSize: 16);
     return DefaultTextStyle(
       style: style1.copyWith(fontSize: 16, fontWeight: FontWeight.w300),
-      child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: _theme.primaryColor)),
-          margin: const EdgeInsets.symmetric(vertical: 5),
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: Column(
-            children: [Text("来源：${book.name}"), Text("最新章节：${book.bookNew}")],
-          )),
+      child: GestureDetector(
+        onTap: () => _onToDetailPage(book),
+        child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: _theme.primaryColor)),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Column(
+              children: [Text("来源：${book.name}"), Text("最新章节：${book.bookNew}")],
+            )),
+      ),
     );
   }
 }
