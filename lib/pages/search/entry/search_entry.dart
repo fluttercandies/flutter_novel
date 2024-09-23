@@ -10,7 +10,7 @@ SearchEntry searchEntryFromJson(String str) =>
 String searchEntryToJson(SearchEntry data) => json.encode(data.toJson());
 
 class SearchEntry {
-  List<Datum>? data;
+  List<SearchEntryDatum>? data;
 
   SearchEntry({
     this.data,
@@ -19,7 +19,8 @@ class SearchEntry {
   factory SearchEntry.fromJson(Map<String, dynamic> json) => SearchEntry(
         data: json["data"] == null
             ? []
-            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+            : List<SearchEntryDatum>.from(
+                json["data"]!.map((x) => SearchEntryDatum.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -29,7 +30,7 @@ class SearchEntry {
       };
 }
 
-class Datum {
+class SearchEntryDatum {
   String? img;
   String? desc;
   String? name;
@@ -37,7 +38,7 @@ class Datum {
   String? author;
   List<Book>? book;
 
-  Datum({
+  SearchEntryDatum({
     this.img,
     this.desc,
     this.name,
@@ -46,7 +47,8 @@ class Datum {
     this.book,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory SearchEntryDatum.fromJson(Map<String, dynamic> json) =>
+      SearchEntryDatum(
         img: json["img"],
         desc: json["desc"],
         name: json["name"],
