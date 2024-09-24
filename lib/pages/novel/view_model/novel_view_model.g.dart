@@ -6,7 +6,7 @@ part of 'novel_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$novelViewModelHash() => r'd7f07063496ce5cef4b483221c96accdf95c9b50';
+String _$novelViewModelHash() => r'dec1b47720c5b9082b8b77e623b0bb31c0a704fa';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -179,7 +179,7 @@ mixin NovelViewModelRef on AutoDisposeAsyncNotifierProviderRef<NovelState> {
   /// The parameter `urlNovel` of this provider.
   String get urlNovel;
 
-  /// The parameter `novleHistory` of this provider.
+  /// The parameter `novelHistory` of this provider.
   NovelHistoryEntry get novelHistory;
 }
 
