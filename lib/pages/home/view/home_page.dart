@@ -43,12 +43,17 @@ class _HomePageState extends ConsumerState<HomePage> {
     context.router.push(DetailRoute(bookDatum: data ?? BookDatum()));
   }
 
+  /// 跳转详情页
+  _onToSearchPage() {
+    context.router.push(const SearchRoute());
+  }
+
   @override
   Widget build(BuildContext context) {
     //_myColors = Theme.of(context).extension<MyColorsTheme>()!;
     final homeViewModel = ref.watch(homeViewModelProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('每日推荐')),
+      appBar: _buildAppBar(),
       body: SafeArea(
           child: switch (homeViewModel) {
         AsyncData(:final value) => Builder(builder: (BuildContext context) {
@@ -60,6 +65,19 @@ class _HomePageState extends ConsumerState<HomePage> {
         _ => const LoadingBuild(),
       }),
     );
+  }
+
+  /// appbar
+  _buildAppBar() {
+    return AppBar(title: const Text('每日推荐'), actions: [
+      IconButton(
+          onPressed: _onToSearchPage,
+          icon: const Icon(
+            Icons.search,
+            color: Colors.white,
+          )),
+      10.horizontalSpace
+    ]);
   }
 
   /// 成功状态构建

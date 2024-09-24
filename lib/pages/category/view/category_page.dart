@@ -151,7 +151,12 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
     return AppBar(title: const Text('分类列表'), actions: [
       IconButton(
           onPressed: _onToSearchPage,
-          icon: const Hero(tag: "Icons.search", child: Icon(Icons.search))),
+          icon: const Hero(
+              tag: "Icons.search",
+              child: Icon(
+                Icons.search,
+                color: Colors.white,
+              ))),
       10.horizontalSpace
     ]);
   }

@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
@@ -65,6 +66,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
     _isLikeNovel = !_isLikeNovel;
     await PreferencesDB.instance
         .setSenseLikeNovel(widget.bookDatum.url ?? "", _isLikeNovel);
+    SmartDialog.showToast(_isLikeNovel ? "收藏成功" : "取消收藏");
     setState(() {});
   }
 
