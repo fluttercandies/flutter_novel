@@ -1,8 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/state/collect_state.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/view_model/collect_view_model.dart';
+import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
@@ -20,6 +23,17 @@ class CollectPage extends ConsumerStatefulWidget {
 class _CollectPageState extends ConsumerState<CollectPage> {
   final ScrollController _controller = ScrollController();
   late ThemeData _themeData;
+
+  /// 跳转详情页
+  _onToDetailPage(CollectNovelEntry? data) {
+    BookDatum bookData = BookDatum(
+      name: data?.name,
+      url: data?.readUrl,
+      datumNew: data?.datumNew,
+    );
+    context.router.push(DetailRoute(bookDatum: bookData));
+  }
+
   @override
   Widget build(BuildContext context) {
     _themeData = Theme.of(context);
@@ -82,35 +96,39 @@ class _CollectPageState extends ConsumerState<CollectPage> {
         collapsedWidget: const Center(
             child: Text(
           "我的收藏",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 20),
         )));
   }
 
   _buildGridItem(CollectNovelEntry value) {
-    return Container(
-      padding: 5.horizontal,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-      child: Column(
-        children: [
-          Expanded(
-            child: ExtendedImageBuild(
+    return GestureDetector(
+      onTap: () => _onToDetailPage(value),
+      child: Container(
+        padding: 5.horizontal,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+        child: Column(
+          children: [
+            ExtendedImageBuild(
               url: value.imageUrl ?? "",
               isJoinUrl: true,
             ),
-          ),
-          Text("${value.name}"),
-          //Text("${value.datumNew}"),
-          Text(
-            value.readChapter ?? "暂未阅读",
-            maxLines: 1,
-            style: const TextStyle(fontSize: 14),
-          ),
-          Text(
-            "新！:${value.datumNew}",
-            maxLines: 1,
-            style: const TextStyle(fontSize: 14),
-          )
-        ],
+            Text(
+              "${value.name}",
+              maxLines: 1,
+            ),
+            //Text("${value.datumNew}"),
+            Text(
+              value.readChapter ?? "暂未阅读",
+              maxLines: 1,
+              style: TextStyle(fontSize: 14, color: _themeData.primaryColor),
+            ),
+            Text(
+              "新！:${value.datumNew}",
+              maxLines: 1,
+              style: const TextStyle(fontSize: 14),
+            )
+          ],
+        ),
       ),
     );
   }
