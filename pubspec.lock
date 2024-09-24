@@ -810,6 +810,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sliver_head_automatic_adsorption:
+    dependency: "direct main"
+    description:
+      name: sliver_head_automatic_adsorption
+      sha256: "04a0744016f06843450010f058625e33ae7e3f5c49604175ddea7422ed972129"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.6"
   source_gen:
     dependency: transitive
     description:

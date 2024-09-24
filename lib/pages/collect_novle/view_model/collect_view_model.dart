@@ -19,7 +19,6 @@ class CollectViewModel extends _$CollectViewModel {
 
   void getData() async {
     collectState.netState = NetState.loadingState;
-
     final data = await PreferencesDB.instance.getCollectNovelList();
     if (data.isEmpty) {
       /// 没有更多数据了
@@ -27,6 +26,7 @@ class CollectViewModel extends _$CollectViewModel {
       state = AsyncData(collectState);
       return;
     }
+    collectState.netState = NetState.dataSuccessState;
 
     /// 赋值
     collectState.collectNovelList = data;

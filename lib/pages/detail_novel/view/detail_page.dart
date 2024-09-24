@@ -7,6 +7,7 @@ import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/enrty/collect_entry.dart';
+import 'package:novel_flutter_bit/pages/collect_novle/view_model/collect_view_model.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
@@ -77,6 +78,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
     await PreferencesDB.instance.setSenseLikeNovel(
         widget.bookDatum.url ?? "", _isLikeNovel, collectNovelEntry);
     SmartDialog.showToast(_isLikeNovel ? "收藏成功" : "取消收藏");
+    ref.read(collectViewModelProvider.notifier).getData();
     setState(() {});
   }
 
