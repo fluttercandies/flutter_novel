@@ -39,6 +39,8 @@ class PreferencesDB {
   /// 阅读记录
   static const novleHistory = "novleHistory";
 
+  static const senseLikeNovel = "setSenseLikeNovel";
+
   /// 设置-主题外观模式
   Future<void> setAppThemeDarkMode(ThemeMode themeMode) async {
     await sps.setString(appThemeDarkMode, themeMode.name);
@@ -115,6 +117,12 @@ class PreferencesDB {
   /// 设置-是否喜欢
   Future<void> setSenseLikeNovel(String key, bool value) async {
     LoggerTools.looger.d("设置是否收藏 setSenseLikeNovel  key:$key  value:$value");
+    // if (value) {
+    //   await sps.setBool("${key}_SenseLike", value);
+    // } else {
+    //   await sps.remove(key);
+    // }
     await sps.setBool("${key}_SenseLike", value);
+    //sps.setStringList(senseLikeNovel, )
   }
 }
