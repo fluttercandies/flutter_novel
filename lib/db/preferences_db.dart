@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:novel_flutter_bit/pages/collect_novle/collect_entry.dart';
+import 'package:novel_flutter_bit/pages/collect_novle/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
 import 'package:novel_flutter_bit/theme/app_theme.dart';
@@ -116,15 +115,34 @@ class PreferencesDB {
   }
 
   /// 设置-是否喜欢
-  Future<void> setSenseLikeNovel(String key, bool value) async {
+  Future<void> setSenseLikeNovel(
+      String key, bool value, CollectNovelEntry? entry) async {
     LoggerTools.looger.d("设置是否收藏 setSenseLikeNovel  key:$key  value:$value");
-    // if (value) {
-    //   await sps.setBool("${key}_SenseLike", value);
-    // } else {
-    //   await sps.remove(key);
-    // }
     await sps.setBool("${key}_SenseLike", value);
-    // sps.setStringList(senseLikeNovel, )
+    if (value && entry != null) {
+      List<String> str = [];
+      final data = await getCollectNovelList();
+      final exists = data.any((novel) => novel.readUrl == entry.readUrl);
+      if (exists) {
+        // 如果用户存在，移除该用户
+        data.removeWhere((user) => user.readUrl == entry.readUrl);
+      }
+      data.insert(0, entry);
+      for (var element in data) {
+        str.add(json.encode(element.toJson()));
+      }
+      await sps.setStringList(senseLikeNovel, str);
+    }
   }
-  // Future<List<CollectNovelEntry>>
+
+  /// 获取-收藏列表
+  Future<List<CollectNovelEntry>> getCollectNovelList() async {
+    List<CollectNovelEntry> list = [];
+    List<String> str = await sps.getStringList(senseLikeNovel) ?? [];
+    for (var element in str) {
+      list.add(CollectNovelEntry.fromJson(json.decode(element)));
+    }
+    LoggerTools.looger.d("获取收藏列表  getCollectNovelList  list:$list");
+    return list;
+  }
 }

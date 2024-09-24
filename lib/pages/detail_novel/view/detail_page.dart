@@ -6,6 +6,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
+import 'package:novel_flutter_bit/pages/collect_novle/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
@@ -62,10 +63,19 @@ class _DetailPageState extends ConsumerState<DetailPage> {
   }
 
   /// 设置是否收藏
-  void _setLikeNovel() async {
+  void _setLikeNovel(DetailNovel? detailNovel) async {
     _isLikeNovel = !_isLikeNovel;
-    await PreferencesDB.instance
-        .setSenseLikeNovel(widget.bookDatum.url ?? "", _isLikeNovel);
+    final detailViewModel = ref.read(
+        detailViewModelProvider(urlBook: widget.bookDatum.url ?? "").notifier);
+    CollectNovelEntry collectNovelEntry = CollectNovelEntry(
+      name: detailNovel?.data?.name ?? "",
+      imageUrl: detailNovel?.data?.img ?? "",
+      readUrl: widget.bookDatum.url ?? "",
+      readChapter: detailViewModel.strUrl.name,
+      datumNew: widget.bookDatum.datumNew,
+    );
+    await PreferencesDB.instance.setSenseLikeNovel(
+        widget.bookDatum.url ?? "", _isLikeNovel, collectNovelEntry);
     SmartDialog.showToast(_isLikeNovel ? "收藏成功" : "取消收藏");
     setState(() {});
   }
@@ -147,7 +157,7 @@ class _DetailPageState extends ConsumerState<DetailPage> {
                 body: _buildSuccess(value: value),
                 bottomNavigationBar: _buildBottomAppbar(
                     readOnTap: _onKeepReadNovelPage,
-                    collectOnTap: _setLikeNovel),
+                    collectOnTap: () => _setLikeNovel(value.detailNovel)),
                 floatingActionButton: _buildFloatingActionButton());
           }),
         AsyncError() => const EmptyBuild(),
