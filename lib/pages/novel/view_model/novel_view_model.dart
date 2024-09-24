@@ -5,7 +5,7 @@ import 'package:novel_flutter_bit/net/http_config.dart';
 import 'package:novel_flutter_bit/net/net_state.dart';
 import 'package:novel_flutter_bit/net/novel_http.dart';
 import 'package:novel_flutter_bit/net/service_result.dart';
-import 'package:novel_flutter_bit/pages/home/entry/novle_history_entry.dart';
+import 'package:novel_flutter_bit/pages/home/entry/novel_history_entry.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/pages/novel/entry/novel.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
@@ -24,11 +24,11 @@ class NovelViewModel extends _$NovelViewModel {
   @override
   Future<NovelState> build(
       {required String urlNovel,
-      required NovleHistoryEntry novleHistory}) async {
+      required NovelHistoryEntry novelHistory}) async {
     LoggerTools.looger.d("novel阅读 build Vlaue : $urlNovel");
     url = urlNovel;
     getData();
-    await PreferencesDB.instance.setNovleHistory(novleHistory);
+    await PreferencesDB.instance.setNovelHistory(novelHistory);
     Future.delayed(Durations.extralong4, () {
       ref.read(homeViewModelProvider.notifier).initHistory();
     });

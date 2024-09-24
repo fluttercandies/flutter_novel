@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:novel_flutter_bit/pages/home/entry/novle_history_entry.dart';
+import 'package:novel_flutter_bit/pages/collect_novle/collect_entry.dart';
+import 'package:novel_flutter_bit/pages/home/entry/novel_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
 import 'package:novel_flutter_bit/theme/app_theme.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
@@ -37,7 +38,7 @@ class PreferencesDB {
   static const fontWeight = 'fontWeight';
 
   /// 阅读记录
-  static const novleHistory = "novleHistory";
+  static const novelHistory = "novelHistory";
 
   static const senseLikeNovel = "setSenseLikeNovel";
 
@@ -74,38 +75,38 @@ class PreferencesDB {
   }
 
   /// 设置-多主题模式
-  Future<void> setNovleFontWeight(NovelReadFontWeightEnum value) async {
+  Future<void> setNovelFontWeight(NovelReadFontWeightEnum value) async {
     await sps.setString(fontWeight, value.id);
   }
 
   /// 获取-多主题模式
-  Future<String> getNovleFontWeight() async {
+  Future<String> getNovelFontWeight() async {
     return await sps.getString(fontWeight) ?? 'w300';
   }
 
-  Future<List<NovleHistoryEntry>> getNovleHistoryList() async {
-    List<NovleHistoryEntry> list = [];
-    List<String> str = await sps.getStringList(novleHistory) ?? [];
+  Future<List<NovelHistoryEntry>> getNovelHistoryList() async {
+    List<NovelHistoryEntry> list = [];
+    List<String> str = await sps.getStringList(novelHistory) ?? [];
     for (var element in str) {
-      list.add(NovleHistoryEntry.fromJson(json.decode(element)));
+      list.add(NovelHistoryEntry.fromJson(json.decode(element)));
     }
     return list;
   }
 
-  Future<void> setNovleHistory(NovleHistoryEntry novleHistoryEntry) async {
+  Future<void> setNovelHistory(NovelHistoryEntry novelHistoryEntry) async {
     List<String> str = [];
-    final data = await getNovleHistoryList();
+    final data = await getNovelHistoryList();
     final exists =
-        data.any((novle) => novle.readUrl == novleHistoryEntry.readUrl);
+        data.any((novel) => novel.readUrl == novelHistoryEntry.readUrl);
     if (exists) {
       // 如果用户存在，移除该用户
-      data.removeWhere((user) => user.readUrl == novleHistoryEntry.readUrl);
+      data.removeWhere((user) => user.readUrl == novelHistoryEntry.readUrl);
     }
-    data.insert(0, novleHistoryEntry);
+    data.insert(0, novelHistoryEntry);
     for (var element in data) {
       str.add(json.encode(element.toJson()));
     }
-    await sps.setStringList(novleHistory, str);
+    await sps.setStringList(novelHistory, str);
   }
 
   ///  获取-是否喜欢
@@ -123,6 +124,7 @@ class PreferencesDB {
     //   await sps.remove(key);
     // }
     await sps.setBool("${key}_SenseLike", value);
-    //sps.setStringList(senseLikeNovel, )
+    // sps.setStringList(senseLikeNovel, )
   }
+  // Future<List<CollectNovelEntry>>
 }

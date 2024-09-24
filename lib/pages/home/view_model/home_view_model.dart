@@ -29,7 +29,7 @@ class HomeViewModel extends _$HomeViewModel implements BaseViewModelImplements {
   }
 
   void initHistory() async {
-    final data = await PreferencesDB.instance.getNovleHistoryList();
+    final data = await PreferencesDB.instance.getNovelHistoryList();
     LoggerTools.looger.i(data);
     homeState.dataHistory = data;
     if (_isInit) {

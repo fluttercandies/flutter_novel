@@ -8,7 +8,7 @@ import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
-import 'package:novel_flutter_bit/pages/home/entry/novle_history_entry.dart';
+import 'package:novel_flutter_bit/pages/home/entry/novel_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_state.dart';
 import 'package:novel_flutter_bit/pages/novel/view_model/novel_view_model.dart';
@@ -39,8 +39,8 @@ class NovelPage extends ConsumerStatefulWidget {
 }
 
 class _NovelPageState extends ConsumerState<NovelPage> {
-  final NovleSpecialTextSpanBuilder _specialTextSpanBuilder =
-      NovleSpecialTextSpanBuilder(color: Colors.black);
+  final NovelSpecialTextSpanBuilder _specialTextSpanBuilder =
+      NovelSpecialTextSpanBuilder(color: Colors.black);
 
   /// 动画时长
   final Duration _duration = const Duration(milliseconds: 400);
@@ -86,7 +86,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   /// 初始化字体大小
   _initFontSize() async {
     double size = await PreferencesDB.instance.getNovelFontSize();
-    String fontWeight = await PreferencesDB.instance.getNovleFontWeight();
+    String fontWeight = await PreferencesDB.instance.getNovelFontWeight();
 
     NovelReadState.size = size;
     NovelReadState.initFontWeight(fontWeight);
@@ -203,14 +203,14 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   }
 
   /// 初始化历史记录
-  NovleHistoryEntry _initNovleHistoryEntry() {
+  NovelHistoryEntry _initNovelHistoryEntry() {
     final detailNovel = ref
         .read(detailViewModelProvider(urlBook: widget.bookDatum.url ?? "")
             .notifier)
         .detailState
         .detailNovel;
     LoggerTools.looger.d("buildInitData : ${detailNovel?.data?.name}");
-    return NovleHistoryEntry(
+    return NovelHistoryEntry(
         name: detailNovel?.data?.name,
         imageUrl: detailNovel?.data?.img,
         readUrl: widget.bookDatum.url,
@@ -221,9 +221,9 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   @override
   Widget build(BuildContext context) {
     buildInitData();
-    final dataHistory = _initNovleHistoryEntry();
+    final dataHistory = _initNovelHistoryEntry();
     final novelViewModel = ref.watch(novelViewModelProvider(
-        urlNovel: widget.url, novleHistory: dataHistory));
+        urlNovel: widget.url, novelHistory: dataHistory));
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: _themeData.scaffoldBackgroundColor,

@@ -6,20 +6,20 @@
 
 import 'dart:convert';
 
-List<CollectNovleEntry> novleHistoryEntryFromJson(String str) =>
-    List<CollectNovleEntry>.from(
-        json.decode(str).map((x) => CollectNovleEntry.fromJson(x)));
+List<CollectNovelEntry> novelHistoryEntryFromJson(String str) =>
+    List<CollectNovelEntry>.from(
+        json.decode(str).map((x) => CollectNovelEntry.fromJson(x)));
 
-String novleHistoryEntryToJson(List<CollectNovleEntry> data) =>
+String novelHistoryEntryToJson(List<CollectNovelEntry> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class CollectNovleEntry {
+class CollectNovelEntry {
   String? name;
   String? imageUrl;
   String? readUrl;
   String? readChapter;
   String? datumNew;
-  CollectNovleEntry({
+  CollectNovelEntry({
     this.name,
     this.imageUrl,
     this.readUrl,
@@ -27,8 +27,8 @@ class CollectNovleEntry {
     this.datumNew,
   });
 
-  factory CollectNovleEntry.fromJson(Map<String, dynamic> json) =>
-      CollectNovleEntry(
+  factory CollectNovelEntry.fromJson(Map<String, dynamic> json) =>
+      CollectNovelEntry(
         name: json["name"],
         imageUrl: json["imageUrl"],
         readUrl: json["readUrl"],
@@ -46,7 +46,7 @@ class CollectNovleEntry {
 
   @override
   bool operator ==(dynamic other) {
-    if (other is CollectNovleEntry) {
+    if (other is CollectNovelEntry) {
       return readUrl == other.readUrl;
     }
     return false;

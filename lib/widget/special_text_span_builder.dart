@@ -4,8 +4,8 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class NovleSpecialTextSpanBuilder extends SpecialTextSpanBuilder {
-  NovleSpecialTextSpanBuilder({required this.color});
+class NovelSpecialTextSpanBuilder extends SpecialTextSpanBuilder {
+  NovelSpecialTextSpanBuilder({required this.color});
   Color color;
   set setColor(Color c) => color = c;
   @override
