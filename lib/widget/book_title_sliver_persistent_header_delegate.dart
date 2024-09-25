@@ -63,3 +63,67 @@ class BookTitleSliverPersistentHeaderDelegate
     return true;
   }
 }
+
+class TitleSliverPersistentHeaderDelegate
+    extends SliverPersistentHeaderDelegate {
+  @override
+  double get minExtent => 50.0;
+  @override
+  double get maxExtent => 50.0;
+
+  /// 颜色
+  final Color myColors;
+
+  final Color brandColor;
+
+  final String title;
+
+  final String? subTitle;
+
+  final IconData? iconData;
+  final void Function()? onPressed;
+  TitleSliverPersistentHeaderDelegate(
+      {required this.title,
+      required this.myColors,
+      required this.brandColor,
+      this.iconData,
+      this.subTitle,
+      this.onPressed});
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      padding: 10.horizontal,
+      // color: myColors.containerColor,
+      alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: const [0.0, 0.5],
+              colors: [myColors, Theme.of(context).scaffoldBackgroundColor])),
+      height: maxExtent,
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 20, color: brandColor),
+          ),
+          const Spacer(),
+          Text(subTitle ?? ""),
+          IconButton(
+              onPressed: onPressed,
+              icon: Icon(
+                iconData ?? Icons.chevron_right,
+                color: brandColor,
+              ))
+        ],
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
+  }
+}

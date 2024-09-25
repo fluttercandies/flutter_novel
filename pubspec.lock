@@ -814,10 +814,10 @@ packages:
     dependency: "direct main"
     description:
       name: sliver_head_automatic_adsorption
-      sha256: "04a0744016f06843450010f058625e33ae7e3f5c49604175ddea7422ed972129"
+      sha256: e7821a14c78c79e581b7d70323ae4e3e18f05439c2b5c860c6df2e9de7c14959
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.7"
   source_gen:
     dependency: transitive
     description:

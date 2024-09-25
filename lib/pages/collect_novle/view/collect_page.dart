@@ -8,6 +8,7 @@ import 'package:novel_flutter_bit/pages/collect_novle/view_model/collect_view_mo
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
+import 'package:novel_flutter_bit/widget/book_title_sliver_persistent_header_delegate.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
@@ -32,6 +33,11 @@ class _CollectPageState extends ConsumerState<CollectPage> {
       datumNew: data?.datumNew,
     );
     context.router.push(DetailRoute(bookDatum: bookData));
+  }
+
+  /// 跳转搜索页
+  _onToSearchPage() {
+    context.router.push(const SearchRoute());
   }
 
   @override
@@ -65,8 +71,15 @@ class _CollectPageState extends ConsumerState<CollectPage> {
         collapsedColors: _themeData.primaryColor,
         expandedColors: _themeData.scaffoldBackgroundColor,
         expandedHeight: 300,
+        collapsedHeight: Theme.of(context).appBarTheme.toolbarHeight ?? 56,
         slivers: [
-          SliverPadding(padding: 20.vertical),
+          SliverPersistentHeader(
+              pinned: true,
+              delegate: TitleSliverPersistentHeaderDelegate(
+                myColors: _themeData.scaffoldBackgroundColor,
+                brandColor: _themeData.primaryColor,
+                title: '最近收藏',
+              )),
           SliverPadding(
             padding: 5.horizontal,
             sliver: SliverGrid.builder(
@@ -83,23 +96,43 @@ class _CollectPageState extends ConsumerState<CollectPage> {
           ),
           SliverPadding(
             padding: 0.padding,
-            sliver: SliverFillRemaining(),
+            sliver: const SliverFillRemaining(),
           )
         ],
-        expandedWidget: Container(
+        expandedWidget: Flexible(
           child: Padding(
               padding: 20.padding,
               child: Column(
                 children: [Text("我的收藏：${value.collectNovelList?.length}")],
               )),
         ),
-        collapsedWidget: const Center(
-            child: Text(
-          "我的收藏",
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        )));
+        collapsedWidget: _buildCollapsedWidget());
   }
 
+  /// 构建折叠时的内容
+  _buildCollapsedWidget() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "我的收藏",
+            style: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+          ),
+          IconButton(
+              onPressed: _onToSearchPage,
+              icon: const Icon(
+                Icons.search,
+                color: Colors.white,
+              )),
+        ],
+      ),
+    );
+  }
+
+  ///  构建item
   _buildGridItem(CollectNovelEntry value) {
     return GestureDetector(
       onTap: () => _onToDetailPage(value),
