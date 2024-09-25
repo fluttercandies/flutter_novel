@@ -105,7 +105,24 @@ class PreferencesDB {
     for (var element in data) {
       str.add(json.encode(element.toJson()));
     }
+    updateCollect(novelHistoryEntry);
     await sps.setStringList(novelHistory, str);
+  }
+
+  /// 更新收藏阅读记录
+  Future<void> updateCollect(NovelHistoryEntry novelHistoryEntry) async {
+    if (await getSenseLikeNovel(novelHistoryEntry.readUrl ?? "")) {
+      CollectNovelEntry collectNovelEntry = CollectNovelEntry(
+        name: novelHistoryEntry.name,
+        imageUrl: novelHistoryEntry.imageUrl,
+        readUrl: novelHistoryEntry.readUrl,
+        readChapter: novelHistoryEntry.readChapter,
+        datumNew: novelHistoryEntry.datumNew,
+      );
+      setSenseLikeNovel(
+          novelHistoryEntry.readUrl ?? "", true, collectNovelEntry,
+          firstAdd: false);
+    }
   }
 
   ///  获取-是否喜欢
@@ -116,7 +133,8 @@ class PreferencesDB {
 
   /// 设置-是否喜欢
   Future<void> setSenseLikeNovel(
-      String key, bool value, CollectNovelEntry? entry) async {
+      String key, bool value, CollectNovelEntry? entry,
+      {bool firstAdd = true}) async {
     LoggerTools.looger.d("设置是否收藏 setSenseLikeNovel  key:$key  value:$value");
     await sps.setBool("${key}_SenseLike", value);
     if (value && entry != null) {
@@ -125,9 +143,15 @@ class PreferencesDB {
       final exists = data.any((novel) => novel.readUrl == entry.readUrl);
       if (exists) {
         // 如果用户存在，移除该用户
-        data.removeWhere((user) => user.readUrl == entry.readUrl);
+        if (firstAdd) {
+          data.removeWhere((user) => user.readUrl == entry.readUrl);
+          data.insert(0, entry);
+        } else {
+          int index = data.indexWhere((user) => user.readUrl == entry.readUrl);
+          data[index] = entry;
+        }
       }
-      data.insert(0, entry);
+
       for (var element in data) {
         str.add(json.encode(element.toJson()));
       }

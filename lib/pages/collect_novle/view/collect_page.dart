@@ -27,13 +27,14 @@ class _CollectPageState extends ConsumerState<CollectPage> {
   late ThemeData _themeData;
 
   /// 跳转详情页
-  _onToDetailPage(CollectNovelEntry? data) {
+  _onToDetailPage(CollectNovelEntry? data) async {
     BookDatum bookData = BookDatum(
       name: data?.name,
       url: data?.readUrl,
       datumNew: data?.datumNew,
     );
-    context.router.push(DetailRoute(bookDatum: bookData));
+    await context.router.push(DetailRoute(bookDatum: bookData));
+    ref.read(collectViewModelProvider.notifier).getData();
   }
 
   /// 跳转搜索页
@@ -55,31 +56,34 @@ class _CollectPageState extends ConsumerState<CollectPage> {
     ));
   }
 
+  /// 构建页面
   _buildBody(AsyncValue<CollectState> collectViewModel) {
     return SliverAdsorptionAppbar(
         controller: _controller,
         collapsedBrightness: Brightness.light,
         collapsedColors: _themeData.primaryColor,
         expandedColors: _themeData.scaffoldBackgroundColor,
-        expandedHeight: 200,
+        expandedHeight: 240,
         collapsedHeight: Theme.of(context).appBarTheme.toolbarHeight ?? 56,
         slivers: _buildSliver(collectViewModel),
         expandedWidget: _buildExpandedWidget(),
         collapsedWidget: _buildCollapsedWidget());
   }
 
+  /// 构建展开时的内容
   _buildSliver(AsyncValue<CollectState> collectViewModel) {
     return switch (collectViewModel) {
       AsyncData(:final value) => _buildAsyncData(value),
-      AsyncError() => [const EmptyBuild()],
-      _ => [const LoadingBuild()],
+      AsyncError() => [const SliverToBoxAdapter(child: EmptyBuild())],
+      _ => [const SliverToBoxAdapter(child: LoadingBuild())],
     };
   }
 
+  /// 成功时候构建
   List<Widget> _buildAsyncData(CollectState value) {
-    Widget? child = NetStateTools.getWidget(value.netState);
+    Widget? child = NetStateTools.getWidget(value.netState, msg: "还没有收藏小说哦！");
     if (child != null) {
-      return [child];
+      return [SliverToBoxAdapter(child: child)];
     }
     return _buildSuccess(value);
   }

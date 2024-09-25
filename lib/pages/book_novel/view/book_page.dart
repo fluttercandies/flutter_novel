@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/book_novel/state/book_state.dart';
 import 'package:novel_flutter_bit/pages/book_novel/view_model/book_view_model.dart';
+import 'package:novel_flutter_bit/pages/collect_novle/view_model/collect_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
@@ -30,8 +31,9 @@ class _BookPageState extends ConsumerState<BookPage> {
   }
 
   /// 跳转详情页
-  _onToDetailPage(BookDatum? data) {
-    context.router.push(DetailRoute(bookDatum: data ?? BookDatum()));
+  _onToDetailPage(BookDatum? data) async {
+    await context.router.push(DetailRoute(bookDatum: data ?? BookDatum()));
+    ref.read(collectViewModelProvider.notifier).getData();
   }
 
   /// 下拉刷新

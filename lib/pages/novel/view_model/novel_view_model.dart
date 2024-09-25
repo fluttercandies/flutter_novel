@@ -29,6 +29,7 @@ class NovelViewModel extends _$NovelViewModel {
     url = urlNovel;
     getData();
     await PreferencesDB.instance.setNovelHistory(novelHistory);
+    //await PreferencesDB.instance.setSenseLikeNovel();
     Future.delayed(Durations.extralong4, () {
       ref.read(homeViewModelProvider.notifier).initHistory();
     });

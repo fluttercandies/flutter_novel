@@ -78,7 +78,6 @@ class _DetailPageState extends ConsumerState<DetailPage> {
     await PreferencesDB.instance.setSenseLikeNovel(
         widget.bookDatum.url ?? "", _isLikeNovel, collectNovelEntry);
     SmartDialog.showToast(_isLikeNovel ? "收藏成功" : "取消收藏");
-    ref.read(collectViewModelProvider.notifier).getData();
     setState(() {});
   }
 
