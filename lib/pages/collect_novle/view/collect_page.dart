@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/state/collect_state.dart';
@@ -51,56 +51,66 @@ class _CollectPageState extends ConsumerState<CollectPage> {
           fontSize: 18,
           fontWeight: FontWeight.w300,
           color: _themeData.textTheme.bodyLarge?.color),
-      child: switch (collectViewModel) {
-        AsyncData(:final value) => Builder(builder: (BuildContext context) {
-            Widget? child = NetStateTools.getWidget(value.netState);
-            if (child != null) {
-              return child;
-            }
-            return _buildSuccess(value);
-          }),
-        AsyncError() => const EmptyBuild(),
-        _ => const LoadingBuild(),
-      },
+      child: _buildBody(collectViewModel),
     ));
   }
 
-  _buildSuccess(CollectState value) {
+  _buildBody(AsyncValue<CollectState> collectViewModel) {
     return SliverAdsorptionAppbar(
         controller: _controller,
         collapsedBrightness: Brightness.light,
         collapsedColors: _themeData.primaryColor,
         expandedColors: _themeData.scaffoldBackgroundColor,
-        expandedHeight: 300,
+        expandedHeight: 200,
         collapsedHeight: Theme.of(context).appBarTheme.toolbarHeight ?? 56,
-        slivers: [
-          SliverPersistentHeader(
-              pinned: true,
-              delegate: TitleSliverPersistentHeaderDelegate(
-                myColors: _themeData.scaffoldBackgroundColor,
-                brandColor: _themeData.primaryColor,
-                title: '最近收藏（${value.collectNovelList?.length}）',
-              )),
-          SliverSafeArea(
-            top: false,
-            sliver: SliverPadding(
-              padding: 5.horizontal,
-              sliver: SliverGrid.builder(
-                itemBuilder: (c, i) {
-                  return _buildGridItem(value.collectNovelList![i]);
-                },
-                itemCount: value.collectNovelList?.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisExtent: 220,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10),
-              ),
-            ),
-          )
-        ],
+        slivers: _buildSliver(collectViewModel),
         expandedWidget: _buildExpandedWidget(),
         collapsedWidget: _buildCollapsedWidget());
+  }
+
+  _buildSliver(AsyncValue<CollectState> collectViewModel) {
+    return switch (collectViewModel) {
+      AsyncData(:final value) => _buildAsyncData(value),
+      AsyncError() => [const EmptyBuild()],
+      _ => [const LoadingBuild()],
+    };
+  }
+
+  List<Widget> _buildAsyncData(CollectState value) {
+    Widget? child = NetStateTools.getWidget(value.netState);
+    if (child != null) {
+      return [child];
+    }
+    return _buildSuccess(value);
+  }
+
+  _buildSuccess(CollectState value) {
+    return [
+      SliverPersistentHeader(
+          pinned: true,
+          delegate: TitleSliverPersistentHeaderDelegate(
+            myColors: _themeData.scaffoldBackgroundColor,
+            brandColor: _themeData.primaryColor,
+            title: '最近收藏（${value.collectNovelList?.length}）',
+          )),
+      SliverSafeArea(
+        top: false,
+        sliver: SliverPadding(
+          padding: 5.horizontal,
+          sliver: SliverGrid.builder(
+            itemBuilder: (c, i) {
+              return _buildGridItem(value.collectNovelList![i]);
+            },
+            itemCount: value.collectNovelList?.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisExtent: 220,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10),
+          ),
+        ),
+      )
+    ];
   }
 
   /// 展开状态构建
@@ -116,11 +126,14 @@ class _CollectPageState extends ConsumerState<CollectPage> {
                   alignment: Alignment.centerRight,
                   child: IconButton(
                       onPressed: () {}, icon: const Icon(Icons.settings))),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: ExtendedImage.asset("assets/images/logo.jpg",
-                    width: 80, height: 80, fit: BoxFit.cover),
-              )
+              // ClipRRect(
+              //   borderRadius: BorderRadius.circular(100),
+              //   child: ExtendedImage.asset("assets/images/logo.jpg",
+              //       width: 80, height: 80, fit: BoxFit.cover),
+              // ),
+              // ExtendedImageBuild(
+              //     url: "https://api.likepoems.com/counter/get/@7-bit"),
+              SvgPicture.network("https://api.likepoems.com/counter/get/@7bit")
             ]),
           ),
         ));
