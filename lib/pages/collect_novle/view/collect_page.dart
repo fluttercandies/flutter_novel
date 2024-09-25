@@ -8,8 +8,6 @@ import 'package:novel_flutter_bit/pages/collect_novle/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/state/collect_state.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/view_model/collect_view_model.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/widget/theme_swtch.dart';
-import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
-import 'package:novel_flutter_bit/pages/novel/widget/show_slider_sheet.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/net_state_tools.dart';
@@ -41,6 +39,14 @@ class _CollectPageState extends ConsumerState<CollectPage> {
     );
     await context.router.push(DetailRoute(bookDatum: bookData));
     ref.read(collectViewModelProvider.notifier).getData();
+  }
+
+  /// 显示主题选择
+  _openSettingThemeSwitch() {
+    SmartDialog.show(builder: (context) {
+      return ThemeSwitch(
+          themeStyleProvider: ref.read(themeStyleProviderProvider.notifier));
+    });
   }
 
   /// 跳转搜索页
@@ -135,14 +141,9 @@ class _CollectPageState extends ConsumerState<CollectPage> {
               Align(
                   alignment: Alignment.centerRight,
                   child: IconButton(
-                      onPressed: () async {
-                        SmartDialog.show(builder: (context) {
-                          return ThemeSwtch(
-                              themeStyleProvider: ref
-                                  .read(themeStyleProviderProvider.notifier));
-                        });
-                      },
-                      icon: const Icon(Icons.settings))),
+                      onPressed: _openSettingThemeSwitch,
+                      icon: Icon(Icons.settings,
+                          color: _themeData.primaryColor))),
               20.verticalSpace,
               SvgPicture.network("https://api.likepoems.com/counter/get/@7bit")
             ]),

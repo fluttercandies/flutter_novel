@@ -5,17 +5,17 @@ import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 
-class ThemeSwtch extends StatefulWidget {
-  const ThemeSwtch({
+class ThemeSwitch extends StatefulWidget {
+  const ThemeSwitch({
     super.key,
     required this.themeStyleProvider,
   });
   final ThemeStyleProvider themeStyleProvider;
   @override
-  State<ThemeSwtch> createState() => _ShowSliderSheetState();
+  State<ThemeSwitch> createState() => _ShowSliderSheetState();
 }
 
-class _ShowSliderSheetState extends State<ThemeSwtch> {
+class _ShowSliderSheetState extends State<ThemeSwitch> {
   late Map<ThemeEnum, ThemeData> themes;
   @override
   void initState() {
