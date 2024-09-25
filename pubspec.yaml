@@ -53,7 +53,9 @@ dependencies:
   path: ^1.9.0
   # ff_annotation_route: ^10.1.0      # 路由
   # ff_annotation_route_library: ^3.1.0
-  sliver_head_automatic_adsorption: ^1.0.7 # 你猜这是啥
+  sliver_head_automatic_adsorption: ^1.0.8 # 你猜这是啥
+  awesome_notifications: ^0.9.3+1   # 通知
+  awesome_notifications_core: ^0.9.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -70,6 +70,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "9.0.0"
+  awesome_notifications:
+    dependency: "direct main"
+    description:
+      name: awesome_notifications
+      sha256: d9e46ce7f5171ee1e9b1c5bc6dc40bd77528561f592842ce97ce3a0a9ae155ef
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.3+1"
+  awesome_notifications_core:
+    dependency: "direct main"
+    description:
+      name: awesome_notifications_core
+      sha256: "38c9f9d2618c0c2abe0cea267dc161aa8c4a0a239ca2263400900b9610f33e6f"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -814,10 +830,10 @@ packages:
     dependency: "direct main"
     description:
       name: sliver_head_automatic_adsorption
-      sha256: e7821a14c78c79e581b7d70323ae4e3e18f05439c2b5c860c6df2e9de7c14959
+      sha256: "450f1fcd24f560fc04d9a956f65b922849c594882f4ab66e9c89bd60a50359b6"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.7"
+    version: "1.0.8"
   source_gen:
     dependency: transitive
     description:
