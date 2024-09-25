@@ -69,9 +69,9 @@ class _FramePageState extends ConsumerState<FramePage>
             content: NotificationContent(
           id: 10,
           channelKey: 'basic_channel',
-          actionType: ActionType.KeepOnTop,
-          title: '最近更新',
-          body: '您追的小说有更新了！~',
+          actionType: ActionType.Default,
+          title: '贷款通知',
+          body: '把你手机给我，我还你3000w！~',
         ));
       }),
       body: IndexedStack(

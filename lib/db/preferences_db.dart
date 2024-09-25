@@ -150,6 +150,8 @@ class PreferencesDB {
           int index = data.indexWhere((user) => user.readUrl == entry.readUrl);
           data[index] = entry;
         }
+      } else {
+        data.insert(0, entry);
       }
 
       for (var element in data) {

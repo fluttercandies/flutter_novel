@@ -28,7 +28,7 @@ void main() {
             channelKey: 'basic_channel',
             channelName: 'Basic notifications',
             channelDescription: 'Notification channel for basic tests',
-            defaultColor: Color(0xFF9D50DD),
+            defaultColor: const Color(0xFF9D50DD),
             ledColor: Colors.white)
       ],
       // Channel groups are only visual and are not required
@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
   /// build
   _buildSuccess(ThemeData theme) {
     return MaterialApp.router(
-      title: 'Novel',
+      title: '好看',
       theme: theme,
       routerDelegate: _appRouter.delegate(
         navigatorObservers: () => [FlutterSmartDialog.observer],
