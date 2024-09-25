@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
@@ -78,35 +79,51 @@ class _CollectPageState extends ConsumerState<CollectPage> {
               delegate: TitleSliverPersistentHeaderDelegate(
                 myColors: _themeData.scaffoldBackgroundColor,
                 brandColor: _themeData.primaryColor,
-                title: '最近收藏',
+                title: '最近收藏（${value.collectNovelList?.length}）',
               )),
-          SliverPadding(
-            padding: 5.horizontal,
-            sliver: SliverGrid.builder(
-              itemBuilder: (c, i) {
-                return _buildGridItem(value.collectNovelList![i]);
-              },
-              itemCount: value.collectNovelList?.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisExtent: 220,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10),
+          SliverSafeArea(
+            top: false,
+            sliver: SliverPadding(
+              padding: 5.horizontal,
+              sliver: SliverGrid.builder(
+                itemBuilder: (c, i) {
+                  return _buildGridItem(value.collectNovelList![i]);
+                },
+                itemCount: value.collectNovelList?.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisExtent: 220,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10),
+              ),
             ),
-          ),
-          SliverPadding(
-            padding: 0.padding,
-            sliver: const SliverFillRemaining(),
           )
         ],
-        expandedWidget: Flexible(
-          child: Padding(
-              padding: 20.padding,
-              child: Column(
-                children: [Text("我的收藏：${value.collectNovelList?.length}")],
-              )),
-        ),
+        expandedWidget: _buildExpandedWidget(),
         collapsedWidget: _buildCollapsedWidget());
+  }
+
+  /// 展开状态构建
+  _buildExpandedWidget() {
+    return Padding(
+        padding: 20.horizontal,
+        child: SingleChildScrollView(
+          child: SizedBox(
+            width: double.infinity,
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.settings))),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: ExtendedImage.asset("assets/images/logo.jpg",
+                    width: 80, height: 80, fit: BoxFit.cover),
+              )
+            ]),
+          ),
+        ));
   }
 
   /// 构建折叠时的内容
