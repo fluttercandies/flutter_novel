@@ -1,14 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/state/collect_state.dart';
 import 'package:novel_flutter_bit/pages/collect_novle/view_model/collect_view_model.dart';
+import 'package:novel_flutter_bit/pages/collect_novle/widget/theme_swtch.dart';
+import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
+import 'package:novel_flutter_bit/pages/novel/widget/show_slider_sheet.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
+import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
+import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/book_title_sliver_persistent_header_delegate.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';
@@ -129,14 +135,15 @@ class _CollectPageState extends ConsumerState<CollectPage> {
               Align(
                   alignment: Alignment.centerRight,
                   child: IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.settings))),
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(100),
-              //   child: ExtendedImage.asset("assets/images/logo.jpg",
-              //       width: 80, height: 80, fit: BoxFit.cover),
-              // ),
-              // ExtendedImageBuild(
-              //     url: "https://api.likepoems.com/counter/get/@7-bit"),
+                      onPressed: () async {
+                        SmartDialog.show(builder: (context) {
+                          return ThemeSwtch(
+                              themeStyleProvider: ref
+                                  .read(themeStyleProviderProvider.notifier));
+                        });
+                      },
+                      icon: const Icon(Icons.settings))),
+              20.verticalSpace,
               SvgPicture.network("https://api.likepoems.com/counter/get/@7bit")
             ]),
           ),
