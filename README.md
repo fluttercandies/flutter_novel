@@ -58,3 +58,18 @@ lib
 | riverpod_annotation            |  ^2.3.5
 | syncfusion_flutter_sliders     |  滑动选择器 ^26.2.14
 | sliver_head_automatic_adsorption| 自动吸附Sliver ^1.0.8
+
+### 项目截图
+
+![图片说明](./assets/images/488_1x_shots_so.png)
+![图片说明](./assets/images/660_1x_shots_so.png)
+![图片说明](./assets/images/970_1x_shots_so.png)
+![图片说明](./assets/images/300_1x_shots_so.png)
+![图片说明](./assets/images/305shots_so.png)
+
+### 免责声明
+
+1.本项目提供的源代码仅用学习，请勿用于商业盈利。
+2.用户使用本系统从事任何违法违规的事情，一切后果由用户自行承担作者不承担任何法律责任。
+3.如有侵犯权利，请联系作者删除。
+4.下载或使用本站源码则代表你同意上述的免责声明协议
