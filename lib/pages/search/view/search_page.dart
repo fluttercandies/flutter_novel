@@ -11,7 +11,7 @@ import 'package:novel_flutter_bit/pages/search/view_model/search_view_model.dart
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/debouncer.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
-import 'package:novel_flutter_bit/tools/net_state_tools.dart';
+import 'package:novel_flutter_bit/widget/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';

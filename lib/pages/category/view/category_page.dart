@@ -8,7 +8,7 @@ import 'package:novel_flutter_bit/pages/category/state/category_state.dart';
 import 'package:novel_flutter_bit/pages/category/view_model/category_view_model.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
-import 'package:novel_flutter_bit/tools/net_state_tools.dart';
+import 'package:novel_flutter_bit/widget/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';

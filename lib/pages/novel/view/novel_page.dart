@@ -16,7 +16,7 @@ import 'package:novel_flutter_bit/pages/novel/widget/show_slider_sheet.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/theme/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
-import 'package:novel_flutter_bit/tools/net_state_tools.dart';
+import 'package:novel_flutter_bit/widget/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';

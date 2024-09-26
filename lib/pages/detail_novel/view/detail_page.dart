@@ -11,7 +11,7 @@ import 'package:novel_flutter_bit/pages/detail_novel/entry/detail_entry.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/state/detail_state.dart';
 import 'package:novel_flutter_bit/pages/detail_novel/view_model/detail_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
-import 'package:novel_flutter_bit/tools/net_state_tools.dart';
+import 'package:novel_flutter_bit/widget/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/book_title_sliver_persistent_header_delegate.dart';
