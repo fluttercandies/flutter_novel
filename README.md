@@ -13,7 +13,8 @@ novel_flutter_app 《爱看》是一款开源的阅读APP，拥有功能。热�
 
 ## 项目地址
 
-暂定xxx
+
+<a href='https://github.com/7-bit11/novel_flutter_bit_source/blob/main/%E7%88%B1%E7%9C%8Bv1.1.7.apk'><img alt="Github stars" src="https://img.shields.io/github/stars/7-bit11/novel_flutter_bit?logo=github">下载地址</a>
 
 ## 项目结构
 
