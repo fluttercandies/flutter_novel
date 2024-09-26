@@ -1,5 +1,3 @@
-[![index]()](https://i0.hdslb.com/bfs/space/6d95f5df68248bb55b5b97b4502332711ff7d073.png@2560w_400h_100q_1o.webp)
-
 ![示例图片](https://i0.hdslb.com/bfs/space/6d95f5df68248bb55b5b97b4502332711ff7d073.png@2560w_400h_100q_1o.webp)
 
 <p align="center">
