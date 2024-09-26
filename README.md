@@ -1,4 +1,4 @@
-![img](https://konachan.net/sample/5e83b175300cec562f33c7519ee1509e/Konachan.com%20-%20381287%20sample.jpg)
+![img](https://m.qpic.cn/psc?/V13kbO6L1NnSEN/LiySpxowE0yeWXwBdXN*SQhX4B*Fl59hWSbSgdr6tFJUZak26xYfMwiaQl4qXnjw9h.tKRmlLN84X1TdP*6dDfiC24uaJysJFv*V4lOF.4k!/b&bo=bQfzBG0H8wQDByI!&rf=viewer_4&t=5)
 
 <p align="center">
     <a href='https://github.com/7-bit11/novel_flutter_bit'><img alt="Github stars" src="https://img.shields.io/github/stars/7-bit11/novel_flutter_bit?logo=github"></a>
