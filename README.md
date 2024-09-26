@@ -4,7 +4,7 @@
     <a href='https://github.com/7-bit11/novel_flutter_bit'><img alt="Github stars" src="https://img.shields.io/github/stars/7-bit11/novel_flutter_bit?logo=github"></a>
     <a href='https://github.com/7-bit11/novel_flutter_bit'><img alt="Github stars" src="https://img.shields.io/github/forks/7-bit11/novel_flutter_bit?logo=github"></a>
 </p>
-# 项目介绍
+## 项目介绍
 
 novel_flutter_app 《爱看》是一款开源的阅读APP，拥有功能。热门推荐、小说排行、全网搜索、小说分类、关键字查询、收藏小说、本地历史阅读记录、主题设置、阅读定位。功能持续更新中。
 
