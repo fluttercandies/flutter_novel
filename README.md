@@ -1,5 +1,4 @@
-[![index]( https://i0.hdslb.com/bfs/space/6d95f5df68248bb55b5b97b4502332711ff7d073.png@2560w_400h_100q_1o.webp )]( https://cloud.tencent.com/act/cps/redirect?redirect=2446&cps_key=736e609d66e0ac4e57813316cec6fd0b&from=console )
-
+<img style="display: block;-webkit-user-select: none;margin: auto;cursor: zoom-in;background-color: hsl(0, 0%, 90%);transition: background-color 300ms;" src="https://i0.hdslb.com/bfs/space/6d95f5df68248bb55b5b97b4502332711ff7d073.png@2560w_400h_100q_1o.webp" width="1451" height="226">
 
 <p align="center">
     <a href='https://github.com/7-bit11/novel_flutter_bit'><img alt="Github stars" src="https://img.shields.io/github/stars/7-bit11/novel_flutter_bit?logo=github"></a>
