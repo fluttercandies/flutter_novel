@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -56,24 +55,6 @@ class _FramePageState extends ConsumerState<FramePage>
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-          if (!isAllowed) {
-            // This is just a basic example. For real apps, you must show some
-            // friendly dialog box before call the request method.
-            // This is very important to not harm the user experience
-            AwesomeNotifications().requestPermissionToSendNotifications();
-          }
-        });
-        AwesomeNotifications().createNotification(
-            content: NotificationContent(
-          id: 10,
-          channelKey: 'basic_channel',
-          actionType: ActionType.Default,
-          title: '贷款通知',
-          body: '把你手机给我，我还你3000w！~',
-        ));
-      }),
       body: IndexedStack(
         index: _currentIndex,
         children: pages,

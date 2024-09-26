@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,25 +18,7 @@ void main() {
       statusBarBrightness: Brightness.light, // 状态栏文字颜色
     ));
   }
-  AwesomeNotifications().initialize(
-      // set the icon to null if you want to use the default app icon
-      null,
-      [
-        NotificationChannel(
-            channelGroupKey: 'basic_channel_group',
-            channelKey: 'basic_channel',
-            channelName: 'Basic notifications',
-            channelDescription: 'Notification channel for basic tests',
-            defaultColor: const Color(0xFF9D50DD),
-            ledColor: Colors.white)
-      ],
-      // Channel groups are only visual and are not required
-      channelGroups: [
-        NotificationChannelGroup(
-            channelGroupKey: 'basic_channel_group',
-            channelGroupName: 'Basic group')
-      ],
-      debug: true);
+
   runApp(ProviderScope(child: MyApp()));
 
   /// 强制竖屏
@@ -70,24 +51,12 @@ class MyApp extends StatelessWidget {
   /// build
   _buildSuccess(ThemeData theme) {
     return MaterialApp.router(
-      title: '好看',
+      title: '爱看',
       theme: theme,
       routerDelegate: _appRouter.delegate(
         navigatorObservers: () => [FlutterSmartDialog.observer],
       ),
-      builder: FlutterSmartDialog.init(
-          // toastBuilder: (msg) => Container(
-          //     alignment: Alignment.center,
-          //     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          //     decoration: BoxDecoration(
-          //       color: theme.primaryColor,
-          //       borderRadius: BorderRadius.circular(6),
-          //     ),
-          //     child: Text(
-          //       msg,
-          //       style: const TextStyle(color: Colors.white),
-          //     )),
-          ),
+      builder: FlutterSmartDialog.init(),
       routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
