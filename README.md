@@ -1,6 +1,6 @@
-# novel_flutter_bit
+# 项目介绍
 
-A new Flutter project.
+novel_flutter_app 《爱看》是一款开源的阅读APP，拥有功能。热门推荐、小说排行、全网搜索、小说分类、关键字查询、收藏小说、本地历史阅读记录、主题设置、阅读定位。功能持续更新中。
 
 ## Getting Started
 
