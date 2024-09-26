@@ -9,7 +9,7 @@ import 'package:novel_flutter_bit/pages/collect_novel/state/collect_state.dart';
 import 'package:novel_flutter_bit/pages/collect_novel/view_model/collect_view_model.dart';
 import 'package:novel_flutter_bit/pages/collect_novel/widget/theme_swtch.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
-import 'package:novel_flutter_bit/style/theme_style.dart';
+import 'package:novel_flutter_bit/theme/theme_style.dart';
 import 'package:novel_flutter_bit/tools/net_state_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';

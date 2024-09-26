@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
-import 'package:novel_flutter_bit/style/theme_enum.dart';
-import 'package:novel_flutter_bit/theme/theme_black.dart';
-import 'package:novel_flutter_bit/theme/theme_blue.dart';
-import 'package:novel_flutter_bit/theme/theme_cyan.dart';
-import 'package:novel_flutter_bit/theme/theme_default.dart';
-import 'package:novel_flutter_bit/theme/theme_green.dart';
-import 'package:novel_flutter_bit/theme/theme_orange.dart';
-import 'package:novel_flutter_bit/theme/theme_pink.dart';
-import 'package:novel_flutter_bit/theme/theme_purple.dart';
-import 'package:novel_flutter_bit/theme/theme_red.dart';
-import 'package:novel_flutter_bit/theme/theme_yellow.dart';
+import 'package:novel_flutter_bit/theme/theme_enum.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_black.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_blue.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_cyan.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_default.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_green.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_orange.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_pink.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_purple.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_red.dart';
+import 'package:novel_flutter_bit/theme/themes/theme_yellow.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'theme_style.g.dart';

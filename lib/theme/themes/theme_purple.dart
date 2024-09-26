@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:novel_flutter_bit/style/theme_color.dart';
+import 'package:novel_flutter_bit/theme/theme_color.dart';
 
 /// 主题
-class AppThemeBlue extends ThemeStyle {
+class AppThemePurple extends ThemeStyle {
 // /// 主颜色
-  static Color primaryColor = const Color(0xff3f85ff);
-  static Color appbarColor = const Color(0xff3f85ff);
+  static Color primaryColor = const Color.fromARGB(255, 114, 74, 184);
+  static Color appbarColor = const Color.fromARGB(255, 114, 74, 184);
   static Color backgroundColor = const Color(0xfffafafa);
   static Color textColor = Colors.black87;
-  static Color textMinorColor = const Color(0xff3f85ff);
+  static Color textMinorColor = const Color.fromARGB(255, 114, 74, 184);
   static final ThemeData lightTheme = ThemeStyle.getThemeData(
       primaryColor: primaryColor,
       appbarColor: appbarColor,

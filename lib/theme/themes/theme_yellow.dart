@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:novel_flutter_bit/style/theme_color.dart';
+import 'package:novel_flutter_bit/theme/theme_color.dart';
 
 /// 主题
 class AppThemeYellow extends ThemeStyle {

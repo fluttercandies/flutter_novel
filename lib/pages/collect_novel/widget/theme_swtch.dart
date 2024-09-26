@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
-import 'package:novel_flutter_bit/style/theme_enum.dart';
-import 'package:novel_flutter_bit/style/theme_style.dart';
+import 'package:novel_flutter_bit/theme/theme_enum.dart';
+import 'package:novel_flutter_bit/theme/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 
