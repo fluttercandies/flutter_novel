@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: '爱看',
       theme: theme,
+      debugShowCheckedModeBanner: false,
       routerDelegate: _appRouter.delegate(
         navigatorObservers: () => [FlutterSmartDialog.observer],
       ),

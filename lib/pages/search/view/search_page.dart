@@ -139,25 +139,6 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               )),
         ],
       ),
-      // title: TextField(
-      //     controller: _controller,
-      //     cursorColor: Colors.white,
-      //     style: const TextStyle(
-      //         color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300),
-      //     decoration: const InputDecoration(
-      //       contentPadding: EdgeInsets.symmetric(vertical: 15),
-      //       hintText: "搜索全网小说",
-      //       hintStyle: TextStyle(color: Colors.white),
-      //       prefixIcon: Hero(
-      //           tag: "Icons.search",
-      //           child: Icon(Icons.search, color: Colors.white)),
-      //       enabledBorder: UnderlineInputBorder(
-      //         borderSide: BorderSide(color: Colors.white),
-      //       ),
-      //       focusedBorder: UnderlineInputBorder(
-      //         borderSide: BorderSide(color: Colors.white),
-      //       ),
-      //     ))
     );
   }
 
@@ -233,7 +214,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
         child: Container(
             width: double.infinity,
             decoration: BoxDecoration(
-                color: _theme.primaryColor.withOpacity(.1),
+                color: _theme.primaryColor.withOpacity(.06),
                 borderRadius: BorderRadius.circular(6),
                 border: Border.all(color: _theme.primaryColor.withOpacity(.1))),
             margin: const EdgeInsets.symmetric(vertical: 5),

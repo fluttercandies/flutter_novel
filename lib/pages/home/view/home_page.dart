@@ -100,7 +100,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 SliverPadding(
                     sliver: const SliverToBoxAdapter(
                         child: Text(
-                      '我的阅读',
+                      '阅读历史',
                       style: TextStyle(fontSize: 20),
                     )),
                     padding: 10.padding),
