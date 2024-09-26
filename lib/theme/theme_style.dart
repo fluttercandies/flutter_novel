@@ -24,7 +24,7 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
   bool isInit = false;
 
   /// 主题
-  late ThemeData _data = ThemeData(fontFamily: 'MiSans');
+  late ThemeData _data = AppThemeDefault.lightTheme;
 
   /// 初始化
   @override
@@ -84,6 +84,7 @@ class ThemeStyleProvider extends _$ThemeStyleProvider {
       //   break;
       default:
         _data = AppThemeDefault.lightTheme;
+        break;
     }
     state = AsyncData(_data);
   }
