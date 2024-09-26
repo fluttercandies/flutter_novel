@@ -3,7 +3,8 @@
 <p align="center">
     <a href='https://github.com/7-bit11/novel_flutter_bit'><img alt="Github stars" src="https://img.shields.io/github/stars/7-bit11/novel_flutter_bit?logo=github"></a>
     <a href='https://github.com/7-bit11/novel_flutter_bit'><img alt="Github stars" src="https://img.shields.io/github/forks/7-bit11/novel_flutter_bit?logo=github"></a>
-    <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
+    <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies">FlutterCandies糖果技术交流</a>
+    <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=mYfvheURi3cqPskrWXaLddE5MyslIIy8&jump_from=webapi&authKey=pGJ8ddoO9qrnRY0AKs7pEML06J4s02WaJRs0KDJsDQju9kw8GYX0WevrACX96c8o"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="造物主动态桌面Ⅰ群" title="造物主动态桌面Ⅰ群">造物主动态桌面Ⅰ群</a>
 </p>
 
 ## 项目介绍
