@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
-import 'package:novel_flutter_bit/pages/collect_novle/view_model/collect_view_model.dart';
+import 'package:novel_flutter_bit/pages/collect_novel/view_model/collect_view_model.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_hot_entry.dart';
 import 'package:novel_flutter_bit/pages/home/state/home_state.dart';
 import 'package:novel_flutter_bit/pages/home/view_model/home_view_model.dart';
@@ -61,7 +61,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             return NetStateTools.getWidget(value.netState) ??
                 _buildSuccess(value: value);
           }),
-        AsyncError() => const EmptyBuild(),
+        AsyncError() => EmptyBuild(),
         _ => const LoadingBuild(),
       }),
     );

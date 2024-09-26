@@ -178,7 +178,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
           onRefresh = function;
           return _buildSuccess(value: value);
         }),
-      AsyncError() => const SliverToBoxAdapter(child: EmptyBuild()),
+      AsyncError() => SliverToBoxAdapter(child: EmptyBuild()),
       _ => const SliverToBoxAdapter(child: LoadingBuild()),
     };
   }

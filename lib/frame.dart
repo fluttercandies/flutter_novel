@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/category/view/category_page.dart';
-import 'package:novel_flutter_bit/pages/collect_novle/view/collect_page.dart';
+import 'package:novel_flutter_bit/pages/collect_novel/view/collect_page.dart';
 import 'package:novel_flutter_bit/pages/home/view/home_page.dart';
 import 'package:novel_flutter_bit/widget/border_buttom_navigation_bar.dart';
 

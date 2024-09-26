@@ -240,7 +240,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
             }
             return _buildSuccess(value: value, style: _style);
           }),
-        AsyncError() => const EmptyBuild(),
+        AsyncError() => EmptyBuild(),
         _ => const LoadingBuild(),
       },
       bottomNavigationBar: _buildBottmAppBar(

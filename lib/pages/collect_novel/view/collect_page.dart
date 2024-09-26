@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
-import 'package:novel_flutter_bit/pages/collect_novle/enrty/collect_entry.dart';
-import 'package:novel_flutter_bit/pages/collect_novle/state/collect_state.dart';
-import 'package:novel_flutter_bit/pages/collect_novle/view_model/collect_view_model.dart';
-import 'package:novel_flutter_bit/pages/collect_novle/widget/theme_swtch.dart';
+import 'package:novel_flutter_bit/pages/collect_novel/enrty/collect_entry.dart';
+import 'package:novel_flutter_bit/pages/collect_novel/state/collect_state.dart';
+import 'package:novel_flutter_bit/pages/collect_novel/view_model/collect_view_model.dart';
+import 'package:novel_flutter_bit/pages/collect_novel/widget/theme_swtch.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/style/theme_style.dart';
 import 'package:novel_flutter_bit/tools/net_state_tools.dart';
@@ -86,7 +86,7 @@ class _CollectPageState extends ConsumerState<CollectPage> {
   _buildSliver(AsyncValue<CollectState> collectViewModel) {
     return switch (collectViewModel) {
       AsyncData(:final value) => _buildAsyncData(value),
-      AsyncError() => [const SliverToBoxAdapter(child: EmptyBuild())],
+      AsyncError() => [SliverToBoxAdapter(child: EmptyBuild())],
       _ => [const SliverToBoxAdapter(child: LoadingBuild())],
     };
   }
@@ -125,7 +125,13 @@ class _CollectPageState extends ConsumerState<CollectPage> {
                 crossAxisSpacing: 10),
           ),
         ),
-      )
+      ),
+      SliverFillRemaining(
+          child: Center(
+              child: EmptyBuild(
+        text: "到底啦！",
+        width: 150,
+      )))
     ];
   }
 

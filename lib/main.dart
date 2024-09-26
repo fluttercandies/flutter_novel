@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       return Center(
         child: switch (theme) {
           AsyncData(:final value) => _buildSuccess(value),
-          AsyncError() => const EmptyBuild(),
+          AsyncError() => EmptyBuild(),
           _ => const LoadingBuild(),
         },
       );

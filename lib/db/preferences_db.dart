@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:novel_flutter_bit/pages/collect_novle/enrty/collect_entry.dart';
+import 'package:novel_flutter_bit/pages/collect_novel/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
 import 'package:novel_flutter_bit/theme/app_theme.dart';

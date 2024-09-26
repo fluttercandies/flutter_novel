@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart';
-import 'package:novel_flutter_bit/pages/collect_novle/view_model/collect_view_model.dart';
+import 'package:novel_flutter_bit/pages/collect_novel/view_model/collect_view_model.dart';
 import 'package:novel_flutter_bit/pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/pages/search/state/search_state.dart';
 import 'package:novel_flutter_bit/pages/search/view_model/search_view_model.dart';
@@ -92,7 +92,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     }
                     return _buildSuccess(value: value);
                   }),
-                AsyncError() => const SliverToBoxAdapter(child: EmptyBuild()),
+                AsyncError() => SliverToBoxAdapter(child: EmptyBuild()),
                 _ => const SliverToBoxAdapter(child: LoadingBuild()),
               }
             ],
