@@ -24,7 +24,7 @@ flutter_novel 《爱看》是一款开源的阅读APP，拥有功能。热门推
 | IOS                            |  ✅
 | Windows                        |  ✅
 | Web                            |  ❌ 跨域问题
-| MacOS                          |  ❌
+| MacOS                          |  ✅
 | Linux                          |  ❌
 
 
