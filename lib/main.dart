@@ -12,6 +12,7 @@ import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
   } else if (Platform.isAndroid) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
