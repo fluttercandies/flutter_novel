@@ -11,15 +11,17 @@ class EmptyBuild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          'assets/svg/empty.svg',
-          width: width,
-        ),
-        Text(text ?? str, style: const TextStyle(fontSize: 18))
-      ],
+        child: SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            'assets/svg/empty.svg',
+            width: width,
+          ),
+          Text(text ?? str, style: const TextStyle(fontSize: 18))
+        ],
+      ),
     ));
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +69,9 @@ class _NovelPageState extends ConsumerState<NovelPage> {
 
   late TextStyle _style;
 
+  /// 默认appbar 高度
+  late double appbarHeight = 65;
+
   @override
   void dispose() {
     _controller.dispose();
@@ -77,6 +82,9 @@ class _NovelPageState extends ConsumerState<NovelPage> {
   @override
   void initState() {
     super.initState();
+    if (Platform.isIOS) {
+      appbarHeight = 80;
+    }
     _initFontSize();
     _detailViewModel = ref.read(
         detailViewModelProvider(urlBook: widget.bookDatum.url ?? "").notifier);
@@ -228,7 +236,7 @@ class _NovelPageState extends ConsumerState<NovelPage> {
       key: scaffoldKey,
       backgroundColor: _themeData.scaffoldBackgroundColor,
       appBar: _buildAppBar(
-          height: 65,
+          height: appbarHeight,
           minHeight: 40,
           duration: _duration,
           isAppBarVisible: _isAppBarVisible),

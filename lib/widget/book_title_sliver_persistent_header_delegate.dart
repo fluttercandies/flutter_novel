@@ -92,32 +92,34 @@ class TitleSliverPersistentHeaderDelegate
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      padding: 10.horizontal,
-      // color: myColors.containerColor,
-      alignment: Alignment.centerLeft,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: const [0.0, 0.5],
-              colors: [myColors, Theme.of(context).scaffoldBackgroundColor])),
-      height: maxExtent,
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontSize: 20, color: brandColor),
-          ),
-          const Spacer(),
-          Text(subTitle ?? ""),
-          IconButton(
-              onPressed: onPressed,
-              icon: Icon(
-                iconData ?? Icons.chevron_right,
-                color: brandColor,
-              ))
-        ],
+    return SafeArea(
+      child: Container(
+        padding: 10.horizontal,
+        // color: myColors.containerColor,
+        alignment: Alignment.centerLeft,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0.0, 0.5],
+                colors: [myColors, Theme.of(context).scaffoldBackgroundColor])),
+        height: maxExtent,
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: 20, color: brandColor),
+            ),
+            const Spacer(),
+            Text(subTitle ?? ""),
+            IconButton(
+                onPressed: onPressed,
+                icon: Icon(
+                  iconData ?? Icons.chevron_right,
+                  color: brandColor,
+                ))
+          ],
+        ),
       ),
     );
   }
