@@ -79,6 +79,9 @@ class NovelHttp {
       LoggerTools.looger.e(dioError.message);
       if (dioError.requestOptions.cancelToken is CancelToken) {
         resultData = ServiceResultData(data: null, code: -1, msg: '取消请求');
+      } else if (dioError.type == DioExceptionType.receiveTimeout) {
+        resultData =
+            ServiceResultData(data: null, code: 504, msg: '服务器维护中，请稍后重试');
       } else {
         resultData = ServiceResultData(data: null, code: 404, msg: '网络异常');
       }
@@ -109,6 +112,9 @@ class NovelHttp {
           data: null, code: dioError.response!.data['code'], msg: '网络异常');
       if (dioError is TimeoutException) {
         responseModel = ServiceResultData(data: null, code: -100, msg: '网络超时');
+      } else if (dioError.type == DioExceptionType.receiveTimeout) {
+        responseModel =
+            ServiceResultData(data: null, code: 504, msg: '服务器维护中，请稍后重试');
       }
     }
     return responseModel;

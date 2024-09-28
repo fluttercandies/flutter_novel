@@ -10,6 +10,9 @@ enum NetState {
   /// 错误状态,显示失败界面
   error403State,
 
+  /// 服务器错误状态,显示失败界面
+  error504State,
+
   /// 错误状态,显示刷新按钮
   errorShowRefresh,
 

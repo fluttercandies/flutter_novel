@@ -73,13 +73,15 @@ class DetailViewModel extends _$DetailViewModel {
     ServiceResultData resultData =
         await NovelHttp().request(url, method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
+    detailState.netState = NetStateTools.handle(resultData);
     if (resultData.data case null) {
       /// 没有更多数据了
-      detailState.netState = NetState.emptyDataState;
+      if (resultData.success) {
+        detailState.netState = NetState.emptyDataState;
+      }
       state = AsyncData(detailState);
       return;
     }
-    detailState.netState = NetStateTools.handle(resultData);
     if (detailState.netState == NetState.dataSuccessState) {
       DetailNovel novelHot = DetailNovel.fromJson(resultData.data);
       if (novelHot.data case null) {

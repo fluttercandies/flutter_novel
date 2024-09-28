@@ -42,13 +42,15 @@ class BookViewModel extends _$BookViewModel implements BaseViewModelImplements {
     ServiceResultData resultData = await NovelHttp()
         .request('book', params: {'name': name}, method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
+    bookState.netState = NetStateTools.handle(resultData);
     if (resultData.data case null) {
       /// 没有更多数据了
-      bookState.netState = NetState.emptyDataState;
+      if (resultData.success) {
+        bookState.netState = NetState.emptyDataState;
+      }
       state = AsyncData(bookState);
       return;
     }
-    bookState.netState = NetStateTools.handle(resultData);
     if (bookState.netState == NetState.dataSuccessState) {
       BookEntry bookEntry = BookEntry.fromJson(resultData.data);
       if (bookEntry.data case null) {

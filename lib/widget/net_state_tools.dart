@@ -14,6 +14,8 @@ class NetStateTools {
         return EmptyBuild(text: msg);
       case NetState.error403State:
         return const Build403();
+      case NetState.error504State:
+        return const Build403();
       case NetState.errorShowRefresh:
         return EmptyBuild(text: msg);
       case NetState.emptyDataState:

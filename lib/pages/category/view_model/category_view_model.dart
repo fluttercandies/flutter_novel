@@ -46,13 +46,15 @@ class CategoryViewModel extends _$CategoryViewModel
         params: {'category': categoryList[currentIndex].value},
         method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
+    categoryState.netState = NetStateTools.handle(resultData);
     if (resultData.data case null) {
       /// 没有更多数据了
-      categoryState.netState = NetState.emptyDataState;
+      if (resultData.success) {
+        categoryState.netState = NetState.emptyDataState;
+      }
       state = AsyncData(categoryState);
       return;
     }
-    categoryState.netState = NetStateTools.handle(resultData);
     if (categoryState.netState == NetState.dataSuccessState) {
       NovelHot novelHot = NovelHot.fromJson(resultData.data);
       if (novelHot.data case null) {

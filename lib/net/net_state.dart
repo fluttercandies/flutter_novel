@@ -13,6 +13,8 @@ class NetStateTools {
       return NetState.error403State;
     } else if (responseModel.code == -100) {
       return NetState.timeOutState;
+    } else if (responseModel.code == 504) {
+      return NetState.error504State;
     } else if (responseModel.code == 500) {
       return NetState.errorShowRefresh;
     } else if (responseModel.code == -1) {

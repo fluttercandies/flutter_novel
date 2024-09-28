@@ -53,13 +53,15 @@ class HomeViewModel extends _$HomeViewModel implements BaseViewModelImplements {
     ServiceResultData resultData = await NovelHttp()
         .request('hot', params: {'category': '全部'}, method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
+    homeState.netState = NetStateTools.handle(resultData);
     if (resultData.data case null) {
       /// 没有更多数据了
-      homeState.netState = NetState.emptyDataState;
+      if (resultData.success) {
+        homeState.netState = NetState.emptyDataState;
+      }
       state = AsyncData(homeState);
       return;
     }
-    homeState.netState = NetStateTools.handle(resultData);
     if (homeState.netState == NetState.dataSuccessState) {
       NovelHot novelHot = NovelHot.fromJson(resultData.data);
       if (novelHot.data case null) {

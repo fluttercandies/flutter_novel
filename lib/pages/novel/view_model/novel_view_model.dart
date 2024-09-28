@@ -41,13 +41,15 @@ class NovelViewModel extends _$NovelViewModel {
     ServiceResultData resultData =
         await NovelHttp().request(url, params: {}, method: HttpConfig.get);
     LoggerTools.looger.d(resultData.success);
+    novelState.netState = NetStateTools.handle(resultData);
     if (resultData.data case null) {
       /// 没有更多数据了
-      novelState.netState = NetState.emptyDataState;
+      if (resultData.success) {
+        novelState.netState = NetState.emptyDataState;
+      }
       state = AsyncData(novelState);
       return;
     }
-    novelState.netState = NetStateTools.handle(resultData);
     if (novelState.netState == NetState.dataSuccessState) {
       Novel novelHot = Novel.fromJson(resultData.data);
       if (novelHot.data case null) {
