@@ -54,7 +54,9 @@ class _NewHomePageState extends State<NewHomePage> {
   _initData() async {
     _sourceEntry = await loadBookSourceEntry();
 
-    _dio = Dio(BaseOptions(headers: json.decode(_sourceEntry.header ?? "{}")));
+    _dio = Dio(BaseOptions(
+        headers: json.decode(_sourceEntry.header ?? "{}"),
+        responseType: ResponseType.bytes));
     // 从模板中提取 charset
     RegExp charsetPattern = RegExp(r'"charset":\s*"([^"]+)"');
     var match = charsetPattern.firstMatch(_sourceEntry.searchUrl ?? "");
@@ -76,13 +78,13 @@ class _NewHomePageState extends State<NewHomePage> {
 
     // 去掉 charset 部分
     String cleanUrl = finalUrl.split(',')[0]; // 只保留 "," 前面的部分
-    // final Response<String> data =
-    //     await _dio.get("${_sourceEntry.bookSourceUrl}$cleanUrl");
+    final Response data =
+        await _dio.get("${_sourceEntry.bookSourceUrl}$cleanUrl");
 
     var url = Uri.parse('${_sourceEntry.bookSourceUrl}$cleanUrl');
     var response = await http.get(url);
 // 将字符串转换为字节，然后进行 GBK 解码
-    final z = gbk.decode(response.bodyBytes);
+    final z = gbk.decode(data.data);
     print("========   |  ");
     // writeToLocalFile(z);
     //List<int> bytes = data.data!.codeUnits;
