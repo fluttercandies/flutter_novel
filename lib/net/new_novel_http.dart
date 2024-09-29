@@ -70,8 +70,8 @@ class NewNovelHttp {
     ServiceResultData? resultData;
     try {
       Response? response = await _dio?.get(path, queryParameters: params);
-      var responseData = response?.data;
-      resultData = ServiceResultData.fromJson(responseData);
+      //var responseData = response?.data;
+      resultData = ServiceResultData.fromUint8List(response!);
       //_handleStatusCode(responseModel);
     } on DioException catch (dioError, _) {
       //_handleError(dioError, e);
