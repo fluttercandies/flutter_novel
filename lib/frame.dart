@@ -6,6 +6,7 @@ import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/category/view/category_page.dart';
 import 'package:novel_flutter_bit/pages/collect_novel/view/collect_page.dart';
 import 'package:novel_flutter_bit/pages/home/view/home_page.dart';
+import 'package:novel_flutter_bit/pages/new_home/view/new_home_page.dart';
 import 'package:novel_flutter_bit/widget/border_buttom_navigation_bar.dart';
 
 @RoutePage()
@@ -59,6 +60,14 @@ class _FramePageState extends ConsumerState<FramePage>
         index: _currentIndex,
         children: pages,
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewHomePage(),
+          ),
+        );
+      }),
       bottomNavigationBar: CustomBottomNavigationBar(
         borderRadius: 24,
         height: 70,
