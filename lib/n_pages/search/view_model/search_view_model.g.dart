@@ -7,7 +7,7 @@ part of 'search_view_model.dart';
 // **************************************************************************
 
 String _$newSearchViewModelHash() =>
-    r'420746b44bb41e2b485437484c278024b8707ebc';
+    r'9fd1530933ad0b8050fac731758d6574982f8592';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,26 +31,42 @@ class _SystemHash {
 }
 
 abstract class _$NewSearchViewModel
-    extends BuildlessAutoDisposeAsyncNotifier<void> {
+    extends BuildlessAutoDisposeAsyncNotifier<SearchState> {
   late final String searchKey;
   late final BookSourceEntry bookSourceEntry;
 
-  FutureOr<void> build({
+  FutureOr<SearchState> build({
     required String searchKey,
     required BookSourceEntry bookSourceEntry,
   });
 }
 
-/// See also [NewSearchViewModel].
+/// 搜索页
+/// 时间 2024-9-29
+/// 7-bit
+///
+/// Copied from [NewSearchViewModel].
 @ProviderFor(NewSearchViewModel)
 const newSearchViewModelProvider = NewSearchViewModelFamily();
 
-/// See also [NewSearchViewModel].
-class NewSearchViewModelFamily extends Family<AsyncValue<void>> {
-  /// See also [NewSearchViewModel].
+/// 搜索页
+/// 时间 2024-9-29
+/// 7-bit
+///
+/// Copied from [NewSearchViewModel].
+class NewSearchViewModelFamily extends Family<AsyncValue<SearchState>> {
+  /// 搜索页
+  /// 时间 2024-9-29
+  /// 7-bit
+  ///
+  /// Copied from [NewSearchViewModel].
   const NewSearchViewModelFamily();
 
-  /// See also [NewSearchViewModel].
+  /// 搜索页
+  /// 时间 2024-9-29
+  /// 7-bit
+  ///
+  /// Copied from [NewSearchViewModel].
   NewSearchViewModelProvider call({
     required String searchKey,
     required BookSourceEntry bookSourceEntry,
@@ -86,10 +102,18 @@ class NewSearchViewModelFamily extends Family<AsyncValue<void>> {
   String? get name => r'newSearchViewModelProvider';
 }
 
-/// See also [NewSearchViewModel].
-class NewSearchViewModelProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<NewSearchViewModel, void> {
-  /// See also [NewSearchViewModel].
+/// 搜索页
+/// 时间 2024-9-29
+/// 7-bit
+///
+/// Copied from [NewSearchViewModel].
+class NewSearchViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    NewSearchViewModel, SearchState> {
+  /// 搜索页
+  /// 时间 2024-9-29
+  /// 7-bit
+  ///
+  /// Copied from [NewSearchViewModel].
   NewSearchViewModelProvider({
     required String searchKey,
     required BookSourceEntry bookSourceEntry,
@@ -125,7 +149,7 @@ class NewSearchViewModelProvider
   final BookSourceEntry bookSourceEntry;
 
   @override
-  FutureOr<void> runNotifierBuild(
+  FutureOr<SearchState> runNotifierBuild(
     covariant NewSearchViewModel notifier,
   ) {
     return notifier.build(
@@ -154,7 +178,7 @@ class NewSearchViewModelProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<NewSearchViewModel, void>
+  AutoDisposeAsyncNotifierProviderElement<NewSearchViewModel, SearchState>
       createElement() {
     return _NewSearchViewModelProviderElement(this);
   }
@@ -176,7 +200,8 @@ class NewSearchViewModelProvider
   }
 }
 
-mixin NewSearchViewModelRef on AutoDisposeAsyncNotifierProviderRef<void> {
+mixin NewSearchViewModelRef
+    on AutoDisposeAsyncNotifierProviderRef<SearchState> {
   /// The parameter `searchKey` of this provider.
   String get searchKey;
 
@@ -185,8 +210,8 @@ mixin NewSearchViewModelRef on AutoDisposeAsyncNotifierProviderRef<void> {
 }
 
 class _NewSearchViewModelProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<NewSearchViewModel, void>
-    with NewSearchViewModelRef {
+    extends AutoDisposeAsyncNotifierProviderElement<NewSearchViewModel,
+        SearchState> with NewSearchViewModelRef {
   _NewSearchViewModelProviderElement(super.provider);
 
   @override
