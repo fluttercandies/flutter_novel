@@ -126,7 +126,7 @@ class NewNovelHttp {
   Future<ServiceResultData> request(
     String path, {
     Map<String, dynamic>? params,
-    String method = HttpConfig.post,
+    String method = HttpConfig.get,
   }) async {
     params = params ?? {};
     if (method == HttpConfig.get) {

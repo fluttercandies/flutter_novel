@@ -2,11 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/assets/assets.dart';
 import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
+import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
-import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/net_state_tools.dart';
@@ -25,7 +26,13 @@ class _HomePageState extends ConsumerState<HomePage> {
   final TextEditingController _controller = TextEditingController();
 
   /// 搜索
-  _onSearch() {}
+  _onSearch() {
+    if (_controller.text.isNotEmpty && _controller.text.trim().isNotEmpty) {
+      context.router.push(NewSearchRoute(searchKey: _controller.text));
+    } else {
+      SmartDialog.showToast("请输入内容");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +96,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 borderRadius: BorderRadius.circular(25)),
             child: IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: () {},
+                onPressed: _onSearch,
                 icon: SvgPicture.asset(
                   width: 40,
                   height: 40,

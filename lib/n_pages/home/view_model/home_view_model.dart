@@ -23,6 +23,7 @@ class HomeViewModel extends _$HomeViewModel {
   void _initData() async {
     homeState.netState = NetState.loadingState;
     homeState.sourceEntry = await loadBookSourceEntry();
+    homeState.netState = NetState.dataSuccessState;
     state = AsyncData(homeState);
   }
 
