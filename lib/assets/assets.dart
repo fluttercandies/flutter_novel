@@ -10,6 +10,9 @@ class Assets {
   /// {@macro assets_generator.assets_images_1_jpg.preview}
   static const String assets_images_1_jpg = 'assets/images/1.jpg';
 
+  /// {@macro assets_generator.assets_images_123_png.preview}
+  static const String assets_images_123_png = 'assets/images/123.png';
+
   /// {@macro assets_generator.assets_images_300_1x_shots_so_png.preview}
   static const String assets_images_300_1x_shots_so_png =
       'assets/images/300_1x_shots_so.png';

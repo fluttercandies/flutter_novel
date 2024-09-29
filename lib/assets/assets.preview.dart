@@ -8,6 +8,10 @@
 /// ![](d:\code\novel_flutter_bit\assets/images/1.jpg)
 /// {@endtemplate}
 
+/// {@template assets_generator.assets_images_123_png.preview}
+/// ![](d:\code\novel_flutter_bit\assets/images/123.png)
+/// {@endtemplate}
+
 /// {@template assets_generator.assets_images_300_1x_shots_so_png.preview}
 /// ![](d:\code\novel_flutter_bit\assets/images/300_1x_shots_so.png)
 /// {@endtemplate}
@@ -37,7 +41,7 @@
 /// {@endtemplate}
 
 /// {@template assets_generator.assets_images_logo2_png.preview}
-/// ![](d:/code/novel_flutter_bit/assets/images/logo2.png)
+/// ![](d:\code\novel_flutter_bit\assets/images/logo2.png)
 /// {@endtemplate}
 
 /// {@template assets_generator.assets_svg_reload_1_svg.preview}

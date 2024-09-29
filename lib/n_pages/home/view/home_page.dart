@@ -1,52 +1,58 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/assets/assets.dart';
+import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
+import 'package:novel_flutter_bit/widget/empty.dart';
+import 'package:novel_flutter_bit/widget/loading.dart';
+import 'package:novel_flutter_bit/widget/net_state_tools.dart';
 
 @RoutePage()
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _HomePageState extends ConsumerState<HomePage> {
   ThemeData get theme => Theme.of(context);
-  TextEditingController _controller = TextEditingController();
+
+  final TextEditingController _controller = TextEditingController();
 
   /// 搜索
   _onSearch() {}
 
   @override
   Widget build(BuildContext context) {
+    final homeViewModel = ref.watch(homeViewModelProvider);
     return Scaffold(
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: FocusScope.of(context).unfocus,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ExtendedImage.asset(
-              Assets.assets_images_logo2_png,
-              height: 200,
-            ),
-            _buildSearchBar()
-          ],
-        ),
+        body: switch (homeViewModel) {
+      AsyncData(:final value) => Builder(builder: (BuildContext context) {
+          return NetStateTools.getWidget(value.netState) ?? _buildSuccess();
+        }),
+      AsyncError() => EmptyBuild(),
+      _ => const LoadingBuild(),
+    });
+  }
+
+  _buildSuccess() {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: FocusScope.of(context).unfocus,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ExtendedImage.asset(
+            Assets.assets_images_logo2_png,
+            height: 200,
+          ),
+          _buildSearchBar()
+        ],
       ),
     );
   }
