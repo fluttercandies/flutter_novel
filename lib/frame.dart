@@ -6,7 +6,7 @@ import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/pages/category/view/category_page.dart';
 import 'package:novel_flutter_bit/pages/collect_novel/view/collect_page.dart';
 import 'package:novel_flutter_bit/pages/home/view/home_page.dart';
-import 'package:novel_flutter_bit/pages/new_home/view/new_home_page.dart';
+import 'package:novel_flutter_bit/n_pages/home/view/home_page.dart' as n;
 import 'package:novel_flutter_bit/widget/border_buttom_navigation_bar.dart';
 
 @RoutePage()
@@ -47,41 +47,49 @@ class _FramePageState extends ConsumerState<FramePage>
   }
 
   List<Widget> pages = [
-    const HomePage(),
-    const CategoryPage(),
-    const CollectPage()
+    const n.HomePage(),
+    Container(
+      color: Colors.red,
+    ),
+    Container(
+      color: Colors.green,
+    ),
+    // const CategoryPage(),
+    // const CollectPage()
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: pages,
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NewHomePage(),
-          ),
-        );
-      }),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        borderRadius: 24,
-        height: 70,
-        items: const [
-          Icon(NovelIcon.meteor),
-          Icon(NovelIcon.cat),
-          Icon(NovelIcon.heart),
-        ],
-        currentIndex: _currentIndex,
-        onTap: (int value) {
-          _currentIndex = value;
-          setState(() {});
-        },
-      ),
-    );
+        body: IndexedStack(
+          index: _currentIndex,
+          children: pages,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            iconSize: 18,
+            elevation: 0,
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(NovelIcon.meteor), label: "首页"),
+              BottomNavigationBarItem(icon: Icon(NovelIcon.cat), label: "其他"),
+              BottomNavigationBarItem(icon: Icon(NovelIcon.heart), label: "收藏")
+            ],
+            onTap: (value) => setState(() => _currentIndex = value)
+            //  CustomBottomNavigationBar(
+            //   borderRadius: 24,
+            //   height: 70,
+            //   items: const [
+            //     Icon(NovelIcon.meteor),
+            //     Icon(NovelIcon.cat),
+            //     Icon(NovelIcon.heart),
+            //   ],
+            //   currentIndex: _currentIndex,
+            //   onTap: (int value) {
+            //     _currentIndex = value;
+            //     setState(() {});
+            //   },
+            // ),
+            ));
   }
 }

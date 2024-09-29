@@ -6,7 +6,7 @@ part of 'collect_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$collectViewModelHash() => r'd840036164be9fac0fdf7c45c5a42f4336321a9e';
+String _$collectViewModelHash() => r'1154bad6235a5159370133659b03d2672e1ed5a1';
 
 /// See also [CollectViewModel].
 @ProviderFor(CollectViewModel)

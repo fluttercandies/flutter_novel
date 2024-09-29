@@ -5,10 +5,8 @@ import 'package:novel_flutter_bit/route/route.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(
-          page: FrameRoute.page,
-          initial: true,
-        ),
+        AutoRoute(page: HomeRoute.page, initial: true),
+        AutoRoute(page: FrameRoute.page),
         AutoRoute(page: BookRoute.page),
         AutoRoute(page: DetailRoute.page),
         AutoRoute(page: NovelRoute.page),
