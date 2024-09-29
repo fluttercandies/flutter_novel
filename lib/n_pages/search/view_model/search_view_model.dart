@@ -44,5 +44,7 @@ class NewSearchViewModel extends _$NewSearchViewModel {
     LoggerTools.looger.d(data1.toString());
     LoggerTools.looger.d(data2.toString());
     LoggerTools.looger.d(data3.toString());
+    LoggerTools.looger.d(data4.toString());
+    LoggerTools.looger.d(data5.toString());
   }
 }
