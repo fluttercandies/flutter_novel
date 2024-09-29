@@ -37,7 +37,7 @@
 /// {@endtemplate}
 
 /// {@template assets_generator.assets_images_logo2_png.preview}
-/// ![](d:\code\novel_flutter_bit\assets\images\logo2.png)
+/// ![](d:/code/novel_flutter_bit/assets/images/logo2.png)
 /// {@endtemplate}
 
 /// {@template assets_generator.assets_svg_reload_1_svg.preview}

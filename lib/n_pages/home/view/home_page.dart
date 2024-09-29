@@ -26,6 +26,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   ThemeData get theme => Theme.of(context);
+  TextEditingController _controller = TextEditingController();
+
+  /// 搜索
+  _onSearch() {}
 
   @override
   Widget build(BuildContext context) {
@@ -47,16 +51,29 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// 搜索框
   _buildSearchBar() {
     return Padding(
       padding: 10.padding,
       child: TextField(
+        controller: _controller,
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           hintText: '请输入内容',
-          border: OutlineInputBorder(
+          focusedBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: theme.primaryColor.withOpacity(.5), width: 2),
             borderRadius: BorderRadius.circular(50), // 设置圆角
+          ),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black38, width: 2),
+            borderRadius: BorderRadius.circular(50), // 设置圆角
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide:
+                const BorderSide(color: Colors.black38), // 设置未选中且禁用时的边框颜色
+            borderRadius: BorderRadius.circular(50),
           ),
           prefixIcon: const Icon(Icons.search),
           suffixIcon: Container(
