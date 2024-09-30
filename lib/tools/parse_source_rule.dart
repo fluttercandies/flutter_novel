@@ -10,27 +10,34 @@ import 'package:novel_flutter_bit/tools/logger_tools.dart';
 /// 时间 2024-9-29
 /// 7-bit
 class ParseSourceRule {
-  /// 通用规则解析方法，返回所有符合条件的匹配项
-  static List<String?> parseAllMatches(
-      {required String rule, required String htmlData}) {
+  /// 解析所有匹配项
+  static List<String?> parseAllMatches({
+    required String rule,
+    required String htmlData,
+  }) {
+    if (rule == "") {
+      return [];
+    }
     // 解析 HTML 数据
     Document document = parse(htmlData);
 
     // 解析规则字符串
     List<String> parts = rule.split('@');
-    String rootPart = parts[0]; // 获取第一个部分，比如 "id.info" 或 "class.s4"
+    String rootPart = parts[0];
     List<Element>? elements = [];
 
-    // 解析 root 部分 (id 或 class)
-    if (rootPart.startsWith('id.')) {
-      String id = rootPart.split('.')[1];
-      Element? element = document.getElementById(id);
-      if (element != null) {
-        elements = [element]; // 将初始元素添加到列表中
-      }
-    } else if (rootPart.startsWith('class.')) {
+    // 处理根部分的标签选择器
+    if (rootPart.startsWith('class.')) {
       String className = rootPart.split('.')[1];
       elements = document.getElementsByClassName(className).toList();
+    } else if (rootPart.startsWith('#')) {
+      String idSelector = rootPart.substring(1);
+      Element? element = document.getElementById(idSelector);
+      if (element != null) {
+        elements = [element];
+      }
+    } else {
+      elements = document.getElementsByTagName(rootPart).toList();
     }
 
     if (elements.isEmpty) {
@@ -43,33 +50,28 @@ class ParseSourceRule {
       String part = parts[i];
       List<Element> newElements = [];
 
-      // 解析标签部分
       if (part.startsWith('tag.')) {
-        List<String> tagParts = part.split('.');
-        String tagName = tagParts[1];
-        int? index = tagParts.length > 2 ? int.tryParse(tagParts[2]) : null;
-
-        // 针对每个当前元素，获取其子元素
+        String tagName = part.split('.')[1];
         for (var element in elements!) {
-          List<Element> children =
-              element.getElementsByTagName(tagName).toList();
-          if (index != null && children.length > index) {
-            newElements.add(children[index]);
-          } else if (index == null) {
-            newElements.addAll(children); // 没有索引时，添加所有子元素
-          }
+          newElements.addAll(element.getElementsByTagName(tagName));
         }
         elements = newElements;
-      }
-      // 提取属性或文本内容
-      else if (part == 'text') {
-        return elements!.map((e) => e.text).toList();
-      } else if (part == 'href' || part == 'src') {
-        return elements!.map((e) => e.attributes[part]).toList();
+      } else if (part.startsWith('text')) {
+        return elements!.map((e) => e.text.trim()).toList();
+      } else if (part.contains('href') || part.contains('src')) {
+        if (part.contains('src')) {
+          part = 'src';
+        } else {
+          part = 'href';
+        }
+        final data = elements!.map((e) {
+          return e.attributes[part]; // 获取 href 属性值
+        }).toList();
+        return data.where((url) => url != null && url.isNotEmpty).toList();
       }
     }
 
-    return elements!.map((e) => e.text).toList(); // 如果未明确指定获取文本，则返回所有匹配的文本内容
+    return elements!.map((e) => e.text.trim()).toList();
   }
 
   /// 搜索页url解析
@@ -117,5 +119,51 @@ class ParseSourceRule {
         .map((byte) =>
             '%${byte.toRadixString(16).padLeft(2, '0').toUpperCase()}')
         .join();
+  }
+
+  /// 解析url
+  static String parseUrl({
+    required String bookSourceUrl,
+    required String parseSearchUrl,
+  }) {
+    // 去除baseUrl末尾的斜杠（如果有）
+    if (bookSourceUrl.endsWith('/')) {
+      bookSourceUrl = bookSourceUrl.substring(0, bookSourceUrl.length - 1);
+    }
+    // 如果relativeUrl以斜杠开头，则去除
+    if (parseSearchUrl.startsWith('/')) {
+      parseSearchUrl = parseSearchUrl.substring(1);
+    }
+    return '$bookSourceUrl/$parseSearchUrl';
+  }
+
+  static String? parseCharset({
+    required String htmlData,
+  }) {
+    // 解析 HTML 数据
+    Document document = parse(htmlData);
+
+    // 查找所有 <meta> 标签
+    List<Element> metaTags = document.getElementsByTagName('meta').toList();
+
+    // 遍历 <meta> 标签查找 charset 属性
+    for (Element meta in metaTags) {
+      String? charset = meta.attributes['charset'];
+      if (charset != null) {
+        return charset; // 如果找到 charset 属性则返回
+      }
+    }
+
+    return null; // 如果未找到 charset 则返回 null
+  }
+
+  /// 解析html数据 解码 不同编码
+  static String parseHtmlDecode(dynamic htmlData) {
+    String resultData = gbk.decode(htmlData);
+    final charset = ParseSourceRule.parseCharset(htmlData: resultData) ?? "gbk";
+    if (charset.toLowerCase() == "utf-8" || charset.toLowerCase() == "utf8") {
+      resultData = utf8.decode(htmlData);
+    }
+    return resultData;
   }
 }

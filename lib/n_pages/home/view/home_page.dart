@@ -54,6 +54,9 @@ class _HomePageState extends ConsumerState<HomePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          FloatingActionButton(onPressed: () {
+            ref.read(homeViewModelProvider.notifier).switchSource();
+          }),
           ExtendedImage.asset(
             Assets.assets_images_logo2_png,
             height: 200,

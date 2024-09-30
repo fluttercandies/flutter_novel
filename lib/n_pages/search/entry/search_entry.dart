@@ -7,12 +7,14 @@ class SearchEntry {
   late String? name;
   late String? lastChapter;
   late String? bookAll;
-
-  SearchEntry({
-    this.author,
-    this.url,
-    this.name,
-    this.lastChapter,
-    this.bookAll,
-  });
+  late String? coverUrl;
+  late String? kind;
+  SearchEntry(
+      {this.author,
+      this.url,
+      this.name,
+      this.lastChapter,
+      this.bookAll,
+      this.coverUrl,
+      this.kind});
 }

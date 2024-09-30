@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/home/state/home_state.dart';
@@ -37,5 +38,15 @@ class HomeViewModel extends _$HomeViewModel {
       bookList.add(BookSourceEntry.fromJson(jsonList[i]));
     }
     return bookList;
+  }
+
+  void switchSource() {
+    homeState.currentIndex = homeState.currentIndex == 0 ? 1 : 0;
+    //state = AsyncData(homeState);
+
+    SmartDialog.showToast(
+        "切换成功${homeState.sourceEntry?[homeState.currentIndex].bookSourceName}");
+    LoggerTools.looger.d(
+        "切换成功${homeState.sourceEntry?[homeState.currentIndex].bookSourceName}");
   }
 }
