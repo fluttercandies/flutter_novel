@@ -24,11 +24,17 @@ class _HomePageState extends ConsumerState<HomePage> {
   ThemeData get theme => Theme.of(context);
 
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   /// 搜索
   _onSearch() {
     if (_controller.text.isNotEmpty && _controller.text.trim().isNotEmpty) {
-      context.router.push(NewSearchRoute(searchKey: _controller.text));
+      _focusNode.unfocus();
+      Future.delayed(Durations.medium4, () {
+        if (mounted) {
+          context.router.push(NewSearchRoute(searchKey: _controller.text));
+        }
+      });
     } else {
       SmartDialog.showToast("请输入内容");
     }
@@ -50,18 +56,37 @@ class _HomePageState extends ConsumerState<HomePage> {
   _buildSuccess() {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: FocusScope.of(context).unfocus,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      onTap: _focusNode.unfocus,
+      child: Stack(
         children: [
-          FloatingActionButton(onPressed: () {
-            ref.read(homeViewModelProvider.notifier).switchSource();
-          }),
-          ExtendedImage.asset(
-            Assets.assets_images_logo2_png,
-            height: 200,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ExtendedImage.asset(
+                Assets.assets_images_logo2_png,
+                height: 200,
+              ),
+              _buildSearchBar()
+            ],
           ),
-          _buildSearchBar()
+          Positioned(
+            right: 20,
+            bottom: 20,
+            child: FloatingActionButton(
+              backgroundColor: theme.primaryColor,
+              onPressed: () {
+                ref.read(homeViewModelProvider.notifier).switchSource();
+              },
+              child: SvgPicture.asset(
+                Assets.assets_svg_reload_1_svg,
+                width: 45,
+                height: 45,
+                fit: BoxFit.contain,
+                colorFilter:
+                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -72,6 +97,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Padding(
       padding: 10.padding,
       child: TextField(
+        focusNode: _focusNode,
         controller: _controller,
         decoration: InputDecoration(
           contentPadding:

@@ -59,11 +59,11 @@ class ParseSourceRule {
       } else if (part.startsWith('text')) {
         return elements!.map((e) => e.text.trim()).toList();
       } else if (part.contains('href') || part.contains('src')) {
-        if (part.contains('src')) {
-          part = 'src';
-        } else {
-          part = 'href';
-        }
+        // if (part.contains('src')) {
+        //   part = 'src';
+        // } else {
+        //   part = 'href';
+        // }
         final data = elements!.map((e) {
           return e.attributes[part]; // 获取 href 属性值
         }).toList();

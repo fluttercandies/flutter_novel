@@ -17,12 +17,12 @@ class ExtendedImageBuild extends StatelessWidget {
   late double width;
   late double? height;
   late BoxFit? fit;
-  final _joinStr = "https://api.book.bbdaxia.com/";
+  //final _joinStr = "https://api.book.bbdaxia.com/";
   @override
   Widget build(BuildContext context) {
-    if (isJoinUrl) {
-      url = _joinStr + url;
-    }
+    // if (isJoinUrl) {
+    //   url = _joinStr + url;
+    // }
     return ExtendedImage.network(
       url,
       cache: true,
