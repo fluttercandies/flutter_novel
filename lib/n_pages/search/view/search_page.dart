@@ -120,43 +120,4 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
     }
     return Container(margin: 10.vertical, child: imageWidget);
   }
-
-  /// 获取行数据组件
-  List<Widget> _getLineWidget(List<String>? list) {
-    List<Widget> res = [];
-
-    /// 判断如果只有一行数据介绍
-    if (list?.length == 1) {
-      return [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Text(list?[0] ?? ""),
-        )
-      ];
-    }
-
-    /// 如果有多行数据
-    for (var i = 0; i < (list?.length ?? 0); i++) {
-      if (list?[i] == "") {
-        res.add(0.verticalSpace);
-      } else {
-        res.add(Text(
-          list?[i] ?? "",
-          maxLines: 4,
-          overflow: TextOverflow.ellipsis,
-          style: i == 0
-              ? TextStyle(color: theme.primaryColor, fontSize: 20)
-              : const TextStyle(fontSize: 16, color: Colors.black54),
-        ));
-      }
-    }
-    return res;
-  }
-
-  String extractFirstLine(String input) {
-    // 使用'\n'分割字符串，获取第一行
-    String firstLine = input.split('\n').first;
-    // 返回第一行，去除行尾的换行符
-    return firstLine;
-  }
 }
