@@ -29,20 +29,28 @@ class NewSearchViewModel extends _$NewSearchViewModel {
     required String searchKey,
     required BookSourceEntry bookSourceEntry,
   }) async {
-    final resultData = await NewNovelHttp().request(ParseSourceRule.parseUrl(
-        bookSourceUrl: "${bookSourceEntry.bookSourceUrl}",
-        parseSearchUrl: ParseSourceRule.parseSearchUrl(
-            searchKey: searchKey, searchUrl: bookSourceEntry.searchUrl ?? "")));
-    final uint8List = resultData.data;
-    resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
-    final searchLis = _getSearchList(resultData.data);
-    if (searchLis.isEmpty) {
-      searchState.netState = NetState.emptyDataState;
-      return;
+    try {
+      final resultData = await NewNovelHttp().request(ParseSourceRule.parseUrl(
+          bookSourceUrl: "${bookSourceEntry.bookSourceUrl}",
+          parseSearchUrl: ParseSourceRule.parseSearchUrl(
+              searchKey: searchKey,
+              searchUrl: bookSourceEntry.searchUrl ?? "")));
+      final uint8List = resultData.data;
+      resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
+      final searchLis = _getSearchList(resultData.data);
+      if (searchLis.isEmpty) {
+        searchState.netState = NetState.emptyDataState;
+        state = AsyncData(searchState);
+        return;
+      }
+      searchState.searchList = searchLis;
+      searchState.netState = NetState.dataSuccessState;
+      state = AsyncData(searchState);
+    } catch (e) {
+      LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
+      searchState.netState = NetState.error403State;
+      state = AsyncData(searchState);
     }
-    searchState.searchList = searchLis;
-    searchState.netState = NetState.dataSuccessState;
-    state = AsyncData(searchState);
   }
 
   /// 搜索列表

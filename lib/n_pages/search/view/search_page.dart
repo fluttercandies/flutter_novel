@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,17 +54,19 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
   }
 
   _buildSuccess({List<SearchEntry>? searchList}) {
-    return DefaultTextStyle(
-      style: TextStyle(
-          color: theme.textTheme.bodyLarge?.color,
-          fontSize: 17,
-          fontWeight: FontWeight.w300),
-      child: ListView.builder(
-          padding: 20.padding,
-          itemCount: searchList?.length ?? 0,
-          itemBuilder: (context, index) {
-            return _buildItem(searchList![index]);
-          }),
+    return FadeIn(
+      child: DefaultTextStyle(
+        style: TextStyle(
+            color: theme.textTheme.bodyLarge?.color,
+            fontSize: 17,
+            fontWeight: FontWeight.w300),
+        child: ListView.builder(
+            padding: 20.padding,
+            itemCount: searchList?.length ?? 0,
+            itemBuilder: (context, index) {
+              return _buildItem(searchList![index]);
+            }),
+      ),
     );
   }
 
@@ -73,7 +76,7 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
 
     ///默认显示文字
     Widget? imageWidget = SizedBox(
-      height: searchEntry.coverUrl == null ? height / 2 : height,
+      height: searchEntry.coverUrl == null ? height / 1.5 : height,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -93,7 +96,11 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
                 ? Text("作者：${searchEntry.author}")
                 : 0.verticalSpace,
             searchEntry.lastChapter != "" && searchEntry.lastChapter != null
-                ? Text("最近更新：${searchEntry.lastChapter}")
+                ? Text(
+                    "最近更新：${searchEntry.lastChapter}",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )
                 : 0.verticalSpace
           ]),
     );
