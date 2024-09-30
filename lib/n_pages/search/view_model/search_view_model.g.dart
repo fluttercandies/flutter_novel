@@ -7,7 +7,7 @@ part of 'search_view_model.dart';
 // **************************************************************************
 
 String _$newSearchViewModelHash() =>
-    r'7d41d111081211bee7747fe9989f7b70f678f9b4';
+    r'b5b6ff6397768a41708e272dfd9028809267edb6';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -11,7 +11,128 @@ import 'package:novel_flutter_bit/tools/logger_tools.dart';
 /// 7-bit
 class ParseSourceRule {
   /// 解析所有匹配项
+  /// 解析所有匹配项
+  /// 解析所有匹配项
   static List<String?> parseAllMatches({
+    required String rule,
+    required String htmlData,
+    String? rootSelector, // 根节点选择器
+  }) {
+    if (rule.isEmpty) {
+      return [];
+    }
+
+    // 解析 HTML 数据
+    Document document = parse(htmlData);
+
+    // 选择根节点
+    List<Element> rootNodes = [];
+    if (rootSelector != null) {
+      if (rootSelector.startsWith('class.')) {
+        String className = rootSelector.split('.')[1];
+        rootNodes = document.getElementsByClassName(className).toList();
+      } else if (rootSelector.startsWith('#')) {
+        String idSelector = rootSelector.substring(1);
+        rootNodes = document.querySelectorAll('#$idSelector').toList();
+      } else {
+        rootNodes = document.getElementsByTagName(rootSelector).toList();
+      }
+    } else {
+      rootNodes = [document.documentElement!]; // 默认根节点为文档根
+    }
+
+    // 解析规则字符串
+    List<String> parts = rule.split('@');
+    String rootPart = parts[0];
+    List<Element> elements = [];
+
+    // 处理根部分的标签选择器
+    for (var rootNode in rootNodes) {
+      List<Element> tempElements = [];
+      if (rootPart.startsWith('class.')) {
+        String className = rootPart.split('.')[1];
+        tempElements.addAll(rootNode.getElementsByClassName(className));
+      } else if (rootPart.startsWith('#')) {
+        String idSelector = rootPart.substring(1);
+        var element = rootNode.querySelector('#$idSelector');
+        if (element != null) {
+          tempElements.add(element);
+        }
+      } else {
+        if (rootPart.startsWith(".")) {
+          tempElements.addAll(rootNode.getElementsByTagName(rootPart));
+        } else if (rootPart.contains('.')) {
+          final data = rootPart.split(".");
+          final element = rootNode
+              .getElementsByTagName(data[0])[int.tryParse((data[1])) ?? 0];
+          tempElements.add(element);
+        } else {
+          tempElements.addAll(rootNode.getElementsByTagName(rootPart));
+        }
+      }
+      elements.addAll(tempElements); // 合并所有匹配的元素
+    }
+
+    if (elements.isEmpty) {
+      LoggerTools.looger.i('Root element not found for $rootPart');
+      return []; // 找不到元素时返回空数组
+    }
+
+    // 逐步解析标签和属性
+    for (int i = 1; i < parts.length; i++) {
+      String part = parts[i];
+      List<Element> newElements = [];
+
+      if (part.contains('>')) {
+        // 处理子元素选择器
+        List<String> directParts = part.split('>');
+        String parentSelector = directParts[0].trim();
+        String childTag = directParts[1].trim();
+
+        for (var element in elements) {
+          var parentElements = element.getElementsByTagName(parentSelector);
+          for (var parent in parentElements) {
+            newElements.addAll(parent.getElementsByTagName(childTag));
+          }
+        }
+        elements = newElements;
+      } else if (part.startsWith('tag.')) {
+        String tagName = part.split('.')[1];
+        for (var element in elements) {
+          newElements.addAll(element.getElementsByTagName(tagName));
+        }
+        elements = newElements;
+      } else if (part.startsWith('text')) {
+        return elements.map((e) => e.text.trim()).toList();
+      } else if (part.contains('href') || part.contains('src')) {
+        final data = elements.map((e) {
+          // 处理 a.0@href 格式
+          if (part.startsWith('a.')) {
+            var parts = part.split('.');
+            if (parts.length == 2) {
+              int index = int.parse(parts[1]);
+              var aElements = e.getElementsByTagName('a');
+              if (aElements.length > index) {
+                return aElements[index].attributes['href'] ?? '';
+              }
+            }
+          }
+          return e.attributes[part] ?? e.attributes['src-data'];
+        }).toList();
+        return data.where((url) => url != null && url.isNotEmpty).toList();
+      }
+
+      // 如果没有找到新元素，直接返回空数组
+      if (elements.isEmpty) {
+        return [];
+      }
+    }
+
+    return elements.map((e) => e.text.trim()).toList();
+  }
+
+  /// 解析所有匹配项
+  static List<String?> parseAllMatches1({
     required String rule,
     required String htmlData,
   }) {

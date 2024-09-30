@@ -52,21 +52,28 @@ class NewSearchViewModel extends _$NewSearchViewModel {
 
     /// 作者
     var author = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleSearch!.author ?? "", htmlData: htmlData);
+        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
+        rule: _bookSourceEntry.ruleSearch!.author ?? "",
+        htmlData: htmlData);
 
     /// 书url
     var bookUrl = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleSearch!.bookUrl ?? "", htmlData: htmlData);
+        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
+        rule: _bookSourceEntry.ruleSearch!.bookUrl ?? "",
+        htmlData: htmlData);
 
     /// 所有信息
     var bookAll = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleSearch!.bookList ?? "", htmlData: htmlData);
+        //rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
+        rule: _bookSourceEntry.ruleSearch!.bookList ?? "",
+        htmlData: htmlData);
 
     /// name 书名
     // final data3 = ParseSourceRule.parseAllMatches(
     //     rule: bookSourceEntry.ruleSearch!.coverUrl!, htmlData: htmlData);
     /// lastChapter 最新章节
     var lastChapter = ParseSourceRule.parseAllMatches(
+        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
         rule: _bookSourceEntry.ruleSearch!.lastChapter ?? "",
         htmlData: htmlData);
 
@@ -76,22 +83,35 @@ class NewSearchViewModel extends _$NewSearchViewModel {
 
     /// 图片
     var coverUrl = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleSearch!.coverUrl ?? "", htmlData: htmlData);
+        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
+        rule: _bookSourceEntry.ruleSearch!.coverUrl ?? "",
+        htmlData: htmlData);
 
     /// 类型
     var kind = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleSearch!.kind ?? "", htmlData: htmlData);
+        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
+        rule: _bookSourceEntry.ruleSearch!.kind ?? "",
+        htmlData: htmlData);
+    // 如果 bookUrl 不为空，检查其他列表并调整长度
     // 如果 bookUrl 不为空，检查其他列表并调整长度
     if (bookUrl.isNotEmpty && bookUrl.any((url) => url != null)) {
       final length = bookUrl.length;
 
-      // 补充空列表
-      author.length = length;
-      bookAll.length = length;
-      lastChapter.length = length;
-      name.length = length;
-      coverUrl.length = length;
-      kind.length = length;
+      // 确保其他列表不为空，如果为空则初始化为空数组
+      author = author.isEmpty ? [] : author;
+      bookAll = bookAll.isEmpty ? [] : bookAll;
+      lastChapter = lastChapter.isEmpty ? [] : lastChapter;
+      name = name.isEmpty ? [] : name;
+      coverUrl = coverUrl.isEmpty ? [] : coverUrl;
+      kind = kind.isEmpty ? [] : kind;
+      // 补充空列表的长度
+      author.length = author.isEmpty ? length : author.length;
+      bookAll.length = bookAll.isEmpty ? length : bookAll.length;
+      lastChapter.length = lastChapter.isEmpty ? length : lastChapter.length;
+      name.length = name.isEmpty ? length : name.length;
+      coverUrl.length = coverUrl.isEmpty ? length : coverUrl.length;
+      kind.length = kind.isEmpty ? length : kind.length;
+
       author = List.generate(
           length, (index) => author.length > index ? author[index] : null);
       bookAll = List.generate(
@@ -109,7 +129,7 @@ class NewSearchViewModel extends _$NewSearchViewModel {
       final bookurl =
           bookUrl[i]?.startsWith("http") ?? bookUrl[i] != "" ? true : false;
       final coverUrl1 =
-          coverUrl[i]?.startsWith("http") ?? coverUrl[i] != "" ? true : false;
+          coverUrl[i]?.startsWith("http") ?? (coverUrl[i] != "") ? true : false;
       final coverUrlData = ParseSourceRule.parseUrl(
           bookSourceUrl: "${_bookSourceEntry.bookSourceUrl}",
           parseSearchUrl: coverUrl[i] ?? "");

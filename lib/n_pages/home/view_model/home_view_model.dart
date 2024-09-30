@@ -41,7 +41,12 @@ class HomeViewModel extends _$HomeViewModel {
   }
 
   void switchSource() {
-    homeState.currentIndex = homeState.currentIndex == 0 ? 1 : 0;
+    if (homeState.currentIndex + 1 >= (homeState.sourceEntry?.length ?? 0)) {
+      homeState.currentIndex = 0;
+    } else {
+      homeState.currentIndex++;
+    }
+
     //state = AsyncData(homeState);
 
     SmartDialog.showToast(

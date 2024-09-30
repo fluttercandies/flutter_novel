@@ -94,8 +94,21 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
     return Container(child: imageWidget);
   }
 
+  /// 获取行数据组件
   List<Widget> _getLineWidget(List<String>? list) {
     List<Widget> res = [];
+
+    /// 判断如果只有一行数据介绍
+    if (list?.length == 1) {
+      return [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Text(list?[0] ?? ""),
+        )
+      ];
+    }
+
+    /// 如果有多行数据
     for (var i = 0; i < (list?.length ?? 0); i++) {
       if (list?[i] == "") {
         res.add(0.verticalSpace);
