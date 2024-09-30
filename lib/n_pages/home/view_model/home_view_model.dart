@@ -28,10 +28,14 @@ class HomeViewModel extends _$HomeViewModel {
   }
 
   /// 加载书籍源
-  Future<BookSourceEntry> loadBookSourceEntry() async {
+  Future<List<BookSourceEntry>> loadBookSourceEntry() async {
+    List<BookSourceEntry> bookList = [];
     final String jsonString =
         await rootBundle.loadString('assets/json/source.json');
-    final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    return BookSourceEntry.fromJson(jsonMap);
+    final List jsonList = json.decode(jsonString);
+    for (var i = 0; i < jsonList.length; i++) {
+      bookList.add(BookSourceEntry.fromJson(jsonList[i]));
+    }
+    return bookList;
   }
 }

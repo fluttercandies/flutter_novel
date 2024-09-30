@@ -22,8 +22,9 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
   @override
   void initState() {
     super.initState();
-    sourceEntry =
-        ref.read(homeViewModelProvider.notifier).homeState.sourceEntry;
+    final homeviewmodel = ref.read(homeViewModelProvider.notifier);
+    sourceEntry = homeviewmodel
+        .homeState.sourceEntry?[homeviewmodel.homeState.currentIndex];
   }
 
   @override
