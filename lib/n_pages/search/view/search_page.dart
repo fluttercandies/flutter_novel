@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
-import 'package:novel_flutter_bit/n_pages/home/view/home_page.dart';
 import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/n_pages/search/view_model/search_view_model.dart';
@@ -26,6 +25,7 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
 
   ThemeData get theme => Theme.of(context);
 
+  double height = 160;
   @override
   void initState() {
     super.initState();
@@ -56,7 +56,7 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
     return DefaultTextStyle(
       style: TextStyle(
           color: theme.textTheme.bodyLarge?.color,
-          fontSize: 18,
+          fontSize: 17,
           fontWeight: FontWeight.w300),
       child: ListView.builder(
           padding: 20.padding,
@@ -68,15 +68,34 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
   }
 
   _buildItem(SearchEntry searchEntry) {
-    var str = searchEntry.bookAll?.replaceAll(" ", "");
-    final list = str?.split("\n");
+    // var str = searchEntry.bookAll?.replaceAll(" ", "");
+    // final list = str?.split("\n");
 
     ///默认显示文字
-    Widget? imageWidget = Padding(
-      padding: const EdgeInsets.all(8.0),
+    Widget? imageWidget = SizedBox(
+      height: searchEntry.coverUrl == null ? height / 2 : height,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: _getLineWidget(list)),
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Flexible(
+              child: Text(
+                searchEntry.name ?? "",
+                style: TextStyle(fontSize: 18, color: theme.primaryColor),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
+              ),
+            ),
+            searchEntry.kind != "" && searchEntry.kind != null
+                ? Text("类型：${searchEntry.kind}")
+                : 0.verticalSpace,
+            searchEntry.author != "" && searchEntry.author != null
+                ? Text("作者：${searchEntry.author}")
+                : 0.verticalSpace,
+            searchEntry.lastChapter != "" && searchEntry.lastChapter != null
+                ? Text("最近更新：${searchEntry.lastChapter}")
+                : 0.verticalSpace
+          ]),
     );
 
     /// 封面
@@ -85,13 +104,14 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
         children: [
           ExtendedImageBuild(
             url: searchEntry.coverUrl!,
-            height: 180,
+            height: height,
           ),
+          10.horizontalSpace,
           Expanded(child: imageWidget)
         ],
       );
     }
-    return Container(child: imageWidget);
+    return Container(margin: 10.vertical, child: imageWidget);
   }
 
   /// 获取行数据组件
