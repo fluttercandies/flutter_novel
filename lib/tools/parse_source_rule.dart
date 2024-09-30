@@ -120,6 +120,16 @@ class ParseSourceRule {
           return e.attributes[part] ?? e.attributes['src-data'];
         }).toList();
         return data.where((url) => url != null && url.isNotEmpty).toList();
+      } else if (part.contains('img')) {
+        final data = elements.map((e) {
+          // 处理 a.0@href 格式
+
+          var parts = part.split('||');
+
+          return e.attributes[parts[0]] ??
+              e.attributes[parts.length > 1 ? parts[1] : "src"];
+        }).toList();
+        return data.where((url) => url != null && url.isNotEmpty).toList();
       }
 
       // 如果没有找到新元素，直接返回空数组
