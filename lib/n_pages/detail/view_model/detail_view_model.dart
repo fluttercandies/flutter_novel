@@ -1,7 +1,5 @@
-import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
-import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/net/new_novel_http.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/parse_source_rule.dart';
@@ -59,17 +57,11 @@ class NewDetailViewModel extends _$NewDetailViewModel {
 
   /// 搜索列表
   /// 搜索结果 解析后i获取
-  List<String> _getSearchList(String htmlData) {
-    List<String> searchList = [];
-
+  String _getSearchList(String htmlData) {
     /// 作者
     var lastChapter = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleBookInfo!.lastChapter ?? "",
-        htmlData: htmlData);
-    searchList = List.generate(
-        lastChapter.length,
-        (index) =>
-            lastChapter.length > index ? (lastChapter[index] ?? " ") : "null");
-    return searchList;
+        rule: _bookSourceEntry.ruleBookInfo!.kind ?? "", htmlData: htmlData);
+
+    return lastChapter.toString();
   }
 }

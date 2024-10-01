@@ -122,7 +122,7 @@ class ParseSourceRule {
         return data.where((url) => url != null && url.isNotEmpty).toList();
       } else if (part.contains('img')) {
         final data = elements.map((e) {
-          // 处理 a.0@href 格式
+          // 处理 img 格式
 
           var parts = part.split('||');
 
@@ -130,6 +130,12 @@ class ParseSourceRule {
               e.attributes[parts.length > 1 ? parts[1] : "src"];
         }).toList();
         return data.where((url) => url != null && url.isNotEmpty).toList();
+      } else if (part == "content") {
+        final data = elements.map((e) {
+          // 处理 content 内容 格式
+          return e.attributes["content"];
+        }).toList();
+        return data.where((text) => text != null && text.isNotEmpty).toList();
       }
 
       // 如果没有找到新元素，直接返回空数组
