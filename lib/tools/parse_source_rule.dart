@@ -58,6 +58,12 @@ class ParseSourceRule {
         if (element != null) {
           tempElements.add(element);
         }
+      } else if (rootPart.startsWith('id.')) {
+        String idSelector = rootPart.split('.')[1];
+        var element = rootNode.querySelector('#$idSelector');
+        if (element != null) {
+          tempElements.add(element);
+        }
       } else {
         if (rootPart.startsWith(".")) {
           tempElements.addAll(rootNode.getElementsByTagName(rootPart));

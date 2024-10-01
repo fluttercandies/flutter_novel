@@ -60,7 +60,8 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   String _getSearchList(String htmlData) {
     /// 作者
     var lastChapter = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleBookInfo!.kind ?? "", htmlData: htmlData);
+        rule: _bookSourceEntry.ruleBookInfo!.coverUrl ?? "",
+        htmlData: htmlData);
 
     return lastChapter.toString();
   }

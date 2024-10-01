@@ -7,7 +7,7 @@ part of 'detail_view_model.dart';
 // **************************************************************************
 
 String _$newDetailViewModelHash() =>
-    r'7e835be28689800a6b8be87352a50ca40c45c5b0';
+    r'4e6447e3dd5ed982af965573cb33f70e24833d5e';
 
 /// Copied from Dart SDK
 class _SystemHash {
