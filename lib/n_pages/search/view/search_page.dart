@@ -2,10 +2,12 @@ import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/n_pages/search/view_model/search_view_model.dart';
+import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
@@ -27,6 +29,13 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
   ThemeData get theme => Theme.of(context);
 
   double height = 160;
+
+  /// 跳转详情页
+  void _onTapToDeatilPage({required String url}) {
+    context.router.push(NewDetailRoute(detailUrl: url));
+    //SmartDialog.showToast(url);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -37,8 +46,8 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final newSearchViewModelProvider = ref.watch(NewSearchViewModelProvider(
-        searchKey: widget.searchKey, bookSourceEntry: sourceEntry!));
+    final newSearchViewModelProvider =
+        ref.watch(NewSearchViewModelProvider(searchKey: widget.searchKey));
     return Scaffold(
       appBar: AppBar(
           title: Text("${sourceEntry?.bookSourceName}--${widget.searchKey}")),
@@ -118,6 +127,9 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
         ],
       );
     }
-    return Container(margin: 10.vertical, child: imageWidget);
+    return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _onTapToDeatilPage(url: searchEntry.url ?? ""),
+        child: Container(margin: 10.vertical, child: imageWidget));
   }
 }

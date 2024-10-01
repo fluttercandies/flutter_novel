@@ -7,7 +7,7 @@ part of 'search_view_model.dart';
 // **************************************************************************
 
 String _$newSearchViewModelHash() =>
-    r'b5b6ff6397768a41708e272dfd9028809267edb6';
+    r'484a065f422d3c444bc6bcace53f7c945e1950f6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -33,11 +33,9 @@ class _SystemHash {
 abstract class _$NewSearchViewModel
     extends BuildlessAutoDisposeAsyncNotifier<SearchState> {
   late final String searchKey;
-  late final BookSourceEntry bookSourceEntry;
 
   FutureOr<SearchState> build({
     required String searchKey,
-    required BookSourceEntry bookSourceEntry,
   });
 }
 
@@ -69,11 +67,9 @@ class NewSearchViewModelFamily extends Family<AsyncValue<SearchState>> {
   /// Copied from [NewSearchViewModel].
   NewSearchViewModelProvider call({
     required String searchKey,
-    required BookSourceEntry bookSourceEntry,
   }) {
     return NewSearchViewModelProvider(
       searchKey: searchKey,
-      bookSourceEntry: bookSourceEntry,
     );
   }
 
@@ -83,7 +79,6 @@ class NewSearchViewModelFamily extends Family<AsyncValue<SearchState>> {
   ) {
     return call(
       searchKey: provider.searchKey,
-      bookSourceEntry: provider.bookSourceEntry,
     );
   }
 
@@ -116,11 +111,8 @@ class NewSearchViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
   /// Copied from [NewSearchViewModel].
   NewSearchViewModelProvider({
     required String searchKey,
-    required BookSourceEntry bookSourceEntry,
   }) : this._internal(
-          () => NewSearchViewModel()
-            ..searchKey = searchKey
-            ..bookSourceEntry = bookSourceEntry,
+          () => NewSearchViewModel()..searchKey = searchKey,
           from: newSearchViewModelProvider,
           name: r'newSearchViewModelProvider',
           debugGetCreateSourceHash:
@@ -131,7 +123,6 @@ class NewSearchViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
           allTransitiveDependencies:
               NewSearchViewModelFamily._allTransitiveDependencies,
           searchKey: searchKey,
-          bookSourceEntry: bookSourceEntry,
         );
 
   NewSearchViewModelProvider._internal(
@@ -142,11 +133,9 @@ class NewSearchViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.searchKey,
-    required this.bookSourceEntry,
   }) : super.internal();
 
   final String searchKey;
-  final BookSourceEntry bookSourceEntry;
 
   @override
   FutureOr<SearchState> runNotifierBuild(
@@ -154,7 +143,6 @@ class NewSearchViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
   ) {
     return notifier.build(
       searchKey: searchKey,
-      bookSourceEntry: bookSourceEntry,
     );
   }
 
@@ -163,16 +151,13 @@ class NewSearchViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
     return ProviderOverride(
       origin: this,
       override: NewSearchViewModelProvider._internal(
-        () => create()
-          ..searchKey = searchKey
-          ..bookSourceEntry = bookSourceEntry,
+        () => create()..searchKey = searchKey,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         searchKey: searchKey,
-        bookSourceEntry: bookSourceEntry,
       ),
     );
   }
@@ -185,16 +170,13 @@ class NewSearchViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   bool operator ==(Object other) {
-    return other is NewSearchViewModelProvider &&
-        other.searchKey == searchKey &&
-        other.bookSourceEntry == bookSourceEntry;
+    return other is NewSearchViewModelProvider && other.searchKey == searchKey;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, searchKey.hashCode);
-    hash = _SystemHash.combine(hash, bookSourceEntry.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -204,9 +186,6 @@ mixin NewSearchViewModelRef
     on AutoDisposeAsyncNotifierProviderRef<SearchState> {
   /// The parameter `searchKey` of this provider.
   String get searchKey;
-
-  /// The parameter `bookSourceEntry` of this provider.
-  BookSourceEntry get bookSourceEntry;
 }
 
 class _NewSearchViewModelProviderElement
@@ -216,9 +195,6 @@ class _NewSearchViewModelProviderElement
 
   @override
   String get searchKey => (origin as NewSearchViewModelProvider).searchKey;
-  @override
-  BookSourceEntry get bookSourceEntry =>
-      (origin as NewSearchViewModelProvider).bookSourceEntry;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,5 +1,6 @@
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
+import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/n_pages/search/state/search_state.dart';
 import 'package:novel_flutter_bit/net/new_novel_http.dart';
@@ -16,25 +17,29 @@ class NewSearchViewModel extends _$NewSearchViewModel {
   SearchState searchState = SearchState();
   late BookSourceEntry _bookSourceEntry;
   @override
-  Future<SearchState> build(
-      {required String searchKey,
-      required BookSourceEntry bookSourceEntry}) async {
+  Future<SearchState> build({required String searchKey}) async {
     LoggerTools.looger.d("NEW HomeViewModel init build");
-    _bookSourceEntry = bookSourceEntry;
-    _initData(searchKey: searchKey, bookSourceEntry: bookSourceEntry);
+    _initBookSourceEntry();
+    _initData(searchKey: searchKey);
     return searchState;
+  }
+
+  /// 初始化书源
+  _initBookSourceEntry() async {
+    final homeViewModel = ref.read(homeViewModelProvider.notifier);
+    _bookSourceEntry = homeViewModel
+        .homeState.sourceEntry![homeViewModel.homeState.currentIndex];
   }
 
   void _initData({
     required String searchKey,
-    required BookSourceEntry bookSourceEntry,
   }) async {
     try {
       final resultData = await NewNovelHttp().request(ParseSourceRule.parseUrl(
-          bookSourceUrl: "${bookSourceEntry.bookSourceUrl}",
+          bookSourceUrl: "${_bookSourceEntry.bookSourceUrl}",
           parseSearchUrl: ParseSourceRule.parseSearchUrl(
               searchKey: searchKey,
-              searchUrl: bookSourceEntry.searchUrl ?? "")));
+              searchUrl: _bookSourceEntry.searchUrl ?? "")));
       final uint8List = resultData.data;
       resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
       final searchLis = _getSearchList(resultData.data);
