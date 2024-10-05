@@ -15,7 +15,7 @@ part 'search_view_model.g.dart';
 @riverpod
 class NewSearchViewModel extends _$NewSearchViewModel {
   SearchState searchState = SearchState();
-  late BookSourceEntry _bookSourceEntry;
+  late List<BookSourceEntry>? _bookSourceEntry;
   @override
   Future<SearchState> build({required String searchKey}) async {
     LoggerTools.looger.d("NEW HomeViewModel init build");
@@ -27,22 +27,20 @@ class NewSearchViewModel extends _$NewSearchViewModel {
   /// 初始化书源
   _initBookSourceEntry() async {
     final homeViewModel = ref.read(homeViewModelProvider.notifier);
-    _bookSourceEntry = homeViewModel
-        .homeState.sourceEntry![homeViewModel.homeState.currentIndex];
+    _bookSourceEntry = homeViewModel.homeState.sourceEntry;
   }
 
   void _initData({
     required String searchKey,
   }) async {
-    try {
-      final resultData = await NewNovelHttp().request(ParseSourceRule.parseUrl(
-          bookSourceUrl: "${_bookSourceEntry.bookSourceUrl}",
-          parseSearchUrl: ParseSourceRule.parseSearchUrl(
-              searchKey: searchKey,
-              searchUrl: _bookSourceEntry.searchUrl ?? "")));
-      final uint8List = resultData.data;
-      resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
-      final searchLis = _getSearchList(resultData.data);
+    LoggerTools.looger.d("NewSearchViewModel _initData searchKey:$searchKey");
+    List<SearchEntry> searchLis = [];
+    if (_bookSourceEntry != null && _bookSourceEntry!.isNotEmpty) {
+      for (var i = 0; i < (_bookSourceEntry?.length ?? 0); i++) {
+        final itemList = await _getItemBookSourceEntry(
+            searchKey: searchKey, bookSource: _bookSourceEntry![i]);
+        searchLis.addAll(itemList);
+      }
       if (searchLis.isEmpty) {
         searchState.netState = NetState.emptyDataState;
         state = AsyncData(searchState);
@@ -51,34 +49,58 @@ class NewSearchViewModel extends _$NewSearchViewModel {
       searchState.searchList = searchLis;
       searchState.netState = NetState.dataSuccessState;
       state = AsyncData(searchState);
+    } else {
+      LoggerTools.looger.e("书源为空无法查询");
+      searchState.netState = NetState.emptyDataState;
+      state = AsyncData(searchState);
+    }
+  }
+
+  /// 获取书源单个查询出来的列表
+  Future<List<SearchEntry>> _getItemBookSourceEntry({
+    required BookSourceEntry bookSource,
+    required String searchKey,
+  }) async {
+    try {
+      final resultData = await NewNovelHttp().request(ParseSourceRule.parseUrl(
+          bookSourceUrl: "${bookSource.bookSourceUrl}",
+          parseSearchUrl: ParseSourceRule.parseSearchUrl(
+              searchKey: searchKey, searchUrl: bookSource.searchUrl ?? "")));
+      final uint8List = resultData.data;
+      resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
+      final searchLis =
+          _getSearchList(htmlData: resultData.data, bookSource: bookSource);
+      return searchLis;
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
-      searchState.netState = NetState.error403State;
-      state = AsyncData(searchState);
+      return [];
     }
   }
 
   /// 搜索列表
   /// 搜索结果 解析后i获取
-  List<SearchEntry> _getSearchList(String htmlData) {
+  List<SearchEntry> _getSearchList({
+    required String htmlData,
+    required BookSourceEntry bookSource,
+  }) {
     List<SearchEntry> searchList = [];
 
     /// 作者
     var author = ParseSourceRule.parseAllMatches(
-        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
-        rule: _bookSourceEntry.ruleSearch!.author ?? "",
+        rootSelector: bookSource.ruleSearch!.bookList ?? "",
+        rule: bookSource.ruleSearch!.author ?? "",
         htmlData: htmlData);
 
     /// 书url
     var bookUrl = ParseSourceRule.parseAllMatches(
-        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
-        rule: _bookSourceEntry.ruleSearch!.bookUrl ?? "",
+        rootSelector: bookSource.ruleSearch!.bookList ?? "",
+        rule: bookSource.ruleSearch!.bookUrl ?? "",
         htmlData: htmlData);
 
     /// 所有信息
     var bookAll = ParseSourceRule.parseAllMatches(
         //rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
-        rule: _bookSourceEntry.ruleSearch!.bookList ?? "",
+        rule: bookSource.ruleSearch!.bookList ?? "",
         htmlData: htmlData);
 
     /// name 书名
@@ -86,24 +108,24 @@ class NewSearchViewModel extends _$NewSearchViewModel {
     //     rule: bookSourceEntry.ruleSearch!.coverUrl!, htmlData: htmlData);
     /// lastChapter 最新章节
     var lastChapter = ParseSourceRule.parseAllMatches(
-        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
-        rule: _bookSourceEntry.ruleSearch!.lastChapter ?? "",
+        rootSelector: bookSource.ruleSearch!.bookList ?? "",
+        rule: bookSource.ruleSearch!.lastChapter ?? "",
         htmlData: htmlData);
 
     /// name 书名
     var name = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleSearch!.name ?? "", htmlData: htmlData);
+        rule: bookSource.ruleSearch!.name ?? "", htmlData: htmlData);
 
     /// 图片
     var coverUrl = ParseSourceRule.parseAllMatches(
-        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
-        rule: _bookSourceEntry.ruleSearch!.coverUrl ?? "",
+        rootSelector: bookSource.ruleSearch!.bookList ?? "",
+        rule: bookSource.ruleSearch!.coverUrl ?? "",
         htmlData: htmlData);
 
     /// 类型
     var kind = ParseSourceRule.parseAllMatches(
-        rootSelector: _bookSourceEntry.ruleSearch!.bookList ?? "",
-        rule: _bookSourceEntry.ruleSearch!.kind ?? "",
+        rootSelector: bookSource.ruleSearch!.bookList ?? "",
+        rule: bookSource.ruleSearch!.kind ?? "",
         htmlData: htmlData);
     // 如果 bookUrl 不为空，检查其他列表并调整长度
     // 如果 bookUrl 不为空，检查其他列表并调整长度
@@ -144,10 +166,10 @@ class NewSearchViewModel extends _$NewSearchViewModel {
       final coverUrl1 =
           coverUrl[i]?.startsWith("http") ?? (coverUrl[i] != "") ? true : false;
       final coverUrlData = ParseSourceRule.parseUrl(
-          bookSourceUrl: "${_bookSourceEntry.bookSourceUrl}",
+          bookSourceUrl: "${bookSource.bookSourceUrl}",
           parseSearchUrl: coverUrl[i] ?? "");
       final bookUrlData = ParseSourceRule.parseUrl(
-          bookSourceUrl: "${_bookSourceEntry.bookSourceUrl}",
+          bookSourceUrl: "${bookSource.bookSourceUrl}",
           parseSearchUrl: bookUrl[i] ?? "");
       final searchEntry = SearchEntry(
           author: author[i],

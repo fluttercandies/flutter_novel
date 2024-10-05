@@ -24,8 +24,6 @@ class NewSearchPage extends ConsumerStatefulWidget {
 }
 
 class _SearchPageState extends ConsumerState<NewSearchPage> {
-  late BookSourceEntry? sourceEntry;
-
   ThemeData get theme => Theme.of(context);
 
   double height = 160;
@@ -39,9 +37,6 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
   @override
   void initState() {
     super.initState();
-    final homeviewmodel = ref.read(homeViewModelProvider.notifier);
-    sourceEntry = homeviewmodel
-        .homeState.sourceEntry?[homeviewmodel.homeState.currentIndex];
   }
 
   @override
@@ -49,8 +44,7 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
     final newSearchViewModelProvider =
         ref.watch(NewSearchViewModelProvider(searchKey: widget.searchKey));
     return Scaffold(
-      appBar: AppBar(
-          title: Text("${sourceEntry?.bookSourceName}--${widget.searchKey}")),
+      appBar: AppBar(title: Text(widget.searchKey)),
       body: switch (newSearchViewModelProvider) {
         AsyncData(:final value) => Builder(builder: (_) {
             return NetStateTools.getWidget(value.netState) ??

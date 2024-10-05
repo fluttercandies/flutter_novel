@@ -1,3 +1,5 @@
+import 'package:novel_flutter_bit/entry/book_source_entry.dart';
+
 /// 搜索结果
 /// 时间 2024-9-29
 /// 7-bit

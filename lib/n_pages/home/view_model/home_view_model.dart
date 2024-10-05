@@ -41,17 +41,17 @@ class HomeViewModel extends _$HomeViewModel {
   }
 
   void switchSource() {
-    if (homeState.currentIndex + 1 >= (homeState.sourceEntry?.length ?? 0)) {
-      homeState.currentIndex = 0;
-    } else {
-      homeState.currentIndex++;
-    }
+    // if (homeState.currentIndex + 1 >= (homeState.sourceEntry?.length ?? 0)) {
+    //   homeState.currentIndex = 0;
+    // } else {
+    //   homeState.currentIndex++;
+    // }
 
     //state = AsyncData(homeState);
 
-    SmartDialog.showToast(
-        "切换成功${homeState.sourceEntry?[homeState.currentIndex].bookSourceName}");
-    LoggerTools.looger.d(
-        "切换成功${homeState.sourceEntry?[homeState.currentIndex].bookSourceName}");
+    // SmartDialog.showToast(
+    //     "切换成功${homeState.sourceEntry?[homeState.currentIndex].bookSourceName}");
+    // LoggerTools.looger.d(
+    //     "切换成功${homeState.sourceEntry?[homeState.currentIndex].bookSourceName}");
   }
 }
