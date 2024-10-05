@@ -178,7 +178,8 @@ class NewSearchViewModel extends _$NewSearchViewModel {
           lastChapter: lastChapter[i],
           bookAll: bookAll[i],
           kind: kind[i],
-          coverUrl: coverUrl1 ? coverUrl[i] : coverUrlData);
+          coverUrl: coverUrl1 ? coverUrl[i] : coverUrlData,
+          sourceEntry: bookSource);
       searchList.add(searchEntry);
     }
     return searchList;

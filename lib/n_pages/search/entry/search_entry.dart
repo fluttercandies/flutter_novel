@@ -11,6 +11,8 @@ class SearchEntry {
   late String? bookAll;
   late String? coverUrl;
   late String? kind;
+  late BookSourceEntry sourceEntry;
+
   SearchEntry(
       {this.author,
       this.url,
@@ -18,5 +20,6 @@ class SearchEntry {
       this.lastChapter,
       this.bookAll,
       this.coverUrl,
-      this.kind});
+      this.kind,
+      required this.sourceEntry});
 }

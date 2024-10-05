@@ -103,10 +103,21 @@ class ParseSourceRule {
         }
         elements = newElements;
       } else if (part.startsWith('tag.')) {
-        String tagName = part.split('.')[1];
-        for (var element in elements) {
-          newElements.addAll(element.getElementsByTagName(tagName));
+        final split = part.split('.');
+        String tagName = split[1];
+        if (split.length > 2) {
+          final l2 = int.tryParse(split[2]) ?? -1;
+          if (l2 != -1) {
+            for (var element in elements) {
+              newElements.add(element.getElementsByTagName(tagName)[l2]);
+            }
+          }
+        } else {
+          for (var element in elements) {
+            newElements.addAll(element.getElementsByTagName(tagName));
+          }
         }
+
         elements = newElements;
       } else if (part.startsWith('text')) {
         return elements.map((e) => e.text.trim()).toList();

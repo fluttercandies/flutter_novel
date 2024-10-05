@@ -16,19 +16,13 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   @override
   Future<void> build({
     required String detailUrl,
+    required BookSourceEntry bookSource,
   }) async {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
-    _initBookSourceEntry();
+    _bookSourceEntry = bookSource;
     _initData(detailUrl: detailUrl);
     // _bookSourceEntry = bookSourceEntry;
     // _initData(searchKey: searchKey, bookSourceEntry: bookSourceEntry);
-  }
-
-  /// 初始化书源
-  _initBookSourceEntry() async {
-    final homeViewModel = ref.read(homeViewModelProvider.notifier);
-    _bookSourceEntry = homeViewModel
-        .homeState.sourceEntry![homeViewModel.homeState.currentIndex];
   }
 
   void _initData({
@@ -60,8 +54,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   String _getSearchList(String htmlData) {
     /// 作者
     var lastChapter = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleBookInfo!.coverUrl ?? "",
-        htmlData: htmlData);
+        rule: _bookSourceEntry.ruleBookInfo!.author ?? "", htmlData: htmlData);
 
     return lastChapter.toString();
   }

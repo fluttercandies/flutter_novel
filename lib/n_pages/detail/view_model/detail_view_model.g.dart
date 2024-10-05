@@ -7,7 +7,7 @@ part of 'detail_view_model.dart';
 // **************************************************************************
 
 String _$newDetailViewModelHash() =>
-    r'4e6447e3dd5ed982af965573cb33f70e24833d5e';
+    r'3340c37da11acb811da87b4933a2109853fe201c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -33,9 +33,11 @@ class _SystemHash {
 abstract class _$NewDetailViewModel
     extends BuildlessAutoDisposeAsyncNotifier<void> {
   late final String detailUrl;
+  late final BookSourceEntry bookSource;
 
   FutureOr<void> build({
     required String detailUrl,
+    required BookSourceEntry bookSource,
   });
 }
 
@@ -67,9 +69,11 @@ class NewDetailViewModelFamily extends Family<AsyncValue<void>> {
   /// Copied from [NewDetailViewModel].
   NewDetailViewModelProvider call({
     required String detailUrl,
+    required BookSourceEntry bookSource,
   }) {
     return NewDetailViewModelProvider(
       detailUrl: detailUrl,
+      bookSource: bookSource,
     );
   }
 
@@ -79,6 +83,7 @@ class NewDetailViewModelFamily extends Family<AsyncValue<void>> {
   ) {
     return call(
       detailUrl: provider.detailUrl,
+      bookSource: provider.bookSource,
     );
   }
 
@@ -111,8 +116,11 @@ class NewDetailViewModelProvider
   /// Copied from [NewDetailViewModel].
   NewDetailViewModelProvider({
     required String detailUrl,
+    required BookSourceEntry bookSource,
   }) : this._internal(
-          () => NewDetailViewModel()..detailUrl = detailUrl,
+          () => NewDetailViewModel()
+            ..detailUrl = detailUrl
+            ..bookSource = bookSource,
           from: newDetailViewModelProvider,
           name: r'newDetailViewModelProvider',
           debugGetCreateSourceHash:
@@ -123,6 +131,7 @@ class NewDetailViewModelProvider
           allTransitiveDependencies:
               NewDetailViewModelFamily._allTransitiveDependencies,
           detailUrl: detailUrl,
+          bookSource: bookSource,
         );
 
   NewDetailViewModelProvider._internal(
@@ -133,9 +142,11 @@ class NewDetailViewModelProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.detailUrl,
+    required this.bookSource,
   }) : super.internal();
 
   final String detailUrl;
+  final BookSourceEntry bookSource;
 
   @override
   FutureOr<void> runNotifierBuild(
@@ -143,6 +154,7 @@ class NewDetailViewModelProvider
   ) {
     return notifier.build(
       detailUrl: detailUrl,
+      bookSource: bookSource,
     );
   }
 
@@ -151,13 +163,16 @@ class NewDetailViewModelProvider
     return ProviderOverride(
       origin: this,
       override: NewDetailViewModelProvider._internal(
-        () => create()..detailUrl = detailUrl,
+        () => create()
+          ..detailUrl = detailUrl
+          ..bookSource = bookSource,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         detailUrl: detailUrl,
+        bookSource: bookSource,
       ),
     );
   }
@@ -170,13 +185,16 @@ class NewDetailViewModelProvider
 
   @override
   bool operator ==(Object other) {
-    return other is NewDetailViewModelProvider && other.detailUrl == detailUrl;
+    return other is NewDetailViewModelProvider &&
+        other.detailUrl == detailUrl &&
+        other.bookSource == bookSource;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, detailUrl.hashCode);
+    hash = _SystemHash.combine(hash, bookSource.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -185,6 +203,9 @@ class NewDetailViewModelProvider
 mixin NewDetailViewModelRef on AutoDisposeAsyncNotifierProviderRef<void> {
   /// The parameter `detailUrl` of this provider.
   String get detailUrl;
+
+  /// The parameter `bookSource` of this provider.
+  BookSourceEntry get bookSource;
 }
 
 class _NewDetailViewModelProviderElement
@@ -194,6 +215,9 @@ class _NewDetailViewModelProviderElement
 
   @override
   String get detailUrl => (origin as NewDetailViewModelProvider).detailUrl;
+  @override
+  BookSourceEntry get bookSource =>
+      (origin as NewDetailViewModelProvider).bookSource;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

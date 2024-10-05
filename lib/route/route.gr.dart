@@ -10,6 +10,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i9;
 import 'package:flutter/material.dart' as _i10;
+import 'package:novel_flutter_bit/entry/book_source_entry.dart' as _i12;
 import 'package:novel_flutter_bit/frame.dart' as _i3;
 import 'package:novel_flutter_bit/n_pages/detail/view/detail_page.dart' as _i5;
 import 'package:novel_flutter_bit/n_pages/home/view/home_page.dart' as _i4;
@@ -158,12 +159,14 @@ class NewDetailRoute extends _i9.PageRouteInfo<NewDetailRouteArgs> {
   NewDetailRoute({
     _i10.Key? key,
     required String detailUrl,
+    required _i12.BookSourceEntry bookSourceEntry,
     List<_i9.PageRouteInfo>? children,
   }) : super(
           NewDetailRoute.name,
           args: NewDetailRouteArgs(
             key: key,
             detailUrl: detailUrl,
+            bookSourceEntry: bookSourceEntry,
           ),
           initialChildren: children,
         );
@@ -177,6 +180,7 @@ class NewDetailRoute extends _i9.PageRouteInfo<NewDetailRouteArgs> {
       return _i5.NewDetailPage(
         key: args.key,
         detailUrl: args.detailUrl,
+        bookSourceEntry: args.bookSourceEntry,
       );
     },
   );
@@ -186,15 +190,18 @@ class NewDetailRouteArgs {
   const NewDetailRouteArgs({
     this.key,
     required this.detailUrl,
+    required this.bookSourceEntry,
   });
 
   final _i10.Key? key;
 
   final String detailUrl;
 
+  final _i12.BookSourceEntry bookSourceEntry;
+
   @override
   String toString() {
-    return 'NewDetailRouteArgs{key: $key, detailUrl: $detailUrl}';
+    return 'NewDetailRouteArgs{key: $key, detailUrl: $detailUrl, bookSourceEntry: $bookSourceEntry}';
   }
 }
 

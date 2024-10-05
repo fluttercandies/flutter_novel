@@ -29,8 +29,12 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
   double height = 160;
 
   /// 跳转详情页
-  void _onTapToDeatilPage({required String url}) {
-    context.router.push(NewDetailRoute(detailUrl: url));
+  void _onTapToDeatilPage(
+      {required String url, required BookSourceEntry bookSource}) {
+    context.router.push(NewDetailRoute(
+      detailUrl: url,
+      bookSourceEntry: bookSource,
+    ));
     //SmartDialog.showToast(url);
   }
 
@@ -123,7 +127,10 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
     }
     return GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () => _onTapToDeatilPage(url: searchEntry.url ?? ""),
+        onTap: () => _onTapToDeatilPage(
+              url: searchEntry.url ?? "",
+              bookSource: searchEntry.sourceEntry,
+            ),
         child: Container(margin: 10.vertical, child: imageWidget));
   }
 }
