@@ -108,7 +108,8 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   )
-                : 0.verticalSpace
+                : 0.verticalSpace,
+            Text("来源：${searchEntry.sourceEntry.bookSourceName}")
           ]),
     );
 
