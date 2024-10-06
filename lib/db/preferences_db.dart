@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novel/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
@@ -40,6 +41,8 @@ class PreferencesDB {
   static const novelHistory = "novelHistory";
 
   static const senseLikeNovel = "setSenseLikeNovel";
+
+  static const novelSource = "novelSource";
 
   /// 设置-主题外观模式
   Future<void> setAppThemeDarkMode(ThemeMode themeMode) async {
@@ -170,5 +173,29 @@ class PreferencesDB {
     }
     LoggerTools.looger.d("获取收藏列表  getCollectNovelList  list:$list");
     return list;
+  }
+
+  /// 获取-书籍源
+  Future<List<BookSourceEntry>> getNovelSourceList() async {
+    List<BookSourceEntry> list = [];
+    List<String> data = await sps.getStringList(novelSource) ?? [];
+
+    /// List<String> str = await sps.getStringList(senseLikeNovel) ?? [];
+    for (var element in data) {
+      list.add(BookSourceEntry.fromJson(json.decode(element)));
+    }
+    LoggerTools.looger.d("获取-书籍源  getNovelSourceList  list:$list");
+    return list;
+  }
+
+  Future<void> setNovelSourceList(BookSourceEntry bookSource) async {
+    List<BookSourceEntry> list = await getNovelSourceList();
+    list.add(bookSource);
+    LoggerTools.looger.d("设置-书籍源  setNovelSourceList  list:$list");
+    List<String> str = [];
+    for (var element in list) {
+      str.add(json.encode(element));
+    }
+    await sps.setStringList(novelSource, str);
   }
 }
