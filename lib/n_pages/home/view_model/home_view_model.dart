@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/home/state/home_state.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
@@ -21,9 +22,22 @@ class HomeViewModel extends _$HomeViewModel {
     return homeState;
   }
 
+  /// 初始化数据
   void _initData() async {
+    /// 获取书籍源
+    List<BookSourceEntry> sourceList =
+        await PreferencesDB.instance.getNovelSourceList();
+
+    /// 默认数据为空，则加载默认数据
+    if (sourceList.isEmpty) {
+      sourceList = await loadBookSourceEntry();
+      for (var element in sourceList) {
+        /// 存储
+        await PreferencesDB.instance.setNovelSourceList(element);
+      }
+    }
     homeState.netState = NetState.loadingState;
-    homeState.sourceEntry = await loadBookSourceEntry();
+    homeState.sourceEntry = sourceList;
     homeState.netState = NetState.dataSuccessState;
     state = AsyncData(homeState);
   }

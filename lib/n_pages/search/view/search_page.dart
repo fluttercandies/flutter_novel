@@ -83,14 +83,14 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
 
     ///默认显示文字
     Widget? imageWidget = SizedBox(
-      height: searchEntry.coverUrl == null ? height / 1.5 : height,
+      height: height,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Flexible(
               child: Text(
-                searchEntry.name ?? "",
+                (searchEntry.name ?? ""),
                 style: TextStyle(fontSize: 18, color: theme.primaryColor),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 4,
