@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_gbk2utf8/flutter_gbk2utf8.dart';
 import 'package:html/dom.dart';
@@ -27,13 +28,19 @@ class ParseSourceRule {
 
     // 选择根节点
     List<Element> rootNodes = [];
-    if (rootSelector != null) {
+    if (rootSelector != null && rootSelector != "") {
       if (rootSelector.startsWith('class.')) {
         String className = rootSelector.split('.')[1];
         rootNodes = document.getElementsByClassName(className).toList();
       } else if (rootSelector.startsWith('#')) {
         String idSelector = rootSelector.substring(1);
         rootNodes = document.querySelectorAll('#$idSelector').toList();
+      } else if (rootSelector.startsWith('id.')) {
+        String idSelector = rootSelector.split('.')[1];
+        var element = document.querySelector('#$idSelector');
+        if (element != null) {
+          rootNodes.add(element);
+        }
       } else {
         rootNodes = document.getElementsByTagName(rootSelector).toList();
       }
@@ -66,14 +73,44 @@ class ParseSourceRule {
         }
       } else {
         if (rootPart.startsWith(".")) {
-          tempElements.addAll(rootNode.getElementsByTagName(rootPart));
+          final data = rootPart.substring(1).split(".");
+          final id = data.first;
+          tempElements.addAll(rootNode.getElementsByClassName(id));
+        } else if (rootPart.startsWith("href#")) {
+          final dtat = rootNode.getElementsByTagName('a');
+          dtat.map((element) {
+            final href = element.attributes['href'] ?? '';
+            if (href.isNotEmpty) {
+              tempElements.add(element);
+            }
+          }).toList();
         } else if (rootPart.contains('.')) {
           final data = rootPart.split(".");
-          final element = rootNode
-              .getElementsByTagName(data[0])[int.tryParse((data[1])) ?? 0];
-          tempElements.add(element);
+          if (data.isNotEmpty) {
+            final key = data[0];
+            final index = int.tryParse((data[1])) ?? 0;
+            final dian = rootNode.getElementsByTagName(key);
+            final element = dian.length > index ? dian[index] : null;
+            if (element != null) {
+              tempElements.add(element);
+            }
+          } else {
+            tempElements.addAll(rootNode.getElementsByTagName(rootPart));
+          }
         } else {
-          tempElements.addAll(rootNode.getElementsByTagName(rootPart));
+          final data = rootNode.getElementsByTagName(rootPart);
+          if (data.isNotEmpty) {
+            tempElements.addAll(data);
+          } else {
+            if (rootSelector != null && rootSelector.contains(".")) {
+              final list = rootSelector.split(".");
+              final data = rootNode.querySelectorAll(list.last);
+              tempElements.addAll(data);
+              if (parts.length == 1) {
+                parts.add(parts.first);
+              }
+            }
+          }
         }
       }
       elements.addAll(tempElements); // 合并所有匹配的元素
@@ -83,12 +120,12 @@ class ParseSourceRule {
       LoggerTools.looger.i('Root element not found for $rootPart');
       return []; // 找不到元素时返回空数组
     }
-
+    bool isfor = false;
     // 逐步解析标签和属性
     for (int i = 1; i < parts.length; i++) {
       String part = parts[i];
       List<Element> newElements = [];
-
+      isfor = true;
       if (part.contains('>')) {
         // 处理子元素选择器
         List<String> directParts = part.split('>');
@@ -137,15 +174,32 @@ class ParseSourceRule {
           return e.attributes[part] ?? e.attributes['src-data'];
         }).toList();
         return data.where((url) => url != null && url.isNotEmpty).toList();
+      } else if (part.startsWith('img')) {
+        final data = elements.map((e) {
+          var aElements = e.getElementsByTagName('img'); //itemprop
+          for (var i = 0; i < aElements.length; i++) {
+            if (aElements[i].attributes['itemprop'] == "image") {
+              return aElements[i].attributes['src'];
+            }
+          }
+        }).toList();
+        return data.where((url) => url != null && url.isNotEmpty).toList();
       } else if (part.contains('img')) {
         final data = elements.map((e) {
           // 处理 img 格式
 
           var parts = part.split('||');
-
-          return e.attributes[parts[0]] ??
+          final data1 = e.attributes[parts[0]] ??
               e.attributes[parts.length > 1 ? parts[1] : "src"];
+          return data1;
         }).toList();
+        // if (data.any((e) => e == null)) {
+        // final a=  elements.map((d) {
+        //     return d.getElementsByTagName("img").map((c) {
+        //       return c.attributes["src"];
+        //     }).toList();
+        //   }).toList();
+        // }
         return data.where((url) => url != null && url.isNotEmpty).toList();
       } else if (part == "content") {
         final data = elements.map((e) {
@@ -160,7 +214,14 @@ class ParseSourceRule {
         return [];
       }
     }
-
+    if (!isfor && rootPart.startsWith('href#')) {
+      final data = elements.map((e) {
+        // 处理 a.0@href 格式
+        // var aElements = e.getElementsByTagName('a');
+        return e.attributes['href'] ?? e.attributes['src'];
+      }).toList();
+      return data.where((url) => url != null && url.isNotEmpty).toList();
+    }
     return elements.map((e) => e.text.trim()).toList();
   }
 
