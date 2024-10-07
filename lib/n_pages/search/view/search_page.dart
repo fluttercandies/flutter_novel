@@ -30,9 +30,9 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
 
   /// 跳转详情页
   void _onTapToDeatilPage(
-      {required String url, required BookSourceEntry bookSource}) {
+      {required SearchEntry entry, required BookSourceEntry bookSource}) {
     context.router.push(NewDetailRoute(
-      detailUrl: url,
+      searchEntry: entry,
       bookSourceEntry: bookSource,
     ));
     //SmartDialog.showToast(url);
@@ -129,7 +129,7 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
     return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => _onTapToDeatilPage(
-              url: searchEntry.url ?? "",
+              entry: searchEntry,
               bookSource: searchEntry.sourceEntry,
             ),
         child: Container(margin: 10.vertical, child: imageWidget));

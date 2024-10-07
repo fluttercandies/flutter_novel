@@ -7,7 +7,7 @@ part of 'detail_view_model.dart';
 // **************************************************************************
 
 String _$newDetailViewModelHash() =>
-    r'3340c37da11acb811da87b4933a2109853fe201c';
+    r'2b1434e0138866ee7f10fa0b1d3f3252a9487f5b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,11 +31,11 @@ class _SystemHash {
 }
 
 abstract class _$NewDetailViewModel
-    extends BuildlessAutoDisposeAsyncNotifier<void> {
+    extends BuildlessAutoDisposeAsyncNotifier<DetailState> {
   late final String detailUrl;
   late final BookSourceEntry bookSource;
 
-  FutureOr<void> build({
+  FutureOr<DetailState> build({
     required String detailUrl,
     required BookSourceEntry bookSource,
   });
@@ -54,7 +54,7 @@ const newDetailViewModelProvider = NewDetailViewModelFamily();
 /// 7-bit
 ///
 /// Copied from [NewDetailViewModel].
-class NewDetailViewModelFamily extends Family<AsyncValue<void>> {
+class NewDetailViewModelFamily extends Family<AsyncValue<DetailState>> {
   /// 详情搜索
   /// 时间 2024-10-1
   /// 7-bit
@@ -107,8 +107,8 @@ class NewDetailViewModelFamily extends Family<AsyncValue<void>> {
 /// 7-bit
 ///
 /// Copied from [NewDetailViewModel].
-class NewDetailViewModelProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<NewDetailViewModel, void> {
+class NewDetailViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    NewDetailViewModel, DetailState> {
   /// 详情搜索
   /// 时间 2024-10-1
   /// 7-bit
@@ -149,7 +149,7 @@ class NewDetailViewModelProvider
   final BookSourceEntry bookSource;
 
   @override
-  FutureOr<void> runNotifierBuild(
+  FutureOr<DetailState> runNotifierBuild(
     covariant NewDetailViewModel notifier,
   ) {
     return notifier.build(
@@ -178,7 +178,7 @@ class NewDetailViewModelProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<NewDetailViewModel, void>
+  AutoDisposeAsyncNotifierProviderElement<NewDetailViewModel, DetailState>
       createElement() {
     return _NewDetailViewModelProviderElement(this);
   }
@@ -200,7 +200,8 @@ class NewDetailViewModelProvider
   }
 }
 
-mixin NewDetailViewModelRef on AutoDisposeAsyncNotifierProviderRef<void> {
+mixin NewDetailViewModelRef
+    on AutoDisposeAsyncNotifierProviderRef<DetailState> {
   /// The parameter `detailUrl` of this provider.
   String get detailUrl;
 
@@ -209,8 +210,8 @@ mixin NewDetailViewModelRef on AutoDisposeAsyncNotifierProviderRef<void> {
 }
 
 class _NewDetailViewModelProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<NewDetailViewModel, void>
-    with NewDetailViewModelRef {
+    extends AutoDisposeAsyncNotifierProviderElement<NewDetailViewModel,
+        DetailState> with NewDetailViewModelRef {
   _NewDetailViewModelProviderElement(super.provider);
 
   @override

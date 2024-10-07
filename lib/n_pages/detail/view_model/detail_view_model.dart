@@ -1,5 +1,8 @@
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
+import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
+import 'package:novel_flutter_bit/n_pages/detail/state/detail_state.dart';
 import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/net/new_novel_http.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
@@ -14,14 +17,18 @@ part 'detail_view_model.g.dart';
 class NewDetailViewModel extends _$NewDetailViewModel {
   /// 书源
   late BookSourceEntry _bookSourceEntry;
+
+  final DetailState _searchState = DetailState();
+
   @override
-  Future<void> build({
+  Future<DetailState> build({
     required String detailUrl,
     required BookSourceEntry bookSource,
   }) async {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
     _bookSourceEntry = bookSource;
     _initData(detailUrl: detailUrl);
+    return _searchState;
     // _bookSourceEntry = bookSourceEntry;
     // _initData(searchKey: searchKey, bookSourceEntry: bookSourceEntry);
   }
@@ -33,16 +40,16 @@ class NewDetailViewModel extends _$NewDetailViewModel {
       final resultData = await NewNovelHttp().request(detailUrl);
       final uint8List = resultData.data;
       resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
-      final searchLis = _getSearchList(resultData.data);
-      // if (searchLis.isEmpty) {
-      //   searchState.netState = NetState.emptyDataState;
-      //   state = AsyncData(searchState);
-      //   return;
-      // }
-      // searchState.searchList = searchLis;
-      // searchState.netState = NetState.dataSuccessState;
-      // state = AsyncData(searchState);
-      LoggerTools.looger.d(searchLis.toString());
+      final detailBook = _getSearchList(resultData.data);
+      if (detailBook == null) {
+        _searchState.netState = NetState.emptyDataState;
+        state = AsyncData(_searchState);
+        return;
+      }
+      _searchState.detailBookEntry = detailBook;
+      _searchState.netState = NetState.dataSuccessState;
+      state = AsyncData(_searchState);
+      LoggerTools.looger.d(detailBook.toString());
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
       // searchState.netState = NetState.error403State;
@@ -53,44 +60,64 @@ class NewDetailViewModel extends _$NewDetailViewModel {
 
   /// 搜索列表
   /// 搜索结果 解析后i获取
-  String _getSearchList(String htmlData) {
-    /// 作者
-    var author = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleBookInfo!.author ?? "", htmlData: htmlData);
+  DetailBookEntry? _getSearchList(String htmlData) {
+    try {
+      /// 作者
+      var author = ParseSourceRule.parseAllMatches(
+          rule: _bookSourceEntry.ruleBookInfo!.author ?? "",
+          htmlData: htmlData);
 
-    /// url
-    var coverUrl = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleBookInfo!.coverUrl ?? "",
-        htmlData: htmlData);
+      /// url
+      var coverUrl = ParseSourceRule.parseAllMatches(
+          rule: _bookSourceEntry.ruleBookInfo!.coverUrl ?? "",
+          htmlData: htmlData);
 
-    /// 介绍
-    var intro = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleBookInfo!.intro ?? "", htmlData: htmlData);
+      /// 介绍
+      var intro = ParseSourceRule.parseAllMatches(
+          rule: _bookSourceEntry.ruleBookInfo!.intro ?? "", htmlData: htmlData);
 
-    /// 最新章节
-    var lastChapter = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleBookInfo!.lastChapter ?? "",
-        htmlData: htmlData);
+      /// 最新章节
+      var lastChapter = ParseSourceRule.parseAllMatches(
+          rule: _bookSourceEntry.ruleBookInfo!.lastChapter ?? "",
+          htmlData: htmlData);
 
-    /// 书名
-    var name = ParseSourceRule.parseAllMatches(
-        rule: _bookSourceEntry.ruleBookInfo!.name ?? "", htmlData: htmlData);
+      /// 书名
+      var name = ParseSourceRule.parseAllMatches(
+          rule: _bookSourceEntry.ruleBookInfo!.name ?? "", htmlData: htmlData);
 
-    /// 章节列表
-    var chapterList = ParseSourceRule.parseAllMatches(
-        rootSelector: _bookSourceEntry.ruleToc!.chapterList ?? "",
-        rule: _bookSourceEntry.ruleToc!.chapterUrl ?? "",
-        htmlData: htmlData);
+      /// 章节列表
+      var chapterList = ParseSourceRule.parseAllMatches(
+          rootSelector: _bookSourceEntry.ruleToc!.chapterList ?? "",
+          rule: _bookSourceEntry.ruleToc!.chapterUrl ?? "",
+          htmlData: htmlData);
 
-    chapterList =
-        _getChapterList(detailUrl, bookSource.bookSourceUrl ?? "", chapterList);
+      chapterList = _getChapterList(
+          detailUrl, bookSource.bookSourceUrl ?? "", chapterList);
 
-    /// 章节列表
-    var chapterName = ParseSourceRule.parseAllMatches(
-        rootSelector: _bookSourceEntry.ruleToc!.chapterList ?? "",
-        rule: _bookSourceEntry.ruleToc!.chapterName ?? "",
-        htmlData: htmlData);
-    return author.toString();
+      /// 章节列表
+      var chapterName = ParseSourceRule.parseAllMatches(
+          rootSelector: _bookSourceEntry.ruleToc!.chapterList ?? "",
+          rule: _bookSourceEntry.ruleToc!.chapterName ?? "",
+          htmlData: htmlData);
+
+      List<Chapter> chapter = [];
+      for (var i = 0; i < chapterList.length; i++) {
+        chapter.add(
+            Chapter(chapterUrl: chapterList[i], chapterName: chapterName[i]));
+      }
+      DetailBookEntry detailBookEntry = DetailBookEntry(
+        author: author[0] ?? "",
+        coverUrl: coverUrl[0] ?? "",
+        intro: intro[0] ?? "",
+        lastChapter: lastChapter[0] ?? "",
+        name: name[0] ?? "",
+        chapter: chapter,
+      );
+      return detailBookEntry;
+    } catch (e) {
+      LoggerTools.looger.e("NewDetailViewModel _getSearchList error:$e");
+      return null;
+    }
   }
 
   List<String> _getChapterList(String url, String url1, List<String?> list) {
