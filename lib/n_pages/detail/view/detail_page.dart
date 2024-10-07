@@ -346,7 +346,9 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
         //     value.detailNovel?.data?.list?[index].name;
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          //onTap: () => _onToNovelPage(value.detailNovel?.data?.list?[index]),
+          onTap: () {
+            debugPrint(value.detailBookEntry?.chapter?[index].chapterUrl);
+          },
           child: _buildSliverItem(
               "${value.detailBookEntry?.chapter?[index].chapterName}", false),
         );

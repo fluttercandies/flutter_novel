@@ -110,14 +110,21 @@ class NewDetailViewModel extends _$NewDetailViewModel {
       }
       final detailAuthor = author.isNotEmpty ? author[0] : "";
 
-      /// 去除重复的元素
       List<Chapter> uniqueList = [];
-      for (Chapter item in chapter) {
-        if (!uniqueList.any(
-            (existingItem) => existingItem.chapterUrl == item.chapterUrl)) {
+      Set<String> seenUrls = {}; // 用于记录已经出现过的 chapterUrl
+
+      for (int i = chapter.length - 1; i >= 0; i--) {
+        Chapter item = chapter[i];
+        // 如果 seenUrls 中不包含当前的 chapterUrl，说明是第一次遇到该 url
+        if (!seenUrls.contains(item.chapterUrl?.trim().toLowerCase())) {
+          seenUrls.add(item.chapterUrl!.trim().toLowerCase());
           uniqueList.add(item);
         }
       }
+
+      // 由于是从后往前添加的，需要再反转一次列表
+      uniqueList = uniqueList.reversed.toList();
+
       DetailBookEntry detailBookEntry = DetailBookEntry(
         author: detailAuthor?.replaceAll("\n", " "),
         coverUrl: coverUrl.isNotEmpty ? coverUrl[0] : "暂无",
@@ -135,6 +142,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
 
   List<String> _getChapterList(String url, String url1, List<String?> list) {
     List<String> resultList = [];
+
     for (var i = 0; i < list.length; i++) {
       if (!list[i]!.startsWith("/")) {
         // 去除baseUrl末尾的斜杠（如果有）
@@ -144,6 +152,18 @@ class NewDetailViewModel extends _$NewDetailViewModel {
         // 如果relativeUrl以斜杠开头，则去除
         if (list[i]!.startsWith('/')) {
           list[i] = list[i]!.substring(1);
+        }
+
+        if (list[i]!.contains("javascript:Chapter")) {
+          final map = extractChapterInfo(list[i]!);
+          url = "${map['chapterId']}/${map['htmlFileName']}";
+          if (list.length > i) {
+            final uri = list[i - 1] ?? "";
+            final split = uri.split("/");
+            url = "${split[0]}/$url";
+            resultList.add("$url1/$url");
+            continue;
+          }
         }
         resultList.add("$url/${list[i] ?? ""}");
       } else {
@@ -155,9 +175,26 @@ class NewDetailViewModel extends _$NewDetailViewModel {
         if (list[i]!.startsWith('/')) {
           list[i] = list[i]!.substring(1);
         }
+
         resultList.add("$url1/${list[i] ?? ""}");
       }
     }
     return resultList;
+  }
+
+  Map<String, String> extractChapterInfo(String input) {
+    // 定义正则表达式
+    var regex =
+        RegExp("Chapter\\(\\'(\\d+)\\',\\'(.+?)\\'\\)", caseSensitive: false);
+    // 使用正则表达式匹配输入字符串
+    final Match? match = regex.firstMatch(input);
+
+    if (match != null && match.groupCount == 2) {
+      // 如果匹配成功，提取章节编号和HTML文件名
+      return {'chapterId': match.group(1)!, 'htmlFileName': match.group(2)!};
+    } else {
+      // 如果没有匹配到，返回空的Map
+      return {};
+    }
   }
 }
