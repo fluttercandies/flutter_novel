@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/state/detail_state.dart';
@@ -22,17 +25,20 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   /// 排序顺序
   late bool reverse = false;
 
+  /// 阅读索引
+  late Chapter chapter = Chapter();
+  late String _url;
   @override
   Future<DetailState> build({
     required String detailUrl,
     required BookSourceEntry bookSource,
   }) async {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
+    _url = detailUrl;
+    _init();
     _bookSourceEntry = bookSource;
     _initData(detailUrl: detailUrl);
     return _detailState;
-    // _bookSourceEntry = bookSourceEntry;
-    // _initData(searchKey: searchKey, bookSourceEntry: bookSourceEntry);
   }
 
   void _initData({
@@ -205,6 +211,37 @@ class NewDetailViewModel extends _$NewDetailViewModel {
     } else {
       // 如果没有匹配到，返回空的Map
       return {};
+    }
+  }
+
+  /// 设置阅读索引
+  setReadIndex(Chapter data) async {
+    chapter = data;
+    LoggerTools.looger.d("setReadIndex : ${data.toJson().toString()}");
+    await PreferencesDB.instance.sps
+        .setString(_url, json.encode(data)); //jsonEncode()
+    state = AsyncData(_detailState);
+  }
+
+  /// 获取阅读索引
+  int getReadIndex() {
+    for (var i = 0;
+        i < (_detailState.detailBookEntry?.chapter?.length ?? 0);
+        i++) {
+      var element = _detailState.detailBookEntry?.chapter?[i].chapterName;
+      if (element == chapter.chapterName) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+  /// 初始化 坐标
+  _init() async {
+    String? str = await PreferencesDB.instance.sps.getString(_url);
+    if (str case String st?) {
+      var data = json.decode(st);
+      chapter = Chapter.fromJson(data);
     }
   }
 }

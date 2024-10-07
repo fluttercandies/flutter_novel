@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
+import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/state/detail_state.dart';
 import 'package:novel_flutter_bit/n_pages/detail/view_model/detail_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
@@ -87,19 +88,24 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
 
   /// 滚动到当前选中的索引
   _animationToLocal() async {
-    // int index = _detailViewModel.getReadIndex();
-    // double offsetHeight = index * (51.5);
-    // if (index > 50) {
-    //   _scrollController.jumpTo(offsetHeight);
-    //   return;
-    // }
-    // final animationDuration =
-    //     Duration(milliseconds: ((index / 10) * 150).clamp(100, 5000).toInt());
-    // _scrollController.animateTo(
-    //   offsetHeight,
-    //   duration: animationDuration,
-    //   curve: Curves.easeIn,
-    // );
+    int index = _detailViewModel.getReadIndex();
+    double offsetHeight = index * (51.5);
+    if (index > 50) {
+      _scrollController.jumpTo(offsetHeight);
+      return;
+    }
+    final animationDuration =
+        Duration(milliseconds: ((index / 10) * 150).clamp(100, 5000).toInt());
+    _scrollController.animateTo(
+      offsetHeight,
+      duration: animationDuration,
+      curve: Curves.easeIn,
+    );
+  }
+
+  // 跳转阅读页
+  _onReadPage(Chapter chapter) async {
+    _detailViewModel.setReadIndex(chapter);
   }
 
   @override
@@ -345,13 +351,14 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
   }) {
     return SliverList.builder(
       itemBuilder: (context, index) {
+        bool readIndex = _detailViewModel.chapter.chapterName ==
+            value.detailBookEntry?.chapter?[index].chapterName;
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () {
-            debugPrint(value.detailBookEntry?.chapter?[index].chapterUrl);
-          },
+          onTap: () => _onReadPage(value.detailBookEntry!.chapter![index]),
           child: _buildSliverItem(
-              "${value.detailBookEntry?.chapter?[index].chapterName}", false),
+              "${value.detailBookEntry?.chapter?[index].chapterName}",
+              readIndex),
         );
       },
       itemCount: value.detailBookEntry?.chapter?.length,
