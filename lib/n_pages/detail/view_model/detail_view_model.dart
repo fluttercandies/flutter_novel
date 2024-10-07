@@ -101,17 +101,30 @@ class NewDetailViewModel extends _$NewDetailViewModel {
           htmlData: htmlData);
 
       List<Chapter> chapter = [];
+      for (var i = 0; i < chapterList.length - chapterName.length; i++) {
+        chapterName.insert(0, "开始阅读");
+      }
       for (var i = 0; i < chapterList.length; i++) {
-        chapter.add(
-            Chapter(chapterUrl: chapterList[i], chapterName: chapterName[i]));
+        final name = chapterName[i]?.replaceAll("\n", " ");
+        chapter.add(Chapter(chapterUrl: chapterList[i], chapterName: name));
+      }
+      final detailAuthor = author.isNotEmpty ? author[0] : "";
+
+      /// 去除重复的元素
+      List<Chapter> uniqueList = [];
+      for (Chapter item in chapter) {
+        if (!uniqueList.any(
+            (existingItem) => existingItem.chapterUrl == item.chapterUrl)) {
+          uniqueList.add(item);
+        }
       }
       DetailBookEntry detailBookEntry = DetailBookEntry(
-        author: author[0] ?? "",
-        coverUrl: coverUrl[0] ?? "",
-        intro: intro[0] ?? "",
-        lastChapter: lastChapter[0] ?? "",
-        name: name[0] ?? "",
-        chapter: chapter,
+        author: detailAuthor?.replaceAll("\n", " "),
+        coverUrl: coverUrl.isNotEmpty ? coverUrl[0] : "暂无",
+        intro: intro.isNotEmpty ? intro[0] : "暂无",
+        lastChapter: lastChapter.isNotEmpty ? lastChapter[0] : "暂无",
+        name: name.isNotEmpty ? name[0] : "暂无",
+        chapter: uniqueList,
       );
       return detailBookEntry;
     } catch (e) {

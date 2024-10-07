@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter_gbk2utf8/flutter_gbk2utf8.dart';
 import 'package:html/dom.dart';
@@ -43,6 +42,15 @@ class ParseSourceRule {
         }
       } else {
         rootNodes = document.getElementsByTagName(rootSelector).toList();
+        if (rootSelector.contains("||")) {
+          final split = rootSelector.split("||");
+          for (var part in split) {
+            if (part.startsWith(".")) {
+              final elements = document.querySelectorAll(part);
+              rootNodes.addAll(elements);
+            }
+          }
+        }
       }
     } else {
       rootNodes = [document.documentElement!]; // 默认根节点为文档根
@@ -84,6 +92,12 @@ class ParseSourceRule {
               tempElements.add(element);
             }
           }).toList();
+          if (dtat.isEmpty) {
+            final href = rootNode.attributes['href'] ?? '';
+            if (href.isNotEmpty) {
+              tempElements.add(rootNode);
+            }
+          }
         } else if (rootPart.contains('.')) {
           final data = rootPart.split(".");
           if (data.isNotEmpty) {
@@ -156,7 +170,7 @@ class ParseSourceRule {
         }
 
         elements = newElements;
-      } else if (part.startsWith('text')) {
+      } else if (part.startsWith('text') || part.endsWith('text')) {
         return elements.map((e) => e.text.trim()).toList();
       } else if (part.contains('href') || part.contains('src')) {
         final data = elements.map((e) {

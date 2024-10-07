@@ -55,7 +55,16 @@ class DetailBookEntry {
 class Chapter {
   String? chapterUrl;
   String? chapterName;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Chapter &&
+          runtimeType == other.runtimeType &&
+          chapterUrl == other.chapterUrl &&
+          chapterName == other.chapterName;
 
+  @override
+  int get hashCode => chapterUrl.hashCode ^ chapterName.hashCode;
   Chapter({
     this.chapterUrl,
     this.chapterName,
