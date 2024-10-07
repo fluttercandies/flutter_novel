@@ -3,7 +3,6 @@ import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/state/detail_state.dart';
-import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/net/new_novel_http.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/parse_source_rule.dart';
@@ -18,7 +17,10 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   /// 书源
   late BookSourceEntry _bookSourceEntry;
 
-  final DetailState _searchState = DetailState();
+  final DetailState _detailState = DetailState();
+
+  /// 排序顺序
+  late bool reverse = false;
 
   @override
   Future<DetailState> build({
@@ -28,7 +30,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
     _bookSourceEntry = bookSource;
     _initData(detailUrl: detailUrl);
-    return _searchState;
+    return _detailState;
     // _bookSourceEntry = bookSourceEntry;
     // _initData(searchKey: searchKey, bookSourceEntry: bookSourceEntry);
   }
@@ -42,13 +44,13 @@ class NewDetailViewModel extends _$NewDetailViewModel {
       resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
       final detailBook = _getSearchList(resultData.data);
       if (detailBook == null) {
-        _searchState.netState = NetState.emptyDataState;
-        state = AsyncData(_searchState);
+        _detailState.netState = NetState.emptyDataState;
+        state = AsyncData(_detailState);
         return;
       }
-      _searchState.detailBookEntry = detailBook;
-      _searchState.netState = NetState.dataSuccessState;
-      state = AsyncData(_searchState);
+      _detailState.detailBookEntry = detailBook;
+      _detailState.netState = NetState.dataSuccessState;
+      state = AsyncData(_detailState);
       LoggerTools.looger.d(detailBook.toString());
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
@@ -180,6 +182,14 @@ class NewDetailViewModel extends _$NewDetailViewModel {
       }
     }
     return resultList;
+  }
+
+  /// 排序
+  onReverse() {
+    var data = _detailState.detailBookEntry?.chapter?.reversed.toList();
+    _detailState.detailBookEntry?.chapter = data;
+    reverse = !reverse;
+    state = AsyncData(_detailState);
   }
 
   Map<String, String> extractChapterInfo(String input) {

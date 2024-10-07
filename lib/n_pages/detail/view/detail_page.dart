@@ -37,6 +37,7 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
   //late ThemeStyleProvider _themeStyleProvider;
   ThemeData get _themeData => Theme.of(context);
   late bool _isLikeNovel = false;
+  late NewDetailViewModel _detailViewModel;
   @override
   void initState() {
     super.initState();
@@ -114,6 +115,10 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
             if (child != null) {
               return child;
             }
+            _detailViewModel = ref.read(NewDetailViewModelProvider(
+              detailUrl: widget.searchEntry.url ?? "",
+              bookSource: widget.bookSourceEntry,
+            ).notifier);
             return Scaffold(
                 appBar: AppBar(
                   title: const Text("书籍详情"),
@@ -190,10 +195,8 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
                 delegate: BookTitleSliverPersistentHeaderDelegate(
                     myColors: _themeData.scaffoldBackgroundColor,
                     brandColor: _themeData.primaryColor,
-                    reverse: false,
-                    onPressed: () {
-                      //_detailViewModel.onReverse();
-                    },
+                    reverse: _detailViewModel.reverse,
+                    onPressed: _detailViewModel.onReverse,
                     count: value.detailBookEntry?.chapter?.length ?? 0)),
             _buildListElement(value: value)
           ],
@@ -342,8 +345,6 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
   }) {
     return SliverList.builder(
       itemBuilder: (context, index) {
-        // bool readIndex = _detailViewModel.strUrl.name ==
-        //     value.detailNovel?.data?.list?[index].name;
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
