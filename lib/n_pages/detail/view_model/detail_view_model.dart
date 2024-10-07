@@ -20,7 +20,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   /// 书源
   late BookSourceEntry _bookSourceEntry;
 
-  final DetailState _detailState = DetailState();
+  final DetailState detailState = DetailState();
 
   /// 排序顺序
   late bool reverse = false;
@@ -38,7 +38,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
     _init();
     _bookSourceEntry = bookSource;
     _initData(detailUrl: detailUrl);
-    return _detailState;
+    return detailState;
   }
 
   void _initData({
@@ -50,13 +50,13 @@ class NewDetailViewModel extends _$NewDetailViewModel {
       resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
       final detailBook = _getSearchList(resultData.data);
       if (detailBook == null) {
-        _detailState.netState = NetState.emptyDataState;
-        state = AsyncData(_detailState);
+        detailState.netState = NetState.emptyDataState;
+        state = AsyncData(detailState);
         return;
       }
-      _detailState.detailBookEntry = detailBook;
-      _detailState.netState = NetState.dataSuccessState;
-      state = AsyncData(_detailState);
+      detailState.detailBookEntry = detailBook;
+      detailState.netState = NetState.dataSuccessState;
+      state = AsyncData(detailState);
       LoggerTools.looger.d(detailBook.toString());
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
@@ -192,10 +192,10 @@ class NewDetailViewModel extends _$NewDetailViewModel {
 
   /// 排序
   onReverse() {
-    var data = _detailState.detailBookEntry?.chapter?.reversed.toList();
-    _detailState.detailBookEntry?.chapter = data;
+    var data = detailState.detailBookEntry?.chapter?.reversed.toList();
+    detailState.detailBookEntry?.chapter = data;
     reverse = !reverse;
-    state = AsyncData(_detailState);
+    state = AsyncData(detailState);
   }
 
   Map<String, String> extractChapterInfo(String input) {
@@ -220,15 +220,15 @@ class NewDetailViewModel extends _$NewDetailViewModel {
     LoggerTools.looger.d("setReadIndex : ${data.toJson().toString()}");
     await PreferencesDB.instance.sps
         .setString(_url, json.encode(data)); //jsonEncode()
-    state = AsyncData(_detailState);
+    state = AsyncData(detailState);
   }
 
   /// 获取阅读索引
   int getReadIndex() {
     for (var i = 0;
-        i < (_detailState.detailBookEntry?.chapter?.length ?? 0);
+        i < (detailState.detailBookEntry?.chapter?.length ?? 0);
         i++) {
-      var element = _detailState.detailBookEntry?.chapter?[i].chapterName;
+      var element = detailState.detailBookEntry?.chapter?[i].chapterName;
       if (element == chapter.chapterName) {
         return i;
       }

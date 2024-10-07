@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
@@ -57,6 +58,20 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
   void _initLikeNovel() async {
     _isLikeNovel = await PreferencesDB.instance
         .getSenseLikeNovel(widget.searchEntry.url ?? "");
+  }
+
+  /// 设置是否收藏
+  void _setLikeNovel(Chapter chapter) async {
+    _isLikeNovel = !_isLikeNovel;
+    if (chapter.chapterUrl == null) {
+      chapter = _detailViewModel.detailState.detailBookEntry?.chapter?.first ??
+          Chapter();
+    }
+    Chapter collectNovelEntry = chapter;
+    await PreferencesDB.instance
+        .setLike(widget.searchEntry.url ?? "", _isLikeNovel, collectNovelEntry);
+    SmartDialog.showToast(_isLikeNovel ? "收藏成功" : "取消收藏");
+    setState(() {});
   }
 
   /// 获取封面url
@@ -132,9 +147,10 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
                 ),
                 body: _buildSuccess(value: value),
                 bottomNavigationBar: _buildBottomAppbar(
+
                     //readOnTap: _onKeepReadNovelPage,
-                    //collectOnTap: () => _setLikeNovel(value.detailNovel)
-                    ),
+                    collectOnTap: () =>
+                        _setLikeNovel(_detailViewModel.chapter)),
                 floatingActionButton: _buildFloatingActionButton());
           }),
         AsyncError() => EmptyBuild(),
