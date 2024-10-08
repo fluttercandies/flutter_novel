@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/n_pages/search/state/search_state.dart';
+import 'package:novel_flutter_bit/net/http_config.dart';
 import 'package:novel_flutter_bit/net/new_novel_http.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/parse_source_rule.dart';
@@ -62,10 +65,31 @@ class NewSearchViewModel extends _$NewSearchViewModel {
     required String searchKey,
   }) async {
     try {
-      final resultData = await NewNovelHttp().request(ParseSourceRule.parseUrl(
-          bookSourceUrl: "${bookSource.bookSourceUrl}",
-          parseSearchUrl: ParseSourceRule.parseSearchUrl(
-              searchKey: searchKey, searchUrl: bookSource.searchUrl ?? "")));
+      Map map = ParseSourceRule.parseSearchUrl(
+          searchKey: searchKey, searchUrl: bookSource.searchUrl ?? "");
+      Map<String, dynamic>? params = {};
+      String method = HttpConfig.get;
+      if (map.containsKey('rule')) {
+        Map rule = json.decode(map['rule']);
+        if (rule.containsKey('method')) {
+          final meth = rule['method'].toLowerCase();
+          switch (meth) {
+            case 'post':
+              method = HttpConfig.post;
+              break;
+          }
+        }
+        if (rule.containsKey("body")) {
+          params = parseQueryParams(rule['body']);
+        }
+      }
+
+      final resultData = await NewNovelHttp().request(
+          ParseSourceRule.parseUrl(
+              bookSourceUrl: "${bookSource.bookSourceUrl}",
+              parseSearchUrl: map['url']),
+          method: method,
+          params: params);
       final uint8List = resultData.data;
       resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
       final searchLis =
@@ -75,6 +99,25 @@ class NewSearchViewModel extends _$NewSearchViewModel {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
       return [];
     }
+  }
+
+  Map<String, dynamic>? parseQueryParams(String query) {
+    // 将字符串按 '&' 分隔成键值对列表
+    List<String> pairs = query.split('&');
+    Map<String, String> params = {};
+
+    // 遍历每个键值对
+    for (String pair in pairs) {
+      // 分割每个键值对成键和值
+      List<String> parts = pair.split('=');
+      if (parts.length == 2) {
+        String key = Uri.decodeComponent(parts[0]);
+        String value = Uri.decodeComponent(parts[1]);
+        params[key] = value;
+      }
+    }
+
+    return params;
   }
 
   /// 搜索列表
@@ -180,6 +223,9 @@ class NewSearchViewModel extends _$NewSearchViewModel {
           kind: kind[i],
           coverUrl: coverUrl1 ? coverUrl[i] : coverUrlData,
           sourceEntry: bookSource);
+      // if (!searchList.any((d) => d.url == searchEntry.url && d.name != null)) {
+
+      // }
       searchList.add(searchEntry);
     }
     return searchList;

@@ -104,8 +104,7 @@ class NewNovelHttp {
     LoggerTools.looger.d('post请求Params：$params');
     try {
       Response? response = await _dio?.post(path, data: params);
-      var responseData = response?.data;
-      responseModel = ServiceResultData.fromJson(responseData);
+      responseModel = ServiceResultData.fromUint8List(response!);
     } on DioException catch (dioError, _) {
       responseModel = ServiceResultData(
           data: null, code: dioError.response!.data['code'], msg: '网络异常');

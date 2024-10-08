@@ -27,35 +27,71 @@ class ParseSourceRule {
 
     // 选择根节点
     List<Element> rootNodes = [];
-    if (rootSelector != null && rootSelector != "") {
-      if (rootSelector.startsWith('class.')) {
-        String className = rootSelector.split('.')[1];
+    if (rootSelector != null && rootSelector.isNotEmpty) {
+      // 处理根选择器可能的多级结构
+      List<String> rootParts = rootSelector.split(RegExp(r'[@>]'));
+      String initialPart = rootParts[0].trim();
+
+      // 获取初始部分的元素
+      if (initialPart.startsWith('class.')) {
+        String className = initialPart.split('.')[1];
         rootNodes = document.getElementsByClassName(className).toList();
-      } else if (rootSelector.startsWith('#')) {
-        String idSelector = rootSelector.substring(1);
+      } else if (initialPart.startsWith('.')) {
+        String className = initialPart.substring(1);
+        rootNodes = document.getElementsByClassName(className).toList();
+      } else if (initialPart.startsWith('#')) {
+        String idSelector = initialPart.substring(1);
         rootNodes = document.querySelectorAll('#$idSelector').toList();
-      } else if (rootSelector.startsWith('id.')) {
-        String idSelector = rootSelector.split('.')[1];
+      } else if (initialPart.startsWith('id.')) {
+        String idSelector = initialPart.split('.')[1];
         var element = document.querySelector('#$idSelector');
         if (element != null) {
           rootNodes.add(element);
         }
       } else {
-        rootNodes = document.getElementsByTagName(rootSelector).toList();
-        if (rootSelector.contains("||")) {
-          final split = rootSelector.split("||");
-          for (var part in split) {
-            if (part.startsWith(".")) {
-              final elements = document.querySelectorAll(part);
-              rootNodes.addAll(elements);
+        rootNodes = document.getElementsByTagName(initialPart).toList();
+      }
+
+      // 逐步处理后续的选择器部分（`@` 或 `>` 分隔）
+      for (int i = 1; i < rootParts.length; i++) {
+        String part = rootParts[i].trim();
+        List<Element> newRootNodes = [];
+
+        if (part.startsWith('tag.')) {
+          String tagName = part.split('.')[1];
+          for (var element in rootNodes) {
+            newRootNodes.addAll(element.getElementsByTagName(tagName));
+          }
+        } else if (part.startsWith('class.')) {
+          String className = part.split('.')[1];
+          for (var element in rootNodes) {
+            newRootNodes.addAll(element.getElementsByClassName(className));
+          }
+        } else if (part.startsWith('a.')) {
+          // 支持 a.0 形式，选择第 n 个 a 标签
+          int index = int.tryParse(part.split('.')[1]) ?? 0;
+          for (var element in rootNodes) {
+            var aElements = element.getElementsByTagName('a');
+            if (aElements.length > index) {
+              newRootNodes.add(aElements[index]);
             }
           }
+        } else if (part == 'text') {
+          // 如果是 text，直接返回元素的文本内容
+          return rootNodes.map((e) => e.text.trim()).toList();
+        } else {
+          // 如果是 text，直接返回元素的文本内容
+          for (var i = 0; i < rootNodes.length; i++) {
+            newRootNodes.addAll(rootNodes[i].getElementsByTagName(part));
+            LoggerTools.looger.d("$i ==  我已经找到元素了长度为 ${newRootNodes.length}");
+          }
         }
+        // 更新 rootNodes 为当前级别的元素
+        rootNodes = newRootNodes;
       }
     } else {
       rootNodes = [document.documentElement!]; // 默认根节点为文档根
     }
-
     // 解析规则字符串
     List<String> parts = rule.split('@');
     String rootPart = parts[0];
@@ -67,6 +103,11 @@ class ParseSourceRule {
       if (rootPart.startsWith('class.')) {
         String className = rootPart.split('.')[1];
         tempElements.addAll(rootNode.getElementsByClassName(className));
+      }
+      if (rootPart.startsWith(".")) {
+        final data = rootPart.substring(1).split(".");
+        final id = data.first;
+        tempElements.addAll(rootNode.getElementsByClassName(id));
       } else if (rootPart.startsWith('#')) {
         String idSelector = rootPart.substring(1);
         var element = rootNode.querySelector('#$idSelector');
@@ -80,11 +121,7 @@ class ParseSourceRule {
           tempElements.add(element);
         }
       } else {
-        if (rootPart.startsWith(".")) {
-          final data = rootPart.substring(1).split(".");
-          final id = data.first;
-          tempElements.addAll(rootNode.getElementsByClassName(id));
-        } else if (rootPart.startsWith("href#")) {
+        if (rootPart.startsWith("href#")) {
           final dtat = rootNode.getElementsByTagName('a');
           dtat.map((element) {
             final href = element.attributes['href'] ?? '';
@@ -304,7 +341,7 @@ class ParseSourceRule {
   }
 
   /// 搜索页url解析
-  static String parseSearchUrl(
+  static Map<String, dynamic> parseSearchUrl(
       {required String searchKey, required String searchUrl}) {
     // 从模板中提取 charset
     RegExp charsetPattern = RegExp(r'"charset":\s*"([^"]+)"');
@@ -326,10 +363,17 @@ class ParseSourceRule {
     String finalUrl = searchUrl.replaceAll('{{key}}', encodedKey);
 
     // 去掉 charset 部分
-    String cleanUrl = finalUrl.split(',')[0]; // 只保留 "," 前面的部分
+    //final split = finalUrl.split(',');
+    List<String> parts = finalUrl.split(RegExp(r',(?={)'));
+    //print(parts[1]);
+    //String cleanUrl = split[0]; // 只保留 "," 前面的部分
     // final Response<String> data =
     //     await _dio.get("${_sourceEntry.bookSourceUrl}$cleanUrl");
-    return cleanUrl;
+    final data = {"url": parts[0]};
+    if (parts.length > 1) {
+      data["rule"] = parts[1];
+    }
+    return data;
   }
 
   // 对字符串进行 GBK URL 编码
@@ -378,8 +422,18 @@ class ParseSourceRule {
     // 遍历 <meta> 标签查找 charset 属性
     for (Element meta in metaTags) {
       String? charset = meta.attributes['charset'];
+      String content = meta.attributes['content'] ??
+          ""; //<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
       if (charset != null) {
         return charset; // 如果找到 charset 属性则返回
+      }
+      List<String> parts = content.split(';');
+      for (String part in parts) {
+        part = part.trim();
+        if (part.startsWith('charset=')) {
+          return part.split('=').last.trim();
+        }
       }
     }
 
