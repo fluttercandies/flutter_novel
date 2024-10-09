@@ -80,10 +80,22 @@ class ParseSourceRule {
           // 如果是 text，直接返回元素的文本内容
           return rootNodes.map((e) => e.text.trim()).toList();
         } else {
-          // 如果是 text，直接返回元素的文本内容
-          for (var i = 0; i < rootNodes.length; i++) {
-            newRootNodes.addAll(rootNodes[i].getElementsByTagName(part));
-            LoggerTools.looger.d("$i ==  我已经找到元素了长度为 ${newRootNodes.length}");
+          if (rootSelector.contains('>')) {
+            final split = rootSelector.split('@');
+            for (var i = 0; i < split.length; i++) {
+              final list = rootNodes[i].querySelectorAll(split[i]);
+              if (list.isNotEmpty) {
+                newRootNodes.addAll(list);
+              }
+              LoggerTools.looger.d("$i ==  我已经找到元素了长度为 ${newRootNodes.length}");
+            }
+          } else {
+            // 如果是 text，直接返回元素的文本内容
+            for (var i = 0; i < rootNodes.length; i++) {
+              final list = rootNodes[i].getElementsByTagName(part);
+              newRootNodes.addAll(list);
+              LoggerTools.looger.d("$i ==  我已经找到元素了长度为 ${newRootNodes.length}");
+            }
           }
         }
         // 更新 rootNodes 为当前级别的元素
@@ -173,10 +185,12 @@ class ParseSourceRule {
     }
     bool isfor = false;
     // 逐步解析标签和属性
+    // 逐步解析标签和属性
     for (int i = 1; i < parts.length; i++) {
       String part = parts[i];
       List<Element> newElements = [];
       isfor = true;
+
       if (part.contains('>')) {
         // 处理子元素选择器
         List<String> directParts = part.split('>');
@@ -191,13 +205,14 @@ class ParseSourceRule {
         }
         elements = newElements;
       } else if (part.startsWith('tag.')) {
+        // 处理标签选择器
         final split = part.split('.');
         String tagName = split[1];
         if (split.length > 2) {
-          final l2 = int.tryParse(split[2]) ?? -1;
-          if (l2 != -1) {
+          final index = int.tryParse(split[2]) ?? -1;
+          if (index != -1) {
             for (var element in elements) {
-              newElements.add(element.getElementsByTagName(tagName)[l2]);
+              newElements.add(element.getElementsByTagName(tagName)[index]);
             }
           }
         } else {
@@ -205,11 +220,28 @@ class ParseSourceRule {
             newElements.addAll(element.getElementsByTagName(tagName));
           }
         }
-
         elements = newElements;
-      } else if (part.startsWith('text') || part.endsWith('text')) {
-        return elements.map((e) => e.text.trim()).toList();
       } else if (part.contains('href') || part.contains('src')) {
+        // 支持 a.0@href 或 @href 格式
+        final split = part.split(".");
+        final data = elements.map((e) {
+          if (split.length == 2) {
+            int index = int.parse(split[1]);
+            var aElements = e.getElementsByTagName('a');
+            if (aElements.length > index) {
+              return aElements[index].attributes[part] ?? '';
+            }
+          } else {
+            var aElements = e.getElementsByTagName('a');
+            if (aElements.isEmpty) {
+              return e.attributes[part] ?? '';
+            }
+            return aElements[0].attributes[part] ?? '';
+          }
+        }).toList();
+        return data.where((url) => url != null && url.isNotEmpty).toList();
+      } else if (part.startsWith('a')) {
+        // 支持 a.0@href 或 @href 格式
         final data = elements.map((e) {
           // 处理 a.0@href 格式
           if (part.startsWith('a.')) {
@@ -221,43 +253,43 @@ class ParseSourceRule {
                 return aElements[index].attributes['href'] ?? '';
               }
             }
+          } else {
+            String key = 'href';
+            if (parts.length >= i + 1) {
+              key = parts[i + 1];
+            }
+            var aElements = e.getElementsByTagName('a');
+            if (aElements.isEmpty) {
+              return e.attributes[key] ?? '';
+            }
+            return aElements[0].attributes[key] ?? '';
           }
-          return e.attributes[part] ?? e.attributes['src-data'];
         }).toList();
         return data.where((url) => url != null && url.isNotEmpty).toList();
-      } else if (part.startsWith('img')) {
+      } else if (part.startsWith('text') || part.endsWith('text')) {
+        return elements.map((e) => e.text.trim()).toList();
+      } else if (part.contains('||')) {
+        // 处理 || 分隔的属性选择器
+        var attributeParts = part.split('||');
         final data = elements.map((e) {
-          var aElements = e.getElementsByTagName('img'); //itemprop
-          for (var i = 0; i < aElements.length; i++) {
-            if (aElements[i].attributes['itemprop'] == "image") {
-              return aElements[i].attributes['src'];
+          for (var attr in attributeParts) {
+            var value = e.attributes[attr];
+            if (value != null && value.isNotEmpty) {
+              return value;
             }
           }
+          return null;
         }).toList();
-        return data.where((url) => url != null && url.isNotEmpty).toList();
-      } else if (part.contains('img')) {
-        final data = elements.map((e) {
-          // 处理 img 格式
-
-          var parts = part.split('||');
-          final data1 = e.attributes[parts[0]] ??
-              e.attributes[parts.length > 1 ? parts[1] : "src"];
-          return data1;
-        }).toList();
-        // if (data.any((e) => e == null)) {
-        // final a=  elements.map((d) {
-        //     return d.getElementsByTagName("img").map((c) {
-        //       return c.attributes["src"];
-        //     }).toList();
-        //   }).toList();
-        // }
-        return data.where((url) => url != null && url.isNotEmpty).toList();
-      } else if (part == "content") {
-        final data = elements.map((e) {
-          // 处理 content 内容 格式
-          return e.attributes["content"];
-        }).toList();
-        return data.where((text) => text != null && text.isNotEmpty).toList();
+        return data
+            .where((value) => value != null && value.isNotEmpty)
+            .toList();
+      } else if (part.startsWith('class.')) {
+        // 处理 class 的选择
+        String className = part.split('.')[1];
+        for (var element in elements) {
+          newElements.addAll(element.getElementsByClassName(className));
+        }
+        elements = newElements;
       }
 
       // 如果没有找到新元素，直接返回空数组
@@ -265,6 +297,7 @@ class ParseSourceRule {
         return [];
       }
     }
+
     if (!isfor && rootPart.startsWith('href#')) {
       final data = elements.map((e) {
         // 处理 a.0@href 格式
