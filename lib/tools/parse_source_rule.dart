@@ -48,6 +48,12 @@ class ParseSourceRule {
         if (element != null) {
           rootNodes.add(element);
         }
+      } else if (initialPart.contains(' ')) {
+        String idSelector = initialPart.replaceAll(' ', ">");
+        var element = document.querySelector(idSelector);
+        if (element != null) {
+          rootNodes.add(element);
+        }
       } else {
         rootNodes = document.getElementsByTagName(initialPart).toList();
       }
@@ -105,8 +111,15 @@ class ParseSourceRule {
       rootNodes = [document.documentElement!]; // 默认根节点为文档根
     }
     // 解析规则字符串
+    rule = processInput(rule);
     List<String> parts = rule.split('@');
     String rootPart = parts[0];
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i] != "") {
+        rootPart = parts[i];
+        break;
+      }
+    }
     List<Element> elements = [];
 
     // 处理根部分的标签选择器
@@ -115,8 +128,7 @@ class ParseSourceRule {
       if (rootPart.startsWith('class.')) {
         String className = rootPart.split('.')[1];
         tempElements.addAll(rootNode.getElementsByClassName(className));
-      }
-      if (rootPart.startsWith(".")) {
+      } else if (rootPart.startsWith(".")) {
         final data = rootPart.substring(1).split(".");
         final id = data.first;
         tempElements.addAll(rootNode.getElementsByClassName(id));
@@ -132,8 +144,12 @@ class ParseSourceRule {
         if (element != null) {
           tempElements.add(element);
         }
+      } else if (rule == 'text') {
+        tempElements = rootNodes;
+        elements.addAll(tempElements); // 合并所有匹配的元素
+        break;
       } else {
-        if (rootPart.startsWith("href#")) {
+        if (rootPart.contains("href")) {
           final dtat = rootNode.getElementsByTagName('a');
           dtat.map((element) {
             final href = element.attributes['href'] ?? '';
@@ -186,7 +202,7 @@ class ParseSourceRule {
     bool isfor = false;
     // 逐步解析标签和属性
     // 逐步解析标签和属性
-    for (int i = 1; i < parts.length; i++) {
+    for (int i = 0; i < parts.length; i++) {
       String part = parts[i];
       List<Element> newElements = [];
       isfor = true;
@@ -203,7 +219,9 @@ class ParseSourceRule {
             newElements.addAll(parent.getElementsByTagName(childTag));
           }
         }
-        elements = newElements;
+        if (newElements.isNotEmpty) {
+          elements = newElements;
+        }
       } else if (part.startsWith('tag.')) {
         // 处理标签选择器
         final split = part.split('.');
@@ -220,7 +238,9 @@ class ParseSourceRule {
             newElements.addAll(element.getElementsByTagName(tagName));
           }
         }
-        elements = newElements;
+        if (newElements.isNotEmpty) {
+          elements = newElements;
+        }
       } else if (part.contains('href') || part.contains('src')) {
         // 支持 a.0@href 或 @href 格式
         final split = part.split(".");
@@ -250,7 +270,7 @@ class ParseSourceRule {
               int index = int.parse(parts[1]);
               var aElements = e.getElementsByTagName('a');
               if (aElements.length > index) {
-                return aElements[index].attributes['href'] ?? '';
+                return aElements[index].attributes['href'];
               }
             }
           } else {
@@ -260,12 +280,16 @@ class ParseSourceRule {
             }
             var aElements = e.getElementsByTagName('a');
             if (aElements.isEmpty) {
-              return e.attributes[key] ?? '';
+              return e.attributes[key];
             }
-            return aElements[0].attributes[key] ?? '';
+            return aElements[0].attributes[key];
           }
         }).toList();
-        return data.where((url) => url != null && url.isNotEmpty).toList();
+        final list =
+            data.where((url) => url != null && url.isNotEmpty).toList();
+        if (list.isNotEmpty) {
+          return list;
+        }
       } else if (part.startsWith('text') || part.endsWith('text')) {
         return elements.map((e) => e.text.trim()).toList();
       } else if (part.contains('||')) {
@@ -289,7 +313,9 @@ class ParseSourceRule {
         for (var element in elements) {
           newElements.addAll(element.getElementsByClassName(className));
         }
-        elements = newElements;
+        if (newElements.isNotEmpty) {
+          elements = newElements;
+        }
       }
 
       // 如果没有找到新元素，直接返回空数组
@@ -432,6 +458,11 @@ class ParseSourceRule {
     required String bookSourceUrl,
     required String parseSearchUrl,
   }) {
+    var regex = RegExp(
+        r'^((https?|ftp):\/\/)?([a-zA-Z0-9_-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$');
+    if (regex.hasMatch(bookSourceUrl) && regex.hasMatch(parseSearchUrl)) {
+      return parseSearchUrl;
+    }
     // 去除baseUrl末尾的斜杠（如果有）
     if (bookSourceUrl.endsWith('/')) {
       bookSourceUrl = bookSourceUrl.substring(0, bookSourceUrl.length - 1);
@@ -481,5 +512,19 @@ class ParseSourceRule {
       resultData = utf8.decode(htmlData);
     }
     return resultData;
+  }
+
+  static String processInput(String input) {
+    // 移除外层的 {{ 和 }}，并将内容提取出来
+    String trimmedInput = input.replaceAll(RegExp(r'^\{\{|\}\}$'), '');
+
+    // 用 || 连接各部分，处理内容
+    return trimmedInput
+        .split(RegExp(r'\s*\{\{\s*|\s*\}\s*')) // 以 {{ 或 }} 分割
+        .where((part) => part.isNotEmpty) // 移除空部分
+        .map((part) {
+      // 替换连续的 @ 为一个 @，并去掉前后的空格
+      return part.replaceAll(RegExp(r'@+'), '@').trim();
+    }).join(' || ');
   }
 }

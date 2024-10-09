@@ -79,6 +79,9 @@ class NewDetailViewModel extends _$NewDetailViewModel {
       var coverUrl = ParseSourceRule.parseAllMatches(
           rule: _bookSourceEntry.ruleBookInfo!.coverUrl ?? "",
           htmlData: htmlData);
+      final url =
+          _getChapterList(detailUrl, bookSource.bookSourceUrl ?? "", coverUrl);
+      coverUrl = url;
 
       /// 介绍
       var intro = ParseSourceRule.parseAllMatches(
@@ -148,43 +151,49 @@ class NewDetailViewModel extends _$NewDetailViewModel {
     }
   }
 
-  List<String> _getChapterList(String url, String url1, List<String?> list) {
+  List<String?> _getChapterList(String url, String url1, List<String?> list) {
     List<String> resultList = [];
+    final reg = RegExp(
+        r'^((https?|ftp):\/\/)?([a-zA-Z0-9_-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$');
 
     for (var i = 0; i < list.length; i++) {
-      if (!list[i]!.startsWith("/")) {
-        // 去除baseUrl末尾的斜杠（如果有）
-        if (url.endsWith('/')) {
-          url = url.substring(0, url.length - 1);
-        }
-        // 如果relativeUrl以斜杠开头，则去除
-        if (list[i]!.startsWith('/')) {
-          list[i] = list[i]!.substring(1);
-        }
-
-        if (list[i]!.contains("javascript:Chapter")) {
-          final map = extractChapterInfo(list[i]!);
-          url = "${map['chapterId']}/${map['htmlFileName']}";
-          if (list.length > i) {
-            final uri = list[i - 1] ?? "";
-            final split = uri.split("/");
-            url = "${split[0]}/$url";
-            resultList.add("$url1/$url");
-            continue;
+      if (!reg.hasMatch(list[i]!)) {
+        if (!list[i]!.startsWith("/")) {
+          // 去除baseUrl末尾的斜杠（如果有）
+          if (url.endsWith('/')) {
+            url = url.substring(0, url.length - 1);
           }
-        }
-        resultList.add("$url/${list[i] ?? ""}");
-      } else {
-        // 去除baseUrl末尾的斜杠（如果有）
-        if (url1.endsWith('/')) {
-          url1 = url1.substring(0, url1.length - 1);
-        }
-        // 如果relativeUrl以斜杠开头，则去除
-        if (list[i]!.startsWith('/')) {
-          list[i] = list[i]!.substring(1);
-        }
+          // 如果relativeUrl以斜杠开头，则去除
+          if (list[i]!.startsWith('/')) {
+            list[i] = list[i]!.substring(1);
+          }
 
-        resultList.add("$url1/${list[i] ?? ""}");
+          if (list[i]!.contains("javascript:Chapter")) {
+            final map = extractChapterInfo(list[i]!);
+            url = "${map['chapterId']}/${map['htmlFileName']}";
+            if (list.length > i) {
+              final uri = list[i - 1] ?? "";
+              final split = uri.split("/");
+              url = "${split[0]}/$url";
+              resultList.add("$url1/$url");
+              continue;
+            }
+          }
+          resultList.add("$url/${list[i] ?? ""}");
+        } else {
+          // 去除baseUrl末尾的斜杠（如果有）
+          if (url1.endsWith('/')) {
+            url1 = url1.substring(0, url1.length - 1);
+          }
+          // 如果relativeUrl以斜杠开头，则去除
+          if (list[i]!.startsWith('/')) {
+            list[i] = list[i]!.substring(1);
+          }
+
+          resultList.add("$url1/${list[i] ?? ""}");
+        }
+      } else {
+        return list;
       }
     }
     return resultList;

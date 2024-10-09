@@ -2,6 +2,8 @@
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:novel_flutter_bit/widget/empty.dart';
 
 /// 图片 加载
 class ExtendedImageBuild extends StatelessWidget {
@@ -42,7 +44,18 @@ class ExtendedImageBuild extends StatelessWidget {
           case LoadState.failed:
             return LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-              return const Center(child: Text("加载失败"));
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/svg/empty.svg',
+                    width: width,
+                  ),
+                  const Text("404",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w300))
+                ],
+              );
             });
         }
       },

@@ -81,6 +81,8 @@ class NewSearchViewModel extends _$NewSearchViewModel {
         }
         if (rule.containsKey("body")) {
           params = parseQueryParams(rule['body']);
+        } else if (rule.containsKey("webView")) {
+          params = {'webView': true};
         }
       }
 

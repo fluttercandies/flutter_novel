@@ -114,18 +114,16 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
     );
 
     /// 封面
-    if (searchEntry.coverUrl != null) {
-      imageWidget = Row(
-        children: [
-          ExtendedImageBuild(
-            url: searchEntry.coverUrl!,
-            height: height,
-          ),
-          10.horizontalSpace,
-          Expanded(child: imageWidget)
-        ],
-      );
-    }
+    imageWidget = Row(
+      children: [
+        ExtendedImageBuild(
+          url: searchEntry.coverUrl ?? "",
+          height: height,
+        ),
+        10.horizontalSpace,
+        Expanded(child: imageWidget)
+      ],
+    );
     return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => _onTapToDeatilPage(
