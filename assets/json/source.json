@@ -25,7 +25,7 @@
         },
         "ruleContent": {
             "content": "#chaptercontent@html\n<js>\nresult=result.replace(/(<p>《.+\\(www.369book.cc\\)<\\/p>)/, '');\nresult=result.replace(/(<div class=\"book-read-link.+\\n.+\\n.+\\n.<\\/div>)/, '');\nresult=result.replace(/(<p>本章未完.+继续阅读<\\/p>)/,'');\njava.log(result)\n</js>",
-            "nextContentUrl": "class.am-btn-default.-1@href",
+            "nextContentUrl": "class.am-btn-default.4@href",
             "replaceRegex": ""
         },
         "ruleExplore": {
