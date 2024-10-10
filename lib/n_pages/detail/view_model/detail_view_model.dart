@@ -18,7 +18,7 @@ part 'detail_view_model.g.dart';
 @riverpod
 class NewDetailViewModel extends _$NewDetailViewModel {
   /// 书源
-  late BookSourceEntry _bookSourceEntry;
+  late BookSourceEntry bookSourceEntry;
 
   final DetailState detailState = DetailState();
 
@@ -36,7 +36,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
     _url = detailUrl;
     _init();
-    _bookSourceEntry = bookSource;
+    bookSourceEntry = bookSource;
     _initData(detailUrl: detailUrl);
     return detailState;
   }
@@ -72,12 +72,11 @@ class NewDetailViewModel extends _$NewDetailViewModel {
     try {
       /// 作者
       var author = ParseSourceRule.parseAllMatches(
-          rule: _bookSourceEntry.ruleBookInfo!.author ?? "",
-          htmlData: htmlData);
+          rule: bookSourceEntry.ruleBookInfo!.author ?? "", htmlData: htmlData);
 
       /// url
       var coverUrl = ParseSourceRule.parseAllMatches(
-          rule: _bookSourceEntry.ruleBookInfo!.coverUrl ?? "",
+          rule: bookSourceEntry.ruleBookInfo!.coverUrl ?? "",
           htmlData: htmlData);
       final url =
           _getChapterList(detailUrl, bookSource.bookSourceUrl ?? "", coverUrl);
@@ -85,21 +84,21 @@ class NewDetailViewModel extends _$NewDetailViewModel {
 
       /// 介绍
       var intro = ParseSourceRule.parseAllMatches(
-          rule: _bookSourceEntry.ruleBookInfo!.intro ?? "", htmlData: htmlData);
+          rule: bookSourceEntry.ruleBookInfo!.intro ?? "", htmlData: htmlData);
 
       /// 最新章节
       var lastChapter = ParseSourceRule.parseAllMatches(
-          rule: _bookSourceEntry.ruleBookInfo!.lastChapter ?? "",
+          rule: bookSourceEntry.ruleBookInfo!.lastChapter ?? "",
           htmlData: htmlData);
 
       /// 书名
       var name = ParseSourceRule.parseAllMatches(
-          rule: _bookSourceEntry.ruleBookInfo!.name ?? "", htmlData: htmlData);
+          rule: bookSourceEntry.ruleBookInfo!.name ?? "", htmlData: htmlData);
 
       /// 章节列表
       var chapterList = ParseSourceRule.parseAllMatches(
-          rootSelector: _bookSourceEntry.ruleToc!.chapterList ?? "",
-          rule: _bookSourceEntry.ruleToc!.chapterUrl ?? "",
+          rootSelector: bookSourceEntry.ruleToc!.chapterList ?? "",
+          rule: bookSourceEntry.ruleToc!.chapterUrl ?? "",
           htmlData: htmlData);
 
       chapterList = _getChapterList(
@@ -107,8 +106,8 @@ class NewDetailViewModel extends _$NewDetailViewModel {
 
       /// 章节列表
       var chapterName = ParseSourceRule.parseAllMatches(
-          rootSelector: _bookSourceEntry.ruleToc!.chapterList ?? "",
-          rule: _bookSourceEntry.ruleToc!.chapterName ?? "",
+          rootSelector: bookSourceEntry.ruleToc!.chapterList ?? "",
+          rule: bookSourceEntry.ruleToc!.chapterName ?? "",
           htmlData: htmlData);
 
       List<Chapter> chapter = [];

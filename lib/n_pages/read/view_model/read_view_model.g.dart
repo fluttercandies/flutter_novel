@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'detail_view_model.dart';
+part of 'read_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$newDetailViewModelHash() =>
-    r'03a156cbfb3a63f2c6e1286ceea5516b9742a438';
+String _$readViewModelHash() => r'921d5e25a3cbb1b36f8647eef00b25384f46d7b8';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,59 +29,58 @@ class _SystemHash {
   }
 }
 
-abstract class _$NewDetailViewModel
-    extends BuildlessAutoDisposeAsyncNotifier<DetailState> {
-  late final String detailUrl;
+abstract class _$ReadViewModel extends BuildlessAutoDisposeAsyncNotifier<void> {
+  late final Chapter chapter1;
   late final BookSourceEntry bookSource;
 
-  FutureOr<DetailState> build({
-    required String detailUrl,
+  FutureOr<void> build({
+    required Chapter chapter1,
     required BookSourceEntry bookSource,
   });
 }
 
-/// 详情搜索
-/// 时间 2024-10-1
+/// 阅读页面
+/// 时间 2024-10-10
 /// 7-bit
 ///
-/// Copied from [NewDetailViewModel].
-@ProviderFor(NewDetailViewModel)
-const newDetailViewModelProvider = NewDetailViewModelFamily();
+/// Copied from [ReadViewModel].
+@ProviderFor(ReadViewModel)
+const readViewModelProvider = ReadViewModelFamily();
 
-/// 详情搜索
-/// 时间 2024-10-1
+/// 阅读页面
+/// 时间 2024-10-10
 /// 7-bit
 ///
-/// Copied from [NewDetailViewModel].
-class NewDetailViewModelFamily extends Family<AsyncValue<DetailState>> {
-  /// 详情搜索
-  /// 时间 2024-10-1
+/// Copied from [ReadViewModel].
+class ReadViewModelFamily extends Family<AsyncValue<void>> {
+  /// 阅读页面
+  /// 时间 2024-10-10
   /// 7-bit
   ///
-  /// Copied from [NewDetailViewModel].
-  const NewDetailViewModelFamily();
+  /// Copied from [ReadViewModel].
+  const ReadViewModelFamily();
 
-  /// 详情搜索
-  /// 时间 2024-10-1
+  /// 阅读页面
+  /// 时间 2024-10-10
   /// 7-bit
   ///
-  /// Copied from [NewDetailViewModel].
-  NewDetailViewModelProvider call({
-    required String detailUrl,
+  /// Copied from [ReadViewModel].
+  ReadViewModelProvider call({
+    required Chapter chapter1,
     required BookSourceEntry bookSource,
   }) {
-    return NewDetailViewModelProvider(
-      detailUrl: detailUrl,
+    return ReadViewModelProvider(
+      chapter1: chapter1,
       bookSource: bookSource,
     );
   }
 
   @override
-  NewDetailViewModelProvider getProviderOverride(
-    covariant NewDetailViewModelProvider provider,
+  ReadViewModelProvider getProviderOverride(
+    covariant ReadViewModelProvider provider,
   ) {
     return call(
-      detailUrl: provider.detailUrl,
+      chapter1: provider.chapter1,
       bookSource: provider.bookSource,
     );
   }
@@ -99,126 +97,124 @@ class NewDetailViewModelFamily extends Family<AsyncValue<DetailState>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'newDetailViewModelProvider';
+  String? get name => r'readViewModelProvider';
 }
 
-/// 详情搜索
-/// 时间 2024-10-1
+/// 阅读页面
+/// 时间 2024-10-10
 /// 7-bit
 ///
-/// Copied from [NewDetailViewModel].
-class NewDetailViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    NewDetailViewModel, DetailState> {
-  /// 详情搜索
-  /// 时间 2024-10-1
+/// Copied from [ReadViewModel].
+class ReadViewModelProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<ReadViewModel, void> {
+  /// 阅读页面
+  /// 时间 2024-10-10
   /// 7-bit
   ///
-  /// Copied from [NewDetailViewModel].
-  NewDetailViewModelProvider({
-    required String detailUrl,
+  /// Copied from [ReadViewModel].
+  ReadViewModelProvider({
+    required Chapter chapter1,
     required BookSourceEntry bookSource,
   }) : this._internal(
-          () => NewDetailViewModel()
-            ..detailUrl = detailUrl
+          () => ReadViewModel()
+            ..chapter1 = chapter1
             ..bookSource = bookSource,
-          from: newDetailViewModelProvider,
-          name: r'newDetailViewModelProvider',
+          from: readViewModelProvider,
+          name: r'readViewModelProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$newDetailViewModelHash,
-          dependencies: NewDetailViewModelFamily._dependencies,
+                  : _$readViewModelHash,
+          dependencies: ReadViewModelFamily._dependencies,
           allTransitiveDependencies:
-              NewDetailViewModelFamily._allTransitiveDependencies,
-          detailUrl: detailUrl,
+              ReadViewModelFamily._allTransitiveDependencies,
+          chapter1: chapter1,
           bookSource: bookSource,
         );
 
-  NewDetailViewModelProvider._internal(
+  ReadViewModelProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.detailUrl,
+    required this.chapter1,
     required this.bookSource,
   }) : super.internal();
 
-  final String detailUrl;
+  final Chapter chapter1;
   final BookSourceEntry bookSource;
 
   @override
-  FutureOr<DetailState> runNotifierBuild(
-    covariant NewDetailViewModel notifier,
+  FutureOr<void> runNotifierBuild(
+    covariant ReadViewModel notifier,
   ) {
     return notifier.build(
-      detailUrl: detailUrl,
+      chapter1: chapter1,
       bookSource: bookSource,
     );
   }
 
   @override
-  Override overrideWith(NewDetailViewModel Function() create) {
+  Override overrideWith(ReadViewModel Function() create) {
     return ProviderOverride(
       origin: this,
-      override: NewDetailViewModelProvider._internal(
+      override: ReadViewModelProvider._internal(
         () => create()
-          ..detailUrl = detailUrl
+          ..chapter1 = chapter1
           ..bookSource = bookSource,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        detailUrl: detailUrl,
+        chapter1: chapter1,
         bookSource: bookSource,
       ),
     );
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<NewDetailViewModel, DetailState>
-      createElement() {
-    return _NewDetailViewModelProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<ReadViewModel, void> createElement() {
+    return _ReadViewModelProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is NewDetailViewModelProvider &&
-        other.detailUrl == detailUrl &&
+    return other is ReadViewModelProvider &&
+        other.chapter1 == chapter1 &&
         other.bookSource == bookSource;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, detailUrl.hashCode);
+    hash = _SystemHash.combine(hash, chapter1.hashCode);
     hash = _SystemHash.combine(hash, bookSource.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin NewDetailViewModelRef
-    on AutoDisposeAsyncNotifierProviderRef<DetailState> {
-  /// The parameter `detailUrl` of this provider.
-  String get detailUrl;
+mixin ReadViewModelRef on AutoDisposeAsyncNotifierProviderRef<void> {
+  /// The parameter `chapter1` of this provider.
+  Chapter get chapter1;
 
   /// The parameter `bookSource` of this provider.
   BookSourceEntry get bookSource;
 }
 
-class _NewDetailViewModelProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<NewDetailViewModel,
-        DetailState> with NewDetailViewModelRef {
-  _NewDetailViewModelProviderElement(super.provider);
+class _ReadViewModelProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<ReadViewModel, void>
+    with ReadViewModelRef {
+  _ReadViewModelProviderElement(super.provider);
 
   @override
-  String get detailUrl => (origin as NewDetailViewModelProvider).detailUrl;
+  Chapter get chapter1 => (origin as ReadViewModelProvider).chapter1;
   @override
   BookSourceEntry get bookSource =>
-      (origin as NewDetailViewModelProvider).bookSource;
+      (origin as ReadViewModelProvider).bookSource;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -120,6 +120,11 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
 
   // 跳转阅读页
   _onReadPage(Chapter chapter) async {
+    final model = ref.read(NewDetailViewModelProvider(
+      detailUrl: widget.searchEntry.url ?? "",
+      bookSource: widget.bookSourceEntry,
+    ).notifier);
+    model.bookSourceEntry;
     _detailViewModel.setReadIndex(chapter);
   }
 

@@ -8,30 +8,33 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i9;
-import 'package:flutter/material.dart' as _i10;
-import 'package:novel_flutter_bit/entry/book_source_entry.dart' as _i13;
+import 'package:auto_route/auto_route.dart' as _i10;
+import 'package:flutter/material.dart' as _i11;
+import 'package:novel_flutter_bit/entry/book_source_entry.dart' as _i14;
 import 'package:novel_flutter_bit/frame.dart' as _i3;
+import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart'
+    as _i15;
 import 'package:novel_flutter_bit/n_pages/detail/view/detail_page.dart' as _i5;
 import 'package:novel_flutter_bit/n_pages/home/view/home_page.dart' as _i4;
+import 'package:novel_flutter_bit/n_pages/read/view/read_page.dart' as _i8;
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart'
-    as _i12;
+    as _i13;
 import 'package:novel_flutter_bit/n_pages/search/view/search_page.dart' as _i6;
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart'
-    as _i11;
+    as _i12;
 import 'package:novel_flutter_bit/pages/book_novel/view/book_page.dart' as _i1;
 import 'package:novel_flutter_bit/pages/detail_novel/view/detail_page.dart'
     as _i2;
 import 'package:novel_flutter_bit/pages/novel/view/novel_page.dart' as _i7;
-import 'package:novel_flutter_bit/pages/search/view/search_page.dart' as _i8;
+import 'package:novel_flutter_bit/pages/search/view/search_page.dart' as _i9;
 
 /// generated route for
 /// [_i1.BookPage]
-class BookRoute extends _i9.PageRouteInfo<BookRouteArgs> {
+class BookRoute extends _i10.PageRouteInfo<BookRouteArgs> {
   BookRoute({
-    _i10.Key? key,
+    _i11.Key? key,
     required String name,
-    List<_i9.PageRouteInfo>? children,
+    List<_i10.PageRouteInfo>? children,
   }) : super(
           BookRoute.name,
           args: BookRouteArgs(
@@ -43,7 +46,7 @@ class BookRoute extends _i9.PageRouteInfo<BookRouteArgs> {
 
   static const String name = 'BookRoute';
 
-  static _i9.PageInfo page = _i9.PageInfo(
+  static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<BookRouteArgs>();
@@ -61,7 +64,7 @@ class BookRouteArgs {
     required this.name,
   });
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   final String name;
 
@@ -73,11 +76,11 @@ class BookRouteArgs {
 
 /// generated route for
 /// [_i2.DetailPage]
-class DetailRoute extends _i9.PageRouteInfo<DetailRouteArgs> {
+class DetailRoute extends _i10.PageRouteInfo<DetailRouteArgs> {
   DetailRoute({
-    _i10.Key? key,
-    required _i11.BookDatum bookDatum,
-    List<_i9.PageRouteInfo>? children,
+    _i11.Key? key,
+    required _i12.BookDatum bookDatum,
+    List<_i10.PageRouteInfo>? children,
   }) : super(
           DetailRoute.name,
           args: DetailRouteArgs(
@@ -89,7 +92,7 @@ class DetailRoute extends _i9.PageRouteInfo<DetailRouteArgs> {
 
   static const String name = 'DetailRoute';
 
-  static _i9.PageInfo page = _i9.PageInfo(
+  static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<DetailRouteArgs>();
@@ -107,9 +110,9 @@ class DetailRouteArgs {
     required this.bookDatum,
   });
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
-  final _i11.BookDatum bookDatum;
+  final _i12.BookDatum bookDatum;
 
   @override
   String toString() {
@@ -119,8 +122,8 @@ class DetailRouteArgs {
 
 /// generated route for
 /// [_i3.FramePage]
-class FrameRoute extends _i9.PageRouteInfo<void> {
-  const FrameRoute({List<_i9.PageRouteInfo>? children})
+class FrameRoute extends _i10.PageRouteInfo<void> {
+  const FrameRoute({List<_i10.PageRouteInfo>? children})
       : super(
           FrameRoute.name,
           initialChildren: children,
@@ -128,7 +131,7 @@ class FrameRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'FrameRoute';
 
-  static _i9.PageInfo page = _i9.PageInfo(
+  static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
       return const _i3.FramePage();
@@ -138,8 +141,8 @@ class FrameRoute extends _i9.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.HomePage]
-class HomeRoute extends _i9.PageRouteInfo<void> {
-  const HomeRoute({List<_i9.PageRouteInfo>? children})
+class HomeRoute extends _i10.PageRouteInfo<void> {
+  const HomeRoute({List<_i10.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           initialChildren: children,
@@ -147,7 +150,7 @@ class HomeRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static _i9.PageInfo page = _i9.PageInfo(
+  static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
       return const _i4.HomePage();
@@ -157,12 +160,12 @@ class HomeRoute extends _i9.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.NewDetailPage]
-class NewDetailRoute extends _i9.PageRouteInfo<NewDetailRouteArgs> {
+class NewDetailRoute extends _i10.PageRouteInfo<NewDetailRouteArgs> {
   NewDetailRoute({
-    _i10.Key? key,
-    required _i12.SearchEntry searchEntry,
-    required _i13.BookSourceEntry bookSourceEntry,
-    List<_i9.PageRouteInfo>? children,
+    _i11.Key? key,
+    required _i13.SearchEntry searchEntry,
+    required _i14.BookSourceEntry bookSourceEntry,
+    List<_i10.PageRouteInfo>? children,
   }) : super(
           NewDetailRoute.name,
           args: NewDetailRouteArgs(
@@ -175,7 +178,7 @@ class NewDetailRoute extends _i9.PageRouteInfo<NewDetailRouteArgs> {
 
   static const String name = 'NewDetailRoute';
 
-  static _i9.PageInfo page = _i9.PageInfo(
+  static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<NewDetailRouteArgs>();
@@ -195,11 +198,11 @@ class NewDetailRouteArgs {
     required this.bookSourceEntry,
   });
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
-  final _i12.SearchEntry searchEntry;
+  final _i13.SearchEntry searchEntry;
 
-  final _i13.BookSourceEntry bookSourceEntry;
+  final _i14.BookSourceEntry bookSourceEntry;
 
   @override
   String toString() {
@@ -209,11 +212,11 @@ class NewDetailRouteArgs {
 
 /// generated route for
 /// [_i6.NewSearchPage]
-class NewSearchRoute extends _i9.PageRouteInfo<NewSearchRouteArgs> {
+class NewSearchRoute extends _i10.PageRouteInfo<NewSearchRouteArgs> {
   NewSearchRoute({
-    _i10.Key? key,
+    _i11.Key? key,
     required String searchKey,
-    List<_i9.PageRouteInfo>? children,
+    List<_i10.PageRouteInfo>? children,
   }) : super(
           NewSearchRoute.name,
           args: NewSearchRouteArgs(
@@ -225,7 +228,7 @@ class NewSearchRoute extends _i9.PageRouteInfo<NewSearchRouteArgs> {
 
   static const String name = 'NewSearchRoute';
 
-  static _i9.PageInfo page = _i9.PageInfo(
+  static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<NewSearchRouteArgs>();
@@ -243,7 +246,7 @@ class NewSearchRouteArgs {
     required this.searchKey,
   });
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   final String searchKey;
 
@@ -255,13 +258,13 @@ class NewSearchRouteArgs {
 
 /// generated route for
 /// [_i7.NovelPage]
-class NovelRoute extends _i9.PageRouteInfo<NovelRouteArgs> {
+class NovelRoute extends _i10.PageRouteInfo<NovelRouteArgs> {
   NovelRoute({
-    _i10.Key? key,
+    _i11.Key? key,
     required String url,
     required String name,
-    required _i11.BookDatum bookDatum,
-    List<_i9.PageRouteInfo>? children,
+    required _i12.BookDatum bookDatum,
+    List<_i10.PageRouteInfo>? children,
   }) : super(
           NovelRoute.name,
           args: NovelRouteArgs(
@@ -275,7 +278,7 @@ class NovelRoute extends _i9.PageRouteInfo<NovelRouteArgs> {
 
   static const String name = 'NovelRoute';
 
-  static _i9.PageInfo page = _i9.PageInfo(
+  static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<NovelRouteArgs>();
@@ -297,13 +300,13 @@ class NovelRouteArgs {
     required this.bookDatum,
   });
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   final String url;
 
   final String name;
 
-  final _i11.BookDatum bookDatum;
+  final _i12.BookDatum bookDatum;
 
   @override
   String toString() {
@@ -312,9 +315,61 @@ class NovelRouteArgs {
 }
 
 /// generated route for
-/// [_i8.SearchPage]
-class SearchRoute extends _i9.PageRouteInfo<void> {
-  const SearchRoute({List<_i9.PageRouteInfo>? children})
+/// [_i8.ReadPage]
+class ReadRoute extends _i10.PageRouteInfo<ReadRouteArgs> {
+  ReadRoute({
+    _i11.Key? key,
+    required _i15.Chapter chapter,
+    required _i14.BookSourceEntry source,
+    List<_i10.PageRouteInfo>? children,
+  }) : super(
+          ReadRoute.name,
+          args: ReadRouteArgs(
+            key: key,
+            chapter: chapter,
+            source: source,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ReadRoute';
+
+  static _i10.PageInfo page = _i10.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ReadRouteArgs>();
+      return _i8.ReadPage(
+        key: args.key,
+        chapter: args.chapter,
+        source: args.source,
+      );
+    },
+  );
+}
+
+class ReadRouteArgs {
+  const ReadRouteArgs({
+    this.key,
+    required this.chapter,
+    required this.source,
+  });
+
+  final _i11.Key? key;
+
+  final _i15.Chapter chapter;
+
+  final _i14.BookSourceEntry source;
+
+  @override
+  String toString() {
+    return 'ReadRouteArgs{key: $key, chapter: $chapter, source: $source}';
+  }
+}
+
+/// generated route for
+/// [_i9.SearchPage]
+class SearchRoute extends _i10.PageRouteInfo<void> {
+  const SearchRoute({List<_i10.PageRouteInfo>? children})
       : super(
           SearchRoute.name,
           initialChildren: children,
@@ -322,10 +377,10 @@ class SearchRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'SearchRoute';
 
-  static _i9.PageInfo page = _i9.PageInfo(
+  static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
-      return const _i8.SearchPage();
+      return const _i9.SearchPage();
     },
   );
 }
