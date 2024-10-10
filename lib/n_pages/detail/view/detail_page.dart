@@ -10,6 +10,7 @@ import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/state/detail_state.dart';
 import 'package:novel_flutter_bit/n_pages/detail/view_model/detail_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
+import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/book_title_sliver_persistent_header_delegate.dart';
@@ -124,8 +125,9 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
       detailUrl: widget.searchEntry.url ?? "",
       bookSource: widget.bookSourceEntry,
     ).notifier);
-    model.bookSourceEntry;
     _detailViewModel.setReadIndex(chapter);
+    context.router
+        .push(ReadRoute(chapter: chapter, source: model.bookSourceEntry));
   }
 
   @override

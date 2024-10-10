@@ -21,7 +21,8 @@ class _ReadPageState extends ConsumerState<ReadPage> {
         chapter1: widget.chapter, bookSource: widget.source));
     return Scaffold(
         appBar: AppBar(
-      title: Text(widget.chapter.chapterName ?? " 暂无标题"),
-    ));
+          title: Text(widget.chapter.chapterName ?? " 暂无标题"),
+        ),
+        body: Text((readViewModel.value?.content ?? "").trim()));
   }
 }

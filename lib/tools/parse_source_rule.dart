@@ -332,7 +332,105 @@ class ParseSourceRule {
       }).toList();
       return data.where((url) => url != null && url.isNotEmpty).toList();
     }
+    rule = rule.replaceAll("\\", "");
+    if (rule.contains("<js>")) {
+      final split = rule.split("\n");
+      for (var i = 0; i < split.length; i++) {
+        final line = split[i];
+        if (line.contains("replace")) {
+          // 定义正则表达式，只提取 key
+
+          // 查找所有匹配的 key
+          final str = line.replaceAll("\n", "");
+          final body = extractTagAndContent(str);
+          final a = line.split("replace");
+          // for (var element1 in elements) {
+          //   element1.querySelectorAll(body ?? "").forEach((element) {
+          //     if (element.text.contains('《') &&
+          //         element.text.contains('(www.369book.cc)')) {
+          //       element.remove();
+          //     }
+          //   });
+          // }
+          final data = extractTagInfo(line);
+          print(body);
+        }
+      }
+      // 使用CSS选择器找到需要删除的元素并移除它们
+      // for (var element1 in elements) {
+      //   element1.querySelectorAll('p').forEach((element) {
+      //     if (element.text.contains('《') &&
+      //         element.text.contains('(www.369book.cc)')) {
+      //       element.remove();
+      //     }
+      //   });
+
+      //   element1.querySelectorAll('div.book-read-link').forEach((element) {
+      //     element.remove();
+      //   });
+
+      //   element1.querySelectorAll('p').forEach((element) {
+      //     if (element.text.contains('本章未完') && element.text.contains('继续阅读')) {
+      //       element.remove();
+      //     }
+      //   });
+      // }
+    }
+
     return elements.map((e) => e.text.trim()).toList();
+  }
+
+// 提取括号内内容的方法
+  static // 提取标签和内容的方法
+      Map<String, String>? extractTagAndContent(String input) {
+    // 正则表达式匹配 <标签>内容</标签> 格式
+    RegExp regExp = RegExp(r'/<(\w+)([^>]*)>(.*?)<\/\1>/', multiLine: true);
+
+    // 查找匹配
+    Match? match = regExp.firstMatch(input);
+
+    if (match != null) {
+      // 提取标签名
+      String tag = match.group(1) ?? '';
+
+      // 提取内容
+      String content = match.group(3) ?? '';
+
+      return {
+        'tag': tag,
+        'content': content,
+      };
+    }
+
+    return null; // 如果没有匹配，返回null
+  }
+
+// 提取正则表达式中的标签和内容信息
+  // 提取正则表达式中的标签、属性和内容信息
+  static Map<String, String>? extractTagInfo(String input) {
+    // 通用正则表达式匹配 <tag ...> 标签和《...》内容
+    RegExp regExp =
+        RegExp(r'replace\(/\(<(\w+)([^>]*)>(《.*?》)<\/\1>\)/', multiLine: true);
+
+    // 查找匹配
+    Match? match = regExp.firstMatch(input);
+
+    if (match != null) {
+      // 提取标签名
+      String tag = match.group(1) ?? '';
+
+      // 提取属性部分，去掉多余的空格
+      String attributes = match.group(2)?.trim() ?? '';
+
+      // 提取《...》内部内容
+      String content = match.group(3) ?? '';
+
+      return {
+        'tag': tag,
+        'attributes': attributes,
+        'content': content,
+      };
+    }
   }
 
   /// 解析所有匹配项

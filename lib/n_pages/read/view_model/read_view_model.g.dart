@@ -6,7 +6,7 @@ part of 'read_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$readViewModelHash() => r'921d5e25a3cbb1b36f8647eef00b25384f46d7b8';
+String _$readViewModelHash() => r'6fa308e020055e7eb47442e894275f0a5fd8c498';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,11 +29,12 @@ class _SystemHash {
   }
 }
 
-abstract class _$ReadViewModel extends BuildlessAutoDisposeAsyncNotifier<void> {
+abstract class _$ReadViewModel
+    extends BuildlessAutoDisposeAsyncNotifier<ReadState> {
   late final Chapter chapter1;
   late final BookSourceEntry bookSource;
 
-  FutureOr<void> build({
+  FutureOr<ReadState> build({
     required Chapter chapter1,
     required BookSourceEntry bookSource,
   });
@@ -52,7 +53,7 @@ const readViewModelProvider = ReadViewModelFamily();
 /// 7-bit
 ///
 /// Copied from [ReadViewModel].
-class ReadViewModelFamily extends Family<AsyncValue<void>> {
+class ReadViewModelFamily extends Family<AsyncValue<ReadState>> {
   /// 阅读页面
   /// 时间 2024-10-10
   /// 7-bit
@@ -106,7 +107,7 @@ class ReadViewModelFamily extends Family<AsyncValue<void>> {
 ///
 /// Copied from [ReadViewModel].
 class ReadViewModelProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<ReadViewModel, void> {
+    extends AutoDisposeAsyncNotifierProviderImpl<ReadViewModel, ReadState> {
   /// 阅读页面
   /// 时间 2024-10-10
   /// 7-bit
@@ -147,7 +148,7 @@ class ReadViewModelProvider
   final BookSourceEntry bookSource;
 
   @override
-  FutureOr<void> runNotifierBuild(
+  FutureOr<ReadState> runNotifierBuild(
     covariant ReadViewModel notifier,
   ) {
     return notifier.build(
@@ -176,7 +177,8 @@ class ReadViewModelProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<ReadViewModel, void> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<ReadViewModel, ReadState>
+      createElement() {
     return _ReadViewModelProviderElement(this);
   }
 
@@ -197,7 +199,7 @@ class ReadViewModelProvider
   }
 }
 
-mixin ReadViewModelRef on AutoDisposeAsyncNotifierProviderRef<void> {
+mixin ReadViewModelRef on AutoDisposeAsyncNotifierProviderRef<ReadState> {
   /// The parameter `chapter1` of this provider.
   Chapter get chapter1;
 
@@ -206,7 +208,7 @@ mixin ReadViewModelRef on AutoDisposeAsyncNotifierProviderRef<void> {
 }
 
 class _ReadViewModelProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<ReadViewModel, void>
+    extends AutoDisposeAsyncNotifierProviderElement<ReadViewModel, ReadState>
     with ReadViewModelRef {
   _ReadViewModelProviderElement(super.provider);
 

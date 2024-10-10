@@ -152,11 +152,10 @@ class NewDetailViewModel extends _$NewDetailViewModel {
 
   List<String?> _getChapterList(String url, String url1, List<String?> list) {
     List<String> resultList = [];
-    final reg = RegExp(
-        r'^((https?|ftp):\/\/)?([a-zA-Z0-9_-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$');
-
     for (var i = 0; i < list.length; i++) {
-      if (!reg.hasMatch(list[i]!)) {
+      if (list[i]!.startsWith("https://") || list[i]!.startsWith("http://")) {
+        return list;
+      } else {
         if (!list[i]!.startsWith("/")) {
           // 去除baseUrl末尾的斜杠（如果有）
           if (url.endsWith('/')) {
@@ -191,8 +190,6 @@ class NewDetailViewModel extends _$NewDetailViewModel {
 
           resultList.add("$url1/${list[i] ?? ""}");
         }
-      } else {
-        return list;
       }
     }
     return resultList;

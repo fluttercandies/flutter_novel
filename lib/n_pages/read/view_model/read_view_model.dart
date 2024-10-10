@@ -23,12 +23,45 @@ class ReadViewModel extends _$ReadViewModel {
 
   /// url
   late Chapter chapter;
+
+  late BookSourceEntry _bookSourceEntry;
   @override
-  Future<void> build({
+  Future<ReadState> build({
     required Chapter chapter1,
     required BookSourceEntry bookSource,
   }) async {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
     chapter = chapter1;
+    _bookSourceEntry = bookSource;
+    _initData(detailUrl: chapter1.chapterUrl ?? "");
+    return readState;
+  }
+
+  void _initData({
+    required String detailUrl,
+  }) async {
+    try {
+      final resultData = await NewNovelHttp().request(detailUrl);
+      final uint8List = resultData.data;
+      resultData.data = ParseSourceRule.parseHtmlDecode(uint8List);
+      final detailBook = ParseSourceRule.parseAllMatches(
+          rule: _bookSourceEntry.ruleContent?.content ?? "",
+          htmlData: resultData.data);
+
+      if (detailBook.isEmpty) {
+        readState.netState = NetState.emptyDataState;
+        state = AsyncData(readState);
+        return;
+      }
+      readState.content = detailBook[0];
+      readState.netState = NetState.dataSuccessState;
+      state = AsyncData(readState);
+      LoggerTools.looger.d(detailBook.toString());
+    } catch (e) {
+      LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
+      // searchState.netState = NetState.error403State;
+      // state = AsyncData(searchState);
+      SmartDialog.showToast(e.toString());
+    }
   }
 }
