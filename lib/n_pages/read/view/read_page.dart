@@ -14,7 +14,9 @@ import 'package:novel_flutter_bit/n_pages/read/state/read_state.dart';
 import 'package:novel_flutter_bit/n_pages/read/view_model/read_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
+import 'package:novel_flutter_bit/pages/novel/widget/show_slider_sheet.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
+import 'package:novel_flutter_bit/theme/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
@@ -62,6 +64,8 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   /// 详情页 数据
   late NewDetailViewModel _detailViewModel;
 
+  /// 主题样式
+  late ThemeStyleProvider _themeStyleProvider;
   @override
   void initState() {
     super.initState();
@@ -72,6 +76,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     _detailViewModel = ref.read(NewDetailViewModelProvider(
             detailUrl: widget.searchEntry.url ?? "", bookSource: widget.source)
         .notifier);
+    _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
   }
 
   @override
@@ -169,6 +174,27 @@ class _ReadPageState extends ConsumerState<ReadPage> {
       _controller.animateTo(index.toDouble() * 50 - height,
           duration: duration, curve: Curves.easeIn);
     });
+  }
+
+  /// 打开设置
+  _openSetting() async {
+    await showModalBottomSheet(
+        backgroundColor: Colors.white,
+        context: context,
+        builder: (BuildContext context) {
+          return ShowSliderSheet(
+              color: _themeData.primaryColor,
+              value: NovelReadState.size,
+              onChanged: (size) => setState(() {
+                    NovelReadState.size = size;
+                    NovelReadState.isChange = true;
+                  }),
+              themeStyleProvider: _themeStyleProvider);
+        });
+    if (NovelReadState.isChange) {
+      await PreferencesDB.instance.setNovelFontSize(NovelReadState.size);
+      NovelReadState.isChange = false;
+    }
   }
 
   @override
@@ -360,7 +386,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
                 //     text: isDark ? "夜间" : "白天",
                 //     onPressed: _themeStyleProvider.switchTheme),
                 _buildBottomAppBarItem(
-                    icon: Icons.settings, text: "设置", onPressed: () {})
+                    icon: Icons.settings, text: "设置", onPressed: _openSetting)
               ],
             ),
           ),
