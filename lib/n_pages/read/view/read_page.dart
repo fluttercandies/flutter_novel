@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
@@ -116,6 +117,24 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     context.router.replace(ReadRoute(
       searchEntry: widget.searchEntry,
       chapter: data,
+      source: widget.source,
+    ));
+  }
+
+  /// 小说页面切换 下一页
+  _changeNovelToNext() {
+    final index = _detailViewModel.getReadIndex();
+    if ((_detailViewModel.detailState.detailBookEntry?.chapter?.length ?? 0) <
+        index + 1) {
+      SmartDialog.showToast("已经是最后一章咯");
+      return;
+    }
+    final data =
+        _detailViewModel.detailState.detailBookEntry?.chapter?[index + 1];
+    _detailViewModel.setReadIndex(data ?? widget.chapter);
+    context.router.replace(ReadRoute(
+      searchEntry: widget.searchEntry,
+      chapter: data!,
       source: widget.source,
     ));
   }
@@ -314,7 +333,9 @@ class _ReadPageState extends ConsumerState<ReadPage> {
                 _buildBottomAppBarItem(
                     icon: NovelIcon.backward, text: "上一页", onPressed: () {}),
                 _buildBottomAppBarItem(
-                    icon: NovelIcon.forward, text: "下一页", onPressed: () {}),
+                    icon: NovelIcon.forward,
+                    text: "下一页",
+                    onPressed: _changeNovelToNext),
                 // _buildBottomAppBarItem(
                 //     icon: isDark ? Icons.nightlight : Icons.wb_sunny,
                 //     text: isDark ? "夜间" : "白天",
