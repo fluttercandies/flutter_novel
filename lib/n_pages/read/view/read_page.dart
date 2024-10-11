@@ -24,6 +24,7 @@ import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/net_state_tools.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 @RoutePage()
 class ReadPage extends ConsumerStatefulWidget {
@@ -262,20 +263,36 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   /// 构建成功
   _buildSuccess({required ReadState value, required TextStyle style}) {
     return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: _isShow,
-      child: Center(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: SingleChildScrollView(
-              padding: 20.padding,
-              child: ExtendedText.rich(TextSpan(children: [
-                _specialTextSpanBuilder.build(value.content ?? '',
-                    textStyle: style)
-              ]))),
-        ),
-      ),
-    );
+        behavior: HitTestBehavior.opaque,
+        onTap: _isShow,
+        child: Center(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: SingleChildScrollView(
+                padding: 20.padding,
+                child: ExtendedText.rich(TextSpan(children: [
+                  _specialTextSpanBuilder.build(value.content ?? '',
+                      textStyle: style)
+                ]))),
+          ),
+        )
+        // CarouselSlider(
+        //   items: List.generate(3, (index) {
+        //     return Center(
+        //       child: Align(
+        //         alignment: Alignment.topCenter,
+        //         child: SingleChildScrollView(
+        //             padding: 20.padding,
+        //             child: ExtendedText.rich(TextSpan(children: [
+        //               _specialTextSpanBuilder.build(value.content ?? '',
+        //                   textStyle: style)
+        //             ]))),
+        //       ),
+        //     );
+        //   }),
+        //   options: CarouselOptions(height: double.infinity),
+        // ),
+        );
   }
 
   /// 侧边栏构建抽屉
