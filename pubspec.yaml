@@ -57,6 +57,7 @@ dependencies:
   flutter_gbk2utf8: ^1.0.1
   html: ^0.15.4
   assets_generator: ^3.0.5
+  carousel_slider: ^5.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
