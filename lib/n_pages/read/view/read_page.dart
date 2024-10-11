@@ -139,6 +139,23 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     ));
   }
 
+  /// 小说页面切换 上一章节
+  _changeNovelToBack() {
+    final index = _detailViewModel.getReadIndex();
+    if (index == 0) {
+      SmartDialog.showToast("已经是第一章咯");
+      return;
+    }
+    final data =
+        _detailViewModel.detailState.detailBookEntry?.chapter?[index - 1];
+    _detailViewModel.setReadIndex(data ?? widget.chapter);
+    context.router.replace(ReadRoute(
+      searchEntry: widget.searchEntry,
+      chapter: data!,
+      source: widget.source,
+    ));
+  }
+
   /// 打开抽屉
   void _openDrawer({Duration duration = const Duration(milliseconds: 300)}) {
     scaffoldKey.currentState?.openDrawer();
@@ -331,7 +348,9 @@ class _ReadPageState extends ConsumerState<ReadPage> {
                     onPressed: // 使用 scaffoldKey 当前 scaffold 打开抽屉
                         _openDrawer),
                 _buildBottomAppBarItem(
-                    icon: NovelIcon.backward, text: "上一页", onPressed: () {}),
+                    icon: NovelIcon.backward,
+                    text: "上一页",
+                    onPressed: _changeNovelToBack),
                 _buildBottomAppBarItem(
                     icon: NovelIcon.forward,
                     text: "下一页",
