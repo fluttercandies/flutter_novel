@@ -126,8 +126,10 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
       bookSource: widget.bookSourceEntry,
     ).notifier);
     _detailViewModel.setReadIndex(chapter);
-    context.router
-        .push(ReadRoute(chapter: chapter, source: model.bookSourceEntry));
+    context.router.push(ReadRoute(
+        chapter: chapter,
+        source: model.bookSourceEntry,
+        searchEntry: widget.searchEntry));
   }
 
   @override

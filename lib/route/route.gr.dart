@@ -319,6 +319,7 @@ class NovelRouteArgs {
 class ReadRoute extends _i10.PageRouteInfo<ReadRouteArgs> {
   ReadRoute({
     _i11.Key? key,
+    required _i13.SearchEntry searchEntry,
     required _i15.Chapter chapter,
     required _i14.BookSourceEntry source,
     List<_i10.PageRouteInfo>? children,
@@ -326,6 +327,7 @@ class ReadRoute extends _i10.PageRouteInfo<ReadRouteArgs> {
           ReadRoute.name,
           args: ReadRouteArgs(
             key: key,
+            searchEntry: searchEntry,
             chapter: chapter,
             source: source,
           ),
@@ -340,6 +342,7 @@ class ReadRoute extends _i10.PageRouteInfo<ReadRouteArgs> {
       final args = data.argsAs<ReadRouteArgs>();
       return _i8.ReadPage(
         key: args.key,
+        searchEntry: args.searchEntry,
         chapter: args.chapter,
         source: args.source,
       );
@@ -350,11 +353,14 @@ class ReadRoute extends _i10.PageRouteInfo<ReadRouteArgs> {
 class ReadRouteArgs {
   const ReadRouteArgs({
     this.key,
+    required this.searchEntry,
     required this.chapter,
     required this.source,
   });
 
   final _i11.Key? key;
+
+  final _i13.SearchEntry searchEntry;
 
   final _i15.Chapter chapter;
 
@@ -362,7 +368,7 @@ class ReadRouteArgs {
 
   @override
   String toString() {
-    return 'ReadRouteArgs{key: $key, chapter: $chapter, source: $source}';
+    return 'ReadRouteArgs{key: $key, searchEntry: $searchEntry, chapter: $chapter, source: $source}';
   }
 }
 

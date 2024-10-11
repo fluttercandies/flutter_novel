@@ -1,13 +1,9 @@
 // ignore_for_file: control_flow_in_finally
 
-import 'dart:convert';
-
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
-import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
-import 'package:novel_flutter_bit/n_pages/detail/state/detail_state.dart';
 import 'package:novel_flutter_bit/n_pages/read/state/read_state.dart';
 import 'package:novel_flutter_bit/net/new_novel_http.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
