@@ -132,6 +132,17 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
         searchEntry: widget.searchEntry));
   }
 
+  // 继续阅读
+  _onKeepReadNovelPage() async {
+    int index = _detailViewModel.getReadIndex();
+    var data = _detailViewModel.detailState.detailBookEntry?.chapter?[index];
+    _detailViewModel.setReadIndex(data ?? Chapter());
+    await context.router.push(ReadRoute(
+        chapter: data ?? Chapter(),
+        source: widget.bookSourceEntry,
+        searchEntry: widget.searchEntry));
+  }
+
   @override
   Widget build(BuildContext context) {
     final newDetailViewModel = ref.watch(NewDetailViewModelProvider(
@@ -156,8 +167,7 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
                 ),
                 body: _buildSuccess(value: value),
                 bottomNavigationBar: _buildBottomAppbar(
-
-                    //readOnTap: _onKeepReadNovelPage,
+                    readOnTap: _onKeepReadNovelPage,
                     collectOnTap: () =>
                         _setLikeNovel(_detailViewModel.chapter)),
                 floatingActionButton: _buildFloatingActionButton());
@@ -356,7 +366,10 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
                       children: [
                         Icon(Icons.bookmark_add,
                             color: _themeData.scaffoldBackgroundColor),
-                        Text("开始阅读",
+                        Text(
+                            _detailViewModel.getReadIndex() > 0
+                                ? "继续阅读"
+                                : "开始阅读",
                             style: TextStyle(
                                 fontSize: 17,
                                 color: _themeData.scaffoldBackgroundColor)),
