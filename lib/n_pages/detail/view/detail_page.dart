@@ -120,16 +120,25 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
   }
 
   // 跳转阅读页
-  _onReadPage(Chapter chapter) async {
+  _onReadPage(int index) async {
     final model = ref.read(NewDetailViewModelProvider(
       detailUrl: widget.searchEntry.url ?? "",
       bookSource: widget.bookSourceEntry,
     ).notifier);
-    _detailViewModel.setReadIndex(chapter);
+
+    final chapter = model.detailState.detailBookEntry!.chapter!;
+    _detailViewModel.setReadIndex(chapter[index]);
+    List<Chapter> chapterList = [];
+    if (index > 0) {
+      chapterList = [chapter[index - 1], chapter[index], chapter[index + 1]];
+    } else {
+      chapterList = [chapter[index], chapter[index], chapter[index + 1]];
+    }
     context.router.push(ReadRoute(
-        chapter: chapter,
+        chapter: chapter[index],
         source: model.bookSourceEntry,
-        searchEntry: widget.searchEntry));
+        searchEntry: widget.searchEntry,
+        chapterList: chapterList));
   }
 
   // 继续阅读
@@ -137,10 +146,20 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
     int index = _detailViewModel.getReadIndex();
     var data = _detailViewModel.detailState.detailBookEntry?.chapter?[index];
     _detailViewModel.setReadIndex(data ?? Chapter());
+
+    final chapter = _detailViewModel.detailState.detailBookEntry!.chapter!;
+    _detailViewModel.setReadIndex(chapter[index]);
+    List<Chapter> chapterList = [];
+    if (index > 0) {
+      chapterList = [chapter[index - 1], chapter[index], chapter[index + 1]];
+    } else {
+      chapterList = [chapter[index], chapter[index], chapter[index + 1]];
+    }
     await context.router.push(ReadRoute(
         chapter: data ?? Chapter(),
         source: widget.bookSourceEntry,
-        searchEntry: widget.searchEntry));
+        searchEntry: widget.searchEntry,
+        chapterList: chapterList));
   }
 
   @override
@@ -393,7 +412,7 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
             value.detailBookEntry?.chapter?[index].chapterName;
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () => _onReadPage(value.detailBookEntry!.chapter![index]),
+          onTap: () => _onReadPage(index),
           child: _buildSliverItem(
               "${value.detailBookEntry?.chapter?[index].chapterName}",
               readIndex),

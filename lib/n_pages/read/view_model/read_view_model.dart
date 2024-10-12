@@ -1,5 +1,6 @@
 // ignore_for_file: control_flow_in_finally
 
+import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
@@ -25,14 +26,15 @@ class ReadViewModel extends _$ReadViewModel {
   late BookSourceEntry _bookSourceEntry;
 
   @override
-  Future<ReadState> build({
-    required Chapter chapter1,
-    required BookSourceEntry bookSource,
-  }) async {
+  Future<ReadState> build(
+      {required Chapter chapter1,
+      required BookSourceEntry bookSource,
+      List<Chapter>? chapterList}) async {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
     chapter = chapter1;
     _bookSourceEntry = bookSource;
     _initData(detailUrl: chapter1.chapterUrl ?? "");
+    _initListData(chapterList: chapterList);
     return readState;
   }
 
@@ -50,6 +52,39 @@ class ReadViewModel extends _$ReadViewModel {
       readState.content = data;
       state = AsyncData(readState);
       // LoggerTools.looger.d(data);
+    } catch (e) {
+      LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
+      // searchState.netState = NetState.error403State;
+      // state = AsyncData(searchState);
+      SmartDialog.showToast(e.toString());
+    }
+  }
+
+  void _initListData({
+    required List<Chapter>? chapterList,
+  }) async {
+    try {
+      if (chapterList == null) {
+        LoggerTools.looger.d("chapterList 空的哇 就不执行后面的代码了");
+        return;
+      }
+      final List<String> strList = [];
+      for (var i = 0; i < chapterList.length; i++) {
+        await Future.delayed(Durations.long3);
+        final data = await _initDataAll(
+            detailUrl: chapterList[i].chapterUrl ?? "", str: "");
+        strList.add(data);
+      }
+      if (strList.isEmpty) {
+        // readState.netState = NetState.emptyDataState;
+        // state = AsyncData(readState);
+        LoggerTools.looger.d("空的哇");
+        return;
+      }
+      // readState.netState = NetState.dataSuccessState;
+      // readState.content = data;
+      // state = AsyncData(readState);
+      LoggerTools.looger.d(strList.toString());
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
       // searchState.netState = NetState.error403State;

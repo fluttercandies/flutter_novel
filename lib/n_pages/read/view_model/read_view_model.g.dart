@@ -6,7 +6,7 @@ part of 'read_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$readViewModelHash() => r'f1e40cdda5c678431761a173decbe542fab7a7bf';
+String _$readViewModelHash() => r'091654eeed96a6b329ddf6d57b63550601c5ebbb';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -33,10 +33,12 @@ abstract class _$ReadViewModel
     extends BuildlessAutoDisposeAsyncNotifier<ReadState> {
   late final Chapter chapter1;
   late final BookSourceEntry bookSource;
+  late final List<Chapter>? chapterList;
 
   FutureOr<ReadState> build({
     required Chapter chapter1,
     required BookSourceEntry bookSource,
+    List<Chapter>? chapterList,
   });
 }
 
@@ -69,10 +71,12 @@ class ReadViewModelFamily extends Family<AsyncValue<ReadState>> {
   ReadViewModelProvider call({
     required Chapter chapter1,
     required BookSourceEntry bookSource,
+    List<Chapter>? chapterList,
   }) {
     return ReadViewModelProvider(
       chapter1: chapter1,
       bookSource: bookSource,
+      chapterList: chapterList,
     );
   }
 
@@ -83,6 +87,7 @@ class ReadViewModelFamily extends Family<AsyncValue<ReadState>> {
     return call(
       chapter1: provider.chapter1,
       bookSource: provider.bookSource,
+      chapterList: provider.chapterList,
     );
   }
 
@@ -116,10 +121,12 @@ class ReadViewModelProvider
   ReadViewModelProvider({
     required Chapter chapter1,
     required BookSourceEntry bookSource,
+    List<Chapter>? chapterList,
   }) : this._internal(
           () => ReadViewModel()
             ..chapter1 = chapter1
-            ..bookSource = bookSource,
+            ..bookSource = bookSource
+            ..chapterList = chapterList,
           from: readViewModelProvider,
           name: r'readViewModelProvider',
           debugGetCreateSourceHash:
@@ -131,6 +138,7 @@ class ReadViewModelProvider
               ReadViewModelFamily._allTransitiveDependencies,
           chapter1: chapter1,
           bookSource: bookSource,
+          chapterList: chapterList,
         );
 
   ReadViewModelProvider._internal(
@@ -142,10 +150,12 @@ class ReadViewModelProvider
     required super.from,
     required this.chapter1,
     required this.bookSource,
+    required this.chapterList,
   }) : super.internal();
 
   final Chapter chapter1;
   final BookSourceEntry bookSource;
+  final List<Chapter>? chapterList;
 
   @override
   FutureOr<ReadState> runNotifierBuild(
@@ -154,6 +164,7 @@ class ReadViewModelProvider
     return notifier.build(
       chapter1: chapter1,
       bookSource: bookSource,
+      chapterList: chapterList,
     );
   }
 
@@ -164,7 +175,8 @@ class ReadViewModelProvider
       override: ReadViewModelProvider._internal(
         () => create()
           ..chapter1 = chapter1
-          ..bookSource = bookSource,
+          ..bookSource = bookSource
+          ..chapterList = chapterList,
         from: from,
         name: null,
         dependencies: null,
@@ -172,6 +184,7 @@ class ReadViewModelProvider
         debugGetCreateSourceHash: null,
         chapter1: chapter1,
         bookSource: bookSource,
+        chapterList: chapterList,
       ),
     );
   }
@@ -186,7 +199,8 @@ class ReadViewModelProvider
   bool operator ==(Object other) {
     return other is ReadViewModelProvider &&
         other.chapter1 == chapter1 &&
-        other.bookSource == bookSource;
+        other.bookSource == bookSource &&
+        other.chapterList == chapterList;
   }
 
   @override
@@ -194,6 +208,7 @@ class ReadViewModelProvider
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, chapter1.hashCode);
     hash = _SystemHash.combine(hash, bookSource.hashCode);
+    hash = _SystemHash.combine(hash, chapterList.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -205,6 +220,9 @@ mixin ReadViewModelRef on AutoDisposeAsyncNotifierProviderRef<ReadState> {
 
   /// The parameter `bookSource` of this provider.
   BookSourceEntry get bookSource;
+
+  /// The parameter `chapterList` of this provider.
+  List<Chapter>? get chapterList;
 }
 
 class _ReadViewModelProviderElement
@@ -217,6 +235,9 @@ class _ReadViewModelProviderElement
   @override
   BookSourceEntry get bookSource =>
       (origin as ReadViewModelProvider).bookSource;
+  @override
+  List<Chapter>? get chapterList =>
+      (origin as ReadViewModelProvider).chapterList;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -32,10 +32,12 @@ class ReadPage extends ConsumerStatefulWidget {
       {super.key,
       required this.searchEntry,
       required this.chapter,
-      required this.source});
+      required this.source,
+      this.chapterList});
   final Chapter chapter;
   final BookSourceEntry source;
   final SearchEntry searchEntry;
+  final List<Chapter>? chapterList;
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ReadPageState();
 }
@@ -202,7 +204,9 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   Widget build(BuildContext context) {
     _buildInitData();
     final readViewModel = ref.watch(readViewModelProvider(
-        chapter1: widget.chapter, bookSource: widget.source));
+        chapter1: widget.chapter,
+        bookSource: widget.source,
+        chapterList: widget.chapterList));
     return Scaffold(
       key: scaffoldKey,
       appBar: _buildAppBar(
@@ -263,36 +267,38 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   /// 构建成功
   _buildSuccess({required ReadState value, required TextStyle style}) {
     return GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: _isShow,
-        child: Center(
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: SingleChildScrollView(
-                padding: 20.padding,
-                child: ExtendedText.rich(TextSpan(children: [
-                  _specialTextSpanBuilder.build(value.content ?? '',
-                      textStyle: style)
-                ]))),
-          ),
-        )
-        // CarouselSlider(
-        //   items: List.generate(3, (index) {
-        //     return Center(
-        //       child: Align(
-        //         alignment: Alignment.topCenter,
-        //         child: SingleChildScrollView(
-        //             padding: 20.padding,
-        //             child: ExtendedText.rich(TextSpan(children: [
-        //               _specialTextSpanBuilder.build(value.content ?? '',
-        //                   textStyle: style)
-        //             ]))),
-        //       ),
-        //     );
-        //   }),
-        //   options: CarouselOptions(height: double.infinity),
-        // ),
-        );
+      behavior: HitTestBehavior.opaque,
+      onTap: _isShow,
+      child:
+          //  Center(
+          //   child: Align(
+          //     alignment: Alignment.topCenter,
+          //     child: SingleChildScrollView(
+          //         padding: 20.padding,
+          //         child: ExtendedText.rich(TextSpan(children: [
+          //           _specialTextSpanBuilder.build(value.content ?? '',
+          //               textStyle: style)
+          //         ]))),
+          //   ),
+          // )
+          CarouselSlider(
+        items: List.generate(3, (index) {
+          return Center(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SingleChildScrollView(
+                  padding: 20.padding,
+                  child: ExtendedText.rich(TextSpan(children: [
+                    _specialTextSpanBuilder.build(value.content ?? '',
+                        textStyle: style)
+                  ]))),
+            ),
+          );
+        }),
+        options: CarouselOptions(
+            height: double.infinity, viewportFraction: 1, enlargeFactor: .9),
+      ),
+    );
   }
 
   /// 侧边栏构建抽屉
