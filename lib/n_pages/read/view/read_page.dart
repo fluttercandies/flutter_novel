@@ -1,5 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +31,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 @RoutePage()
 class ReadPage extends ConsumerStatefulWidget {
-  const ReadPage(
+  ReadPage(
       {super.key,
       required this.searchEntry,
       required this.chapter,
       required this.source,
       this.chapterList});
-  final Chapter chapter;
+  late Chapter chapter;
   final BookSourceEntry source;
   final SearchEntry searchEntry;
   final List<Chapter>? chapterList;
@@ -69,13 +72,19 @@ class _ReadPageState extends ConsumerState<ReadPage> {
 
   /// 主题样式
   late ThemeStyleProvider _themeStyleProvider;
+
+  late CarouselSliderController _carouselSliderController;
+
+  late Chapter _chapter;
   @override
   void initState() {
     super.initState();
     if (Platform.isIOS) {
       appbarHeight = 80;
     }
+    _carouselSliderController = CarouselSliderController();
     _initFontSize();
+    _chapter = widget.chapter;
     _detailViewModel = ref.read(NewDetailViewModelProvider(
             detailUrl: widget.searchEntry.url ?? "", bookSource: widget.source)
         .notifier);
@@ -253,9 +262,11 @@ class _ReadPageState extends ConsumerState<ReadPage> {
           child: SingleChildScrollView(
             child: AppBar(
               leading: const AutoLeadingButton(),
-              title: Text(
-                widget.chapter.chapterName ?? " 暂无标题",
-                style: const TextStyle(fontSize: 20),
+              title: FadeInRight(
+                child: Text(
+                  _chapter.chapterName ?? " 暂无标题",
+                  style: const TextStyle(fontSize: 20),
+                ),
               ),
             ),
           ),
@@ -282,21 +293,34 @@ class _ReadPageState extends ConsumerState<ReadPage> {
           //   ),
           // )
           CarouselSlider(
-        items: List.generate(3, (index) {
+        carouselController: _carouselSliderController,
+        items: List.generate(value.listContent?.length ?? 0, (index) {
           return Center(
             child: Align(
               alignment: Alignment.topCenter,
               child: SingleChildScrollView(
                   padding: 20.padding,
                   child: ExtendedText.rich(TextSpan(children: [
-                    _specialTextSpanBuilder.build(value.content ?? '',
+                    _specialTextSpanBuilder.build(
+                        value.listContent?[index] ?? '',
                         textStyle: style)
                   ]))),
             ),
           );
         }),
         options: CarouselOptions(
-            height: double.infinity, viewportFraction: 1, enlargeFactor: .9),
+            onPageChanged: (index, _) {
+              final data = ref.read(readViewModelProvider(
+                      chapter1: widget.chapter,
+                      bookSource: widget.source,
+                      chapterList: widget.chapterList)
+                  .notifier);
+              _chapter = data.chapterList![index];
+              setState(() {});
+            },
+            height: double.infinity,
+            viewportFraction: 1,
+            enlargeFactor: .9),
       ),
     );
   }

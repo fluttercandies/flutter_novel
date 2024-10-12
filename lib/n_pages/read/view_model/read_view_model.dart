@@ -33,7 +33,7 @@ class ReadViewModel extends _$ReadViewModel {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
     chapter = chapter1;
     _bookSourceEntry = bookSource;
-    _initData(detailUrl: chapter1.chapterUrl ?? "");
+    //_initData(detailUrl: chapter1.chapterUrl ?? "");
     _initListData(chapterList: chapterList);
     return readState;
   }
@@ -81,9 +81,9 @@ class ReadViewModel extends _$ReadViewModel {
         LoggerTools.looger.d("空的哇");
         return;
       }
-      // readState.netState = NetState.dataSuccessState;
-      // readState.content = data;
-      // state = AsyncData(readState);
+      readState.netState = NetState.dataSuccessState;
+      readState.listContent = strList;
+      state = AsyncData(readState);
       LoggerTools.looger.d(strList.toString());
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
