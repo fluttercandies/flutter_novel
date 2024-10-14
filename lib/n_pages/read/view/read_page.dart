@@ -20,6 +20,7 @@ import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
 import 'package:novel_flutter_bit/pages/novel/widget/show_slider_sheet.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/theme/theme_style.dart';
+import 'package:novel_flutter_bit/tools/debouncer.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
@@ -76,6 +77,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   late CarouselSliderController _carouselSliderController;
 
   late Chapter _chapter;
+
   @override
   void initState() {
     super.initState();
@@ -215,7 +217,8 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     final readViewModel = ref.watch(readViewModelProvider(
         chapter1: widget.chapter,
         bookSource: widget.source,
-        chapterList: widget.chapterList));
+        chapterList: widget.chapterList,
+        detailView: _detailViewModel));
     return Scaffold(
       key: scaffoldKey,
       appBar: _buildAppBar(
@@ -275,6 +278,8 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     );
   }
 
+  int _currentIndex = 1;
+
   /// 构建成功
   _buildSuccess({required ReadState value, required TextStyle style}) {
     return GestureDetector(
@@ -309,17 +314,50 @@ class _ReadPageState extends ConsumerState<ReadPage> {
           );
         }),
         options: CarouselOptions(
-            onPageChanged: (index, _) {
-              final data = ref.read(readViewModelProvider(
-                      chapter1: widget.chapter,
-                      bookSource: widget.source,
-                      chapterList: widget.chapterList)
-                  .notifier);
-              _chapter = data.chapterList![index];
-              setState(() {});
+            onPageChanged: (index, c) async {
+              if (c.name == 'controller') {
+                return;
+              }
+              // if (index == 2 && _currentIndex == 0) {
+              //   LoggerTools.looger.d("左划 $index || $_currentIndex");
+              //   _currentIndex = index;
+              // } else if (index == 0 && _currentIndex == 2) {
+              //   LoggerTools.looger.d("右划 $index || $_currentIndex");
+              //   _currentIndex = index;
+              // } else if (index > _currentIndex) {
+              //   LoggerTools.looger.d("右划 $index || $_currentIndex");
+              //   _currentIndex = index;
+              // } else if (index < _currentIndex) {
+              //   LoggerTools.looger.d("左划 $index || $_currentIndex");
+              //   _currentIndex = index;
+              // }
+              Debouncer debouncer = Debouncer();
+              debouncer.debounce(() async {
+                //SmartDialog.showLoading(msg: '加载中...');
+                final data = ref.read(readViewModelProvider(
+                        chapter1: widget.chapter,
+                        bookSource: widget.source,
+                        chapterList: widget.chapterList,
+                        detailView: _detailViewModel)
+                    .notifier);
+                LoggerTools.looger.d("开始切换页面 ${c.name}");
+                final index1 = data.getReadIndex(_chapter);
+                LoggerTools.looger.d("右划 $index || $_currentIndex");
+                _currentIndex = index;
+                LoggerTools.looger.d(" _currentIndex=$_currentIndex");
+                await data.refreshDataNext(index: index1);
+                _chapter = data.readState.chapterList![1];
+                _carouselSliderController.jumpToPage(1);
+                //SmartDialog.dismiss();
+                setState(() {});
+              }, Durations.long2);
+              //LoggerTools.looger.d("开始切换页面");
+
+              //_detailViewModel.setReadIndex(_chapter);
             },
             height: double.infinity,
             viewportFraction: 1,
+            initialPage: 1,
             enlargeFactor: .9),
       ),
     );

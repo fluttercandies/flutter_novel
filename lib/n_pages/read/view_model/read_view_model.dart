@@ -5,6 +5,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
+import 'package:novel_flutter_bit/n_pages/detail/view_model/detail_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/read/state/read_state.dart';
 import 'package:novel_flutter_bit/net/new_novel_http.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
@@ -25,38 +26,75 @@ class ReadViewModel extends _$ReadViewModel {
 
   late BookSourceEntry _bookSourceEntry;
 
+  /// 所有章节
+  late NewDetailViewModel? detailViewModel;
+
   @override
   Future<ReadState> build(
       {required Chapter chapter1,
       required BookSourceEntry bookSource,
+      NewDetailViewModel? detailView,
       List<Chapter>? chapterList}) async {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
     chapter = chapter1;
     _bookSourceEntry = bookSource;
+    detailViewModel = detailView;
+    readState.chapterList = chapterList;
     //_initData(detailUrl: chapter1.chapterUrl ?? "");
     _initListData(chapterList: chapterList);
     return readState;
   }
 
-  void _initData({
+  /// 获取阅读索引
+  int getReadIndex(Chapter chapter1) {
+    final l =
+        (detailViewModel?.detailState.detailBookEntry?.chapter?.length ?? 0);
+    for (var i = 0; i < l; i++) {
+      var element =
+          detailViewModel?.detailState.detailBookEntry?.chapter?[i].chapterName;
+      if (element == chapter1.chapterName) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+  Future<String?> _initData({
     required String detailUrl,
   }) async {
     try {
       final data = await _initDataAll(detailUrl: detailUrl, str: "");
       if (data == "") {
-        readState.netState = NetState.emptyDataState;
-        state = AsyncData(readState);
-        return;
+        return null;
       }
-      readState.netState = NetState.dataSuccessState;
-      readState.content = data;
-      state = AsyncData(readState);
+      return data;
       // LoggerTools.looger.d(data);
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
       // searchState.netState = NetState.error403State;
       // state = AsyncData(searchState);
       SmartDialog.showToast(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> refreshDataNext({
+    required int index,
+  }) async {
+    try {
+      final chanper =
+          detailViewModel?.detailState.detailBookEntry?.chapter?[index + 2];
+      final data = await _initData(detailUrl: chanper?.chapterUrl ?? "");
+      if (data != null) {
+        readState.chapterList?.removeAt(0);
+        readState.chapterList?.add(chanper ?? Chapter());
+        readState.listContent?.removeAt(0);
+        readState.listContent?.add(data);
+        LoggerTools.looger.i("===================");
+        //state = AsyncData(readState);
+      }
+    } catch (e) {
+      LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
     }
   }
 
