@@ -98,6 +98,26 @@ class ReadViewModel extends _$ReadViewModel {
     }
   }
 
+  Future<void> refreshDataBack({
+    required int index,
+  }) async {
+    try {
+      final chanper =
+          detailViewModel?.detailState.detailBookEntry?.chapter?[index - 2];
+      final data = await _initData(detailUrl: chanper?.chapterUrl ?? "");
+      if (data != null) {
+        readState.chapterList?.removeAt(2);
+        readState.chapterList?.insert(0, chanper ?? Chapter());
+        readState.listContent?.removeAt(2);
+        readState.listContent?.insert(0, data);
+        LoggerTools.looger.i("===================");
+        //state = AsyncData(readState);
+      }
+    } catch (e) {
+      LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
+    }
+  }
+
   void _initListData({
     required List<Chapter>? chapterList,
   }) async {
@@ -150,7 +170,7 @@ class ReadViewModel extends _$ReadViewModel {
           _getChapterList(_bookSourceEntry.bookSourceUrl ?? "", detailNextBook);
 
       str += detailBook[0] ?? "";
-      LoggerTools.looger.d(str);
+      //LoggerTools.looger.d(str);
       if (url.isEmpty) {
         return str;
       }

@@ -318,39 +318,25 @@ class _ReadPageState extends ConsumerState<ReadPage> {
               if (c.name == 'controller') {
                 return;
               }
-              // if (index == 2 && _currentIndex == 0) {
-              //   LoggerTools.looger.d("左划 $index || $_currentIndex");
-              //   _currentIndex = index;
-              // } else if (index == 0 && _currentIndex == 2) {
-              //   LoggerTools.looger.d("右划 $index || $_currentIndex");
-              //   _currentIndex = index;
-              // } else if (index > _currentIndex) {
-              //   LoggerTools.looger.d("右划 $index || $_currentIndex");
-              //   _currentIndex = index;
-              // } else if (index < _currentIndex) {
-              //   LoggerTools.looger.d("左划 $index || $_currentIndex");
-              //   _currentIndex = index;
-              // }
-              Debouncer debouncer = Debouncer();
-              debouncer.debounce(() async {
-                //SmartDialog.showLoading(msg: '加载中...');
-                final data = ref.read(readViewModelProvider(
-                        chapter1: widget.chapter,
-                        bookSource: widget.source,
-                        chapterList: widget.chapterList,
-                        detailView: _detailViewModel)
-                    .notifier);
-                LoggerTools.looger.d("开始切换页面 ${c.name}");
-                final index1 = data.getReadIndex(_chapter);
-                LoggerTools.looger.d("右划 $index || $_currentIndex");
+              if (index == 2 && _currentIndex == 0 ||
+                  index == 0 && _currentIndex == 0) {
+                LoggerTools.looger.d("左划 $index || $_currentIndex");
+                _setBack(index);
                 _currentIndex = index;
-                LoggerTools.looger.d(" _currentIndex=$_currentIndex");
-                await data.refreshDataNext(index: index1);
-                _chapter = data.readState.chapterList![1];
-                _carouselSliderController.jumpToPage(1);
-                //SmartDialog.dismiss();
-                setState(() {});
-              }, Durations.long2);
+              } else if (index == 0 && _currentIndex == 2) {
+                LoggerTools.looger.d("右划 $index || $_currentIndex");
+                _setNext(index);
+                _currentIndex = index;
+              } else if (index > _currentIndex) {
+                LoggerTools.looger.d("右划 $index || $_currentIndex");
+                _setNext(index);
+                _currentIndex = index;
+              } else if (index < _currentIndex) {
+                LoggerTools.looger.d("左划 $index || $_currentIndex");
+                _setBack(index);
+                _currentIndex = index;
+              }
+
               //LoggerTools.looger.d("开始切换页面");
 
               //_detailViewModel.setReadIndex(_chapter);
@@ -361,6 +347,47 @@ class _ReadPageState extends ConsumerState<ReadPage> {
             enlargeFactor: .9),
       ),
     );
+  }
+
+  Debouncer debouncer = Debouncer();
+  _setNext(int index) async {
+    SmartDialog.showLoading(msg: '加载中...');
+    final data = ref.read(readViewModelProvider(
+            chapter1: widget.chapter,
+            bookSource: widget.source,
+            chapterList: widget.chapterList,
+            detailView: _detailViewModel)
+        .notifier);
+    LoggerTools.looger.d("开始切换页面 ");
+    final index1 = data.getReadIndex(_chapter);
+    LoggerTools.looger.d("右划 $index || $_currentIndex");
+    //_currentIndex = index;
+    LoggerTools.looger.d(" _currentIndex=$_currentIndex");
+    await data.refreshDataNext(index: index1);
+    _chapter = data.readState.chapterList![1];
+    _carouselSliderController.jumpToPage(1);
+    SmartDialog.dismiss();
+    setState(() {});
+  }
+
+  _setBack(int index) async {
+    SmartDialog.showLoading(msg: '加载中...');
+    final data = ref.read(readViewModelProvider(
+            chapter1: widget.chapter,
+            bookSource: widget.source,
+            chapterList: widget.chapterList,
+            detailView: _detailViewModel)
+        .notifier);
+    LoggerTools.looger.d("开始切换页面 ");
+    final index1 = data.getReadIndex(_chapter);
+    LoggerTools.looger.d("左划 $index || $_currentIndex");
+    // _currentIndex = index;
+    LoggerTools.looger.d(" _currentIndex=$_currentIndex");
+    await data.refreshDataBack(index: index1);
+    _chapter = data.readState.chapterList![1];
+    _carouselSliderController.jumpToPage(1);
+    SmartDialog.dismiss();
+    setState(() {});
   }
 
   /// 侧边栏构建抽屉
