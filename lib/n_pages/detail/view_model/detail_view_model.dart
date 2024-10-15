@@ -38,6 +38,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
     init();
     bookSourceEntry = bookSource;
     _initData(detailUrl: detailUrl);
+
     return detailState;
   }
 
@@ -57,6 +58,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
       detailState.detailBookEntry = detailBook;
       detailState.netState = NetState.dataSuccessState;
       state = AsyncData(detailState);
+      initReverse();
       LoggerTools.looger.d(detailBook.toString());
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
@@ -196,11 +198,14 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   }
 
   /// 排序
-  onReverse() {
+  initReverse() {
     var data = detailState.detailBookEntry?.chapter?.reversed.toList();
-    detailState.detailBookEntry?.chapter = data;
+    detailState.detailBookEntry?.resetChapter = data;
+    //state = AsyncData(detailState);
+  }
+
+  onReverse() {
     reverse = !reverse;
-    state = AsyncData(detailState);
   }
 
   Map<String, String> extractChapterInfo(String input) {

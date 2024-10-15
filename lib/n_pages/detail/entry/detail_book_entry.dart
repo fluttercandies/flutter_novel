@@ -17,15 +17,15 @@ class DetailBookEntry {
   String? lastChapter;
   String? name;
   List<Chapter>? chapter;
-
-  DetailBookEntry({
-    this.author,
-    this.coverUrl,
-    this.intro,
-    this.lastChapter,
-    this.name,
-    this.chapter,
-  });
+  List<Chapter>? resetChapter;
+  DetailBookEntry(
+      {this.author,
+      this.coverUrl,
+      this.intro,
+      this.lastChapter,
+      this.name,
+      this.chapter,
+      this.resetChapter});
 
   factory DetailBookEntry.fromJson(Map<String, dynamic> json) =>
       DetailBookEntry(

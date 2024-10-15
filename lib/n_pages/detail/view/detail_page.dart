@@ -120,14 +120,15 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
   }
 
   // 跳转阅读页
-  _onReadPage(int index) async {
+  _onReadPage(Chapter data) async {
     final model = ref.read(NewDetailViewModelProvider(
       detailUrl: widget.searchEntry.url ?? "",
       bookSource: widget.bookSourceEntry,
     ).notifier);
 
     final chapter = model.detailState.detailBookEntry!.chapter!;
-    _detailViewModel.setReadIndex(chapter[index]);
+    _detailViewModel.setReadIndex(data);
+    final index = _detailViewModel.getReadIndex();
     List<Chapter> chapterList = [];
     if (index > 0) {
       chapterList = [chapter[index - 1], chapter[index], chapter[index + 1]];
@@ -140,6 +141,8 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
         searchEntry: widget.searchEntry,
         chapterList: chapterList));
     model.init();
+
+    /// 等待动画结束 需要延迟一点时间 刷新页面
     await Future.delayed(Durations.medium1);
     setState(() {});
   }
@@ -164,6 +167,8 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
         searchEntry: widget.searchEntry,
         chapterList: chapterList));
     _detailViewModel.init();
+
+    /// 等待动画结束 需要延迟一点时间 刷新页面
     await Future.delayed(Durations.medium1);
     setState(() {});
   }
@@ -262,7 +267,10 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
                     myColors: _themeData.scaffoldBackgroundColor,
                     brandColor: _themeData.primaryColor,
                     reverse: _detailViewModel.reverse,
-                    onPressed: _detailViewModel.onReverse,
+                    onPressed: () {
+                      _detailViewModel.onReverse();
+                      setState(() {});
+                    },
                     count: value.detailBookEntry?.chapter?.length ?? 0)),
             _buildListElement(value: value)
           ],
@@ -414,15 +422,28 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
   }) {
     return SliverList.builder(
       itemBuilder: (context, index) {
-        bool readIndex = _detailViewModel.chapter.chapterName ==
-            value.detailBookEntry?.chapter?[index].chapterName;
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () => _onReadPage(index),
-          child: _buildSliverItem(
-              "${value.detailBookEntry?.chapter?[index].chapterName}",
-              readIndex),
-        );
+        if (!_detailViewModel.reverse) {
+          bool readIndex = _detailViewModel.chapter.chapterName ==
+              value.detailBookEntry?.chapter?[index].chapterName;
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => _onReadPage(value.detailBookEntry!.chapter![index]),
+            child: _buildSliverItem(
+                "${value.detailBookEntry?.chapter?[index].chapterName}",
+                readIndex),
+          );
+        } else {
+          bool readIndex = _detailViewModel.chapter.chapterName ==
+              value.detailBookEntry?.resetChapter?[index].chapterName;
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () =>
+                _onReadPage(value.detailBookEntry!.resetChapter![index]),
+            child: _buildSliverItem(
+                "${value.detailBookEntry?.resetChapter?[index].chapterName}",
+                readIndex),
+          );
+        }
       },
       itemCount: value.detailBookEntry?.chapter?.length,
     );

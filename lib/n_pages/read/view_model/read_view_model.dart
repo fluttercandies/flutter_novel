@@ -85,6 +85,14 @@ class ReadViewModel extends _$ReadViewModel {
     required int index,
   }) async {
     try {
+      final length =
+          detailViewModel?.detailState.detailBookEntry?.chapter?.length ?? 0;
+      if (index >= length - 2) {
+        readState.chapterList![1] = readState.chapterList![2];
+        readState.listContent![1] = readState.listContent![2];
+        setReadIndex(readState.chapterList![1]);
+        return;
+      }
       final chanper =
           detailViewModel?.detailState.detailBookEntry?.chapter?[index + 2];
       final data = await _initData(detailUrl: chanper?.chapterUrl ?? "");
@@ -106,6 +114,12 @@ class ReadViewModel extends _$ReadViewModel {
     required int index,
   }) async {
     try {
+      if (index <= 1) {
+        readState.chapterList![1] = readState.chapterList![0];
+        readState.listContent![1] = readState.listContent![0];
+        setReadIndex(readState.chapterList![0]);
+        return;
+      }
       final chanper =
           detailViewModel?.detailState.detailBookEntry?.chapter?[index - 2];
       final data = await _initData(detailUrl: chanper?.chapterUrl ?? "");

@@ -74,11 +74,17 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   /// 主题样式
   late ThemeStyleProvider _themeStyleProvider;
 
+  /// 轮播图控制器
   late CarouselSliderController _carouselSliderController;
 
+  /// 当前章节
   late Chapter _chapter;
 
+  /// 阅读数据
   late ReadViewModel readData;
+
+  late bool _isToPage = false;
+
   @override
   void initState() {
     super.initState();
@@ -149,37 +155,41 @@ class _ReadPageState extends ConsumerState<ReadPage> {
 
   /// 小说页面切换 下一页
   _changeNovelToNext() {
-    final index = _detailViewModel.getReadIndex();
-    if ((_detailViewModel.detailState.detailBookEntry?.chapter?.length ?? 0) <
-        index + 1) {
-      SmartDialog.showToast("已经是最后一章咯");
-      return;
-    }
-    final data =
-        _detailViewModel.detailState.detailBookEntry?.chapter?[index + 1];
-    _detailViewModel.setReadIndex(data ?? widget.chapter);
-    context.router.replace(ReadRoute(
-      searchEntry: widget.searchEntry,
-      chapter: data!,
-      source: widget.source,
-    ));
+    // final index = _detailViewModel.getReadIndex();
+    // if ((_detailViewModel.detailState.detailBookEntry?.chapter?.length ?? 0) <
+    //     index + 1) {
+    //   SmartDialog.showToast("已经是最后一章咯");
+    //   return;
+    // }
+    // final data =
+    //     _detailViewModel.detailState.detailBookEntry?.chapter?[index + 1];
+    // _detailViewModel.setReadIndex(data ?? widget.chapter);
+    // context.router.replace(ReadRoute(
+    //   searchEntry: widget.searchEntry,
+    //   chapter: data!,
+    //   source: widget.source,
+    // ));
+    _isToPage = true;
+    _carouselSliderController.animateToPage(2);
   }
 
   /// 小说页面切换 上一章节
   _changeNovelToBack() {
-    final index = _detailViewModel.getReadIndex();
-    if (index == 0) {
-      SmartDialog.showToast("已经是第一章咯");
-      return;
-    }
-    final data =
-        _detailViewModel.detailState.detailBookEntry?.chapter?[index - 1];
-    _detailViewModel.setReadIndex(data ?? widget.chapter);
-    context.router.replace(ReadRoute(
-      searchEntry: widget.searchEntry,
-      chapter: data!,
-      source: widget.source,
-    ));
+    // final index = _detailViewModel.getReadIndex();
+    // if (index == 0) {
+    //   SmartDialog.showToast("已经是第一章咯");
+    //   return;
+    // }
+    // final data =
+    //     _detailViewModel.detailState.detailBookEntry?.chapter?[index - 1];
+    // _detailViewModel.setReadIndex(data ?? widget.chapter);
+    // context.router.replace(ReadRoute(
+    //   searchEntry: widget.searchEntry,
+    //   chapter: data!,
+    //   source: widget.source,
+    // ));
+    _isToPage = true;
+    _carouselSliderController.animateToPage(0);
   }
 
   /// 打开抽屉
@@ -290,39 +300,25 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: _isShow,
-      child:
-          //  Center(
-          //   child: Align(
-          //     alignment: Alignment.topCenter,
-          //     child: SingleChildScrollView(
-          //         padding: 20.padding,
-          //         child: ExtendedText.rich(TextSpan(children: [
-          //           _specialTextSpanBuilder.build(value.content ?? '',
-          //               textStyle: style)
-          //         ]))),
-          //   ),
-          // )
-          CarouselSlider(
+      child: CarouselSlider(
         carouselController: _carouselSliderController,
         items: List.generate(value.listContent?.length ?? 0, (index) {
-          return FadeIn(
-            child: Center(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: SingleChildScrollView(
-                    padding: 20.padding,
-                    child: ExtendedText.rich(TextSpan(children: [
-                      _specialTextSpanBuilder.build(
-                          value.listContent?[index] ?? '',
-                          textStyle: style)
-                    ]))),
-              ),
+          return Center(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SingleChildScrollView(
+                  padding: 20.padding,
+                  child: ExtendedText.rich(TextSpan(children: [
+                    _specialTextSpanBuilder.build(
+                        value.listContent?[index] ?? '',
+                        textStyle: style)
+                  ]))),
             ),
           );
         }),
         options: CarouselOptions(
             onPageChanged: (index, c) async {
-              if (c.name == 'controller') {
+              if (c.name == 'controller' && !_isToPage) {
                 LoggerTools.looger.d("${c.name} 控制器划 $index ");
                 return;
               }
@@ -333,7 +329,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
                 LoggerTools.looger.d("左划 $index ");
                 _setBack();
               }
-
+              _isToPage = false;
               setState(() {});
               //LoggerTools.looger.d("开始切换页面");
               //_detailViewModel.setReadIndex(_chapter);
@@ -346,14 +342,21 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     );
   }
 
-  Debouncer debouncer = Debouncer();
   _setNext() async {
     //SmartDialog.showLoading(msg: '加载中...');
 
     LoggerTools.looger.d("开始切换页面 ");
     final index = readData.getReadIndex(_chapter);
+    final length =
+        _detailViewModel.detailState.detailBookEntry?.chapter?.length ?? 0;
+    if (index >= length - 2) {
+      _chapter = readData.chapterList![2];
+      SmartDialog.showToast("已经是最后一章了！");
+    } else {
+      _chapter = readData.readState.chapterList![2];
+    }
     await readData.refreshDataNext(index: index);
-    _chapter = readData.readState.chapterList![1];
+
     _carouselSliderController.jumpToPage(1);
     LoggerTools.looger.d(" _chapter 划=${_chapter.chapterName}");
     //SmartDialog.dismiss();
@@ -366,8 +369,14 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     LoggerTools.looger.d("开始切换页面 ");
     final index = readData.getReadIndex(_chapter);
     LoggerTools.looger.d("左划 ");
+
+    if (index <= 1) {
+      _chapter = readData.chapterList![0];
+      SmartDialog.showToast("已经到头了！");
+    } else {
+      _chapter = readData.readState.chapterList![0];
+    }
     await readData.refreshDataBack(index: index);
-    _chapter = readData.readState.chapterList![1];
     LoggerTools.looger.d(" _chapter划========${_chapter.chapterName}");
     _carouselSliderController.jumpToPage(1);
     //SmartDialog.dismiss();
