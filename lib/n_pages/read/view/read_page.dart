@@ -78,6 +78,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
 
   late Chapter _chapter;
 
+  late ReadViewModel readData;
   @override
   void initState() {
     super.initState();
@@ -91,6 +92,12 @@ class _ReadPageState extends ConsumerState<ReadPage> {
             detailUrl: widget.searchEntry.url ?? "", bookSource: widget.source)
         .notifier);
     _themeStyleProvider = ref.read(themeStyleProviderProvider.notifier);
+    readData = ref.read(readViewModelProvider(
+            chapter1: widget.chapter,
+            bookSource: widget.source,
+            chapterList: widget.chapterList,
+            detailView: _detailViewModel)
+        .notifier);
   }
 
   @override
@@ -278,8 +285,6 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     );
   }
 
-  int _currentIndex = 1;
-
   /// 构建成功
   _buildSuccess({required ReadState value, required TextStyle style}) {
     return GestureDetector(
@@ -300,45 +305,37 @@ class _ReadPageState extends ConsumerState<ReadPage> {
           CarouselSlider(
         carouselController: _carouselSliderController,
         items: List.generate(value.listContent?.length ?? 0, (index) {
-          return Center(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: SingleChildScrollView(
-                  padding: 20.padding,
-                  child: ExtendedText.rich(TextSpan(children: [
-                    _specialTextSpanBuilder.build(
-                        value.listContent?[index] ?? '',
-                        textStyle: style)
-                  ]))),
+          return FadeIn(
+            child: Center(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: SingleChildScrollView(
+                    padding: 20.padding,
+                    child: ExtendedText.rich(TextSpan(children: [
+                      _specialTextSpanBuilder.build(
+                          value.listContent?[index] ?? '',
+                          textStyle: style)
+                    ]))),
+              ),
             ),
           );
         }),
         options: CarouselOptions(
             onPageChanged: (index, c) async {
               if (c.name == 'controller') {
+                LoggerTools.looger.d("${c.name} 控制器划 $index ");
                 return;
               }
-              if (index == 2 && _currentIndex == 0 ||
-                  index == 0 && _currentIndex == 0) {
-                LoggerTools.looger.d("左划 $index || $_currentIndex");
-                _setBack(index);
-                _currentIndex = index;
-              } else if (index == 0 && _currentIndex == 2) {
-                LoggerTools.looger.d("右划 $index || $_currentIndex");
-                _setNext(index);
-                _currentIndex = index;
-              } else if (index > _currentIndex) {
-                LoggerTools.looger.d("右划 $index || $_currentIndex");
-                _setNext(index);
-                _currentIndex = index;
-              } else if (index < _currentIndex) {
-                LoggerTools.looger.d("左划 $index || $_currentIndex");
-                _setBack(index);
-                _currentIndex = index;
+              if (index > 1) {
+                LoggerTools.looger.d("右划 $index ");
+                _setNext();
+              } else {
+                LoggerTools.looger.d("左划 $index ");
+                _setBack();
               }
 
+              setState(() {});
               //LoggerTools.looger.d("开始切换页面");
-
               //_detailViewModel.setReadIndex(_chapter);
             },
             height: double.infinity,
@@ -350,43 +347,30 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   }
 
   Debouncer debouncer = Debouncer();
-  _setNext(int index) async {
-    SmartDialog.showLoading(msg: '加载中...');
-    final data = ref.read(readViewModelProvider(
-            chapter1: widget.chapter,
-            bookSource: widget.source,
-            chapterList: widget.chapterList,
-            detailView: _detailViewModel)
-        .notifier);
+  _setNext() async {
+    //SmartDialog.showLoading(msg: '加载中...');
+
     LoggerTools.looger.d("开始切换页面 ");
-    final index1 = data.getReadIndex(_chapter);
-    LoggerTools.looger.d("右划 $index || $_currentIndex");
-    //_currentIndex = index;
-    LoggerTools.looger.d(" _currentIndex=$_currentIndex");
-    await data.refreshDataNext(index: index1);
-    _chapter = data.readState.chapterList![1];
+    final index = readData.getReadIndex(_chapter);
+    await readData.refreshDataNext(index: index);
+    _chapter = readData.readState.chapterList![1];
     _carouselSliderController.jumpToPage(1);
-    SmartDialog.dismiss();
+    LoggerTools.looger.d(" _chapter 划=${_chapter.chapterName}");
+    //SmartDialog.dismiss();
     setState(() {});
   }
 
-  _setBack(int index) async {
-    SmartDialog.showLoading(msg: '加载中...');
-    final data = ref.read(readViewModelProvider(
-            chapter1: widget.chapter,
-            bookSource: widget.source,
-            chapterList: widget.chapterList,
-            detailView: _detailViewModel)
-        .notifier);
+  _setBack() async {
+    //SmartDialog.showLoading(msg: '加载中...');
+
     LoggerTools.looger.d("开始切换页面 ");
-    final index1 = data.getReadIndex(_chapter);
-    LoggerTools.looger.d("左划 $index || $_currentIndex");
-    // _currentIndex = index;
-    LoggerTools.looger.d(" _currentIndex=$_currentIndex");
-    await data.refreshDataBack(index: index1);
-    _chapter = data.readState.chapterList![1];
+    final index = readData.getReadIndex(_chapter);
+    LoggerTools.looger.d("左划 ");
+    await readData.refreshDataBack(index: index);
+    _chapter = readData.readState.chapterList![1];
+    LoggerTools.looger.d(" _chapter划========${_chapter.chapterName}");
     _carouselSliderController.jumpToPage(1);
-    SmartDialog.dismiss();
+    //SmartDialog.dismiss();
     setState(() {});
   }
 

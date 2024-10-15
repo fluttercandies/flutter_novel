@@ -1,8 +1,11 @@
 // ignore_for_file: control_flow_in_finally
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/base/base_state.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/view_model/detail_view_model.dart';
@@ -92,6 +95,7 @@ class ReadViewModel extends _$ReadViewModel {
         readState.listContent?.add(data);
         LoggerTools.looger.i("===================");
         //state = AsyncData(readState);
+        setReadIndex(readState.chapterList![1]);
       }
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
@@ -112,6 +116,7 @@ class ReadViewModel extends _$ReadViewModel {
         readState.listContent?.insert(0, data);
         LoggerTools.looger.i("===================");
         //state = AsyncData(readState);
+        setReadIndex(readState.chapterList![1]);
       }
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
@@ -244,5 +249,14 @@ class ReadViewModel extends _$ReadViewModel {
       // 如果没有匹配到，返回空的Map
       return {};
     }
+  }
+
+  /// 设置阅读索引
+  setReadIndex(Chapter data) async {
+    chapter = data;
+    LoggerTools.looger.d("setReadIndex : ${data.toJson().toString()}");
+    await PreferencesDB.instance.sps.setString(
+        detailViewModel?.detailUrl ?? "", json.encode(data)); //jsonEncode()
+    //state = AsyncData(detailState);
   }
 }

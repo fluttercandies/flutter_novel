@@ -134,11 +134,14 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
     } else {
       chapterList = [chapter[index], chapter[index], chapter[index + 1]];
     }
-    context.router.push(ReadRoute(
+    await context.router.push(ReadRoute(
         chapter: chapter[index],
         source: model.bookSourceEntry,
         searchEntry: widget.searchEntry,
         chapterList: chapterList));
+    model.init();
+    await Future.delayed(Durations.medium1);
+    setState(() {});
   }
 
   // 继续阅读
@@ -160,6 +163,9 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
         source: widget.bookSourceEntry,
         searchEntry: widget.searchEntry,
         chapterList: chapterList));
+    _detailViewModel.init();
+    await Future.delayed(Durations.medium1);
+    setState(() {});
   }
 
   @override

@@ -35,7 +35,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   }) async {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
     _url = detailUrl;
-    _init();
+    init();
     bookSourceEntry = bookSource;
     _initData(detailUrl: detailUrl);
     return detailState;
@@ -242,7 +242,7 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   }
 
   /// 初始化 坐标
-  _init() async {
+  init() async {
     String? str = await PreferencesDB.instance.sps.getString(_url);
     if (str case String st?) {
       var data = json.decode(st);
