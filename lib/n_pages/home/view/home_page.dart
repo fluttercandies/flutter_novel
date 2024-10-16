@@ -7,8 +7,11 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/assets/assets.dart';
 import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
+import 'package:novel_flutter_bit/pages/collect_novel/widget/theme_swtch.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
+import 'package:novel_flutter_bit/theme/theme_style.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
+import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/net_state_tools.dart';
@@ -41,17 +44,20 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
   }
 
+  /// 显示主题选择
+  _openSettingThemeSwitch() {
+    SmartDialog.show(builder: (context) {
+      return ThemeSwitch(
+          themeStyleProvider: ref.read(themeStyleProviderProvider.notifier));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final homeViewModel = ref.watch(homeViewModelProvider);
     return Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarIconBrightness: Brightness.dark,
-            )),
+        appBar: _buildAppbar(),
         body: switch (homeViewModel) {
           AsyncData(:final value) => Builder(builder: (BuildContext context) {
               return NetStateTools.getWidget(value.netState) ?? _buildSuccess();
@@ -61,7 +67,26 @@ class _HomePageState extends ConsumerState<HomePage> {
         });
   }
 
-  _buildSuccess() {
+  AppBar _buildAppbar() {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.dark,
+      ),
+      actions: [
+        IconButton(
+            onPressed: _openSettingThemeSwitch,
+            icon: const Icon(
+              Icons.settings,
+              color: Colors.black54,
+            )),
+        10.horizontalSpace
+      ],
+    );
+  }
+
+  Widget _buildSuccess() {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: _focusNode.unfocus,

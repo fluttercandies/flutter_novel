@@ -156,12 +156,24 @@ class _ReadPageState extends ConsumerState<ReadPage> {
 
   /// 小说页面切换
   _changeNovelData({required Chapter data}) {
-    _detailViewModel.setReadIndex(data);
+    //_detailViewModel.setReadIndex(data);
+    final chapter = _detailViewModel.detailState.detailBookEntry?.chapter;
+    readData.setReadIndex(data);
+    final index = readData.getReadIndex(data);
+    List<Chapter> chapterList = [];
+    if (index > 0) {
+      chapterList = [chapter![index - 1], chapter[index], chapter[index + 1]];
+    } else {
+      chapterList = [chapter![index], chapter[index], chapter[index + 1]];
+    }
+
+    /// 初始化数据
+    _chapter = data;
     context.router.replace(ReadRoute(
-      searchEntry: widget.searchEntry,
-      chapter: data,
-      source: widget.source,
-    ));
+        searchEntry: widget.searchEntry,
+        chapter: data,
+        source: widget.source,
+        chapterList: chapterList));
   }
 
   /// 小说页面切换 下一页
@@ -218,7 +230,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   /// 打开抽屉
   void _openDrawer({Duration duration = const Duration(milliseconds: 300)}) {
     scaffoldKey.currentState?.openDrawer();
-    final index = _detailViewModel.getReadIndex();
+    final index = readData.getReadIndex(_chapter);
     final height = ((context.size?.height ?? 0) / 2.5);
     Future.delayed(duration, () {
       if (index > 100) {
@@ -415,7 +427,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
                               style: TextStyle(
                                   fontSize: 18,
                                   color:
-                                      _detailViewModel.getReadIndex() == index
+                                      readData.getReadIndex(_chapter) == index
                                           ? _themeData.primaryColor
                                           : Colors.black87)),
                         ),
