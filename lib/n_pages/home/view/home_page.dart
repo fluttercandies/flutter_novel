@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -44,49 +45,37 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final homeViewModel = ref.watch(homeViewModelProvider);
     return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.dark,
+            )),
         body: switch (homeViewModel) {
-      AsyncData(:final value) => Builder(builder: (BuildContext context) {
-          return NetStateTools.getWidget(value.netState) ?? _buildSuccess();
-        }),
-      AsyncError() => EmptyBuild(),
-      _ => const LoadingBuild(),
-    });
+          AsyncData(:final value) => Builder(builder: (BuildContext context) {
+              return NetStateTools.getWidget(value.netState) ?? _buildSuccess();
+            }),
+          AsyncError() => EmptyBuild(),
+          _ => const LoadingBuild(),
+        });
   }
 
   _buildSuccess() {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: _focusNode.unfocus,
-      child: Stack(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ExtendedImage.asset(
-                Assets.assets_images_logo2_png,
-                height: 200,
-              ),
-              _buildSearchBar()
-            ],
-          ),
-          Positioned(
-            right: 20,
-            bottom: 20,
-            child: FloatingActionButton(
-              backgroundColor: theme.primaryColor,
-              onPressed: () {
-                ref.read(homeViewModelProvider.notifier).switchSource();
-              },
-              child: SvgPicture.asset(
-                Assets.assets_svg_reload_1_svg,
-                width: 45,
-                height: 45,
-                fit: BoxFit.contain,
-                colorFilter:
-                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-              ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: ExtendedImage.asset(
+              Assets.assets_images_logo2_png,
+              height: 200,
             ),
           ),
+          _buildSearchBar()
         ],
       ),
     );

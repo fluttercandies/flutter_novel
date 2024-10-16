@@ -82,16 +82,28 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   /// 阅读数据
   late ReadViewModel readData;
 
+  /// 是否是切换页面
   late bool _isToPage = false;
 
+  /// 滚动控制器
+  final ScrollController _sc = ScrollController();
   @override
   void initState() {
     super.initState();
     if (Platform.isIOS) {
       appbarHeight = 80;
     }
+    _initData();
+  }
+
+  /// 初始化数据
+  _initData() {
     _carouselSliderController = CarouselSliderController();
+
+    /// 初始化字体大小
     _initFontSize();
+
+    /// 初始化数据
     _chapter = widget.chapter;
     _detailViewModel = ref.read(NewDetailViewModelProvider(
             detailUrl: widget.searchEntry.url ?? "", bookSource: widget.source)
@@ -318,6 +330,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
             child: Align(
               alignment: Alignment.topCenter,
               child: SingleChildScrollView(
+                  controller: _sc,
                   padding: 20.padding,
                   child: ExtendedText.rich(TextSpan(children: [
                     _specialTextSpanBuilder.build(
@@ -333,6 +346,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
                 LoggerTools.looger.d("${c.name} 控制器划 $index ");
                 return;
               }
+
               if (index > 1) {
                 LoggerTools.looger.d("右划 $index ");
                 _setNext();
@@ -341,6 +355,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
                 _setBack();
               }
               _isToPage = false;
+              _sc.jumpTo(0);
               setState(() {});
               //LoggerTools.looger.d("开始切换页面");
               //_detailViewModel.setReadIndex(_chapter);
