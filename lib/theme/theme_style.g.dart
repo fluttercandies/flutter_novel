@@ -7,7 +7,7 @@ part of 'theme_style.dart';
 // **************************************************************************
 
 String _$themeStyleProviderHash() =>
-    r'74359b2c96a1660ead0ffa5e51c3de725f18e4f2';
+    r'417c1ed556b4d4f25e2eacb9b77151c2c74678c9';
 
 /// 主题颜色
 ///

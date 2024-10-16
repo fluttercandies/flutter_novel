@@ -14,6 +14,15 @@ abstract class ThemeStyle {
       Color? textMinorColor,
       bool backButtonColorBlack = false}) {
     return ThemeData(
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.linux: OpenUpwardsPageTransitionsBuilder(),
+            TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
+            TargetPlatform.android:
+                CupertinoPageTransitionsBuilder() //MyRouteTransitionBuilder()
+          },
+        ),
         colorScheme: ColorScheme.fromSeed(
             seedColor: primaryColor ?? Colors.black, primary: primaryColor),
         useMaterial3: true,

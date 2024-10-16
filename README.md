@@ -7,7 +7,7 @@
     <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=mYfvheURi3cqPskrWXaLddE5MyslIIy8&jump_from=webapi&authKey=pGJ8ddoO9qrnRY0AKs7pEML06J4s02WaJRs0KDJsDQju9kw8GYX0WevrACX96c8o"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="造物主动态桌面Ⅰ群" title="造物主动态桌面Ⅰ群">造物主动态桌面Ⅰ群</a>
 </p>
 
-## 项目介绍
+## 项目介绍*
 
 flutter_novel 《爱看》是一款开源的阅读APP，拥有功能。热门推荐、小说排行、全网搜索、小说分类、关键字查询、收藏小说、本地历史阅读记录、主题设置、阅读定位。功能持续更新中。
 

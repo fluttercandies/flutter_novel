@@ -1,0 +1,152 @@
+[
+    {
+        "bookSourceName": "369小说网",
+        "bookSourceType": 0,
+        "bookSourceUrl": "https://www.369book.cc/",
+        "bookUrlPattern": "",
+        "customOrder": 0,
+        "enabled": true,
+        "enabledCookieJar": false,
+        "enabledExplore": true,
+        "exploreScreen": "",
+        "exploreUrl": "[\n    \n    {\"title\": \"热读榜\",\"url\":\"/rank/\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n       {\"title\": \"❀  书库  ❀\",\"url\": \"\",\"style\": {\"layout_flexGrow\": 0,\n    \"layout_flexBasisPercent\": 1\n    }},\n    {\"title\": \"全部小说\",\"url\":\"/sort/{{page}}/\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"玄幻\",\"url\":\"/sort/1/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"武侠\",\"url\":\"/sort/2/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"都市\",\"url\":\"/sort/3/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"历史\",\"url\":\"/sort/4/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"科幻\",\"url\":\"/sort/5/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"游戏\",\"url\":\"/sort/6/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"女生\",\"url\":\"/sort/7/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"短篇\",\"url\":\"/sort/8/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"其他\",\"url\":\"/sort/9/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"❀  完结小说  ❀\",\"url\": \"\",\"style\": {\"layout_flexGrow\": 0,\n    \"layout_flexBasisPercent\": 1\n    }},\n    {\"title\": \"全部小说\",\"url\":\"/quanben/sort/{{page}}/\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"玄幻\",\"url\":\"/quanben/sort/1/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"武侠\",\"url\":\"/quanben/sort/2/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"都市\",\"url\":\"/quanben/sort/3/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"历史\",\"url\":\"/quanben/sort/4/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"科幻\",\"url\":\"/quanben/sort/5/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"游戏\",\"url\":\"/quanben/sort/6/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"女生\",\"url\":\"/quanben/sort/7/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"短篇\",\"url\":\"/quanben/sort/8/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }},\n    {\"title\": \"其他\",\"url\":\"/quanben/sort/9/{{page}}.html\",\"style\": {\"layout_flexGrow\": 0.25,\n    \"layout_flexBasisPercent\": -1\n    }}\n]",
+        "header": "{\n    \"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36\",\n    \"Accept-Language\":\"zh-CN,zh;q=0.9\"\n}",
+        "lastUpdateTime": "1727576680671",
+        "respondTime": 180000,
+        "ruleBookInfo": {
+            "author": "",
+            "coverUrl": "",
+            "intro": "#bookintro@text",
+            "kind": ".am-badge-danger@text&&.am-text-sm > .am-badge-warning@text",
+            "lastChapter": ".book-info-last > a@text",
+            "name": "",
+            "tocUrl": ".am-show-sm-only > .am-list-news-bd .am-list-news-more@href",
+            "wordCount": ".am-text-sm > .am-badge-secondary@text"
+        },
+        "ruleContent": {
+            "content": "#chaptercontent@html\n<js>\nresult=result.replace(/(<p>《.+\\(www.369book.cc\\)<\\/p>)/, '');\nresult=result.replace(/(<div class=\"book-read-link.+\\n.+\\n.+\\n.<\\/div>)/, '');\nresult=result.replace(/(<p>本章未完.+继续阅读<\\/p>)/,'');\njava.log(result)\n</js>",
+            "nextContentUrl": "class.am-btn-default.4@href",
+            "replaceRegex": ""
+        },
+        "ruleExplore": {
+            "author": ".book-list-1-author@text## / 文",
+            "bookList": ".am-g > div",
+            "bookUrl": "h4 > a@href",
+            "coverUrl": ".am-thumbnail@data-src",
+            "intro": ".book-list-1-intro@text",
+            "kind": ".am-badge-warning@text",
+            "lastChapter": ".am-badge-secondary@text",
+            "name": "h4 > a@text",
+            "wordCount": ".am-badge-primary@text"
+        },
+        "ruleReview": [],
+        "ruleSearch": {
+            "author": ".book-list-1-author@text## / 文",
+            "bookList": ".am-g > div",
+            "bookUrl": "h4 > a@href",
+            "checkKeyWord": "",
+            "coverUrl": ".am-thumbnail@data-src",
+            "intro": ".book-list-1-intro@text",
+            "kind": ".am-badge-warning@text",
+            "lastChapter": ".am-badge-secondary@text",
+            "name": "h4 > a@text",
+            "wordCount": ".am-badge-primary@text"
+        },
+        "ruleToc": {
+            "chapterList": "class.am-avg-md-2@li",
+            "chapterName": "a@text",
+            "chapterUrl": "a@href",
+            "formatJs": "",
+            "nextTocUrl": ".index-container:nth-child(4) > .index-container-btn:nth-child(3)@href",
+            "updateTime": ""
+        },
+        "searchUrl": "/search/?searchkey={{key}}",
+        "weight": 0
+    },
+    {
+        "bookSourceComment": "",
+        "bookSourceGroup": "🔰普通",
+        "bookSourceName": "🔰 全本小说",
+        "bookSourceType": 0,
+        "bookSourceUrl": "https://www.quanben.so/",
+        "bookUrlPattern": "https://www.quanben.so/\\d+_\\d+/",
+        "customOrder": -1,
+        "enabled": true,
+        "enabledCookieJar": false,
+        "enabledExplore": true,
+        "header": "{\"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36\"}",
+        "lastUpdateTime": "1727159421112",
+        "respondTime": 180000,
+        "ruleBookInfo": {
+            "author": "id.info@tag.p.0@tag.a.0@text",
+            "coverUrl": "id.fmimg@tag.img@src",
+            "intro": "id.intro@text",
+            "kind": "[property=\"og:novel:category\"]@content&&[property=\"og:novel:status\"]@content&&[property=\"og:novel:update_time\"]@content",
+            "lastChapter": "[property=\"og:novel:latest_chapter_name\"]@content",
+            "name": "id.info@tag.h1@text"
+        },
+        "ruleContent": {
+            "content": "id.content@html",
+            "replaceRegex": "##全本小说网.*"
+        },
+        "ruleExplore": [],
+        "ruleSearch": {
+            "author": "class.s4@text",
+            "bookList": "class.novelslistss@tag.li",
+            "bookUrl": "class.s2@tag.a@href",
+            "coverUrl": "class.s2@tag.a@href<js>\nvar id = result.match(/(\\d+)\\/?$/)[1];\nvar iid = parseInt(id/1000);\nsource.bookSourceUrl + 'files/article/image/'+iid+'/'+id+'/'+id+'s.jpg';\n</js>",
+            "lastChapter": "class.s3@tag.a@text",
+            "name": "class.s2@tag.a@text"
+        },
+        "ruleToc": {
+            "chapterList": "id.list@tag.dd@tag.a",
+            "chapterName": "text",
+            "chapterUrl": "href",
+            "nextTocUrl": "option@value"
+        },
+        "searchUrl": "modules/article/search.php?searchkey={{key}},{\n  \"charset\": \"gbk\"\n}",
+        "weight": 0
+    },
+    {
+        "bookSourceComment": "by@咔咔龙",
+        "bookSourceName": "玩文学小说网",
+        "bookSourceType": 0,
+        "bookSourceUrl": "https://www.wanwx.com/",
+        "customOrder": 0,
+        "enabled": true,
+        "enabledCookieJar": false,
+        "enabledExplore": true,
+        "lastUpdateTime": "1728222052479",
+        "respondTime": 180000,
+        "ruleBookInfo": {
+            "author": ".booktag@a.0@text",
+            "coverUrl": ".img-thumbnail@src",
+            "intro": "#bookIntro@html",
+            "kind": ".booktag@a.1@text&&.booktag@span[!0]@text",
+            "lastChapter": "{{@@.text-danger.0@text}} {{@@.text-danger~span@text}}",
+            "name": ".bookTitle@text",
+            "wordCount": ".booktag@span.0@text"
+        },
+        "ruleContent": {
+            "content": "#htmlContent@html"
+        },
+        "ruleExplore": [],
+        "ruleSearch": {
+            "author": ".booktag@text",
+            "bookList": ".col-md-10",
+            "bookUrl": ".bookTitle@a@href",
+            "checkKeyWord": "++https://www.wanwx.com/book/hxs.html",
+            "intro": "#bookIntro@html",
+            "kind": ".visible-xs@text",
+            "lastChapter": ".text-danger@text",
+            "name": ".bookTitle@text"
+        },
+        "ruleToc": {
+            "chapterList": "#list-chapterAll@a",
+            "chapterName": "text",
+            "chapterUrl": "href"
+        },
+        "searchUrl": "search,{\n  \"body\": \"keyword={{key}}&page={{page}}\",\n  \"method\": \"POST\"\n}",
+        "weight": 0
+    }
+]
