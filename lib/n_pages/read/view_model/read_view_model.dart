@@ -81,17 +81,23 @@ class ReadViewModel extends _$ReadViewModel {
     }
   }
 
-  Future<void> refreshDataNext({
+  Future<bool> refreshDataNext({
     required int index,
   }) async {
     try {
       final length =
           detailViewModel?.detailState.detailBookEntry?.chapter?.length ?? 0;
       if (index >= length - 2) {
-        readState.chapterList![1] = readState.chapterList![2];
-        readState.listContent![1] = readState.listContent![2];
-        setReadIndex(readState.chapterList![1]);
-        return;
+        if (readState.chapterList![1].chapterUrl !=
+            detailViewModel
+                ?.detailState.detailBookEntry?.chapter?[2].chapterUrl) {
+          readState.chapterList![0] = readState.chapterList![1];
+          readState.chapterList![0] = readState.chapterList![1];
+          readState.chapterList![1] = readState.chapterList![2];
+          readState.listContent![1] = readState.listContent![2];
+          setReadIndex(readState.chapterList![1]);
+        }
+        return true;
       }
       final chanper =
           detailViewModel?.detailState.detailBookEntry?.chapter?[index + 2];
@@ -105,23 +111,31 @@ class ReadViewModel extends _$ReadViewModel {
         //state = AsyncData(readState);
         setReadIndex(readState.chapterList![1]);
       }
+      return false;
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
+      return false;
     }
   }
 
-  Future<void> refreshDataBack({
+  Future<bool> refreshDataBack({
     required int index,
   }) async {
     try {
       if (index <= 1) {
-        readState.chapterList![1] = readState.chapterList![0];
-        readState.listContent![1] = readState.listContent![0];
-        setReadIndex(readState.chapterList![0]);
-        return;
+        if (readState.chapterList![1].chapterUrl !=
+            detailViewModel
+                ?.detailState.detailBookEntry?.chapter?[0].chapterUrl) {
+          readState.chapterList![2] = readState.chapterList![1];
+          readState.chapterList![2] = readState.chapterList![1];
+          readState.chapterList![1] = readState.chapterList![0];
+          readState.listContent![1] = readState.listContent![0];
+          setReadIndex(readState.chapterList![0]);
+        }
+        return true;
       }
-      final chanper =
-          detailViewModel?.detailState.detailBookEntry?.chapter?[index - 2];
+      final chanper = detailViewModel?.detailState.detailBookEntry
+          ?.chapter?[getReadIndex(readState.chapterList![0]) - 1];
       final data = await _initData(detailUrl: chanper?.chapterUrl ?? "");
       if (data != null) {
         readState.chapterList?.removeAt(2);
@@ -132,8 +146,10 @@ class ReadViewModel extends _$ReadViewModel {
         //state = AsyncData(readState);
         setReadIndex(readState.chapterList![1]);
       }
+      return false;
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
+      return false;
     }
   }
 
