@@ -74,6 +74,9 @@ lib
 | riverpod_annotation            |  ^2.3.5
 | syncfusion_flutter_sliders     |  滑动选择器 ^26.2.14
 | sliver_head_automatic_adsorption| 自动吸附Sliver ^1.0.8
+| assets_generator               | 本地资源生成^3.0.5
+| carousel_slider                | 轮播^5.0.0
+| html                           | ^0.15.4
 
 ### 项目截图 《新》
 
