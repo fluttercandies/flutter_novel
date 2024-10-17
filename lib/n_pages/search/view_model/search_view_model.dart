@@ -224,7 +224,7 @@ class NewSearchViewModel extends _$NewSearchViewModel {
           bookAll: bookAll[i],
           kind: kind[i],
           coverUrl: coverUrl1 ? coverUrl[i] : coverUrlData,
-          sourceEntry: bookSource);
+          bookSourceEntry: bookSource);
       // if (!searchList.any((d) => d.url == searchEntry.url && d.name != null)) {
 
       // }

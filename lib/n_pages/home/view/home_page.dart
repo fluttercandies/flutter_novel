@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:novel_flutter_bit/assets/assets.dart';
+import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/n_pages/home/view_model/home_view_model.dart';
 import 'package:novel_flutter_bit/pages/collect_novel/widget/theme_swtch.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
@@ -52,6 +53,11 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
+  /// 跳转 收藏 页
+  _toLikePage() {
+    context.router.push(const LikeRoute());
+  }
+
   @override
   Widget build(BuildContext context) {
     final homeViewModel = ref.watch(homeViewModelProvider);
@@ -75,6 +81,13 @@ class _HomePageState extends ConsumerState<HomePage> {
         statusBarIconBrightness: Brightness.dark,
       ),
       actions: [
+        IconButton(
+            onPressed: _toLikePage,
+            icon: Icon(
+              NovelIcon.heart,
+              size: 18,
+              color: theme.primaryColor,
+            )),
         IconButton(
             onPressed: _openSettingThemeSwitch,
             icon: const Icon(

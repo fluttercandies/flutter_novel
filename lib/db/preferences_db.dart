@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
-import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
+import 'package:novel_flutter_bit/n_pages/like/enrty/like_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novel/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
@@ -201,42 +201,43 @@ class PreferencesDB {
   }
 
   /// 设置-是否喜欢
-  Future<void> setLike(String key, bool value, Chapter? chapter,
+  Future<void> setLike(String key, bool value, LikeEntry? like,
       {bool firstAdd = true}) async {
     LoggerTools.looger.d("设置是否收藏 setSenseLikeNovel  key:$key  value:$value");
     await sps.setBool("${key}_SenseLike", value);
-    if (value && chapter != null) {
+    if (value && like != null) {
       List<String> str = [];
       final data = await getLikeList();
-      final exists =
-          data.any((novel) => novel.chapterUrl == chapter.chapterUrl);
+      final exists = data.any(
+          (novel) => novel.chapter?.chapterUrl == like.chapter?.chapterUrl);
       if (exists) {
         // 如果用户存在，移除该用户
         if (firstAdd) {
-          data.removeWhere((user) => user.chapterUrl == chapter.chapterUrl);
-          data.insert(0, chapter);
+          data.removeWhere(
+              (user) => user.chapter?.chapterUrl == like.chapter?.chapterUrl);
+          data.insert(0, like);
         } else {
-          int index =
-              data.indexWhere((user) => user.chapterUrl == chapter.chapterUrl);
-          data[index] = chapter;
+          int index = data.indexWhere(
+              (user) => user.chapter?.chapterUrl == like.chapter?.chapterUrl);
+          data[index] = like;
         }
       } else {
-        data.insert(0, chapter);
+        data.insert(0, like);
       }
 
       for (var element in data) {
-        str.add(json.encode(element.toJson()));
+        str.add(json.encode(element));
       }
       await sps.setStringList(senseLikeNovel, str);
     }
   }
 
   /// 获取-收藏列表
-  Future<List<Chapter>> getLikeList() async {
-    List<Chapter> list = [];
+  Future<List<LikeEntry>> getLikeList() async {
+    List<LikeEntry> list = [];
     List<String> str = await sps.getStringList(senseLikeNovel) ?? [];
     for (var element in str) {
-      list.add(Chapter.fromJson(json.decode(element)));
+      list.add(json.decode(element));
     }
     LoggerTools.looger.d("获取收藏列表  getCollectNovelList  list:$list");
     return list;

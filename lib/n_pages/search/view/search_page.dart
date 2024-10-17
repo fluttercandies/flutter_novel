@@ -107,7 +107,7 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
                     overflow: TextOverflow.ellipsis,
                   )
                 : 0.verticalSpace,
-            Text("来源：${searchEntry.sourceEntry.bookSourceName}")
+            Text("来源：${searchEntry.bookSourceEntry?.bookSourceName}")
           ]),
     );
 
@@ -126,7 +126,7 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
         behavior: HitTestBehavior.opaque,
         onTap: () => _onTapToDeatilPage(
               entry: searchEntry,
-              bookSource: searchEntry.sourceEntry,
+              bookSource: searchEntry.bookSourceEntry!,
             ),
         child: Container(margin: 10.vertical, child: imageWidget));
   }

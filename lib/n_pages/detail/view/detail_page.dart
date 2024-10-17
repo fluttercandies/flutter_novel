@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,10 @@ import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/state/detail_state.dart';
 import 'package:novel_flutter_bit/n_pages/detail/view_model/detail_view_model.dart';
+import 'package:novel_flutter_bit/n_pages/like/enrty/like_entry.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
+import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/book_title_sliver_persistent_header_delegate.dart';
@@ -68,9 +72,11 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
       chapter = _detailViewModel.detailState.detailBookEntry?.chapter?.first ??
           Chapter();
     }
-    Chapter collectNovelEntry = chapter;
-    await PreferencesDB.instance
-        .setLike(widget.searchEntry.url ?? "", _isLikeNovel, collectNovelEntry);
+
+    await PreferencesDB.instance.setLike(
+        widget.searchEntry.url ?? "",
+        _isLikeNovel,
+        LikeEntry(searchEntry: widget.searchEntry, chapter: chapter));
     SmartDialog.showToast(_isLikeNovel ? "收藏成功" : "取消收藏");
     setState(() {});
   }
