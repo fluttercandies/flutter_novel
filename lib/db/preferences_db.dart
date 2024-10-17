@@ -237,7 +237,7 @@ class PreferencesDB {
     List<LikeEntry> list = [];
     List<String> str = await sps.getStringList(senseLikeNovel) ?? [];
     for (var element in str) {
-      list.add(json.decode(element));
+      list.add(LikeEntry.fromJson(json.decode(element)));
     }
     LoggerTools.looger.d("获取收藏列表  getCollectNovelList  list:$list");
     return list;
