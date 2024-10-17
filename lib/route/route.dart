@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 
 @AutoRouterConfig()
@@ -10,6 +9,7 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: NewSearchRoute.page),
         AutoRoute(page: NewDetailRoute.page),
         AutoRoute(page: ReadRoute.page),
+        AutoRoute(page: LikeRoute.page),
         AutoRoute(page: FrameRoute.page),
         AutoRoute(page: BookRoute.page),
         AutoRoute(page: DetailRoute.page),
