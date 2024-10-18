@@ -143,7 +143,12 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
         source: model.bookSourceEntry,
         searchEntry: widget.searchEntry,
         chapterList: chapterList));
-    model.init();
+
+    /// 更新阅读记录
+    final tchapter = await model.init();
+
+    PreferencesDB.instance.updateLikeChapter(
+        LikeEntry(searchEntry: widget.searchEntry, chapter: tchapter));
 
     /// 等待动画结束 需要延迟一点时间 刷新页面
     await Future.delayed(Durations.medium1);
@@ -170,6 +175,12 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
         searchEntry: widget.searchEntry,
         chapterList: chapterList));
     _detailViewModel.init();
+
+    /// 更新阅读记录
+    final tchapter = await _detailViewModel.init();
+
+    PreferencesDB.instance.updateLikeChapter(
+        LikeEntry(searchEntry: widget.searchEntry, chapter: tchapter));
 
     /// 等待动画结束 需要延迟一点时间 刷新页面
     await Future.delayed(Durations.medium1);

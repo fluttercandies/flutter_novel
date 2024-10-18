@@ -57,14 +57,15 @@ class NewDetailViewModel extends _$NewDetailViewModel {
       }
       detailState.detailBookEntry = detailBook;
       detailState.netState = NetState.dataSuccessState;
-      state = AsyncData(detailState);
       initReverse();
       LoggerTools.looger.d(detailBook.toString());
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
-      // searchState.netState = NetState.error403State;
+      detailState.netState = NetState.error403State;
       // state = AsyncData(searchState);
       SmartDialog.showToast(e.toString());
+    } finally {
+      state = AsyncData(detailState);
     }
   }
 
@@ -247,11 +248,13 @@ class NewDetailViewModel extends _$NewDetailViewModel {
   }
 
   /// 初始化 坐标
-  init() async {
+  Future<Chapter?> init() async {
     String? str = await PreferencesDB.instance.sps.getString(_url);
     if (str case String st?) {
       var data = json.decode(st);
       chapter = Chapter.fromJson(data);
+      return chapter;
     }
+    return null;
   }
 }

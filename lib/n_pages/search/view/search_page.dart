@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
+import 'package:novel_flutter_bit/n_pages/like/view_model/like_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/n_pages/search/view_model/search_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
@@ -28,11 +29,12 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
 
   /// 跳转详情页
   void _onTapToDeatilPage(
-      {required SearchEntry entry, required BookSourceEntry bookSource}) {
-    context.router.push(NewDetailRoute(
+      {required SearchEntry entry, required BookSourceEntry bookSource}) async {
+    await context.router.push(NewDetailRoute(
       searchEntry: entry,
       bookSourceEntry: bookSource,
     ));
+    ref.read(likeViewModelProvider.notifier).build();
     //SmartDialog.showToast(url);
   }
 

@@ -242,4 +242,21 @@ class PreferencesDB {
     LoggerTools.looger.d("获取收藏列表  getCollectNovelList  list:$list");
     return list;
   }
+
+  /// 更新我喜欢阅读记录
+  Future<void> updateLikeChapter(LikeEntry? like) async {
+    List<String> str = [];
+    final data = await getLikeList();
+    if (like != null) {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i].searchEntry?.url == like.searchEntry?.url) {
+          data[i] = like;
+        }
+      }
+    }
+    for (var element in data) {
+      str.add(json.encode(element));
+    }
+    await sps.setStringList(senseLikeNovel, str);
+  }
 }
