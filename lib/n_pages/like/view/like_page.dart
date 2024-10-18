@@ -65,7 +65,7 @@ class _LikePageState extends ConsumerState<LikePage> {
           overflow: TextOverflow.ellipsis),
       child: MasonryGridView.count(
         crossAxisCount: 3,
-        mainAxisSpacing: 5,
+        mainAxisSpacing: 6,
         crossAxisSpacing: 5,
         padding: 10.padding,
         itemBuilder: (c, i) {
@@ -81,21 +81,28 @@ class _LikePageState extends ConsumerState<LikePage> {
     return GestureDetector(
       onTap: () => _toDeatilPage(entry),
       child: Container(
-        decoration: const BoxDecoration(boxShadow: [
-          BoxShadow(
-              color: Colors.black12, // 阴影的颜色
-              offset: Offset(2.0, 2.0), // 阴影在x轴和y轴的偏移量
-              blurRadius: 5.0, // 阴影的模糊程度
-              spreadRadius: 1.0 // 阴影的扩散程度
-              )
-        ], color: Color(0xfffafafa)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.black12, // 阴影的颜色
+                  offset: Offset(2.0, 2.0), // 阴影在x轴和y轴的偏移量
+                  blurRadius: 5.0, // 阴影的模糊程度
+                  spreadRadius: 1.0 // 阴影的扩散程度
+                  )
+            ],
+            color: const Color(0xfffafafa)),
         child: Column(
           children: [
-            ExtendedImage.network(
-              entry.searchEntry?.coverUrl ?? "",
-              width: double.infinity,
-              height: 160,
-              fit: BoxFit.cover,
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(5)),
+              child: ExtendedImage.network(
+                entry.searchEntry?.coverUrl ?? "",
+                width: double.infinity,
+                height: 160,
+                fit: BoxFit.cover,
+              ),
             ),
             Padding(
               padding: 3.padding,

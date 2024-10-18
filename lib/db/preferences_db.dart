@@ -205,26 +205,30 @@ class PreferencesDB {
       {bool firstAdd = true}) async {
     LoggerTools.looger.d("设置是否收藏 setSenseLikeNovel  key:$key  value:$value");
     await sps.setBool("${key}_SenseLike", value);
-    if (value && like != null) {
+    if (like != null) {
       List<String> str = [];
       final data = await getLikeList();
-      final exists = data.any(
-          (novel) => novel.chapter?.chapterUrl == like.chapter?.chapterUrl);
-      if (exists) {
-        // 如果用户存在，移除该用户
-        if (firstAdd) {
-          data.removeWhere(
-              (user) => user.chapter?.chapterUrl == like.chapter?.chapterUrl);
-          data.insert(0, like);
+      if (value) {
+        final exists = data.any(
+            (novel) => novel.chapter?.chapterUrl == like.chapter?.chapterUrl);
+        if (exists) {
+          // 如果用户存在，移除该用户
+          if (firstAdd) {
+            data.removeWhere(
+                (user) => user.chapter?.chapterUrl == like.chapter?.chapterUrl);
+            data.insert(0, like);
+          } else {
+            int index = data.indexWhere(
+                (user) => user.chapter?.chapterUrl == like.chapter?.chapterUrl);
+            data[index] = like;
+          }
         } else {
-          int index = data.indexWhere(
-              (user) => user.chapter?.chapterUrl == like.chapter?.chapterUrl);
-          data[index] = like;
+          data.insert(0, like);
         }
       } else {
-        data.insert(0, like);
+        data.removeWhere(
+            (user) => user.chapter?.chapterUrl == like.chapter?.chapterUrl);
       }
-
       for (var element in data) {
         str.add(json.encode(element));
       }

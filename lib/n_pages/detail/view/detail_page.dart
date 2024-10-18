@@ -69,11 +69,15 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
       chapter = _detailViewModel.detailState.detailBookEntry?.chapter?.first ??
           Chapter();
     }
+    SearchEntry searchEntry = widget.searchEntry;
+    searchEntry.coverUrl = searchEntry.coverUrl;
+    if (_detailViewModel.detailState.detailBookEntry?.coverUrl != "暂无") {
+      searchEntry.coverUrl =
+          _detailViewModel.detailState.detailBookEntry?.coverUrl;
+    }
 
-    await PreferencesDB.instance.setLike(
-        widget.searchEntry.url ?? "",
-        _isLikeNovel,
-        LikeEntry(searchEntry: widget.searchEntry, chapter: chapter));
+    await PreferencesDB.instance.setLike(widget.searchEntry.url ?? "",
+        _isLikeNovel, LikeEntry(searchEntry: searchEntry, chapter: chapter));
     SmartDialog.showToast(_isLikeNovel ? "收藏成功" : "取消收藏");
     setState(() {});
   }
