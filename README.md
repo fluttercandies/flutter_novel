@@ -39,6 +39,7 @@ lib
     ├── home -- 首页
     ├── search -- 全网搜索搜索页
     └── read -- 小说阅读 
+├── like -- 收藏书籍
 └── pages  已废弃⚠
     ├── home -- 首页
     ├── novel -- 小说阅读
