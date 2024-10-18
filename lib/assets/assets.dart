@@ -10,29 +10,6 @@ class Assets {
   /// {@macro assets_generator.assets_images_1_jpg.preview}
   static const String assets_images_1_jpg = 'assets/images/1.jpg';
 
-  /// {@macro assets_generator.assets_images_123_png.preview}
-  static const String assets_images_123_png = 'assets/images/123.png';
-
-  /// {@macro assets_generator.assets_images_300_1x_shots_so_png.preview}
-  static const String assets_images_300_1x_shots_so_png =
-      'assets/images/300_1x_shots_so.png';
-
-  /// {@macro assets_generator.assets_images_305shots_so_png.preview}
-  static const String assets_images_305shots_so_png =
-      'assets/images/305shots_so.png';
-
-  /// {@macro assets_generator.assets_images_488_1x_shots_so_png.preview}
-  static const String assets_images_488_1x_shots_so_png =
-      'assets/images/488_1x_shots_so.png';
-
-  /// {@macro assets_generator.assets_images_660_1x_shots_so_png.preview}
-  static const String assets_images_660_1x_shots_so_png =
-      'assets/images/660_1x_shots_so.png';
-
-  /// {@macro assets_generator.assets_images_970_1x_shots_so_png.preview}
-  static const String assets_images_970_1x_shots_so_png =
-      'assets/images/970_1x_shots_so.png';
-
   /// {@macro assets_generator.assets_images_logo_png.preview}
   static const String assets_images_logo_png = 'assets/images/logo.png';
 
@@ -41,6 +18,9 @@ class Assets {
 
   /// {@macro assets_generator.assets_images_logo2_png.preview}
   static const String assets_images_logo2_png = 'assets/images/logo2.png';
+
+  /// {@macro assets_generator.assets_images_refresh_gif.preview}
+  static const String assets_images_refresh_gif = 'assets/images/refresh.gif';
 
   static const String assets_json_source_json = 'assets/json/source.json';
 

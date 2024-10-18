@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
@@ -38,6 +39,37 @@ class _LikePageState extends ConsumerState<LikePage> {
     ref.read(likeViewModelProvider.notifier).build();
   }
 
+  /// 列表布局
+  late SliverGridDelegate _sliverGridDelegate;
+
+  /// 宽高比
+  late BoxConstraints _constraints;
+  @override
+  void initState() {
+    super.initState();
+    _initSliverGridDelegate();
+    _constraints = const BoxConstraints();
+    if (Platform.isAndroid || Platform.isIOS) {
+      _constraints = const BoxConstraints(maxHeight: 160, minHeight: 160);
+    }
+  }
+
+  /// 初始化列表布局
+  _initSliverGridDelegate() {
+    _sliverGridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        mainAxisExtent: 205);
+    if (Platform.isWindows || Platform.isMacOS) {
+      _sliverGridDelegate = const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 190,
+          mainAxisSpacing: 15,
+          crossAxisSpacing: 15,
+          childAspectRatio: 9 / 15);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final likeViewModel = ref.watch(likeViewModelProvider);
@@ -61,7 +93,7 @@ class _LikePageState extends ConsumerState<LikePage> {
   _buildSuccess(LikeState value) {
     return DefaultTextStyle(
       style: const TextStyle(
-          fontSize: 14,
+          fontSize: 12,
           color: Colors.black54,
           fontWeight: FontWeight.w300,
           overflow: TextOverflow.ellipsis),
@@ -77,31 +109,9 @@ class _LikePageState extends ConsumerState<LikePage> {
             SliverPadding(
               padding: 8.padding,
               sliver: SliverGrid.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 6,
-                    crossAxisSpacing: 6,
-                    mainAxisExtent: 230),
+                gridDelegate: _sliverGridDelegate,
                 itemBuilder: (c, i) {
                   return _buildItem(value.likeList![i]);
-                  //  DefaultTextStyle(
-                  //     style: const TextStyle(
-                  //         fontSize: 14,
-                  //         color: Colors.black54,
-                  //         fontWeight: FontWeight.w300,
-                  //         overflow: TextOverflow.ellipsis),
-                  //     child:
-                  // MasonryGridView.count(
-                  //   crossAxisCount: 3,
-                  //   mainAxisSpacing: 6,
-                  //   crossAxisSpacing: 5,
-                  //   padding: 10.padding,
-                  //   itemBuilder: (c, i) {
-                  //     return _buildItem(value.likeList![i]);
-                  //   },
-                  //   itemCount: value.likeList?.length,
-                  // ),
-                  //       );
                 },
                 itemCount: value.likeList?.length,
               ),
@@ -130,44 +140,52 @@ class _LikePageState extends ConsumerState<LikePage> {
             color: const Color(0xfffafafa)),
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(5)),
-              child: ExtendedImage.network(
-                entry.searchEntry?.coverUrl ?? "",
-                width: double.infinity,
-                height: 160,
-                fit: BoxFit.cover,
+            ConstrainedBox(
+              constraints: _constraints,
+              child: ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(5)),
+                child: Expanded(
+                  child: ExtendedImage.network(
+                    entry.searchEntry?.coverUrl ?? "",
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
             Flexible(
-              child: Padding(
-                padding: 3.padding,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      entry.searchEntry?.name ?? "",
-                      style:
-                          const TextStyle(color: Colors.black87, fontSize: 16),
-                    ),
-                    Text.rich(TextSpan(children: [
-                      TextSpan(
-                          text: "阅:",
-                          style: TextStyle(color: theme.primaryColor)),
-                      TextSpan(text: entry.chapter?.chapterName ?? "")
-                    ])),
-                    Text.rich(TextSpan(children: [
-                      TextSpan(
-                          text: "来源:",
-                          style: TextStyle(color: theme.primaryColor)),
-                      TextSpan(
-                          text: entry.searchEntry?.bookSourceEntry
-                                  ?.bookSourceName ??
-                              "")
-                    ])),
-                  ],
+              child: SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        entry.searchEntry?.name ?? "",
+                        style: const TextStyle(
+                            color: Colors.black87, fontSize: 15),
+                      ),
+                      Text.rich(TextSpan(children: [
+                        TextSpan(
+                            text: "阅读至:",
+                            style: TextStyle(color: theme.primaryColor)),
+                        TextSpan(text: entry.chapter?.chapterName ?? "")
+                      ])),
+                      // Text.rich(TextSpan(children: [
+                      //   TextSpan(
+                      //       text: "来源:",
+                      //       style: TextStyle(color: theme.primaryColor)),
+                      //   TextSpan(
+                      //       text: entry.searchEntry?.bookSourceEntry
+                      //               ?.bookSourceName ??
+                      //           "")
+                      // ])),
+                    ],
+                  ),
                 ),
               ),
             )

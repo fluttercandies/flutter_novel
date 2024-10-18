@@ -80,17 +80,17 @@ lib
 
 ### 项目截图 《新》
 
-![图片说明](./assets/images/57_1x_shots_so.png)
-![图片说明](./assets/images/729_1x_shots_so.png)
-![图片说明](./assets/images/300_1x_shots_so.png)
+![图片说明](./md/57_1x_shots_so.png)
+![图片说明](./md/729_1x_shots_so.png)
+![图片说明](./md/300_1x_shots_so.png)
 
 ### 项目截图 《旧》
 
-![图片说明](./assets/images/488_1x_shots_so.png)
-![图片说明](./assets/images/660_1x_shots_so.png)
-![图片说明](./assets/images/970_1x_shots_so.png)
-![图片说明](./assets/images/300_1x_shots_so.png)
-![图片说明](./assets/images/305shots_so.png)
+![图片说明](./md/488_1x_shots_so.png)
+![图片说明](./md/660_1x_shots_so.png)
+![图片说明](./md/970_1x_shots_so.png)
+![图片说明](./md/300_1x_shots_so.png)
+![图片说明](./md/305shots_so.png)
 
 ### 免责声明
 

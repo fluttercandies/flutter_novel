@@ -8,30 +8,6 @@
 /// ![](d:\code\novel_flutter_bit\assets/images/1.jpg)
 /// {@endtemplate}
 
-/// {@template assets_generator.assets_images_123_png.preview}
-/// ![](d:\code\novel_flutter_bit\assets/images/123.png)
-/// {@endtemplate}
-
-/// {@template assets_generator.assets_images_300_1x_shots_so_png.preview}
-/// ![](d:\code\novel_flutter_bit\assets/images/300_1x_shots_so.png)
-/// {@endtemplate}
-
-/// {@template assets_generator.assets_images_305shots_so_png.preview}
-/// ![](d:\code\novel_flutter_bit\assets/images/305shots_so.png)
-/// {@endtemplate}
-
-/// {@template assets_generator.assets_images_488_1x_shots_so_png.preview}
-/// ![](d:\code\novel_flutter_bit\assets/images/488_1x_shots_so.png)
-/// {@endtemplate}
-
-/// {@template assets_generator.assets_images_660_1x_shots_so_png.preview}
-/// ![](d:\code\novel_flutter_bit\assets/images/660_1x_shots_so.png)
-/// {@endtemplate}
-
-/// {@template assets_generator.assets_images_970_1x_shots_so_png.preview}
-/// ![](d:\code\novel_flutter_bit\assets/images/970_1x_shots_so.png)
-/// {@endtemplate}
-
 /// {@template assets_generator.assets_images_logo_png.preview}
 /// ![](d:\code\novel_flutter_bit\assets/images/logo.png)
 /// {@endtemplate}
@@ -42,6 +18,10 @@
 
 /// {@template assets_generator.assets_images_logo2_png.preview}
 /// ![](d:\code\novel_flutter_bit\assets/images/logo2.png)
+/// {@endtemplate}
+
+/// {@template assets_generator.assets_images_refresh_gif.preview}
+/// ![](d:\code\novel_flutter_bit\assets/images/refresh.gif)
 /// {@endtemplate}
 
 /// {@template assets_generator.assets_svg_reload_1_svg.preview}
