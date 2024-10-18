@@ -6,7 +6,7 @@ part of 'like_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$likeViewModelHash() => r'9fc531a0d578315a9069d0ca15c8616c16a462f1';
+String _$likeViewModelHash() => r'9e9de7cc41c761886fbe2a7a411b987bf7540e0e';
 
 /// 收藏
 /// 时间 2024-10-18

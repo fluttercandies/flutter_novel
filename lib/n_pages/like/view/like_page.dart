@@ -15,6 +15,8 @@ import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/image.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/net_state_tools.dart';
+import 'package:novel_flutter_bit/widget/pull_to_refresh.dart';
+import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
 @RoutePage()
 class LikePage extends ConsumerStatefulWidget {
@@ -25,7 +27,7 @@ class LikePage extends ConsumerStatefulWidget {
 }
 
 class _LikePageState extends ConsumerState<LikePage> {
-  ThemeData get _themeData => Theme.of(context);
+  ThemeData get theme => Theme.of(context);
 
   /// 跳转详情页
   _toDeatilPage(LikeEntry entry) async {
@@ -63,15 +65,49 @@ class _LikePageState extends ConsumerState<LikePage> {
           color: Colors.black54,
           fontWeight: FontWeight.w300,
           overflow: TextOverflow.ellipsis),
-      child: MasonryGridView.count(
-        crossAxisCount: 3,
-        mainAxisSpacing: 6,
-        crossAxisSpacing: 5,
-        padding: 10.padding,
-        itemBuilder: (c, i) {
-          return _buildItem(value.likeList![i]);
-        },
-        itemCount: value.likeList?.length,
+      child: PullToRefreshNotification(
+        reachToRefreshOffset: 100,
+        onRefresh: ref.read(likeViewModelProvider.notifier).onRefresh,
+        child: CustomScrollView(
+          slivers: [
+            PullToRefresh(
+              backgroundColor: theme.primaryColor,
+              textColor: Colors.white,
+            ),
+            SliverPadding(
+              padding: 8.padding,
+              sliver: SliverGrid.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 6,
+                    crossAxisSpacing: 6,
+                    mainAxisExtent: 230),
+                itemBuilder: (c, i) {
+                  return _buildItem(value.likeList![i]);
+                  //  DefaultTextStyle(
+                  //     style: const TextStyle(
+                  //         fontSize: 14,
+                  //         color: Colors.black54,
+                  //         fontWeight: FontWeight.w300,
+                  //         overflow: TextOverflow.ellipsis),
+                  //     child:
+                  // MasonryGridView.count(
+                  //   crossAxisCount: 3,
+                  //   mainAxisSpacing: 6,
+                  //   crossAxisSpacing: 5,
+                  //   padding: 10.padding,
+                  //   itemBuilder: (c, i) {
+                  //     return _buildItem(value.likeList![i]);
+                  //   },
+                  //   itemCount: value.likeList?.length,
+                  // ),
+                  //       );
+                },
+                itemCount: value.likeList?.length,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -104,31 +140,35 @@ class _LikePageState extends ConsumerState<LikePage> {
                 fit: BoxFit.cover,
               ),
             ),
-            Padding(
-              padding: 3.padding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    entry.searchEntry!.name!,
-                    style: const TextStyle(color: Colors.black87, fontSize: 16),
-                  ),
-                  Text.rich(TextSpan(children: [
-                    TextSpan(
-                        text: "阅:",
-                        style: TextStyle(color: _themeData.primaryColor)),
-                    TextSpan(text: entry.chapter!.chapterName!)
-                  ])),
-                  Text.rich(TextSpan(children: [
-                    TextSpan(
-                        text: "来源:",
-                        style: TextStyle(color: _themeData.primaryColor)),
-                    TextSpan(
-                        text: entry
-                                .searchEntry?.bookSourceEntry?.bookSourceName ??
-                            "")
-                  ])),
-                ],
+            Flexible(
+              child: Padding(
+                padding: 3.padding,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      entry.searchEntry?.name ?? "",
+                      style:
+                          const TextStyle(color: Colors.black87, fontSize: 16),
+                    ),
+                    Text.rich(TextSpan(children: [
+                      TextSpan(
+                          text: "阅:",
+                          style: TextStyle(color: theme.primaryColor)),
+                      TextSpan(text: entry.chapter?.chapterName ?? "")
+                    ])),
+                    Text.rich(TextSpan(children: [
+                      TextSpan(
+                          text: "来源:",
+                          style: TextStyle(color: theme.primaryColor)),
+                      TextSpan(
+                          text: entry.searchEntry?.bookSourceEntry
+                                  ?.bookSourceName ??
+                              "")
+                    ])),
+                  ],
+                ),
               ),
             )
           ],
