@@ -83,6 +83,7 @@ lib
 
 ![图片说明](./md/57_1x_shots_so.png)
 ![图片说明](./md/729_1x_shots_so.png)
+![图片说明](./md/360_1x_shots_so.png)
 ![图片说明](./md/300_1x_shots_so.png)
 
 ### 项目截图 《旧》
