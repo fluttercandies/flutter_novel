@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,27 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
 
   double height = 160;
 
+  /// 列表布局
+  late SliverGridDelegate _sliverGridDelegate;
+
+  /// 初始化列表布局
+  _initSliverGridDelegate() {
+    _sliverGridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 1,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
+      mainAxisExtent: 180,
+    );
+    if (Platform.isWindows || Platform.isMacOS) {
+      _sliverGridDelegate = const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 400,
+          mainAxisExtent: 200,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 16 / 9);
+    }
+  }
+
   /// 跳转详情页
   void _onTapToDeatilPage(
       {required SearchEntry entry, required BookSourceEntry bookSource}) async {
@@ -41,6 +64,7 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
   @override
   void initState() {
     super.initState();
+    _initSliverGridDelegate();
   }
 
   @override
@@ -67,12 +91,14 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
             color: theme.textTheme.bodyLarge?.color,
             fontSize: 17,
             fontWeight: FontWeight.w300),
-        child: ListView.builder(
-            padding: 20.padding,
-            itemCount: searchList?.length ?? 0,
-            itemBuilder: (context, index) {
-              return _buildItem(searchList![index]);
-            }),
+        child: GridView.builder(
+          padding: 20.padding,
+          itemCount: searchList?.length ?? 0,
+          itemBuilder: (context, index) {
+            return _buildItem(searchList![index]);
+          },
+          gridDelegate: _sliverGridDelegate,
+        ),
       ),
     );
   }
@@ -93,7 +119,7 @@ class _SearchPageState extends ConsumerState<NewSearchPage> {
                 (searchEntry.name ?? ""),
                 style: TextStyle(fontSize: 18, color: theme.primaryColor),
                 overflow: TextOverflow.ellipsis,
-                maxLines: 4,
+                maxLines: 2,
               ),
             ),
             searchEntry.kind != "" && searchEntry.kind != null
