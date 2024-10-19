@@ -7,14 +7,13 @@
     <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=mYfvheURi3cqPskrWXaLddE5MyslIIy8&jump_from=webapi&authKey=pGJ8ddoO9qrnRY0AKs7pEML06J4s02WaJRs0KDJsDQju9kw8GYX0WevrACX96c8o"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="造物主动态桌面Ⅰ群" title="造物主动态桌面Ⅰ群">造物主动态桌面Ⅰ群</a>
 </p>
 
-## 项目介绍
+## 项目介绍*
 
-flutter_novel 《爱看》是一款开源的阅读APP，拥有功能。热门推荐、小说排行、全网搜索、小说分类、关键字查询、收藏小说、本地历史阅读记录、主题设置、阅读定位。功能持续更新中。
+《爱看》是一款开源的阅读APP，拥有功能。热门推荐、小说排行、全网搜索、小说分类、关键字查询、收藏小说、本地历史阅读记录、主题设置、阅读定位。功能持续更新中。
 
 ## 项目地址
 
-
-<a href='https://github.com/7-bit11/novel_flutter_bit_source/blob/main/%E7%88%B1%E7%9C%8Bv1.1.7.apk'><img alt="Github stars" src="https://img.shields.io/github/stars/7-bit11/novel_flutter_bit_source?logo=github">下载地址</a>
+<a href='https://github.com/7-bit11/novel_flutter_bit_source/blob/main/%E7%88%B1%E7%9C%8Bv2.0.1.apk'><img alt="Github stars" src="https://img.shields.io/github/stars/7-bit11/novel_flutter_bit_source?logo=github">下载地址</a>
 
 ## 支持平台
 
@@ -27,7 +26,6 @@ flutter_novel 《爱看》是一款开源的阅读APP，拥有功能。热门推
 | MacOS                          |  ✅
 | Linux                          |  ❌
 
-
 ## 项目结构
 
 ```
@@ -36,7 +34,13 @@ lib
 ├── db -- 数据缓存
 ├── icons -- 图标
 ├── net -- 网络请求、网络状态
-└── pages
+├── n_pages
+    ├── detail -- 详情页
+    ├── home -- 首页
+    ├── search -- 全网搜索搜索页
+    └── read -- 小说阅读 
+├── like -- 收藏书籍
+└── pages  已废弃⚠
     ├── home -- 首页
     ├── novel -- 小说阅读
     ├── search -- 全网搜索
@@ -58,7 +62,7 @@ lib
 | FlutterSDK                     |  3.24.0
 | DartSDK                        |  3.5.0
 | logger                         |  日志插件^1.0.8
-| auto_route                     |  路由^9.2.2 
+| auto_route                     |  路由^9.2.2
 | dio                            |  网络请求^5.7.0
 | pull_to_refresh_notification   |  刷新^3.1.0
 | extended_image                 |  图片^8.2.1
@@ -71,14 +75,24 @@ lib
 | riverpod_annotation            |  ^2.3.5
 | syncfusion_flutter_sliders     |  滑动选择器 ^26.2.14
 | sliver_head_automatic_adsorption| 自动吸附Sliver ^1.0.8
+| assets_generator               | 本地资源生成^3.0.5
+| carousel_slider                | 轮播^5.0.0
+| html                           | ^0.15.4
 
-### 项目截图
+### 项目截图 《新》
 
-![图片说明](./assets/images/488_1x_shots_so.png)
-![图片说明](./assets/images/660_1x_shots_so.png)
-![图片说明](./assets/images/970_1x_shots_so.png)
-![图片说明](./assets/images/300_1x_shots_so.png)
-![图片说明](./assets/images/305shots_so.png)
+![图片说明](./md/57_1x_shots_so.png)
+![图片说明](./md/729_1x_shots_so.png)
+![图片说明](./md/360_1x_shots_so.png)
+![图片说明](./md/300_1x_shots_so.png)
+
+### 项目截图 《旧》
+
+![图片说明](./md/488_1x_shots_so.png)
+![图片说明](./md/660_1x_shots_so.png)
+![图片说明](./md/970_1x_shots_so.png)
+![图片说明](./md/300_1x_shots_so.png)
+![图片说明](./md/305shots_so.png)
 
 ### 免责声明
 
@@ -89,4 +103,3 @@ lib
 3.如有侵犯权利，请联系作者删除。
 
 4.下载或使用本站源码则代表你同意上述的免责声明协议
-

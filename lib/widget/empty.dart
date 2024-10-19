@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 class EmptyBuild extends StatelessWidget {
   EmptyBuild({super.key, this.text, this.width = 240});
   final String? text;
-  final String str = "暂无数据";
+  final String str = "没有找到对应资源！";
   late double width;
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,8 @@ class EmptyBuild extends StatelessWidget {
             'assets/svg/empty.svg',
             width: width,
           ),
-          Text(text ?? str, style: const TextStyle(fontSize: 18))
+          Text(text ?? str,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300))
         ],
       ),
     ));

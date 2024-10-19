@@ -46,6 +46,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.5.0"
+  assets_generator:
+    dependency: "direct main"
+    description:
+      name: assets_generator
+      sha256: b3213c4735d54e15bd93277bb24b690234ae86038e664eea93f89f21d396d846
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.5"
   async:
     dependency: transitive
     description:
@@ -142,6 +150,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "8.9.2"
+  carousel_slider:
+    dependency: "direct main"
+    description:
+      name: carousel_slider
+      sha256: "7b006ec356205054af5beaef62e2221160ea36b90fb70a35e4deacd49d0349ae"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.0.0"
   characters:
     dependency: transitive
     description:
@@ -214,6 +230,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.5"
+  csslib:
+    dependency: transitive
+    description:
+      name: csslib
+      sha256: "706b5707578e0c1b4b7550f64078f0a0f19dec3f50a178ffae7006b0a9ca58fb"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.0"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -331,6 +355,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_gbk2utf8:
+    dependency: "direct main"
+    description:
+      name: flutter_gbk2utf8
+      sha256: c17323808d6ae7cfaf7676669e0130c33df6be322eb807cdd32face5824c1134
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -413,6 +445,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.3.2"
+  html:
+    dependency: "direct main"
+    description:
+      name: html
+      sha256: "3a7812d5bcd2894edf53dfaf8cd640876cf6cef50a8f238745c8b8120ea74d3a"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.15.4"
   http:
     dependency: transitive
     description:

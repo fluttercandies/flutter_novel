@@ -1,4 +1,6 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/assets/assets.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
 /// 下拉刷新
@@ -29,12 +31,11 @@ class _PullToRefreshState extends State<PullToRefresh> {
     if (info?.refreshWidget != null &&
         offset > 50.0 &&
         mode != PullToRefreshIndicatorMode.error) {
-      refreshWidget = info?.refreshWidget ??
-          Container(
-            width: 20,
-            height: 20,
-            color: Colors.red,
-          );
+      refreshWidget = ExtendedImage.asset(
+        Assets.assets_images_refresh_gif,
+        width: 80,
+        height: 80,
+      );
     }
 
     Widget child = const SizedBox();
@@ -80,17 +81,19 @@ class _PullToRefreshState extends State<PullToRefresh> {
       alignment: Alignment.bottomCenter,
       height: offset,
       width: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          refreshWidget,
-          Container(
-            padding: const EdgeInsets.only(left: 5.0),
-            alignment: Alignment.center,
-            child: Text(text,
-                style: TextStyle(color: widget.textColor, fontSize: 16)),
-          )
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.only(left: 5.0),
+              alignment: Alignment.center,
+              child: Text(text,
+                  style: TextStyle(color: widget.textColor, fontSize: 16)),
+            ),
+            refreshWidget,
+          ],
+        ),
       ),
     );
   }

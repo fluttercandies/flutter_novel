@@ -16,7 +16,7 @@ class Build403 extends StatelessWidget {
           'assets/svg/empty.svg',
           width: 240,
         ),
-        const Text('服务器维护中', style: TextStyle(fontSize: 16))
+        const Text('请求失败，请稍后重试', style: TextStyle(fontSize: 16))
       ],
     ));
   }
