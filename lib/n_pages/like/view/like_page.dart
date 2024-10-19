@@ -1,19 +1,15 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:novel_flutter_bit/n_pages/like/enrty/like_entry.dart';
 import 'package:novel_flutter_bit/n_pages/like/state/like_state.dart';
 import 'package:novel_flutter_bit/n_pages/like/view_model/like_view_model.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
-import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
-import 'package:novel_flutter_bit/widget/image.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/net_state_tools.dart';
 import 'package:novel_flutter_bit/widget/pull_to_refresh.dart';
@@ -145,47 +141,42 @@ class _LikePageState extends ConsumerState<LikePage> {
               child: ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(5)),
-                child: Expanded(
-                  child: ExtendedImage.network(
-                    entry.searchEntry?.coverUrl ?? "",
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+                child: ExtendedImage.network(
+                  entry.searchEntry?.coverUrl ?? "",
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-            Flexible(
-              child: SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        entry.searchEntry?.name ?? "",
-                        style: const TextStyle(
-                            color: Colors.black87, fontSize: 15),
-                      ),
-                      Text.rich(TextSpan(children: [
-                        TextSpan(
-                            text: "阅读至:",
-                            style: TextStyle(color: theme.primaryColor)),
-                        TextSpan(text: entry.chapter?.chapterName ?? "")
-                      ])),
-                      // Text.rich(TextSpan(children: [
-                      //   TextSpan(
-                      //       text: "来源:",
-                      //       style: TextStyle(color: theme.primaryColor)),
-                      //   TextSpan(
-                      //       text: entry.searchEntry?.bookSourceEntry
-                      //               ?.bookSourceName ??
-                      //           "")
-                      // ])),
-                    ],
-                  ),
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      entry.searchEntry?.name ?? "",
+                      style:
+                          const TextStyle(color: Colors.black87, fontSize: 15),
+                    ),
+                    Text.rich(TextSpan(children: [
+                      TextSpan(
+                          text: "阅读至:",
+                          style: TextStyle(color: theme.primaryColor)),
+                      TextSpan(text: entry.chapter?.chapterName ?? "")
+                    ])),
+                    // Text.rich(TextSpan(children: [
+                    //   TextSpan(
+                    //       text: "来源:",
+                    //       style: TextStyle(color: theme.primaryColor)),
+                    //   TextSpan(
+                    //       text: entry.searchEntry?.bookSourceEntry
+                    //               ?.bookSourceName ??
+                    //           "")
+                    // ])),
+                  ],
                 ),
               ),
             )
