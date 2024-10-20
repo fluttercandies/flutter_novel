@@ -57,7 +57,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   _toLikePage() {
     context.router.push(const LikeRoute());
   }
-
+  /// 跳转 历史 页
+  _toHistoryPage() {
+    context.router.push(const HistoryRoute());
+  }
   @override
   Widget build(BuildContext context) {
     final homeViewModel = ref.watch(homeViewModelProvider);
@@ -89,7 +92,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               color: theme.primaryColor,
             )),
         IconButton(
-          onPressed: () {},
+          onPressed: _toHistoryPage,
           icon: const Icon(
             Icons.history,
             color: Colors.black54,
