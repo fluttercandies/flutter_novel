@@ -89,6 +89,13 @@ class _HomePageState extends ConsumerState<HomePage> {
               color: theme.primaryColor,
             )),
         IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.history,
+            color: Colors.black54,
+          ),
+        ),
+        IconButton(
             onPressed: _openSettingThemeSwitch,
             icon: const Icon(
               Icons.settings,
@@ -162,7 +169,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                       const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                 )),
           ),
-          fillColor: Colors.white, // 输入框背景颜色
+          fillColor: Colors.white,
+          // 输入框背景颜色
           filled: true, // 填充样式
         ),
         style: const TextStyle(
