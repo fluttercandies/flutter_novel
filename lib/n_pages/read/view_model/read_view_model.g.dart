@@ -6,7 +6,7 @@ part of 'read_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$readViewModelHash() => r'894621a6558f316c9e8a4561f1649dbf3cce4911';
+String _$readViewModelHash() => r'169f19508e3cd47052b7e2c40dc0b8ee4f35144b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -33,12 +33,14 @@ abstract class _$ReadViewModel
     extends BuildlessAutoDisposeAsyncNotifier<ReadState> {
   late final Chapter chapter1;
   late final BookSourceEntry bookSource;
+  late final SearchEntry searchEntry;
   late final NewDetailViewModel? detailView;
   late final List<Chapter>? chapterList;
 
   FutureOr<ReadState> build({
     required Chapter chapter1,
     required BookSourceEntry bookSource,
+    required SearchEntry searchEntry,
     NewDetailViewModel? detailView,
     List<Chapter>? chapterList,
   });
@@ -73,12 +75,14 @@ class ReadViewModelFamily extends Family<AsyncValue<ReadState>> {
   ReadViewModelProvider call({
     required Chapter chapter1,
     required BookSourceEntry bookSource,
+    required SearchEntry searchEntry,
     NewDetailViewModel? detailView,
     List<Chapter>? chapterList,
   }) {
     return ReadViewModelProvider(
       chapter1: chapter1,
       bookSource: bookSource,
+      searchEntry: searchEntry,
       detailView: detailView,
       chapterList: chapterList,
     );
@@ -91,6 +95,7 @@ class ReadViewModelFamily extends Family<AsyncValue<ReadState>> {
     return call(
       chapter1: provider.chapter1,
       bookSource: provider.bookSource,
+      searchEntry: provider.searchEntry,
       detailView: provider.detailView,
       chapterList: provider.chapterList,
     );
@@ -126,12 +131,14 @@ class ReadViewModelProvider
   ReadViewModelProvider({
     required Chapter chapter1,
     required BookSourceEntry bookSource,
+    required SearchEntry searchEntry,
     NewDetailViewModel? detailView,
     List<Chapter>? chapterList,
   }) : this._internal(
           () => ReadViewModel()
             ..chapter1 = chapter1
             ..bookSource = bookSource
+            ..searchEntry = searchEntry
             ..detailView = detailView
             ..chapterList = chapterList,
           from: readViewModelProvider,
@@ -145,6 +152,7 @@ class ReadViewModelProvider
               ReadViewModelFamily._allTransitiveDependencies,
           chapter1: chapter1,
           bookSource: bookSource,
+          searchEntry: searchEntry,
           detailView: detailView,
           chapterList: chapterList,
         );
@@ -158,12 +166,14 @@ class ReadViewModelProvider
     required super.from,
     required this.chapter1,
     required this.bookSource,
+    required this.searchEntry,
     required this.detailView,
     required this.chapterList,
   }) : super.internal();
 
   final Chapter chapter1;
   final BookSourceEntry bookSource;
+  final SearchEntry searchEntry;
   final NewDetailViewModel? detailView;
   final List<Chapter>? chapterList;
 
@@ -174,6 +184,7 @@ class ReadViewModelProvider
     return notifier.build(
       chapter1: chapter1,
       bookSource: bookSource,
+      searchEntry: searchEntry,
       detailView: detailView,
       chapterList: chapterList,
     );
@@ -187,6 +198,7 @@ class ReadViewModelProvider
         () => create()
           ..chapter1 = chapter1
           ..bookSource = bookSource
+          ..searchEntry = searchEntry
           ..detailView = detailView
           ..chapterList = chapterList,
         from: from,
@@ -196,6 +208,7 @@ class ReadViewModelProvider
         debugGetCreateSourceHash: null,
         chapter1: chapter1,
         bookSource: bookSource,
+        searchEntry: searchEntry,
         detailView: detailView,
         chapterList: chapterList,
       ),
@@ -213,6 +226,7 @@ class ReadViewModelProvider
     return other is ReadViewModelProvider &&
         other.chapter1 == chapter1 &&
         other.bookSource == bookSource &&
+        other.searchEntry == searchEntry &&
         other.detailView == detailView &&
         other.chapterList == chapterList;
   }
@@ -222,6 +236,7 @@ class ReadViewModelProvider
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, chapter1.hashCode);
     hash = _SystemHash.combine(hash, bookSource.hashCode);
+    hash = _SystemHash.combine(hash, searchEntry.hashCode);
     hash = _SystemHash.combine(hash, detailView.hashCode);
     hash = _SystemHash.combine(hash, chapterList.hashCode);
 
@@ -235,6 +250,9 @@ mixin ReadViewModelRef on AutoDisposeAsyncNotifierProviderRef<ReadState> {
 
   /// The parameter `bookSource` of this provider.
   BookSourceEntry get bookSource;
+
+  /// The parameter `searchEntry` of this provider.
+  SearchEntry get searchEntry;
 
   /// The parameter `detailView` of this provider.
   NewDetailViewModel? get detailView;
@@ -253,6 +271,8 @@ class _ReadViewModelProviderElement
   @override
   BookSourceEntry get bookSource =>
       (origin as ReadViewModelProvider).bookSource;
+  @override
+  SearchEntry get searchEntry => (origin as ReadViewModelProvider).searchEntry;
   @override
   NewDetailViewModel? get detailView =>
       (origin as ReadViewModelProvider).detailView;

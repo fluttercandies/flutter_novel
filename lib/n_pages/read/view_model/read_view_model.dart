@@ -9,7 +9,9 @@ import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/view_model/detail_view_model.dart';
+import 'package:novel_flutter_bit/n_pages/history/entry/history_entry.dart';
 import 'package:novel_flutter_bit/n_pages/read/state/read_state.dart';
+import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/net/new_novel_http.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/parse_source_rule.dart';
@@ -32,15 +34,18 @@ class ReadViewModel extends _$ReadViewModel {
   /// 所有章节
   late NewDetailViewModel? detailViewModel;
 
+  late SearchEntry _searchEntry;
   @override
   Future<ReadState> build(
       {required Chapter chapter1,
       required BookSourceEntry bookSource,
+      required SearchEntry searchEntry,
       NewDetailViewModel? detailView,
       List<Chapter>? chapterList}) async {
     LoggerTools.looger.d("NEW NewDetailViewModel init build");
     chapter = chapter1;
     _bookSourceEntry = bookSource;
+    _searchEntry = searchEntry;
     detailViewModel = detailView;
     readState.chapterList = chapterList;
     //_initData(detailUrl: chapter1.chapterUrl ?? "");
@@ -178,6 +183,10 @@ class ReadViewModel extends _$ReadViewModel {
       readState.listContent = strList;
       state = AsyncData(readState);
       LoggerTools.looger.d(strList.toString());
+
+      /// 存储历史记录
+      await PreferencesDB.instance.setHistory(HistoryEntry(
+          searchEntry: _searchEntry, chapter: chapter)); //jsonEncode()
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
       // searchState.netState = NetState.error403State;
@@ -285,8 +294,14 @@ class ReadViewModel extends _$ReadViewModel {
   setReadIndex(Chapter data) async {
     chapter = data;
     LoggerTools.looger.d("setReadIndex : ${data.toJson().toString()}");
+
+    /// 保存阅读记录
     await PreferencesDB.instance.sps.setString(
         detailViewModel?.detailUrl ?? "", json.encode(data)); //jsonEncode()
+    /// 存储历史记录
+    await PreferencesDB.instance.setHistory(HistoryEntry(
+        searchEntry: _searchEntry, chapter: chapter)); //jsonEncode()
+
     //state = AsyncData(detailState);
   }
 }
