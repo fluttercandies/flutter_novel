@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
+import 'package:novel_flutter_bit/n_pages/history/entry/history_entry.dart';
 import 'package:novel_flutter_bit/n_pages/like/enrty/like_entry.dart';
 import 'package:novel_flutter_bit/pages/collect_novel/enrty/collect_entry.dart';
 import 'package:novel_flutter_bit/pages/home/entry/novel_history_entry.dart';
@@ -44,6 +45,9 @@ class PreferencesDB {
   static const senseLikeNovel = "setSenseLikeNovel";
 
   static const novelSource = "novelSource";
+
+  /// 阅读记录
+  static const history = "history";
 
   /// 设置-主题外观模式
   Future<void> setAppThemeDarkMode(ThemeMode themeMode) async {
@@ -262,5 +266,16 @@ class PreferencesDB {
       str.add(json.encode(element));
     }
     await sps.setStringList(senseLikeNovel, str);
+  }
+
+  /// 获取-历史记录列表
+  Future<List<HistoryEntry>> getHistoryList() async {
+    List<HistoryEntry> list = [];
+    List<String> str = await sps.getStringList(history) ?? [];
+    for (var element in str) {
+      list.add(HistoryEntry.fromJson(json.decode(element)));
+    }
+    LoggerTools.looger.d("获取收藏列表  getCollectNovelList  list:$list");
+    return list;
   }
 }
