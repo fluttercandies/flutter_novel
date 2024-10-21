@@ -11,6 +11,7 @@ import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/slider_novel.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class ShowSliderSheet extends StatefulWidget {
   ShowSliderSheet({
@@ -37,16 +38,21 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
     LoggerTools.looger.i(themes);
   }
 
+  _showImage() async {
+    // 关闭底部弹窗并返回数据
+    Navigator.pop(context, 'Image');
+  }
+
+  ThemeData get _themeData => Theme.of(context);
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     return DefaultTextStyle(
       style: TextStyle(
           fontWeight: FontWeight.w300,
-          color: theme.textTheme.bodyLarge?.color,
+          color: _themeData.textTheme.bodyLarge?.color,
           fontSize: 18),
       child: SizedBox(
-        height: 400,
+        height: 460,
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -84,11 +90,24 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
                     const Text("主题选择"),
                     5.verticalSpace,
                     Wrap(
-                      spacing: 8,
-                      runSpacing: 10,
-                      children: _getThemeListWidget(),
+                        spacing: 8,
+                        runSpacing: 10,
+                        children: _getThemeListWidget()),
+                    10.verticalSpace,
+                    const Text("DIY背景"),
+                    Row(
+                      children: [
+                        IconButton(
+                          style: const ButtonStyle(
+                              padding: WidgetStatePropertyAll(EdgeInsets.zero)),
+                          onPressed: _showImage,
+                          icon: Icon(Icons.image,
+                              size: 42, color: _themeData.primaryColor),
+                        ),
+                        10.horizontalSpace,
+                      ],
                     ),
-                    20.verticalSpace,
+                    5.verticalSpace,
                     const Text("字体粗细"),
                     5.verticalSpace,
                     Wrap(

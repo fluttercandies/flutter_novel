@@ -17,7 +17,7 @@ import 'package:novel_flutter_bit/n_pages/read/state/read_state.dart';
 import 'package:novel_flutter_bit/n_pages/read/view_model/read_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
-import 'package:novel_flutter_bit/pages/novel/widget/show_slider_sheet.dart';
+import 'package:novel_flutter_bit/widget/show_slider_sheet.dart';
 import 'package:novel_flutter_bit/route/route.gr.dart';
 import 'package:novel_flutter_bit/theme/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
@@ -28,6 +28,7 @@ import 'package:novel_flutter_bit/widget/loading.dart';
 import 'package:novel_flutter_bit/widget/net_state_tools.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 @RoutePage()
 class ReadPage extends ConsumerStatefulWidget {
@@ -246,7 +247,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
 
   /// 打开设置
   _openSetting() async {
-    await showModalBottomSheet(
+    final data = await showModalBottomSheet(
         backgroundColor: Colors.white,
         context: context,
         builder: (BuildContext context) {
@@ -259,10 +260,21 @@ class _ReadPageState extends ConsumerState<ReadPage> {
                   }),
               themeStyleProvider: _themeStyleProvider);
         });
-    if (NovelReadState.isChange) {
+    if (data != null && data == "Image") {
+      _showImagePicker();
+    } else if (NovelReadState.isChange) {
       await PreferencesDB.instance.setNovelFontSize(NovelReadState.size);
       NovelReadState.isChange = false;
     }
+  }
+
+  void _showImagePicker() async {
+    final List<AssetEntity>? result = await AssetPicker.pickAssets(context,
+        pickerConfig: const AssetPickerConfig(
+            requestType: RequestType.image,
+            maxAssets: 1,
+            textDelegate: AssetPickerTextDelegate()));
+    if (result != null && result.isNotEmpty) {}
   }
 
   @override
