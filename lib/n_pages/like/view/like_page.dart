@@ -94,7 +94,7 @@ class _LikePageState extends ConsumerState<LikePage> {
           fontWeight: FontWeight.w300,
           overflow: TextOverflow.ellipsis),
       child: PullToRefreshNotification(
-        reachToRefreshOffset: 100,
+        reachToRefreshOffset: 140,
         onRefresh: ref.read(likeViewModelProvider.notifier).onRefresh,
         child: CustomScrollView(
           slivers: [

@@ -13,7 +13,6 @@ import 'package:novel_flutter_bit/entry/book_source_entry.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/view_model/detail_view_model.dart';
-import 'package:novel_flutter_bit/n_pages/history/entry/history_entry.dart';
 import 'package:novel_flutter_bit/n_pages/read/state/read_state.dart';
 import 'package:novel_flutter_bit/n_pages/read/view_model/read_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
@@ -160,7 +159,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   _changeNovelData({required Chapter data}) {
     //_detailViewModel.setReadIndex(data);
     final chapter = _detailViewModel.detailState.detailBookEntry?.chapter;
-    readData.setReadIndex(data);
+    readData.setReadIndex(data, isToReadPage: true);
     final index = readData.getReadIndex(data);
     List<Chapter> chapterList = [];
     if (index > 0) {

@@ -184,8 +184,7 @@ class ReadViewModel extends _$ReadViewModel {
       state = AsyncData(readState);
       LoggerTools.looger.d(strList.toString());
       final time = DateTime.now();
-      String dateTime =
-          "${time.year}-${time.month}-${time.day} ${time.hour}:${time.minute}";
+      String dateTime = "${time.month}-${time.day} ${time.hour}:${time.minute}";
 
       /// 存储历史记录
       await PreferencesDB.instance.setHistory(HistoryEntry(
@@ -296,16 +295,18 @@ class ReadViewModel extends _$ReadViewModel {
   }
 
   /// 设置阅读索引
-  setReadIndex(Chapter data) async {
+  setReadIndex(Chapter data, {bool isToReadPage = false}) async {
     chapter = data;
     LoggerTools.looger.d("setReadIndex : ${data.toJson().toString()}");
 
     /// 保存阅读记录
     await PreferencesDB.instance.sps.setString(
         detailViewModel?.detailUrl ?? "", json.encode(data)); //jsonEncode()
+    if (isToReadPage) {
+      return;
+    }
     final time = DateTime.now();
-    String dateTime =
-        "${time.year}-${time.month}-${time.day} ${time.hour}:${time.minute}";
+    String dateTime = "${time.month}-${time.day} ${time.hour}:${time.minute}";
 
     /// 存储历史记录
     await PreferencesDB.instance.setHistory(HistoryEntry(
