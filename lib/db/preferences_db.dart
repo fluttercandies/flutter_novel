@@ -275,7 +275,19 @@ class PreferencesDB {
     for (var element in str) {
       list.add(HistoryEntry.fromJson(json.decode(element)));
     }
-    LoggerTools.looger.d("获取收藏列表  getCollectNovelList  list:$list");
+    LoggerTools.looger.d("获取历史记录列表  getHistoryList  list:$list");
     return list;
+  }
+
+  /// 添加-历史记录
+  Future<void> setHistory(HistoryEntry historyEntry) async {
+    List<String> str = [];
+    final historyList = await getHistoryList();
+    historyList.insert(0, historyEntry);
+    for (var element in historyList) {
+      str.add(json.encode(element));
+    }
+    LoggerTools.looger.d("添加历史记录  setHistory");
+    await sps.setStringList(history, str);
   }
 }
