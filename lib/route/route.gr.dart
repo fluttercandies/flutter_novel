@@ -8,36 +8,39 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i12;
-import 'package:flutter/material.dart' as _i13;
-import 'package:novel_flutter_bit/entry/book_source_entry.dart' as _i16;
+import 'package:auto_route/auto_route.dart' as _i13;
+import 'package:flutter/material.dart' as _i14;
+import 'package:novel_flutter_bit/entry/book_source_entry.dart' as _i18;
 import 'package:novel_flutter_bit/frame.dart' as _i3;
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart'
-    as _i17;
-import 'package:novel_flutter_bit/n_pages/detail/view/detail_page.dart' as _i7;
+    as _i19;
+import 'package:novel_flutter_bit/n_pages/detail/view/detail_page.dart' as _i8;
 import 'package:novel_flutter_bit/n_pages/history/view/history_page.dart'
     as _i4;
 import 'package:novel_flutter_bit/n_pages/home/view/home_page.dart' as _i5;
-import 'package:novel_flutter_bit/n_pages/like/view/like_page.dart' as _i6;
-import 'package:novel_flutter_bit/n_pages/read/view/read_page.dart' as _i10;
+import 'package:novel_flutter_bit/n_pages/like/view/like_page.dart' as _i7;
+import 'package:novel_flutter_bit/n_pages/read/view/image_preview_page.dart'
+    as _i6;
+import 'package:novel_flutter_bit/n_pages/read/view/read_page.dart' as _i11;
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart'
-    as _i15;
-import 'package:novel_flutter_bit/n_pages/search/view/search_page.dart' as _i8;
+    as _i17;
+import 'package:novel_flutter_bit/n_pages/search/view/search_page.dart' as _i9;
 import 'package:novel_flutter_bit/pages/book_novel/entry/book_entry.dart'
-    as _i14;
+    as _i15;
 import 'package:novel_flutter_bit/pages/book_novel/view/book_page.dart' as _i1;
 import 'package:novel_flutter_bit/pages/detail_novel/view/detail_page.dart'
     as _i2;
-import 'package:novel_flutter_bit/pages/novel/view/novel_page.dart' as _i9;
-import 'package:novel_flutter_bit/pages/search/view/search_page.dart' as _i11;
+import 'package:novel_flutter_bit/pages/novel/view/novel_page.dart' as _i10;
+import 'package:novel_flutter_bit/pages/search/view/search_page.dart' as _i12;
+import 'package:wechat_assets_picker/wechat_assets_picker.dart' as _i16;
 
 /// generated route for
 /// [_i1.BookPage]
-class BookRoute extends _i12.PageRouteInfo<BookRouteArgs> {
+class BookRoute extends _i13.PageRouteInfo<BookRouteArgs> {
   BookRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     required String name,
-    List<_i12.PageRouteInfo>? children,
+    List<_i13.PageRouteInfo>? children,
   }) : super(
           BookRoute.name,
           args: BookRouteArgs(
@@ -49,7 +52,7 @@ class BookRoute extends _i12.PageRouteInfo<BookRouteArgs> {
 
   static const String name = 'BookRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<BookRouteArgs>();
@@ -67,7 +70,7 @@ class BookRouteArgs {
     required this.name,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final String name;
 
@@ -79,11 +82,11 @@ class BookRouteArgs {
 
 /// generated route for
 /// [_i2.DetailPage]
-class DetailRoute extends _i12.PageRouteInfo<DetailRouteArgs> {
+class DetailRoute extends _i13.PageRouteInfo<DetailRouteArgs> {
   DetailRoute({
-    _i13.Key? key,
-    required _i14.BookDatum bookDatum,
-    List<_i12.PageRouteInfo>? children,
+    _i14.Key? key,
+    required _i15.BookDatum bookDatum,
+    List<_i13.PageRouteInfo>? children,
   }) : super(
           DetailRoute.name,
           args: DetailRouteArgs(
@@ -95,7 +98,7 @@ class DetailRoute extends _i12.PageRouteInfo<DetailRouteArgs> {
 
   static const String name = 'DetailRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<DetailRouteArgs>();
@@ -113,9 +116,9 @@ class DetailRouteArgs {
     required this.bookDatum,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
-  final _i14.BookDatum bookDatum;
+  final _i15.BookDatum bookDatum;
 
   @override
   String toString() {
@@ -125,8 +128,8 @@ class DetailRouteArgs {
 
 /// generated route for
 /// [_i3.FramePage]
-class FrameRoute extends _i12.PageRouteInfo<void> {
-  const FrameRoute({List<_i12.PageRouteInfo>? children})
+class FrameRoute extends _i13.PageRouteInfo<void> {
+  const FrameRoute({List<_i13.PageRouteInfo>? children})
       : super(
           FrameRoute.name,
           initialChildren: children,
@@ -134,7 +137,7 @@ class FrameRoute extends _i12.PageRouteInfo<void> {
 
   static const String name = 'FrameRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
       return const _i3.FramePage();
@@ -144,8 +147,8 @@ class FrameRoute extends _i12.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.HistoryPage]
-class HistoryRoute extends _i12.PageRouteInfo<void> {
-  const HistoryRoute({List<_i12.PageRouteInfo>? children})
+class HistoryRoute extends _i13.PageRouteInfo<void> {
+  const HistoryRoute({List<_i13.PageRouteInfo>? children})
       : super(
           HistoryRoute.name,
           initialChildren: children,
@@ -153,7 +156,7 @@ class HistoryRoute extends _i12.PageRouteInfo<void> {
 
   static const String name = 'HistoryRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
       return const _i4.HistoryPage();
@@ -163,8 +166,8 @@ class HistoryRoute extends _i12.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.HomePage]
-class HomeRoute extends _i12.PageRouteInfo<void> {
-  const HomeRoute({List<_i12.PageRouteInfo>? children})
+class HomeRoute extends _i13.PageRouteInfo<void> {
+  const HomeRoute({List<_i13.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           initialChildren: children,
@@ -172,7 +175,7 @@ class HomeRoute extends _i12.PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
       return const _i5.HomePage();
@@ -181,9 +184,55 @@ class HomeRoute extends _i12.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.LikePage]
-class LikeRoute extends _i12.PageRouteInfo<void> {
-  const LikeRoute({List<_i12.PageRouteInfo>? children})
+/// [_i6.ImagePreviewPage]
+class ImagePreviewRoute extends _i13.PageRouteInfo<ImagePreviewRouteArgs> {
+  ImagePreviewRoute({
+    _i14.Key? key,
+    required _i16.AssetEntity asset,
+    List<_i13.PageRouteInfo>? children,
+  }) : super(
+          ImagePreviewRoute.name,
+          args: ImagePreviewRouteArgs(
+            key: key,
+            asset: asset,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ImagePreviewRoute';
+
+  static _i13.PageInfo page = _i13.PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ImagePreviewRouteArgs>();
+      return _i6.ImagePreviewPage(
+        key: args.key,
+        asset: args.asset,
+      );
+    },
+  );
+}
+
+class ImagePreviewRouteArgs {
+  const ImagePreviewRouteArgs({
+    this.key,
+    required this.asset,
+  });
+
+  final _i14.Key? key;
+
+  final _i16.AssetEntity asset;
+
+  @override
+  String toString() {
+    return 'ImagePreviewRouteArgs{key: $key, asset: $asset}';
+  }
+}
+
+/// generated route for
+/// [_i7.LikePage]
+class LikeRoute extends _i13.PageRouteInfo<void> {
+  const LikeRoute({List<_i13.PageRouteInfo>? children})
       : super(
           LikeRoute.name,
           initialChildren: children,
@@ -191,22 +240,22 @@ class LikeRoute extends _i12.PageRouteInfo<void> {
 
   static const String name = 'LikeRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
-      return const _i6.LikePage();
+      return const _i7.LikePage();
     },
   );
 }
 
 /// generated route for
-/// [_i7.NewDetailPage]
-class NewDetailRoute extends _i12.PageRouteInfo<NewDetailRouteArgs> {
+/// [_i8.NewDetailPage]
+class NewDetailRoute extends _i13.PageRouteInfo<NewDetailRouteArgs> {
   NewDetailRoute({
-    _i13.Key? key,
-    required _i15.SearchEntry searchEntry,
-    required _i16.BookSourceEntry bookSourceEntry,
-    List<_i12.PageRouteInfo>? children,
+    _i14.Key? key,
+    required _i17.SearchEntry searchEntry,
+    required _i18.BookSourceEntry bookSourceEntry,
+    List<_i13.PageRouteInfo>? children,
   }) : super(
           NewDetailRoute.name,
           args: NewDetailRouteArgs(
@@ -219,11 +268,11 @@ class NewDetailRoute extends _i12.PageRouteInfo<NewDetailRouteArgs> {
 
   static const String name = 'NewDetailRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<NewDetailRouteArgs>();
-      return _i7.NewDetailPage(
+      return _i8.NewDetailPage(
         key: args.key,
         searchEntry: args.searchEntry,
         bookSourceEntry: args.bookSourceEntry,
@@ -239,11 +288,11 @@ class NewDetailRouteArgs {
     required this.bookSourceEntry,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
-  final _i15.SearchEntry searchEntry;
+  final _i17.SearchEntry searchEntry;
 
-  final _i16.BookSourceEntry bookSourceEntry;
+  final _i18.BookSourceEntry bookSourceEntry;
 
   @override
   String toString() {
@@ -252,12 +301,12 @@ class NewDetailRouteArgs {
 }
 
 /// generated route for
-/// [_i8.NewSearchPage]
-class NewSearchRoute extends _i12.PageRouteInfo<NewSearchRouteArgs> {
+/// [_i9.NewSearchPage]
+class NewSearchRoute extends _i13.PageRouteInfo<NewSearchRouteArgs> {
   NewSearchRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     required String searchKey,
-    List<_i12.PageRouteInfo>? children,
+    List<_i13.PageRouteInfo>? children,
   }) : super(
           NewSearchRoute.name,
           args: NewSearchRouteArgs(
@@ -269,11 +318,11 @@ class NewSearchRoute extends _i12.PageRouteInfo<NewSearchRouteArgs> {
 
   static const String name = 'NewSearchRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<NewSearchRouteArgs>();
-      return _i8.NewSearchPage(
+      return _i9.NewSearchPage(
         key: args.key,
         searchKey: args.searchKey,
       );
@@ -287,7 +336,7 @@ class NewSearchRouteArgs {
     required this.searchKey,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final String searchKey;
 
@@ -298,14 +347,14 @@ class NewSearchRouteArgs {
 }
 
 /// generated route for
-/// [_i9.NovelPage]
-class NovelRoute extends _i12.PageRouteInfo<NovelRouteArgs> {
+/// [_i10.NovelPage]
+class NovelRoute extends _i13.PageRouteInfo<NovelRouteArgs> {
   NovelRoute({
-    _i13.Key? key,
+    _i14.Key? key,
     required String url,
     required String name,
-    required _i14.BookDatum bookDatum,
-    List<_i12.PageRouteInfo>? children,
+    required _i15.BookDatum bookDatum,
+    List<_i13.PageRouteInfo>? children,
   }) : super(
           NovelRoute.name,
           args: NovelRouteArgs(
@@ -319,11 +368,11 @@ class NovelRoute extends _i12.PageRouteInfo<NovelRouteArgs> {
 
   static const String name = 'NovelRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<NovelRouteArgs>();
-      return _i9.NovelPage(
+      return _i10.NovelPage(
         key: args.key,
         url: args.url,
         name: args.name,
@@ -341,13 +390,13 @@ class NovelRouteArgs {
     required this.bookDatum,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
   final String url;
 
   final String name;
 
-  final _i14.BookDatum bookDatum;
+  final _i15.BookDatum bookDatum;
 
   @override
   String toString() {
@@ -356,15 +405,15 @@ class NovelRouteArgs {
 }
 
 /// generated route for
-/// [_i10.ReadPage]
-class ReadRoute extends _i12.PageRouteInfo<ReadRouteArgs> {
+/// [_i11.ReadPage]
+class ReadRoute extends _i13.PageRouteInfo<ReadRouteArgs> {
   ReadRoute({
-    _i13.Key? key,
-    required _i15.SearchEntry searchEntry,
-    required _i17.Chapter chapter,
-    required _i16.BookSourceEntry source,
-    List<_i17.Chapter>? chapterList,
-    List<_i12.PageRouteInfo>? children,
+    _i14.Key? key,
+    required _i17.SearchEntry searchEntry,
+    required _i19.Chapter chapter,
+    required _i18.BookSourceEntry source,
+    List<_i19.Chapter>? chapterList,
+    List<_i13.PageRouteInfo>? children,
   }) : super(
           ReadRoute.name,
           args: ReadRouteArgs(
@@ -379,11 +428,11 @@ class ReadRoute extends _i12.PageRouteInfo<ReadRouteArgs> {
 
   static const String name = 'ReadRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
       final args = data.argsAs<ReadRouteArgs>();
-      return _i10.ReadPage(
+      return _i11.ReadPage(
         key: args.key,
         searchEntry: args.searchEntry,
         chapter: args.chapter,
@@ -403,15 +452,15 @@ class ReadRouteArgs {
     this.chapterList,
   });
 
-  final _i13.Key? key;
+  final _i14.Key? key;
 
-  final _i15.SearchEntry searchEntry;
+  final _i17.SearchEntry searchEntry;
 
-  final _i17.Chapter chapter;
+  final _i19.Chapter chapter;
 
-  final _i16.BookSourceEntry source;
+  final _i18.BookSourceEntry source;
 
-  final List<_i17.Chapter>? chapterList;
+  final List<_i19.Chapter>? chapterList;
 
   @override
   String toString() {
@@ -420,9 +469,9 @@ class ReadRouteArgs {
 }
 
 /// generated route for
-/// [_i11.SearchPage]
-class SearchRoute extends _i12.PageRouteInfo<void> {
-  const SearchRoute({List<_i12.PageRouteInfo>? children})
+/// [_i12.SearchPage]
+class SearchRoute extends _i13.PageRouteInfo<void> {
+  const SearchRoute({List<_i13.PageRouteInfo>? children})
       : super(
           SearchRoute.name,
           initialChildren: children,
@@ -430,10 +479,10 @@ class SearchRoute extends _i12.PageRouteInfo<void> {
 
   static const String name = 'SearchRoute';
 
-  static _i12.PageInfo page = _i12.PageInfo(
+  static _i13.PageInfo page = _i13.PageInfo(
     name,
     builder: (data) {
-      return const _i11.SearchPage();
+      return const _i12.SearchPage();
     },
   );
 }
