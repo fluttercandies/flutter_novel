@@ -183,10 +183,15 @@ class ReadViewModel extends _$ReadViewModel {
       readState.listContent = strList;
       state = AsyncData(readState);
       LoggerTools.looger.d(strList.toString());
+      final time = DateTime.now();
+      String dateTime =
+          "${time.year}-${time.month}-${time.day} ${time.hour}:${time.minute}";
 
       /// 存储历史记录
       await PreferencesDB.instance.setHistory(HistoryEntry(
-          searchEntry: _searchEntry, chapter: chapter)); //jsonEncode()
+          searchEntry: _searchEntry,
+          chapter: chapter,
+          dateTime: dateTime)); //jsonEncode()
     } catch (e) {
       LoggerTools.looger.e("NewSearchViewModel _initData error:$e");
       // searchState.netState = NetState.error403State;
@@ -298,10 +303,12 @@ class ReadViewModel extends _$ReadViewModel {
     /// 保存阅读记录
     await PreferencesDB.instance.sps.setString(
         detailViewModel?.detailUrl ?? "", json.encode(data)); //jsonEncode()
+    final time = DateTime.now();
+    String dateTime =
+        "${time.year}-${time.month}-${time.day} ${time.hour}:${time.minute}";
+
     /// 存储历史记录
     await PreferencesDB.instance.setHistory(HistoryEntry(
-        searchEntry: _searchEntry, chapter: chapter)); //jsonEncode()
-
-    //state = AsyncData(detailState);
+        searchEntry: _searchEntry, chapter: chapter, dateTime: dateTime));
   }
 }

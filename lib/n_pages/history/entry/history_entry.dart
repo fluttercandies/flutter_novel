@@ -16,11 +16,8 @@ String historyEntryToJson(HistoryEntry data) => json.encode(data.toJson());
 class HistoryEntry {
   SearchEntry? searchEntry;
   Chapter? chapter;
-
-  HistoryEntry({
-    this.searchEntry,
-    this.chapter,
-  });
+  String? dateTime;
+  HistoryEntry({this.searchEntry, this.chapter, this.dateTime});
 
   factory HistoryEntry.fromJson(Map<String, dynamic> json) => HistoryEntry(
         searchEntry: json["searchEntry"] == null
@@ -28,10 +25,12 @@ class HistoryEntry {
             : SearchEntry.fromJson(json["searchEntry"]),
         chapter:
             json["Chapter"] == null ? null : Chapter.fromJson(json["Chapter"]),
+        dateTime: json["dateTime"],
       );
 
   Map<String, dynamic> toJson() => {
         "searchEntry": searchEntry?.toJson(),
         "Chapter": chapter?.toJson(),
+        "dateTime": dateTime
       };
 }

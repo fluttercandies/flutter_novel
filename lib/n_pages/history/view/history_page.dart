@@ -81,10 +81,15 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text((entry.searchEntry?.name ?? "") * 2,
+              Text((entry.searchEntry?.name ?? ""),
                   style: const TextStyle(fontSize: 16, color: Colors.black87)),
               5.verticalSpace,
-              Text(entry.chapter?.chapterName ?? ""),
+              Row(
+                children: [
+                  Expanded(child: Text(entry.chapter?.chapterName ?? "")),
+                  Text(entry.dateTime ?? "")
+                ],
+              ),
             ],
           )),
         ],
