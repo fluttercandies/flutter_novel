@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:novel_flutter_bit/widget/background.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 @RoutePage()
@@ -14,6 +16,7 @@ class ImagePreviewPage extends StatefulWidget {
 }
 
 class _ImagePreviewPageState extends State<ImagePreviewPage> {
+  ThemeData get _themeData => Theme.of(context);
   @override
   void initState() {
     super.initState();
@@ -47,8 +50,11 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.black,
+      body: CustomBackground(
+        color1: Colors.white, // 颜色1
+        color2: _themeData.primaryColor, // 颜色2
+        leftAngle: 0, rightAngle: 10,
+        lineHeight: .8, // 位置2：正中间或其他位置
         child: Center(
           child: ExtendedImage.file(
             file!,
