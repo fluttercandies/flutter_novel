@@ -25,15 +25,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) {
-      Future.delayed(Durations.medium1, () {
-        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark, // 状态栏图标颜色
-          statusBarBrightness: Brightness.dark, // 状态栏文字颜色
-        ));
-      });
-    }
+
     _initFile();
   }
 
@@ -58,6 +50,16 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
     _cropLayerPainter = const EditorCropLayerPainter();
     _aspectRatio = CropAspectRatios.ratio9_16;
     _controller = ImageEditorController();
+    if (Platform.isAndroid) {
+      // 添加回调函数，等待页面渲染完成
+      Future.delayed(Durations.medium4, () {
+        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark, // 状态栏图标颜色
+          statusBarBrightness: Brightness.dark, // 状态栏文字颜色
+        ));
+      });
+    }
     setState(() {});
   }
 
@@ -68,7 +70,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
       color2: _themeData.primaryColor, // 颜色2
       leftAngle: 0,
       rightAngle: 10,
-      lineHeight: .75, // 位置2：正中间或其他位置
+
       child: SafeArea(
         child: Column(
           children: [
@@ -77,7 +79,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
             const Spacer(),
             _buildItemButtonList(),
             _buildSubmitButton(onPressed: () {}),
-            10.verticalSpace,
+            20.verticalSpace,
           ],
         ),
       ),
@@ -117,7 +119,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
             cropRectPadding: const EdgeInsets.all(20.0),
             hitTestSize: 20.0,
             editorMaskColorHandler: (context, pointerDown) =>
-                Colors.grey.withOpacity(pointerDown ? 0.2 : 0.4),
+                Colors.grey.withOpacity(pointerDown ? 0.5 : 0.3),
             cropLayerPainter: _cropLayerPainter!,
             initCropRectType: InitCropRectType.imageRect,
             cropAspectRatio: _aspectRatio,

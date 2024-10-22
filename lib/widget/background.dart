@@ -15,40 +15,41 @@ class CustomBackgroundPainter extends CustomPainter {
     required this.color2,
     required this.leftAngle,
     required this.rightAngle,
-    required this.lineHeight,
+    this.lineHeight = .8,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    // 将角度转换为弧度
-    double leftAngleInRadians = leftAngle * pi / 180;
     double rightAngleInRadians = rightAngle * pi / 180;
+// 创建画笔，设置填充颜色为黑色
+    Paint paint = Paint()..color = Colors.black;
 
     // 根据角度和高度计算斜线的两个点
-    double startY = lineHeight * size.height; // 左侧的起始高度
     double endY = lineHeight * size.height; // 右侧的起始高度
 
-    Offset startPoint =
-        Offset(0, startY - size.width * tan(leftAngleInRadians)); // 左侧点
     Offset endPoint =
         Offset(size.width, endY - size.width * tan(rightAngleInRadians)); // 右侧点
 
     // 上部分的路径
     Path topPath = Path()
       ..moveTo(0, 0) // 左上角
-      ..lineTo(startPoint.dx, startPoint.dy) // 左侧斜线起点
-      ..lineTo(endPoint.dx, endPoint.dy) // 右侧斜线终点
-      ..lineTo(size.width, 0) // 右上角
+      ..quadraticBezierTo(-400, endPoint.dy + 500, endPoint.dx + 700, 0)
+      // ..lineTo(startPoint.dx, startPoint.dy) // 左侧斜线起点
+      // ..lineTo(endPoint.dx, endPoint.dy) // 右侧斜线终点
+      // ..lineTo(size.width, 0) // 右上角
       ..close(); // 形成封闭的区域
 
     // 下部分的路径
     Path bottomPath = Path()
-      ..moveTo(startPoint.dx, startPoint.dy) // 左侧斜线起点
-      ..lineTo(endPoint.dx, endPoint.dy) // 右侧斜线终点
-      ..lineTo(size.width, size.height) // 右下角
-      ..lineTo(0, size.height) // 左下角
+      ..moveTo(-200, size.height + (endPoint.dy / 5))
+      ..quadraticBezierTo(0, 200, 1500, size.height + (endPoint.dy / 10))
+      // ..moveTo(startPoint.dx, startPoint.dy) // 左侧斜线起点
+      // ..lineTo(endPoint.dx, endPoint.dy) // 右侧斜线终点
+      // ..lineTo(size.width, size.height) // 右下角
+      // ..lineTo(0, size.height) // 左下角
       ..close(); // 形成封闭的区域
-
+// 绘制一个矩形，覆盖整个画布
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
     // 绘制上部分颜色 (颜色1)
     Paint topPaint = Paint()..color = color1;
     canvas.drawPath(topPath, topPaint);
@@ -78,21 +79,23 @@ class CustomBackground extends StatelessWidget {
       required this.color2,
       required this.leftAngle,
       required this.rightAngle,
-      required this.lineHeight,
+      this.lineHeight = .8,
       this.child});
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size.infinite,
-      painter: CustomBackgroundPainter(
-        color1: color1,
-        color2: color2,
-        leftAngle: leftAngle,
-        rightAngle: rightAngle,
-        lineHeight: lineHeight,
+    return ClipRect(
+      child: CustomPaint(
+        size: Size.infinite,
+        painter: CustomBackgroundPainter(
+          color1: color1,
+          color2: color2,
+          leftAngle: leftAngle,
+          rightAngle: rightAngle,
+          lineHeight: lineHeight,
+        ),
+        child: child,
       ),
-      child: child,
     );
   }
 }

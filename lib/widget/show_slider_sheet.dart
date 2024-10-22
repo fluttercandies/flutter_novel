@@ -51,7 +51,7 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
           color: _themeData.textTheme.bodyLarge?.color,
           fontSize: 18),
       child: SizedBox(
-        height: 460,
+        height: 480,
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -93,26 +93,27 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
                         runSpacing: 10,
                         children: _getThemeListWidget()),
                     10.verticalSpace,
-                    const Text("DIY背景"),
-                    Row(
-                      children: [
-                        IconButton(
-                          style: const ButtonStyle(
-                              padding: WidgetStatePropertyAll(EdgeInsets.zero)),
-                          onPressed: _showImage,
-                          icon: Icon(Icons.image,
-                              size: 42, color: _themeData.primaryColor),
-                        ),
-                        10.horizontalSpace,
-                      ],
-                    ),
-                    5.verticalSpace,
                     const Text("字体粗细"),
-                    5.verticalSpace,
+                    10.verticalSpace,
                     Wrap(
                         spacing: 8,
                         runSpacing: 10,
                         children: _getFontWeightList()),
+                    10.verticalSpace,
+                    const Text("DIY背景"),
+                    12.verticalSpace,
+                    SizedBox(
+                      width: double.infinity,
+                      height: 45,
+                      child: ElevatedButton.icon(
+                          style: ButtonStyle(
+                              elevation: const WidgetStatePropertyAll(0),
+                              backgroundColor: WidgetStatePropertyAll(
+                                  _themeData.primaryColor)),
+                          onPressed: _showImage,
+                          label: const Icon(Icons.image,
+                              size: 42, color: Colors.white)),
+                    ),
                   ],
                 ),
               )

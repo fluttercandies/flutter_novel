@@ -36,8 +36,13 @@ class MyApp extends StatelessWidget {
   // make sure you don't initiate your router
   // inside of the build function.
   final _appRouter = AppRouter();
+  late bool _init = false;
   @override
   Widget build(BuildContext context) {
+    if (!_init) {
+      SmartDialog.config.toast = SmartConfigToast(debounce: true);
+      _init = true;
+    }
     return Consumer(builder: (context, ref, child) {
       LoggerTools.looger.d("MyApp Page build");
       final theme = ref.watch(themeStyleProviderProvider);
