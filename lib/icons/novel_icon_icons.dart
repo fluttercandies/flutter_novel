@@ -12,14 +12,28 @@
 ///       - asset: fonts/NovelIcon.ttf
 ///
 ///
+/// * Web Symbols, Copyright (c) 2011 by Just Be Nice studio. All rights reserved.
+///         Author:    Just Be Nice studio
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://www.justbenicestudio.com/
+/// * Font Awesome 4, Copyright (C) 2016 by Dave Gandy
+///         Author:    Dave Gandy
+///         License:   SIL ()
+///         Homepage:  http://fortawesome.github.com/Font-Awesome/
+/// * Iconic, Copyright (C) 2012 by P.J. Onori
+///         Author:    P.J. Onori
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://somerandomdude.com/work/iconic/
+/// * RPG Awesome, Copyright (c) 2014, Daniela Howe
+///         Author:    Daniela Howe & Ivan Montiel
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://nagoshiashumari.github.io/Rpg-Awesome/
 /// * Font Awesome 5, Copyright (C) 2016 by Dave Gandy
 ///         Author:    Dave Gandy
 ///         License:   SIL (https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt)
 ///         Homepage:  http://fortawesome.github.com/Font-Awesome/
 ///
 // ignore_for_file: constant_identifier_names
-
-library;
 
 import 'package:flutter/widgets.dart';
 
@@ -31,12 +45,22 @@ class NovelIcon {
 
   static const IconData heart =
       IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData cw =
+      IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData ccw =
+      IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrows_cw =
+      IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData undo =
+      IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData crossed_bones =
       IconData(0xe97a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData backward =
       IconData(0xf04a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData forward =
       IconData(0xf04e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData exchange =
+      IconData(0xf0ec, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData skull =
       IconData(0xf54c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData cat =
