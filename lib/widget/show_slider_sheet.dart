@@ -11,7 +11,6 @@ import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/slider_novel.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class ShowSliderSheet extends StatefulWidget {
   ShowSliderSheet({

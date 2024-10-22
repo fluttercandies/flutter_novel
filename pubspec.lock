@@ -290,10 +290,10 @@ packages:
     dependency: "direct main"
     description:
       name: extended_image
-      sha256: "69d4299043334ecece679996e47d0b0891cd8c29d8da0034868443506f1d9a78"
+      sha256: bd4d1aa63ab0816091d95fc47e8d44731bf683b03578dbc1d7a9dc3b91c7f62f
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "8.3.1"
+    version: "9.0.4"
   extended_image_library:
     dependency: transitive
     description:

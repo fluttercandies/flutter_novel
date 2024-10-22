@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
@@ -17,31 +16,57 @@ class ImagePreviewPage extends StatefulWidget {
 class _ImagePreviewPageState extends State<ImagePreviewPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getFile();
+    _initFile();
   }
 
+  /// 图片编辑 比例
+  late double _aspectRatio;
+
+  /// 裁剪
+  EditorCropLayerPainter? _cropLayerPainter;
+
+  /// 图片编辑控制器
+  ImageEditorController? _controller;
+
+  /// 图片文件
   late File? file = File.fromUri(
       Uri.parse("${widget.asset.relativePath}${widget.asset.title}"));
-  void getFile() async {
+
+  /// 获取图片文件
+  ///
+  void _initFile() async {
     //file = await widget.asset.file;
-    print(file!.path);
-    print(file);
+    file = await widget.asset.file;
+    _cropLayerPainter = const EditorCropLayerPainter();
+    _aspectRatio = CropAspectRatios.ratio9_16;
+    _controller = ImageEditorController();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    print("${widget.asset.relativePath}${widget.asset.title}");
     return Scaffold(
       body: Container(
-        color: Colors.amber,
+        color: Colors.black,
         child: Center(
           child: ExtendedImage.file(
             file!,
             height: 500,
+            enableLoadState: true,
             fit: BoxFit.contain,
             mode: ExtendedImageMode.editor,
+            initEditorConfigHandler: (ExtendedImageState? state) {
+              return EditorConfig(
+                maxScale: 8.0,
+                cropRectPadding: const EdgeInsets.all(20.0),
+                hitTestSize: 20.0,
+                cropLayerPainter: _cropLayerPainter!,
+                initCropRectType: InitCropRectType.imageRect,
+                cropAspectRatio: _aspectRatio,
+                controller: _controller,
+              );
+            },
           ),
         ),
       ),

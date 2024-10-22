@@ -14,7 +14,6 @@ import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/n_pages/detail/entry/detail_book_entry.dart';
 import 'package:novel_flutter_bit/n_pages/detail/view_model/detail_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/read/state/read_state.dart';
-import 'package:novel_flutter_bit/n_pages/read/view/image_preview_page.dart';
 import 'package:novel_flutter_bit/n_pages/read/view_model/read_view_model.dart';
 import 'package:novel_flutter_bit/n_pages/search/entry/search_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
