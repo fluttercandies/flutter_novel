@@ -282,7 +282,15 @@ class _ReadPageState extends ConsumerState<ReadPage> {
           await context.router.push(ImagePreviewRoute(asset: result.first));
       LoggerTools.looger.d("图片选择成功");
       if (data case true) {
-        setState(() {});
+        ref
+            .read(readViewModelProvider(
+                    chapter1: widget.chapter,
+                    bookSource: widget.source,
+                    chapterList: widget.chapterList,
+                    detailView: _detailViewModel,
+                    searchEntry: widget.searchEntry)
+                .notifier)
+            .buildBackgroundImage(isSh: true);
       }
     }
   }
