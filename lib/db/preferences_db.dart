@@ -91,6 +91,7 @@ class PreferencesDB {
     return await sps.getString(fontWeight) ?? 'w300';
   }
 
+  @Deprecated("弃用")
   Future<List<NovelHistoryEntry>> getNovelHistoryList() async {
     List<NovelHistoryEntry> list = [];
     List<String> str = await sps.getStringList(novelHistory) ?? [];
@@ -100,6 +101,7 @@ class PreferencesDB {
     return list;
   }
 
+  @Deprecated("弃用")
   Future<void> setNovelHistory(NovelHistoryEntry novelHistoryEntry) async {
     List<String> str = [];
     final data = await getNovelHistoryList();
@@ -116,6 +118,8 @@ class PreferencesDB {
     updateCollect(novelHistoryEntry);
     await sps.setStringList(novelHistory, str);
   }
+
+  @Deprecated("弃用")
 
   /// 更新收藏阅读记录
   Future<void> updateCollect(NovelHistoryEntry novelHistoryEntry) async {

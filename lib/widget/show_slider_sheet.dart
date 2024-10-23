@@ -51,7 +51,7 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
           color: _themeData.textTheme.bodyLarge?.color,
           fontSize: 18),
       child: SizedBox(
-        height: 480,
+        height: 450,
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -103,16 +103,17 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
                     const Text("DIY背景"),
                     12.verticalSpace,
                     SizedBox(
-                      width: double.infinity,
-                      height: 45,
+                      height: 30,
                       child: ElevatedButton.icon(
                           style: ButtonStyle(
+                              shape: WidgetStatePropertyAll(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6))),
                               elevation: const WidgetStatePropertyAll(0),
                               backgroundColor: WidgetStatePropertyAll(
                                   _themeData.primaryColor)),
                           onPressed: _showImage,
-                          label: const Icon(Icons.image,
-                              size: 42, color: Colors.white)),
+                          label: const Icon(Icons.image, color: Colors.white)),
                     ),
                   ],
                 ),
@@ -136,7 +137,7 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
           onTap: () => widget.themeStyleProvider.setTheme(key),
           child: Container(
               width: 37,
-              height: 37,
+              height: 30,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black12),
                 color: value.primaryColor,

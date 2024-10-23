@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
@@ -7,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
-import 'package:novel_flutter_bit/tools/padding_extension.dart';
+import 'package:novel_flutter_bit/tools/Image_editor_save.dart';
+import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/background.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
@@ -38,6 +38,10 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   /// 图片编辑控制器
   ImageEditorController? _controller;
 
+  /// 编辑状态
+  final GlobalKey<ExtendedImageEditorState> _editorKey =
+      GlobalKey<ExtendedImageEditorState>();
+
   /// 图片文件
   late File? file = File.fromUri(
       Uri.parse("${widget.asset.relativePath}${widget.asset.title}"));
@@ -63,6 +67,18 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
     setState(() {});
   }
 
+  /// 保存图片
+  void _saveImage() async {
+    SmartDialog.showLoading(msg: "图片裁剪中...");
+    await Future.delayed(Durations.medium4, () async {
+      final data =
+          await ImageEditorSave.cropImageDataWithDartLibrary(_controller!);
+      LoggerTools.looger.d(data.length);
+      setState(() {});
+    });
+    SmartDialog.dismiss();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomBackground(
@@ -70,7 +86,6 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
       color2: _themeData.primaryColor, // 颜色2
       leftAngle: 0,
       rightAngle: 10,
-
       child: SafeArea(
         child: Column(
           children: [
@@ -78,7 +93,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
             _buildEditorImage(),
             const Spacer(),
             _buildItemButtonList(),
-            _buildSubmitButton(onPressed: () {}),
+            _buildSubmitButton(onPressed: _saveImage),
             20.verticalSpace,
           ],
         ),
@@ -113,6 +128,8 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
         enableLoadState: true,
         fit: BoxFit.contain,
         mode: ExtendedImageMode.editor,
+        cacheRawData: true,
+        extendedImageEditorKey: _editorKey,
         initEditorConfigHandler: (ExtendedImageState? state) {
           return EditorConfig(
             maxScale: 8.0,
