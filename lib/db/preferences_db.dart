@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:novel_flutter_bit/entry/book_source_entry.dart';
@@ -9,6 +11,7 @@ import 'package:novel_flutter_bit/pages/home/entry/novel_history_entry.dart';
 import 'package:novel_flutter_bit/pages/novel/enum/novel_read_font_weight_enum.dart';
 import 'package:novel_flutter_bit/theme/app_theme.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,6 +51,8 @@ class PreferencesDB {
 
   /// 阅读记录
   static const history = "history";
+
+  static const backgroundState = "backgroundState";
 
   /// 设置-主题外观模式
   Future<void> setAppThemeDarkMode(ThemeMode themeMode) async {
@@ -293,5 +298,27 @@ class PreferencesDB {
     }
     LoggerTools.looger.d("添加历史记录  setHistory");
     await sps.setStringList(history, str);
+  }
+
+  Future<void> setBackgroundImage(Uint8List data) async {
+    // 获取临时文件目录
+    final directory = await getTemporaryDirectory();
+    final path = directory.path;
+    final file = File('$path/$backgroundState.png');
+    setBackgroundImageState(true);
+    // 写入文件
+    final fileImage = await file.writeAsBytes(data);
+    LoggerTools.looger
+        .d("写入文件  setBackgroundImage  fileImage:${fileImage.path}");
+  }
+
+  /// 获取背景图片状态
+  Future<bool> getBackgroundImageState() async {
+    return await sps.getBool(backgroundState) ?? false;
+  }
+
+  /// 设置背景图片状态
+  Future<void> setBackgroundImageState(bool state) async {
+    await sps.setBool(backgroundState, state);
   }
 }
