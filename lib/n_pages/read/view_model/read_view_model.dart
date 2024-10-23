@@ -48,6 +48,7 @@ class ReadViewModel extends _$ReadViewModel {
     _searchEntry = searchEntry;
     detailViewModel = detailView;
     readState.chapterList = chapterList;
+    _buildBackgroundImage();
     //_initData(detailUrl: chapter1.chapterUrl ?? "");
     _initListData(chapterList: chapterList);
     return readState;
@@ -311,5 +312,15 @@ class ReadViewModel extends _$ReadViewModel {
     /// 存储历史记录
     await PreferencesDB.instance.setHistory(HistoryEntry(
         searchEntry: _searchEntry, chapter: chapter, dateTime: dateTime));
+  }
+
+  void _buildBackgroundImage() async {
+    if (await PreferencesDB.instance.getBackgroundImageState() &&
+        readState.backgroundImage == null) {
+      final data = await PreferencesDB.instance.getBackgroundImage();
+      if (data != null) {
+        readState.backgroundImage = data;
+      }
+    }
   }
 }

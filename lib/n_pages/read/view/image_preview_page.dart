@@ -47,6 +47,12 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   late File? file = File.fromUri(
       Uri.parse("${widget.asset.relativePath}${widget.asset.title}"));
 
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
   /// 获取图片文件
   ///
   void _initFile() async {
@@ -71,15 +77,15 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   /// 保存图片
   void _saveImage() async {
     SmartDialog.showLoading(msg: "图片裁剪中...");
-    await Future.delayed(Durations.medium4, () async {
+    Future.delayed(Durations.medium4, () async {
       final data =
           await ImageEditorSave.cropImageDataWithDartLibrary(_controller!);
 
       /// 保存图片
       PreferencesDB.instance.setBackgroundImage(data);
       if (mounted) context.router.maybePop(true);
+      SmartDialog.dismiss();
     });
-    SmartDialog.dismiss();
   }
 
   @override

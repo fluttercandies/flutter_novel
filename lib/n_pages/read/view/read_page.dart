@@ -1,9 +1,11 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -279,6 +281,9 @@ class _ReadPageState extends ConsumerState<ReadPage> {
       final data =
           await context.router.push(ImagePreviewRoute(asset: result.first));
       LoggerTools.looger.d("图片选择成功");
+      if (data case true) {
+        setState(() {});
+      }
     }
   }
 
@@ -350,54 +355,70 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     );
   }
 
+  _buildBackground(Uint8List? value) {
+    return value != null
+        ? ExtendedImage.memory(
+            value,
+            fit: BoxFit.fitHeight,
+            width: double.infinity,
+            height: double.infinity,
+          )
+        : const SizedBox();
+  }
+
   /// 构建成功
   _buildSuccess({required ReadState value, required TextStyle style}) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: _isShow,
-      child: CarouselSlider(
-        carouselController: _carouselSliderController,
-        items: List.generate(value.listContent?.length ?? 0, (index) {
-          return Center(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: SingleChildScrollView(
-                  controller: _sc,
-                  padding: 20.padding,
-                  child: ExtendedText.rich(TextSpan(children: [
-                    _specialTextSpanBuilder.build(
-                        value.listContent?[index] ?? '',
-                        textStyle: style)
-                  ]))),
-            ),
-          );
-        }),
-        options: CarouselOptions(
-            onPageChanged: (index, c) async {
-              if (c.name == 'controller' && !_isToPage) {
-                LoggerTools.looger.d("${c.name} 控制器划 $index ");
-                return;
-              }
+    return Stack(
+      children: [
+        _buildBackground(value.backgroundImage),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: _isShow,
+          child: CarouselSlider(
+            carouselController: _carouselSliderController,
+            items: List.generate(value.listContent?.length ?? 0, (index) {
+              return Center(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: SingleChildScrollView(
+                      controller: _sc,
+                      padding: 20.padding,
+                      child: ExtendedText.rich(TextSpan(children: [
+                        _specialTextSpanBuilder.build(
+                            value.listContent?[index] ?? '',
+                            textStyle: style)
+                      ]))),
+                ),
+              );
+            }),
+            options: CarouselOptions(
+                onPageChanged: (index, c) async {
+                  if (c.name == 'controller' && !_isToPage) {
+                    LoggerTools.looger.d("${c.name} 控制器划 $index ");
+                    return;
+                  }
 
-              if (index > 1) {
-                LoggerTools.looger.d("右划 $index ");
-                _setNext();
-              } else {
-                LoggerTools.looger.d("左划 $index ");
-                _setBack();
-              }
-              _isToPage = false;
-              _sc.jumpTo(0);
-              setState(() {});
-              //LoggerTools.looger.d("开始切换页面");
-              //_detailViewModel.setReadIndex(_chapter);
-            },
-            height: double.infinity,
-            viewportFraction: 1,
-            initialPage: 1,
-            enableInfiniteScroll: false,
-            enlargeFactor: .9),
-      ),
+                  if (index > 1) {
+                    LoggerTools.looger.d("右划 $index ");
+                    _setNext();
+                  } else {
+                    LoggerTools.looger.d("左划 $index ");
+                    _setBack();
+                  }
+                  _isToPage = false;
+                  _sc.jumpTo(0);
+                  setState(() {});
+                  //LoggerTools.looger.d("开始切换页面");
+                  //_detailViewModel.setReadIndex(_chapter);
+                },
+                height: double.infinity,
+                viewportFraction: 1,
+                initialPage: 1,
+                enableInfiniteScroll: false,
+                enlargeFactor: .9),
+          ),
+        ),
+      ],
     );
   }
 
