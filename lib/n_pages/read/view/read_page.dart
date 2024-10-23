@@ -264,6 +264,8 @@ class _ReadPageState extends ConsumerState<ReadPage> {
         });
     if (data != null && data == "Image") {
       _showImagePicker();
+    } else if (data != null && data == "delete") {
+      _deleteImage();
     } else if (NovelReadState.isChange) {
       await PreferencesDB.instance.setNovelFontSize(NovelReadState.size);
       NovelReadState.isChange = false;
@@ -282,17 +284,31 @@ class _ReadPageState extends ConsumerState<ReadPage> {
           await context.router.push(ImagePreviewRoute(asset: result.first));
       LoggerTools.looger.d("图片选择成功");
       if (data case true) {
-        ref
-            .read(readViewModelProvider(
-                    chapter1: widget.chapter,
-                    bookSource: widget.source,
-                    chapterList: widget.chapterList,
-                    detailView: _detailViewModel,
-                    searchEntry: widget.searchEntry)
-                .notifier)
-            .buildBackgroundImage(isSh: true);
+        Future.delayed(Durations.medium3, () {
+          ref
+              .read(readViewModelProvider(
+                      chapter1: widget.chapter,
+                      bookSource: widget.source,
+                      chapterList: widget.chapterList,
+                      detailView: _detailViewModel,
+                      searchEntry: widget.searchEntry)
+                  .notifier)
+              .buildBackgroundImage(isSh: true);
+        });
       }
     }
+  }
+
+  /// 图片选择
+  void _deleteImage() async {
+    final data = ref.read(readViewModelProvider(
+            chapter1: widget.chapter,
+            bookSource: widget.source,
+            chapterList: widget.chapterList,
+            detailView: _detailViewModel,
+            searchEntry: widget.searchEntry)
+        .notifier);
+    data.deleteBackgroundImage();
   }
 
   @override

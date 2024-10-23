@@ -42,6 +42,11 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
     Navigator.pop(context, 'Image');
   }
 
+  _deleteImage() async {
+    // 关闭底部弹窗并返回数据
+    Navigator.pop(context, 'delete');
+  }
+
   ThemeData get _themeData => Theme.of(context);
   @override
   Widget build(BuildContext context) {
@@ -102,18 +107,52 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
                     10.verticalSpace,
                     const Text("DIY背景"),
                     12.verticalSpace,
-                    SizedBox(
-                      height: 30,
-                      child: ElevatedButton.icon(
-                          style: ButtonStyle(
-                              shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6))),
-                              elevation: const WidgetStatePropertyAll(0),
-                              backgroundColor: WidgetStatePropertyAll(
-                                  _themeData.primaryColor)),
-                          onPressed: _showImage,
-                          label: const Icon(Icons.image, color: Colors.white)),
+                    Wrap(
+                      spacing: 10,
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                              child: ElevatedButton.icon(
+                                  style: ButtonStyle(
+                                      shape: WidgetStatePropertyAll(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6))),
+                                      elevation:
+                                          const WidgetStatePropertyAll(0),
+                                      backgroundColor: WidgetStatePropertyAll(
+                                          _themeData.primaryColor)),
+                                  onPressed: _showImage,
+                                  label: const Icon(Icons.image,
+                                      color: Colors.white)),
+                            ),
+                            const Text("设置背景")
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                              child: ElevatedButton.icon(
+                                  style: ButtonStyle(
+                                      shape: WidgetStatePropertyAll(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6))),
+                                      elevation:
+                                          const WidgetStatePropertyAll(0),
+                                      backgroundColor: WidgetStatePropertyAll(
+                                          _themeData.primaryColor)),
+                                  onPressed: _deleteImage,
+                                  label: const Icon(Icons.delete,
+                                      color: Colors.white)),
+                            ),
+                            const Text("清除背景")
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),

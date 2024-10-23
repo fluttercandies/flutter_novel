@@ -327,4 +327,10 @@ class ReadViewModel extends _$ReadViewModel {
       }
     }
   }
+
+  void deleteBackgroundImage() {
+    readState.backgroundImage = null;
+    PreferencesDB.instance.setBackgroundImageState(false);
+    state = AsyncData(readState);
+  }
 }
