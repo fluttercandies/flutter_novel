@@ -312,6 +312,19 @@ class PreferencesDB {
         .d("写入文件  setBackgroundImage  fileImage:${fileImage.path}");
   }
 
+  /// 获取背景图片
+  Future<Uint8List?> getBackgroundImage() async {
+    if (await getBackgroundImageState()) {
+      // 获取临时文件目录
+      final directory = await getTemporaryDirectory();
+      final path = directory.path;
+      final file = File('$path/$backgroundState.png');
+      LoggerTools.looger.d("获取背景图片  getBackgroundImage  file:${file.path}");
+      return await file.readAsBytes();
+    }
+    return null;
+  }
+
   /// 获取背景图片状态
   Future<bool> getBackgroundImageState() async {
     return await sps.getBool(backgroundState) ?? false;

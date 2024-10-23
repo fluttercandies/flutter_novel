@@ -5,6 +5,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/tools/Image_editor_save.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
@@ -73,8 +74,10 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
     await Future.delayed(Durations.medium4, () async {
       final data =
           await ImageEditorSave.cropImageDataWithDartLibrary(_controller!);
-      LoggerTools.looger.d(data.length);
-      setState(() {});
+
+      /// 保存图片
+      PreferencesDB.instance.setBackgroundImage(data);
+      if (mounted) context.router.maybePop(true);
     });
     SmartDialog.dismiss();
   }

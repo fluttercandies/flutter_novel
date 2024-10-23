@@ -276,7 +276,8 @@ class _ReadPageState extends ConsumerState<ReadPage> {
             maxAssets: 1,
             textDelegate: AssetPickerTextDelegate()));
     if (result != null && result.isNotEmpty && mounted) {
-      context.router.push(ImagePreviewRoute(asset: result.first));
+      final data =
+          await context.router.push(ImagePreviewRoute(asset: result.first));
       LoggerTools.looger.d("图片选择成功");
     }
   }
