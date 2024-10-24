@@ -134,7 +134,8 @@ class _ReadPageState extends ConsumerState<ReadPage> {
     _style = TextStyle(
         fontSize: NovelReadState.size,
         fontWeight: NovelReadState.weight.fontWeight,
-        color: _themeData.textTheme.bodyLarge?.color);
+        color: _themeData.textTheme.bodyLarge?.color,
+        shadows: const [BoxShadow(color: Colors.white, blurRadius: 2)]);
     _specialTextSpanBuilder.color =
         _themeData.textTheme.bodyMedium?.color ?? Colors.black;
   }
