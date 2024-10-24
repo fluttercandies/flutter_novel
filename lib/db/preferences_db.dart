@@ -54,6 +54,9 @@ class PreferencesDB {
 
   static const backgroundState = "backgroundState";
 
+  /// 背景颜色
+  static const backgroundColor = "backgroundColor";
+
   /// 设置-主题外观模式
   Future<void> setAppThemeDarkMode(ThemeMode themeMode) async {
     await sps.setString(appThemeDarkMode, themeMode.name);
@@ -336,5 +339,15 @@ class PreferencesDB {
   /// 设置背景图片状态
   Future<void> setBackgroundImageState(bool state) async {
     await sps.setBool(backgroundState, state);
+  }
+
+  /// 设置背景颜色
+  Future<void> setBackgroundColor(int color) async {
+    await sps.setInt(backgroundColor, color);
+  }
+
+  /// 获取背景颜色
+  Future<int> getBackgroundColor() async {
+    return await sps.getInt(backgroundColor) ?? 0xfffafafa;
   }
 }
