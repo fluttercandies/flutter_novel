@@ -60,8 +60,9 @@ dependencies:
   carousel_slider: ^5.0.0                 # 轮播图
   wechat_assets_picker: ^9.3.3           # 图片管理
   extended_image: ^8.3.0                # 图片组件
-  image: ^4.3.0                         # 图片组件
+  #image: ^4.3.0                         # 图片组件
   path_provider: ^2.1.4                 # 本地存储地址
+  image_editor: ^1.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

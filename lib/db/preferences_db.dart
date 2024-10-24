@@ -300,7 +300,10 @@ class PreferencesDB {
     await sps.setStringList(history, str);
   }
 
-  Future<void> setBackgroundImage(Uint8List data) async {
+  Future<void> setBackgroundImage(Uint8List? data) async {
+    if (data == null) {
+      return;
+    }
     // 获取临时文件目录
     final directory = await getTemporaryDirectory();
     final path = directory.path;

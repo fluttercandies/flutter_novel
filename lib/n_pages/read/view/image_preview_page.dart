@@ -8,7 +8,6 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
 import 'package:novel_flutter_bit/icons/novel_icon_icons.dart';
 import 'package:novel_flutter_bit/tools/Image_editor_save.dart';
-import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/background.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
@@ -77,14 +76,13 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   /// 保存图片
   void _saveImage() async {
     SmartDialog.showLoading(msg: "图片裁剪中...");
-    Future.delayed(Durations.medium4, () async {
-      final data =
-          await ImageEditorSave.cropImageDataWithDartLibrary(_controller!);
-
+    //final editorOption = ImageEditor();
+    // _controller
+    ImageEditorSave.cropImageDataWithDartLibrary(_controller!).then((data) {
       /// 保存图片
       PreferencesDB.instance.setBackgroundImage(data);
-      if (mounted) context.router.maybePop(true);
       SmartDialog.dismiss();
+      if (mounted) context.router.maybePop(true);
     });
   }
 
