@@ -109,13 +109,12 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
   }
 
   _buildAppbar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          const BackButton(),
-          90.horizontalSpace,
-          const Text(
+          BackButton(),
+          Text(
             "图片编辑",
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.w300, color: Colors.black),

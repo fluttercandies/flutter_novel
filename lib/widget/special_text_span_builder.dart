@@ -15,8 +15,14 @@ class NovelSpecialTextSpanBuilder extends SpecialTextSpanBuilder {
       int? index}) {
     if (flag == '') {
       return null;
-    }
-    if (isStart(flag, MateText.flag)) {
+    } else if (isStart(flag, AtText.flag)) {
+      return AtText(
+        textStyle,
+        onTap,
+        start: index! - (AtText.flag.length - 1),
+        color: color,
+      );
+    } else if (isStart(flag, MateText.flag)) {
       return MateText(
         textStyle,
         onTap,
@@ -60,6 +66,58 @@ class MateText extends SpecialText {
     required this.color,
   }) : super(flag, '”', textStyle, onTap: onTap);
   static const String flag = '“';
+  final int start;
+  final Color color;
+
+  /// whether show background for @somebody
+  final bool showAtBackground;
+
+  @override
+  InlineSpan finishText() {
+    final TextStyle textStyle =
+        this.textStyle?.copyWith(color: color) ?? const TextStyle();
+
+    final String atText = toString();
+
+    return showAtBackground
+        ? BackgroundTextSpan(
+            background: Paint()..color = Colors.blue.withOpacity(0.15),
+            text: atText,
+            actualText: atText,
+            start: start,
+
+            ///caret can move into special text
+            deleteAll: true,
+            style: textStyle,
+            recognizer: (TapGestureRecognizer()
+              ..onTap = () {
+                if (onTap != null) {
+                  onTap!(atText);
+                }
+              }))
+        : SpecialTextSpan(
+            text: atText,
+            actualText: atText,
+            start: start,
+            style: textStyle,
+            recognizer: (TapGestureRecognizer()
+              ..onTap = () {
+                if (onTap != null) {
+                  onTap!(atText);
+                }
+              }));
+  }
+}
+
+class AtText extends SpecialText {
+  AtText(
+    TextStyle? textStyle,
+    SpecialTextGestureTapCallback? onTap, {
+    this.showAtBackground = false,
+    required this.start,
+    required this.color,
+  }) : super(flag, '@', textStyle, onTap: onTap);
+  static const String flag = '@';
   final int start;
   final Color color;
 

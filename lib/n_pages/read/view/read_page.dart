@@ -267,6 +267,8 @@ class _ReadPageState extends ConsumerState<ReadPage> {
       _showImagePicker();
     } else if (data != null && data == "delete") {
       _deleteImage();
+    } else if (data != null && data == "color") {
+      _colorPicker();
     } else if (NovelReadState.isChange) {
       await PreferencesDB.instance.setNovelFontSize(NovelReadState.size);
       NovelReadState.isChange = false;
@@ -310,6 +312,11 @@ class _ReadPageState extends ConsumerState<ReadPage> {
             searchEntry: widget.searchEntry)
         .notifier);
     data.deleteBackgroundImage();
+  }
+
+  /// 背景颜色
+  void _colorPicker() async {
+    await context.router.push(ColorPreviewRoute(style: _style));
   }
 
   @override
