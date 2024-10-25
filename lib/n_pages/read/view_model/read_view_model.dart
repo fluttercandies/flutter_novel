@@ -49,6 +49,7 @@ class ReadViewModel extends _$ReadViewModel {
     detailViewModel = detailView;
     readState.chapterList = chapterList;
     buildBackgroundImage();
+    //_initColor();
     //_initData(detailUrl: chapter1.chapterUrl ?? "");
     _initListData(chapterList: chapterList);
     return readState;
@@ -87,6 +88,7 @@ class ReadViewModel extends _$ReadViewModel {
     }
   }
 
+  /// 获取数据上
   Future<bool> refreshDataNext({
     required int index,
   }) async {
@@ -124,6 +126,7 @@ class ReadViewModel extends _$ReadViewModel {
     }
   }
 
+  /// 刷新数据下一站
   Future<bool> refreshDataBack({
     required int index,
   }) async {
@@ -159,6 +162,7 @@ class ReadViewModel extends _$ReadViewModel {
     }
   }
 
+  /// 获取章节列表
   void _initListData({
     required List<Chapter>? chapterList,
   }) async {
@@ -236,6 +240,7 @@ class ReadViewModel extends _$ReadViewModel {
     }
   }
 
+  /// 获取章节列表
   List<String?> _getChapterList(String url, List<String?> list) {
     List<String> resultList = [];
     for (var i = 0; i < list.length; i++) {
@@ -279,6 +284,7 @@ class ReadViewModel extends _$ReadViewModel {
     return resultList;
   }
 
+  /// 提取章节信息
   Map<String, String> extractChapterInfo(String input) {
     // 定义正则表达式
     var regex =
@@ -314,6 +320,7 @@ class ReadViewModel extends _$ReadViewModel {
         searchEntry: _searchEntry, chapter: chapter, dateTime: dateTime));
   }
 
+  /// 获取
   void buildBackgroundImage({bool isSh = false}) async {
     if (isSh ||
         await PreferencesDB.instance.getBackgroundImageState() &&
@@ -328,9 +335,18 @@ class ReadViewModel extends _$ReadViewModel {
     }
   }
 
+  /// 删除背景图片
   void deleteBackgroundImage() {
     readState.backgroundImage = null;
     PreferencesDB.instance.setBackgroundImageState(false);
     state = AsyncData(readState);
+  }
+
+  /// 背景颜色配置
+  void _initColor() async {
+    readState.backgroundColor =
+        await PreferencesDB.instance.getBackgroundColor();
+    readState.textColor = await PreferencesDB.instance.getTextColor();
+    readState.selectText = await PreferencesDB.instance.getSelectedTextColor();
   }
 }

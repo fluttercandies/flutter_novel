@@ -100,11 +100,11 @@ class _ReadPageState extends ConsumerState<ReadPage> {
   }
 
   /// 初始化数据
-  _initData() {
+  _initData() async {
     _carouselSliderController = CarouselSliderController();
 
     /// 初始化字体大小
-    _initFontSize();
+    _initFont();
 
     /// 初始化数据
     _chapter = widget.chapter;
@@ -130,22 +130,28 @@ class _ReadPageState extends ConsumerState<ReadPage> {
 
   /// 构建初始数据
   void _buildInitData() {
-    _specialTextSpanBuilder.color = _themeData.primaryColor;
+    //_specialTextSpanBuilder.color = _themeData.primaryColor;
     _style = TextStyle(
         fontSize: NovelReadState.size,
         fontWeight: NovelReadState.weight.fontWeight,
-        color: _themeData.textTheme.bodyLarge?.color,
+        color: NovelReadState.textColor,
         shadows: const [BoxShadow(color: Colors.white, blurRadius: 2)]);
-    _specialTextSpanBuilder.color =
-        _themeData.textTheme.bodyMedium?.color ?? Colors.black;
+    // _specialTextSpanBuilder.color =
+    //     _themeData.textTheme.bodyMedium?.color ?? Colors.black;
+    _specialTextSpanBuilder.color = NovelReadState.selectText;
   }
 
   /// 初始化字体大小
-  void _initFontSize() async {
+  void _initFont() async {
     double size = await PreferencesDB.instance.getNovelFontSize();
     String fontWeight = await PreferencesDB.instance.getNovelFontWeight();
-
+    int textColor = await PreferencesDB.instance.getTextColor();
+    int bgColor = await PreferencesDB.instance.getBackgroundColor();
+    int selectText = await PreferencesDB.instance.getSelectedTextColor();
     NovelReadState.size = size;
+    NovelReadState.bgColor = Color(bgColor);
+    NovelReadState.textColor = Color(textColor);
+    NovelReadState.selectText = Color(selectText);
     NovelReadState.initFontWeight(fontWeight);
     LoggerTools.looger.d("初始化字体大小====》${NovelReadState.size}");
     LoggerTools.looger.d("初始化字体粗细====》${NovelReadState.weight.name}");
@@ -288,15 +294,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
       LoggerTools.looger.d("图片选择成功");
       if (data case true) {
         Future.delayed(Durations.medium3, () {
-          ref
-              .read(readViewModelProvider(
-                      chapter1: widget.chapter,
-                      bookSource: widget.source,
-                      chapterList: widget.chapterList,
-                      detailView: _detailViewModel,
-                      searchEntry: widget.searchEntry)
-                  .notifier)
-              .buildBackgroundImage(isSh: true);
+          readData.buildBackgroundImage(isSh: true);
         });
       }
     }
@@ -304,19 +302,16 @@ class _ReadPageState extends ConsumerState<ReadPage> {
 
   /// 图片选择
   void _deleteImage() async {
-    final data = ref.read(readViewModelProvider(
-            chapter1: widget.chapter,
-            bookSource: widget.source,
-            chapterList: widget.chapterList,
-            detailView: _detailViewModel,
-            searchEntry: widget.searchEntry)
-        .notifier);
-    data.deleteBackgroundImage();
+    readData.deleteBackgroundImage();
   }
 
   /// 背景颜色
   void _colorPicker() async {
-    await context.router.push(ColorPreviewRoute(style: _style));
+    await context.router.push(ColorPreviewRoute(
+        style: _style,
+        backgroundColor: NovelReadState.bgColor,
+        selectedTextColor: NovelReadState.selectText,
+        textColor: NovelReadState.textColor));
   }
 
   @override
@@ -330,6 +325,7 @@ class _ReadPageState extends ConsumerState<ReadPage> {
         searchEntry: widget.searchEntry));
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: NovelReadState.bgColor,
       appBar: _buildAppBar(
           height: appbarHeight,
           minHeight: 40,

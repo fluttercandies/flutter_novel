@@ -88,12 +88,18 @@ class ColorPreviewRoute extends _i14.PageRouteInfo<ColorPreviewRouteArgs> {
   ColorPreviewRoute({
     _i15.Key? key,
     required _i15.TextStyle style,
+    required _i15.Color backgroundColor,
+    required _i15.Color selectedTextColor,
+    required _i15.Color textColor,
     List<_i14.PageRouteInfo>? children,
   }) : super(
           ColorPreviewRoute.name,
           args: ColorPreviewRouteArgs(
             key: key,
             style: style,
+            backgroundColor: backgroundColor,
+            selectedTextColor: selectedTextColor,
+            textColor: textColor,
           ),
           initialChildren: children,
         );
@@ -107,6 +113,9 @@ class ColorPreviewRoute extends _i14.PageRouteInfo<ColorPreviewRouteArgs> {
       return _i2.ColorPreviewPage(
         key: args.key,
         style: args.style,
+        backgroundColor: args.backgroundColor,
+        selectedTextColor: args.selectedTextColor,
+        textColor: args.textColor,
       );
     },
   );
@@ -116,15 +125,24 @@ class ColorPreviewRouteArgs {
   const ColorPreviewRouteArgs({
     this.key,
     required this.style,
+    required this.backgroundColor,
+    required this.selectedTextColor,
+    required this.textColor,
   });
 
   final _i15.Key? key;
 
   final _i15.TextStyle style;
 
+  final _i15.Color backgroundColor;
+
+  final _i15.Color selectedTextColor;
+
+  final _i15.Color textColor;
+
   @override
   String toString() {
-    return 'ColorPreviewRouteArgs{key: $key, style: $style}';
+    return 'ColorPreviewRouteArgs{key: $key, style: $style, backgroundColor: $backgroundColor, selectedTextColor: $selectedTextColor, textColor: $textColor}';
   }
 }
 
