@@ -57,6 +57,10 @@ class PreferencesDB {
   /// 背景颜色
   static const backgroundColor = "backgroundColor";
 
+  /// 文字颜色
+  static const textColor = "textColor";
+  static const selectedTextColor = "selectedTextColor";
+
   /// 设置-主题外观模式
   Future<void> setAppThemeDarkMode(ThemeMode themeMode) async {
     await sps.setString(appThemeDarkMode, themeMode.name);
@@ -349,5 +353,25 @@ class PreferencesDB {
   /// 获取背景颜色
   Future<int> getBackgroundColor() async {
     return await sps.getInt(backgroundColor) ?? 0xfffafafa;
+  }
+
+  /// 获取文字颜色
+  Future<int> getTextColor() async {
+    return await sps.getInt(textColor) ?? 0xff000000;
+  }
+
+  /// 设置文字颜色
+  Future<void> setTextColor(int color) async {
+    await sps.setInt(textColor, color);
+  }
+
+  /// 获取选中文字颜色
+  Future<int> getSelectedTextColor() async {
+    return await sps.getInt(selectedTextColor) ?? 0xff000000;
+  }
+
+  /// 设置选中文字颜色
+  Future<void> setSelectedTextColor(int color) async {
+    await sps.setInt(selectedTextColor, color);
   }
 }
