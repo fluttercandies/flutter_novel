@@ -43,15 +43,15 @@ class NewSearchViewModel extends _$NewSearchViewModel {
         final itemList = await _getItemBookSourceEntry(
             searchKey: searchKey, bookSource: _bookSourceEntry![i]);
         searchLis.addAll(itemList);
-      }
-      if (searchLis.isEmpty) {
-        searchState.netState = NetState.emptyDataState;
+        if (searchLis.isEmpty) {
+          searchState.netState = NetState.emptyDataState;
+          state = AsyncData(searchState);
+          return;
+        }
+        searchState.searchList = searchLis;
+        searchState.netState = NetState.dataSuccessState;
         state = AsyncData(searchState);
-        return;
       }
-      searchState.searchList = searchLis;
-      searchState.netState = NetState.dataSuccessState;
-      state = AsyncData(searchState);
     } else {
       LoggerTools.looger.e("书源为空无法查询");
       searchState.netState = NetState.emptyDataState;
