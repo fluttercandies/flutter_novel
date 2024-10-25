@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
+import 'package:novel_flutter_bit/tools/size_extension.dart';
+import 'package:novel_flutter_bit/widget/custom_toggle_tab.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
 
 @RoutePage()
@@ -19,9 +21,23 @@ class ColorPreviewPage extends StatefulWidget {
 class _ColorPreviewPageState extends State<ColorPreviewPage> {
   String text =
       "Flutter Candies “ 糖果社区 ” 成立于 2019 年 2 月 14 日，是一个杰出的社区，由对 Flutter 有着共同热情的开发人员组成。我们坚定不移的承诺是不断创建、维护和贡献一套高质量的 Flutter 插件和库（Flutter / Dart 包）。我们的目标是增强 Flutter 的可访问性，从而促进开发人员快速高效地创建卓越的 Flutter 应用程序。";
+
+  late NovelSpecialTextSpanBuilder _specialTextSpanBuilder =
+      NovelSpecialTextSpanBuilder(color: Colors.black);
+
+  /// 背景色
+  late Color _backgroundColor = const Color(0xfffafafa);
+
+  /// 文字颜色
+  late Color _textColor;
+
+  /// 选中文字颜色
+  late Color? _selectedTextColor;
   @override
   void initState() {
     super.initState();
+    _textColor = widget.style.color ?? Colors.black;
+
     if (Platform.isAndroid) {
       // 添加回调函数，等待页面渲染完成
       Future.delayed(Durations.medium4, () {
@@ -34,9 +50,6 @@ class _ColorPreviewPageState extends State<ColorPreviewPage> {
     }
   }
 
-  late NovelSpecialTextSpanBuilder _specialTextSpanBuilder =
-      NovelSpecialTextSpanBuilder(color: Colors.black);
-  late Color _color = const Color(0xfffafafa);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,8 +58,11 @@ class _ColorPreviewPageState extends State<ColorPreviewPage> {
         child: Column(children: [
           _buildAppbar(),
           Expanded(child: _buildBody()),
+          CustomToggleTab(
+            onTap: (index) {},
+          ),
           ColorPicker(
-            color: _color,
+            color: _backgroundColor,
             enableOpacity: true,
             enableShadesSelection: true,
             toolbarSpacing: 20,
@@ -64,7 +80,7 @@ class _ColorPreviewPageState extends State<ColorPreviewPage> {
               ColorPickerType.wheel: true,
             },
             onColorChanged: (Color value) {
-              _color = value;
+              _backgroundColor = value;
               // _specialTextSpanBuilder =
               //     NovelSpecialTextSpanBuilder(color: _color);
               setState(() {});
@@ -94,9 +110,10 @@ class _ColorPreviewPageState extends State<ColorPreviewPage> {
   _buildBody() {
     return Container(
         padding: 20.padding,
-        color: _color,
+        color: _backgroundColor,
         child: ExtendedText.rich(TextSpan(children: [
-          _specialTextSpanBuilder.build(text, textStyle: widget.style),
+          _specialTextSpanBuilder.build(text,
+              textStyle: widget.style.copyWith(color: _textColor)),
         ])));
   }
 }
