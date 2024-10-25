@@ -8,6 +8,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:novel_flutter_bit/db/preferences_db.dart';
@@ -307,11 +308,14 @@ class _ReadPageState extends ConsumerState<ReadPage> {
 
   /// 背景颜色
   void _colorPicker() async {
-    await context.router.push(ColorPreviewRoute(
+    final data = await context.router.push(ColorPreviewRoute(
         style: _style,
         backgroundColor: NovelReadState.bgColor,
         selectedTextColor: NovelReadState.selectText,
         textColor: NovelReadState.textColor));
+    if (data != null && data == true) {
+      setState(() {});
+    }
   }
 
   @override
@@ -323,32 +327,35 @@ class _ReadPageState extends ConsumerState<ReadPage> {
         chapterList: widget.chapterList,
         detailView: _detailViewModel,
         searchEntry: widget.searchEntry));
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: NovelReadState.bgColor,
-      appBar: _buildAppBar(
-          height: appbarHeight,
-          minHeight: 40,
+    return Container(
+      color: Colors.white,
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: NovelReadState.bgColor,
+        appBar: _buildAppBar(
+            height: appbarHeight,
+            minHeight: 40,
+            duration: _duration,
+            isAppBarVisible: _isAppBarVisible),
+        body: switch (readViewModel) {
+          AsyncData(:final value) => Builder(builder: (BuildContext context) {
+              Widget? child = NetStateTools.getWidget(value.netState);
+              if (child != null) {
+                return child;
+              }
+              return _buildSuccess(value: value, style: _style);
+            }),
+          AsyncError() => EmptyBuild(),
+          _ => const LoadingBuild(),
+        },
+        bottomNavigationBar: _buildBottmAppBar(
+          height: 100,
+          minHeight: 0,
           duration: _duration,
-          isAppBarVisible: _isAppBarVisible),
-      body: switch (readViewModel) {
-        AsyncData(:final value) => Builder(builder: (BuildContext context) {
-            Widget? child = NetStateTools.getWidget(value.netState);
-            if (child != null) {
-              return child;
-            }
-            return _buildSuccess(value: value, style: _style);
-          }),
-        AsyncError() => EmptyBuild(),
-        _ => const LoadingBuild(),
-      },
-      bottomNavigationBar: _buildBottmAppBar(
-        height: 100,
-        minHeight: 0,
-        duration: _duration,
-        isBottomBarVisible: _isBottomBarVisible,
+          isBottomBarVisible: _isBottomBarVisible,
+        ),
+        drawer: _buildDrawer(),
       ),
-      drawer: _buildDrawer(),
     );
   }
 

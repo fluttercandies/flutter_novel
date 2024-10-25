@@ -5,7 +5,11 @@ import 'package:extended_text/extended_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:novel_flutter_bit/db/preferences_db.dart';
+import 'package:novel_flutter_bit/pages/novel/state/novel_read_state.dart';
 import 'package:novel_flutter_bit/tools/padding_extension.dart';
+import 'package:novel_flutter_bit/tools/size_extension.dart';
 import 'package:novel_flutter_bit/widget/custom_toggle_tab.dart';
 import 'package:novel_flutter_bit/widget/special_text_span_builder.dart';
 
@@ -61,6 +65,21 @@ class _ColorPreviewPageState extends State<ColorPreviewPage> {
     ];
   }
 
+  /// 重置颜色列表
+  void _resetColorList() {
+    SmartDialog.showLoading(msg: "正在重置...");
+    colorList = [
+      NovelReadState.bgColor,
+      NovelReadState.textColor,
+      NovelReadState.selectText
+    ];
+    _specialTextSpanBuilder.color = NovelReadState.selectText;
+    Future.delayed(Durations.medium4, () {
+      setState(() {});
+      SmartDialog.dismiss();
+    });
+  }
+
   /// 颜色改变时触发
   void _onColorChanged(Color color) {
     colorList[_currentIndex] = color;
@@ -70,10 +89,27 @@ class _ColorPreviewPageState extends State<ColorPreviewPage> {
     setState(() {});
   }
 
+  /// 保存颜色
+  void _onSaveColor() async {
+    SmartDialog.showLoading(msg: "正在保存...");
+    NovelReadState.bgColor = colorList[0]; //Color (Color(0x71ffcdd2))
+    NovelReadState.textColor = colorList[1];
+    NovelReadState.selectText = colorList[2];
+    await PreferencesDB.instance
+        .setBackgroundColor(NovelReadState.bgColor.value);
+    await PreferencesDB.instance.setTextColor(NovelReadState.textColor.value);
+    await PreferencesDB.instance
+        .setSelectedTextColor(NovelReadState.selectText.value);
+    Future.delayed(Durations.medium4, () {
+      SmartDialog.dismiss();
+      if (mounted) context.router.maybePop(true);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xfffafafa),
+      color: const Color(0xffffffff),
       child: SafeArea(
         child: Column(children: [
           _buildAppbar(),
@@ -84,7 +120,6 @@ class _ColorPreviewPageState extends State<ColorPreviewPage> {
             color: colorList[_currentIndex],
             enableOpacity: true,
             enableShadesSelection: true,
-            toolbarSpacing: 20,
             pickerTypeLabels: const {
               ColorPickerType.primary: "深色",
               ColorPickerType.accent: "浅色",
@@ -99,7 +134,49 @@ class _ColorPreviewPageState extends State<ColorPreviewPage> {
               ColorPickerType.wheel: true,
             },
             onColorChanged: _onColorChanged,
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                SizedBox(
+                  height: 45,
+                  child: ElevatedButton.icon(
+                    style: ButtonStyle(
+                      elevation: const WidgetStatePropertyAll(0),
+                      shape: WidgetStatePropertyAll(StadiumBorder(
+                          side: BorderSide(
+                              width: 0, color: Colors.grey.shade300) // 不起作用
+                          )),
+                    ),
+                    onPressed: _resetColorList,
+                    label: const Text("重置"),
+                    icon: const Icon(Icons.restore),
+                  ),
+                ),
+                10.horizontalSpace,
+                Flexible(
+                  child: SizedBox(
+                    height: 45,
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _onSaveColor,
+                      style: ButtonStyle(
+                        elevation: const WidgetStatePropertyAll(0),
+                        shape: WidgetStatePropertyAll(StadiumBorder(
+                            side: BorderSide(
+                                width: 0, color: Colors.grey.shade300) // 不起作用
+                            )),
+                      ),
+                      label: const Text("保存"),
+                      icon: const Icon(Icons.save),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          20.verticalSpace
         ]),
       ),
     );
@@ -115,19 +192,21 @@ class _ColorPreviewPageState extends State<ColorPreviewPage> {
             "背景颜色选择",
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.w300, color: Colors.black),
-          )
+          ),
         ],
       ),
     );
   }
 
   _buildBody() {
-    return Container(
-        padding: 20.padding,
-        color: colorList[0],
-        child: ExtendedText.rich(TextSpan(children: [
-          _specialTextSpanBuilder.build(text,
-              textStyle: widget.style.copyWith(color: colorList[1])),
-        ])));
+    return SingleChildScrollView(
+      child: Container(
+          padding: 20.padding,
+          color: colorList[0],
+          child: ExtendedText.rich(TextSpan(children: [
+            _specialTextSpanBuilder.build(text,
+                textStyle: widget.style.copyWith(color: colorList[1])),
+          ]))),
+    );
   }
 }

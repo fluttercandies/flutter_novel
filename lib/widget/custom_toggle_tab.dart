@@ -33,7 +33,8 @@ class _CustomToggleTabState extends State<CustomToggleTab> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(widget.padding),
+      padding: EdgeInsets.only(
+          left: widget.padding, right: widget.padding, top: widget.padding),
       child: Column(
         children: [
           Container(
