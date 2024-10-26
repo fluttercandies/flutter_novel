@@ -90,7 +90,8 @@ lib
 ![图片说明](./md/729_1x_shots_so.png)
 ![图片说明](./md/360_1x_shots_so.png)
 ![图片说明](./md/300_1x_shots_so.png)
-
+自定义阅读背景、字体、主题等。
+![图片说明](./md/402_1x_shots_so.png)
 ### 项目截图 《旧》
 
 ![图片说明](./md/488_1x_shots_so.png)
