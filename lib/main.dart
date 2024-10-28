@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
   /// build
   _buildSuccess(ThemeData theme) {
     return MaterialApp.router(
-      title: '爱看',
+      title: 'BITReader',
       theme: theme,
       debugShowCheckedModeBanner: false,
       routerDelegate: _appRouter.delegate(
