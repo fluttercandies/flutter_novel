@@ -64,6 +64,7 @@ dependencies:
   path_provider: ^2.1.4                 # 本地存储地址
   image_editor: ^1.5.1                  # 图片编辑  
   flex_color_picker: ^3.6.0             # 颜色选择器
+  window_manager: ^0.4.3                # 窗口
 dev_dependencies:
   flutter_test:
     sdk: flutter

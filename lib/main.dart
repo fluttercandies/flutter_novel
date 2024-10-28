@@ -10,8 +10,9 @@ import 'package:novel_flutter_bit/theme/theme_style.dart';
 import 'package:novel_flutter_bit/tools/logger_tools.dart';
 import 'package:novel_flutter_bit/widget/empty.dart';
 import 'package:novel_flutter_bit/widget/loading.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
   } else if (Platform.isAndroid) {
@@ -26,6 +27,24 @@ void main() {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+  } else if (Platform.isWindows || Platform.isMacOS) {
+    WidgetsFlutterBinding.ensureInitialized();
+    // Must add this line.
+    await windowManager.ensureInitialized();
+
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(800, 600),
+      minimumSize: Size(800, 600),
+      //maximumSize: Size(1200, 1000),
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.normal,
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
   }
 
   runApp(ProviderScope(child: MyApp()));
