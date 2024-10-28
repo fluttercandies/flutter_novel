@@ -65,74 +65,76 @@ class _ShowSliderSheetState extends State<ShowSliderSheet> {
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              10.verticalSpace,
-              const Align(
-                  child: Text(
-                "设置",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-              )),
-              20.verticalSpace,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text("字体大小：${NovelReadState.size.toInt()}"),
-              ),
-              SliderNovel(
-                color: widget.color,
-                value: widget.value,
-                onChanged: (p0) {
-                  widget.value = p0;
-                  setState(() {});
-                  if (widget.onChanged != null) {
-                    widget.onChanged!(widget.value);
-                  }
-                },
-              ),
-              10.verticalSpace,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("主题选择"),
-                    5.verticalSpace,
-                    Wrap(
-                        spacing: 8,
-                        runSpacing: 10,
-                        children: _getThemeListWidget()),
-                    10.verticalSpace,
-                    const Text("字体粗细"),
-                    10.verticalSpace,
-                    Wrap(
-                        spacing: 8,
-                        runSpacing: 10,
-                        children: _getFontWeightList()),
-                    10.verticalSpace,
-                    const Text("DIY背景"),
-                    12.verticalSpace,
-                    Wrap(
-                      spacing: 10,
-                      children: [
-                        _buildItemButtonBackground(
-                            name: "设备背景",
-                            onPressed: _showImage,
-                            icon: Icons.image),
-                        _buildItemButtonBackground(
-                            name: "清除背景",
-                            onPressed: _deleteImage,
-                            icon: Icons.delete),
-                        _buildItemButtonBackground(
-                            name: "纯色背景",
-                            onPressed: _colorPicker,
-                            icon: Icons.color_lens),
-                      ],
-                    ),
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                10.verticalSpace,
+                const Align(
+                    child: Text(
+                  "设置",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                )),
+                20.verticalSpace,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text("字体大小：${NovelReadState.size.toInt()}"),
                 ),
-              )
-            ],
+                SliderNovel(
+                  color: widget.color,
+                  value: widget.value,
+                  onChanged: (p0) {
+                    widget.value = p0;
+                    setState(() {});
+                    if (widget.onChanged != null) {
+                      widget.onChanged!(widget.value);
+                    }
+                  },
+                ),
+                10.verticalSpace,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("主题选择"),
+                      5.verticalSpace,
+                      Wrap(
+                          spacing: 8,
+                          runSpacing: 10,
+                          children: _getThemeListWidget()),
+                      10.verticalSpace,
+                      const Text("字体粗细"),
+                      10.verticalSpace,
+                      Wrap(
+                          spacing: 8,
+                          runSpacing: 10,
+                          children: _getFontWeightList()),
+                      10.verticalSpace,
+                      const Text("DIY背景"),
+                      12.verticalSpace,
+                      Wrap(
+                        spacing: 10,
+                        children: [
+                          _buildItemButtonBackground(
+                              name: "设备背景",
+                              onPressed: _showImage,
+                              icon: Icons.image),
+                          _buildItemButtonBackground(
+                              name: "清除背景",
+                              onPressed: _deleteImage,
+                              icon: Icons.delete),
+                          _buildItemButtonBackground(
+                              name: "纯色背景",
+                              onPressed: _colorPicker,
+                              icon: Icons.color_lens),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
