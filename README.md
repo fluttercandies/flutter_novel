@@ -34,6 +34,8 @@
 
 ```
 lib
+├── main.dart -- 入口
+├── assets -- 本地资源生成
 ├── base -- 请求状态、页面状态
 ├── db -- 数据缓存
 ├── icons -- 图标
@@ -42,8 +44,9 @@ lib
     ├── detail -- 详情页
     ├── home -- 首页
     ├── search -- 全网搜索搜索页
-    └── read -- 小说阅读 
-├── like -- 收藏书籍
+    ├── history -- 历史记录 
+    ├── read -- 小说阅读 
+    └── like -- 收藏书架
 └── pages  已废弃⚠
     ├── home -- 首页
     ├── novel -- 小说阅读
@@ -65,27 +68,29 @@ lib
 |------------------------------- | ---------------------------
 | FlutterSDK                     |  3.24.0
 | DartSDK                        |  3.5.0
+|--------------------------------|----------------------------
+| pull_to_refresh_notification   |  刷新^3.1.0
+| extended_image                 |  图片^8.3.0
+| extended_text                  |  文本^14.1.0
+| flutter_smart_dialog           |  弹窗提示^4.9.8+1
+| image_editor                   |  图片编辑 ^1.5.1
+| wechat_assets_picker           |  微信样式选择图片 ^9.3.3
+| assets_generator               |  本地资源生成^3.0.5
 | logger                         |  日志插件^1.0.8
 | auto_route                     |  路由^9.2.2
 | dio                            |  网络请求^5.7.0
-| pull_to_refresh_notification   |  刷新^3.1.0     
-| extended_image                 |  图片^8.3.0     
 | flutter_svg                    |  SVG^2.0.10+1
-| extended_text                  |  文本^14.1.0    
 | flutter_staggered_grid_view    |  瀑布流^0.4.1
 | shared_preferences             |  本地存储^2.3.2
-| flutter_smart_dialog           |  弹窗提示^4.9.8+1    
 | flutter_riverpod               |  状态管理^2.5.1
 | riverpod_annotation            |  ^2.3.5
 | syncfusion_flutter_sliders     |  滑动选择器 ^26.2.14
+| carousel_slider                |  轮播^5.0.0
+| html                           |  ^0.15.4
+| path_provider                  |  本地目录 ^2.1.4
+| flex_color_picker              |  颜色选择器^3.6.0
 | sliver_head_automatic_adsorption| 自动吸附Sliver ^1.0.8
-| assets_generator               | 本地资源生成^3.0.5
-| carousel_slider                | 轮播^5.0.0
-| html                           | ^0.15.4
-| wechat_assets_picker           | 微信样式选择图片 ^9.3.3 
-| path_provider                  | 本地目录 ^2.1.4 
-| image_editor                   | 图片编辑 ^1.5.1   
-| flex_color_picker              | 颜色选择器^3.6.0  
+
 ### 项目截图 《新》
 
 ![图片说明](./md/57_1x_shots_so.png)
