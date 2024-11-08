@@ -137,10 +137,14 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
     _detailViewModel.setReadIndex(data);
     final index = _detailViewModel.getReadIndex();
     List<Chapter> chapterList = [];
-    if (index > 0) {
-      chapterList = [chapter[index - 1], chapter[index], chapter[index + 1]];
+    if (chapter.length <= 1) {
+      chapterList = [chapter[index], chapter[index], chapter[index]];
     } else {
-      chapterList = [chapter[index], chapter[index], chapter[index + 1]];
+      if (index > 0) {
+        chapterList = [chapter[index - 1], chapter[index], chapter[index + 1]];
+      } else {
+        chapterList = [chapter[index], chapter[index], chapter[index + 1]];
+      }
     }
     await context.router.push(ReadRoute(
         chapter: chapter[index],
@@ -168,11 +172,22 @@ class _NewDetailPageState extends ConsumerState<NewDetailPage> {
     final chapter = _detailViewModel.detailState.detailBookEntry!.chapter!;
     _detailViewModel.setReadIndex(chapter[index]);
     List<Chapter> chapterList = [];
-    if (index > 0) {
-      chapterList = [chapter[index - 1], chapter[index], chapter[index + 1]];
+    if (chapter.length <= 1) {
+      chapterList = [chapter[index], chapter[index], chapter[index]];
     } else {
-      chapterList = [chapter[index], chapter[index], chapter[index + 1]];
+      if (index > 0) {
+        chapterList = [chapter[index - 1], chapter[index], chapter[index + 1]];
+      } else {
+        chapterList = [chapter[index], chapter[index], chapter[index + 1]];
+      }
     }
+    // if (index <= 0) {
+    //   chapterList = [chapter[index], chapter[index], chapter[index]];
+    // } else if (index > 1) {
+    //   chapterList = [chapter[index - 1], chapter[index], chapter[index + 1]];
+    // } else {
+    //   chapterList = [chapter[index], chapter[index], chapter[index + 1]];
+    // }
     await context.router.push(ReadRoute(
         chapter: data ?? Chapter(),
         source: widget.bookSourceEntry,

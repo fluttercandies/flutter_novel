@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
   // inside of the build function.
   final _appRouter = AppRouter();
   late bool _init = false;
+
   @override
   Widget build(BuildContext context) {
     if (!_init) {

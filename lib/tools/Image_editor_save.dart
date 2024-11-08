@@ -3,17 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_editor/image_editor.dart';
 
-enum ImageType { gif, jpg }
-
-class EditImageInfo {
-  EditImageInfo(
-    this.data,
-    this.imageType,
-  );
-  final Uint8List? data;
-  final ImageType imageType;
-}
-
 class ImageEditorSave {
   static Future<Uint8List?> cropImageDataWithDartLibrary(
       ImageEditorController imageEditorController) async {
